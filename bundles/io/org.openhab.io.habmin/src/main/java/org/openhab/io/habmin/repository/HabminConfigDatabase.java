@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2010-2013, openHAB.org and others.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ */
 package org.openhab.io.habmin.repository;
 
 import java.io.FileInputStream;
@@ -14,6 +22,12 @@ import org.slf4j.LoggerFactory;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
+/**
+ * 
+ * @author Chris Jackson
+ * @since 1.4.0
+ *
+ */
 public class HabminConfigDatabase {
 	private static final Logger logger = LoggerFactory.getLogger(HabminConfigDatabase.class);
 
