@@ -43,6 +43,8 @@ import org.osgi.service.http.NamespaceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.openhab.binding.zwave.internal.config.OpenHABConfigurationService;
+
 import com.sun.jersey.core.util.FeaturesAndProperties;
 
 /**
@@ -138,6 +140,14 @@ public class HABminApplication extends Application  {
 	
 	static public Map<String, PersistenceService> getPersistenceServices() {
 		return persistenceServices;
+	}
+	
+	static void addConfigurationService(OpenHABConfigurationService service) {
+//		persistenceServices.remove(service.getName());
+	}
+
+	static void removeConfigurationService(OpenHABConfigurationService service) {
+		
 	}
 
 	public void activate() {			    

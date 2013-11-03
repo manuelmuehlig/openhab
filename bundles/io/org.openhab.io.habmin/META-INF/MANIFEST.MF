@@ -41,7 +41,8 @@ Import-Package: com.sun.jersey.api.json,
  org.openhab.ui.items,
  org.osgi.framework,
  org.osgi.service.http,
- org.slf4j
+ org.slf4j,
+ org.openhab.binding.zwave.internal.config
 Bundle-ClassPath: .,
  lib/xstream-1.4.5.jar
 Bundle-ActivationPolicy: lazy

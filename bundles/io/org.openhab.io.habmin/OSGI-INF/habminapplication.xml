@@ -18,4 +18,5 @@
    <reference bind="setModelRepository" cardinality="1..1" interface="org.openhab.model.core.ModelRepository" name="ModelRepository" policy="static"/>
    <reference bind="setDiscoveryService" cardinality="0..1" interface="org.openhab.io.servicediscovery.DiscoveryService" name="DiscoveryService" policy="dynamic" unbind="unsetDiscoveryService"/>
    <reference bind="addPersistenceService" cardinality="0..n" interface="org.openhab.core.persistence.PersistenceService" name="PersistenceService" policy="dynamic" unbind="removePersistenceService"/>
+   <reference bind="addConfigurationService" cardinality="0..n" interface="org.openhab.binding.zwave.internal.config.OpenHABConfiguration" name="ConfigurationService" policy="dynamic" unbind="removeConfigurationService"/>
 </scr:component>
