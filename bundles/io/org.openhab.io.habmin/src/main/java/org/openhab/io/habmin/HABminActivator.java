@@ -30,7 +30,7 @@ public class HABminActivator implements BundleActivator {
 	 */
 	public void start(BundleContext bc) throws Exception {
 		context = bc;
-		logger.debug("HABmin API has been started.");
+		logger.debug("HABmin Interface has been started.");
 	}
 
 	/**
@@ -38,7 +38,7 @@ public class HABminActivator implements BundleActivator {
 	 */
 	public void stop(BundleContext bc) throws Exception {
 		context = null;
-		logger.debug("HABmin API has been stopped.");
+		logger.debug("HABmin Interface has been stopped.");
 	}
 	
 	/**
