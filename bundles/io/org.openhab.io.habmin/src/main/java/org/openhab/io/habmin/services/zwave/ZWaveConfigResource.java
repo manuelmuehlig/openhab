@@ -12,6 +12,7 @@ package org.openhab.io.habmin.services.zwave;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
@@ -47,10 +48,12 @@ public class ZWaveConfigResource {
     
 	@Context UriInfo uriInfo;
 	@GET
+	@Path("{domain: .+}")
     @Produces( { MediaType.WILDCARD })
     public Response getItems(
     		@Context HttpHeaders headers,
     		@QueryParam("type") String type, 
+    		@PathParam("domain") String domain,
     		@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
 		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", new String[] { uriInfo.getPath(), type });
 
@@ -60,6 +63,44 @@ public class ZWaveConfigResource {
 //	    			new JSONWithPadding(new ItemListBean(getItemBeans()), callback) : new ItemListBean(getItemBeans());
 //	    	return Response.ok(responseObject, responseType).build();
 //		} else {
+			ConfigServiceListBean cfgList = new ConfigServiceListBean();
+	@PUT
+	@Path("action/{domain: .+}")
+    public Response putAction(
+    		@PathParam("domain") String domain,
+    		@QueryParam("jsoncallback") @DefaultValue("callback") String callback, String action) {
+			cfg.doAction(domain, action);
+			ConfigServiceListBean cfgList = new ConfigServiceListBean();
+			cfgList.records = cfg.getConfiguration(domain);
+
+	    	Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ?
+	    			new JSONWithPadding(cfgList, callback) : cfgList;
+	    	return Response.ok(responseObject, responseType).build();
+		} else {
+			return Response.notAcceptable(null).build();
+		}
+    }
+
+	@PUT
+	@Path("set/{domain: .+}")
+    @Produces( { MediaType.WILDCARD })
+    public Response putSet(
+    		@Context HttpHeaders headers,
+    		@QueryParam("type") String type,
+    		@PathParam("domain") String domain,
+    		@QueryParam("jsoncallback") @DefaultValue("callback") String callback, String set) {
+		logger.debug("Received HTTP PUT request at '{}' for media type '{}'.", new String[] { uriInfo.getPath(), type });
+
+		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
+		if(responseType!=null) {
+			OpenHABConfigurationService cfg = HABminApplication.getConfigurationServices().get("ZWave");
+
+			if(cfg == null)
+				return Response.notAcceptable(null).build();
+
+			cfg.doSet(domain, set);
+			
+			ConfigServiceListBean cfgList = new ConfigServiceListBean();
 			return Response.notAcceptable(null).build();
 //		}
     }
