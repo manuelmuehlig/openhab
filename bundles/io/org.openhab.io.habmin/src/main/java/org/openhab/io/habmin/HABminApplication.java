@@ -30,6 +30,7 @@ import org.openhab.io.habmin.services.osgi.BundleResource;
 import org.openhab.io.habmin.services.persistence.PersistenceConfigResource;
 import org.openhab.io.habmin.services.rule.RuleConfigResource;
 import org.openhab.io.habmin.services.sitemap.SitemapConfigResource;
+import org.openhab.io.habmin.services.zwave.ZWaveConfigResource;
 import org.openhab.io.net.http.SecureHttpContext;
 import org.openhab.io.servicediscovery.DiscoveryService;
 import org.openhab.io.servicediscovery.ServiceDescription;
@@ -76,6 +77,7 @@ public class HABminApplication extends Application  {
 	static private ModelRepository modelRepository;
 	
 	static private Map<String, PersistenceService> persistenceServices = new HashMap<String, PersistenceService>();
+	static private Map<String, OpenHABConfigurationService> configurationServices = new HashMap<String, OpenHABConfigurationService>();
 
 	public void setHttpService(HttpService httpService) {
 		this.httpService = httpService;
@@ -143,11 +145,15 @@ public class HABminApplication extends Application  {
 	}
 	
 	static void addConfigurationService(OpenHABConfigurationService service) {
-//		persistenceServices.remove(service.getName());
+		configurationServices.put(service.getCommonName(), service);
+	}
+
+	static public Map<String, OpenHABConfigurationService> getConfigurationServices() {
+		return configurationServices;
 	}
 
 	static void removeConfigurationService(OpenHABConfigurationService service) {
-		
+		configurationServices.remove(service.getCommonName());
 	}
 
 	public void activate() {			    
@@ -218,6 +224,7 @@ public class HABminApplication extends Application  {
         result.add(PersistenceResource.class);
 
         result.add(BundleResource.class);
+        result.add(ZWaveConfigResource.class);
 
         return result;
     }
