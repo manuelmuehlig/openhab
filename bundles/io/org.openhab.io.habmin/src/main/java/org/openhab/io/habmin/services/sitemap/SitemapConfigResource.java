@@ -52,7 +52,6 @@ import org.openhab.io.habmin.internal.resources.MediaTypeHelper;
 import org.openhab.model.core.ModelRepository;
 import org.openhab.model.sitemap.Chart;
 import org.openhab.model.sitemap.ColorArray;
-import org.openhab.model.sitemap.ConditionArray;
 import org.openhab.model.sitemap.Image;
 import org.openhab.model.sitemap.LinkableWidget;
 import org.openhab.model.sitemap.Mapping;
@@ -550,19 +549,6 @@ public class SitemapConfigResource {
 			}
 		}
 
-		// Add icon color array
-		if (widget.getIconColor() != null && widget.getIconColor().size() > 0) {
-			bean.iconcolor = new ArrayList<ColorBean>();
-			for (ColorArray color : widget.getIconColor()) {
-				ColorBean colorBean = new ColorBean();
-				colorBean.state = color.getState();
-				colorBean.color = color.getArg();
-				if(colorBean.state.startsWith("\"") && colorBean.state.endsWith("\""))
-					colorBean.state = colorBean.state.substring(1, colorBean.state.length()-1);
-				bean.iconcolor.add(colorBean);
-			}
-		}
-
 		// Add label color array
 		if (widget.getLabelColor() != null && widget.getLabelColor().size() > 0) {
 			bean.labelcolor = new ArrayList<ColorBean>();
@@ -630,45 +616,15 @@ public class SitemapConfigResource {
 			if (imageWidget.getRefresh() > 0) {
 				bean.refresh = imageWidget.getRefresh();
 			}
-
-			// Add url array
-			if (imageWidget.getUrlArray() != null && imageWidget.getUrlArray().size() > 0) {
-			for (ConditionArray url : imageWidget.getUrlArray()) {
-				UrlBean urlBean = new UrlBean();
-				urlBean.state = url.getState();
-				urlBean.url = url.getArg();
-				bean.urlarray.add(urlBean);
-			}
-			}
 		}
 		if (widget instanceof Video) {
 			Video videoWidget = (Video) widget;
 			bean.url = videoWidget.getUrl();
-
-			// Add url array
-			if (videoWidget.getUrlArray() != null && videoWidget.getUrlArray().size() > 0) {
-			for (ConditionArray url : videoWidget.getUrlArray()) {
-				UrlBean urlBean = new UrlBean();
-				urlBean.state = url.getState();
-				urlBean.url = url.getArg();
-				bean.urlarray.add(urlBean);
-			}
-			}
 		}
 		if (widget instanceof Webview) {
 			Webview webViewWidget = (Webview) widget;
 			bean.url = webViewWidget.getUrl();
 			bean.height = webViewWidget.getHeight();
-
-			// Add url array
-			//if (webviewWidget.getUrlArray() != null && webviewWidget.getUrlArray().size() > 0) {
-			// for (ConditionArray url : webViewWidget.getUrlArray()) {
-			// UrlBean urlBean = new UrlBean();
-			// urlBean.state = url.getState();
-			// urlBean.url = url.getArg();
-			// bean.urlarray.add(urlBean);
-			// }
-			// }
 		}
 		if (widget instanceof Chart) {
 			Chart chartWidget = (Chart) widget;
