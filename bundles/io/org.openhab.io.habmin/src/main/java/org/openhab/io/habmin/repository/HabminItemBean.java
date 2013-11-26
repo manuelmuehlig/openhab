@@ -13,7 +13,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.openhab.io.habmin.services.rule.RuleBean;
+import org.openhab.io.habmin.services.rule.RuleTemplateBean;
 
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
@@ -33,7 +33,7 @@ public class HabminItemBean {
 	
 	@XmlElement(name="rules")
 	@XStreamImplicit(itemFieldName="rules")
-	public List<RuleBean> rules;
+	public List<RuleTemplateBean> rules;
 
 	public HabminItemBean() {};
 }

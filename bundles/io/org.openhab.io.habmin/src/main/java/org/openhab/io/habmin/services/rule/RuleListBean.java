@@ -26,7 +26,7 @@ public class RuleListBean {
 	
 	@XmlElement(name="rule")
 	@XStreamImplicit(itemFieldName="rule")
-	public List<RuleBean> rule;
+	public List<RuleTemplateBean> rule;
 
 	public RuleListBean() {};
 }

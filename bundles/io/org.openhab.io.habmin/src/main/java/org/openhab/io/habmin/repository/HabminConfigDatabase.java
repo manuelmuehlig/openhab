@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openhab.io.habmin.services.rule.RuleBean;
+import org.openhab.io.habmin.services.rule.RuleTemplateBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -158,7 +158,7 @@ public class HabminConfigDatabase {
 		
 		// Make sure rules is initialised
 		if(item.rules == null)
-			item.rules = new ArrayList<RuleBean>();
+			item.rules = new ArrayList<RuleTemplateBean>();
 		if(item.rules == null)
 			return null;
 		
@@ -228,7 +228,7 @@ public class HabminConfigDatabase {
 		return true;
 	}
 
-	synchronized static public boolean updateItemRule(String itemName, RuleBean rule) {
+	synchronized static public boolean updateItemRule(String itemName, RuleTemplateBean rule) {
 		logger.debug("HABmin database: Adding rule {}", rule.name);
 
 		HabminItemBean item = HabminConfigDatabase.getItemConfig(itemName);
@@ -238,12 +238,12 @@ public class HabminConfigDatabase {
 
 		// Make sure rules is initialised
 		if(item.rules == null)
-			item.rules = new ArrayList<RuleBean>();
+			item.rules = new ArrayList<RuleTemplateBean>();
 		if(item.rules == null)
 			return false;
 
 		// See if the rule already exists
-		for(RuleBean iRule : item.rules) {
+		for(RuleTemplateBean iRule : item.rules) {
 			if(iRule.name.equals(rule.name)) {
 				// Remove from the list
 				item.rules.remove(iRule);
@@ -273,7 +273,7 @@ public class HabminConfigDatabase {
 			return false;
 
 		// See if the rule already exists
-		for(RuleBean iRule : item.rules) {
+		for(RuleTemplateBean iRule : item.rules) {
 			if(iRule.name.equals(ruleName)) {
 				// Remove from the list
 				item.rules.remove(iRule);
@@ -287,14 +287,14 @@ public class HabminConfigDatabase {
 		return true;
 	}
 
-	synchronized static public RuleBean getItemRule(String itemName, String ruleName) {
+	synchronized static public RuleTemplateBean getItemRule(String itemName, String ruleName) {
 		HabminItemBean item = HabminConfigDatabase.getItemConfig(itemName);
 		if(item == null) {
 			return null;
 		}
 
 		// See if the rule already exists
-		for(RuleBean iRule : item.rules) {
+		for(RuleTemplateBean iRule : item.rules) {
 			if(iRule.name.equals(ruleName)) {
 				return iRule;
 			}

@@ -14,6 +14,8 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -32,6 +34,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.apache.commons.lang.StringUtils;
 import org.openhab.io.habmin.HABminApplication;
 import org.openhab.io.habmin.internal.resources.MediaTypeHelper;
 import org.openhab.io.habmin.repository.HabminConfigDatabase;
@@ -39,6 +42,16 @@ import org.openhab.io.habmin.repository.HabminItemBean;
 import org.openhab.io.habmin.services.item.ItemConfigBean;
 import org.openhab.io.habmin.services.item.ItemModelHelper;
 import org.openhab.model.core.ModelRepository;
+import org.openhab.model.rule.rules.ChangedEventTrigger;
+import org.openhab.model.rule.rules.CommandEventTrigger;
+import org.openhab.model.rule.rules.EventTrigger;
+import org.openhab.model.rule.rules.Import;
+import org.openhab.model.rule.rules.Rule;
+import org.openhab.model.rule.rules.RuleModel;
+import org.openhab.model.rule.rules.SystemOnShutdownTrigger;
+import org.openhab.model.rule.rules.SystemOnStartupTrigger;
+import org.openhab.model.rule.rules.TimerTrigger;
+import org.openhab.model.rule.rules.UpdateEventTrigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,6 +86,9 @@ public class RuleConfigResource {
 
 	/** The URI path to this resource */
 	public static final String PATH_RULES = "config/rules";
+	
+	protected static final String RULE_FILEEXT = ".rule";
+
 
 	@Context
 	UriInfo uriInfo;
@@ -88,6 +104,23 @@ public class RuleConfigResource {
 		if (responseType != null) {
 			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
 					getRuleTemplateList(null), callback) : getRuleTemplateList(null);
+			return Response.ok(responseObject, responseType).build();
+		} else {
+			return Response.notAcceptable(null).build();
+		}
+	}
+	
+	@GET
+	@Path("/model/list")
+	@Produces({ MediaType.WILDCARD })
+	public Response httpGetModelList(@Context HttpHeaders headers, @QueryParam("type") String type,
+			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
+		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+
+		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
+		if (responseType != null) {
+			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
+					getRuleModelList(null), callback) : getRuleModelList(null);
 			return Response.ok(responseObject, responseType).build();
 		} else {
 			return Response.notAcceptable(null).build();
@@ -152,7 +185,7 @@ public class RuleConfigResource {
 	@Produces({ MediaType.WILDCARD })
 	public Response httpPostItemRule(@Context HttpHeaders headers, @QueryParam("type") String type,
 			@PathParam("itemname") String itemName, @PathParam("rulename") String ruleName,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, RuleBean ruleData) {
+			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, RuleTemplateBean ruleData) {
 		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
 
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
@@ -215,6 +248,70 @@ public class RuleConfigResource {
 		}
 	}
 
+	private RuleModelListBean getRuleModelList(String type) {
+		Collection<RuleModelBean> beans = new LinkedList<RuleModelBean>();
+//		logger.debug("Received HTTP GET request at '{}'.", UriBuilder.fromUri(uri).build().toASCIIString());
+		ModelRepository modelRepository = HABminApplication.getModelRepository();
+		for (String modelName : modelRepository.getAllModelNamesOfType("rules")) {
+			RuleModel ruleModel = (RuleModel)modelRepository.getModel(modelName);
+			if (ruleModel != null) {
+				RuleModelBean model = new RuleModelBean();
+				model.rules = new ArrayList<RuleBean>();
+				model.modelName = StringUtils.removeEnd(modelName, RULE_FILEEXT);
+				model.imports = new ArrayList<String>();
+				for(Import importString : ruleModel.getImports()) {
+					model.imports.add(importString.getImportedNamespace());
+				}
+
+				for(Rule rule : ruleModel.getRules()) {
+					RuleBean bean = new RuleBean();
+					bean.triggers = new ArrayList<RuleTriggerBean>();
+					bean.name = rule.getName();
+					bean.ruleContent = getScript(PATH_RULES + "/" + modelName, bean.name);
+					
+					for(EventTrigger trigger : rule.getEventtrigger()) {
+						RuleTriggerBean triggerbean = new RuleTriggerBean();
+						if(trigger instanceof SystemOnStartupTrigger) {
+							triggerbean.type = "System started";
+							bean.triggers.add(triggerbean);
+						}
+						if(trigger instanceof ChangedEventTrigger) {
+							triggerbean.type = "Change";
+							bean.triggers.add(triggerbean);
+						}
+						if(trigger instanceof UpdateEventTrigger) {
+							triggerbean.type = "Update";
+							bean.triggers.add(triggerbean);
+						}
+						if(trigger instanceof SystemOnShutdownTrigger) {
+							triggerbean.type = "Shutdown";
+							bean.triggers.add(triggerbean);
+						}
+						if(trigger instanceof CommandEventTrigger) {
+							triggerbean.type = "Command";
+							bean.triggers.add(triggerbean);
+						}
+						if(trigger instanceof TimerTrigger) {
+							triggerbean.type = "Timer";
+							bean.triggers.add(triggerbean);
+						}
+						
+						
+					}
+					model.rules.add(bean);
+				}
+				
+				beans.add(model);
+			}
+		}
+
+		RuleModelListBean beanlist = new RuleModelListBean();
+		beanlist.rule = new ArrayList<RuleModelBean>();
+		beanlist.rule.addAll(beans);
+
+		return beanlist;
+	}
+
 	/**
 	 * Produces a lit of rules that are applicable to the item. Rules are
 	 * filtered out based on attributes in the rule template file
@@ -244,7 +341,7 @@ public class RuleConfigResource {
 
 			// Loop through all rules and filter out any that aren't applicable
 			// for this item
-			for (RuleBean rule : newRules.rule) {
+			for (RuleTemplateBean rule : newRules.rule) {
 				boolean delete = false;
 				if (rule.itemType != null) {
 					for (String type : rule.itemType) {
@@ -259,8 +356,8 @@ public class RuleConfigResource {
 
 			// Loop through the rules and add any relevant config from the item
 			// config database
-			for (RuleBean rulelist : newRules.rule) {
-				RuleBean rule = HabminConfigDatabase.getItemRule(itemName, rulelist.name);
+			for (RuleTemplateBean rulelist : newRules.rule) {
+				RuleTemplateBean rule = HabminConfigDatabase.getItemRule(itemName, rulelist.name);
 				if (rule != null) {
 					for (RuleVariableBean vars : rule.variable) {
 						// Correlate the values
@@ -291,7 +388,7 @@ public class RuleConfigResource {
 		}
 	}
 
-	private RuleBean getRuleTemplate(String ruleName) {
+	private RuleTemplateBean getRuleTemplate(String ruleName) {
 		// Get the item from the itemName
 		// This is used so we can get the type, and filter only relevant rules
 
@@ -307,7 +404,7 @@ public class RuleConfigResource {
 			fin.close();
 
 			// Loop through the rules and find the one we're looking for
-			for (RuleBean rule : newRules.rule) {
+			for (RuleTemplateBean rule : newRules.rule) {
 				if (rule.name.equals(ruleName))
 					return rule;
 			}
@@ -333,7 +430,7 @@ public class RuleConfigResource {
 		return line;
 	}
 
-	private String writeRule(String itemName, List<RuleVariableBean> ruleVariables, RuleBean rule) {
+	private String writeRule(String itemName, List<RuleVariableBean> ruleVariables, RuleTemplateBean rule) {
 		String ruleString = new String();
 
 		// Create a new copy of the variables so we can add the ItemName without
@@ -390,8 +487,8 @@ public class RuleConfigResource {
 			for (HabminItemBean item : items) {
 				if (item.rules != null) {
 					// And now loop through all the rules for this item
-					for (RuleBean rule : item.rules) {
-						RuleBean template = getRuleTemplate(rule.name);
+					for (RuleTemplateBean rule : item.rules) {
+						RuleTemplateBean template = getRuleTemplate(rule.name);
 						if (template.imports != null) {
 							for (String i : template.imports) {
 								if (importList.indexOf(i) == -1)
@@ -462,7 +559,7 @@ public class RuleConfigResource {
 	 *            rule data
 	 * @return returns a list of rules applicable and configured for this item
 	 */
-	private RuleListBean postRule(String itemName, String ruleName, RuleBean ruleData) {
+	private RuleListBean postRule(String itemName, String ruleName, RuleTemplateBean ruleData) {
 		// Add the rule into the database
 		HabminConfigDatabase.updateItemRule(itemName, ruleData);
 
@@ -474,7 +571,7 @@ public class RuleConfigResource {
 
 				ItemConfigBean item = new ItemConfigBean();
 				item.name = variable.value;
-				RuleBean template = getRuleTemplate(ruleData.name);
+				RuleTemplateBean template = getRuleTemplate(ruleData.name);
 				
 				// Set the label here in case we don't find the parent bean later.
 				if (template != null)
@@ -542,13 +639,13 @@ public class RuleConfigResource {
 	 */
 	private RuleListBean putItemRules(String itemName, RuleListBean ruleData) {
 		// Loop through all the rules in the data
-		for (RuleBean rule : ruleData.rule) {
+		for (RuleTemplateBean rule : ruleData.rule) {
 			// Make sure there are variables in this rule
 			if (rule.variable == null)
 				continue;
 
 			// Get the rule from the config database
-			RuleBean bean = HabminConfigDatabase.getItemRule(itemName, rule.name);
+			RuleTemplateBean bean = HabminConfigDatabase.getItemRule(itemName, rule.name);
 			if (bean == null)
 				continue;
 
@@ -591,18 +688,18 @@ public class RuleConfigResource {
 			RuleListBean ruleTemplates = (RuleListBean) xstream.fromXML(fin);
 			fin.close();
 
-			List<RuleBean> itemRuleList = new ArrayList<RuleBean>();
+			List<RuleTemplateBean> itemRuleList = new ArrayList<RuleTemplateBean>();
 
 			// Loop through the items
 			for (HabminItemBean item : items) {
 				if (item.rules != null) {
 					// And now loop through all the rules for this item
-					for (RuleBean rule : item.rules) {
+					for (RuleTemplateBean rule : item.rules) {
 						// And finally find the template for this rule
-						for (RuleBean template : ruleTemplates.rule) {
+						for (RuleTemplateBean template : ruleTemplates.rule) {
 							if (rule.name.equals(template.name)) {
 								//
-								RuleBean newRule = new RuleBean();
+								RuleTemplateBean newRule = new RuleTemplateBean();
 								newRule.item = item.name;
 								newRule.label = template.label;
 								newRule.name = template.name;
@@ -631,6 +728,12 @@ public class RuleConfigResource {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	private String getScript(String fileName, String ruleName) {
+		
+		
+		return null;
 	}
 
 }
