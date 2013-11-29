@@ -97,6 +97,9 @@ public class RFXComDataConverter {
 		else if (obj instanceof RFXComSecurity1Message)
 			return convertSecurity1ToState((RFXComSecurity1Message) obj,
 					valueSelector);
+		else if (obj instanceof RFXComThermostat1Message)
+			return convertThermostat1ToState((RFXComThermostat1Message) obj, 
+					valueSelector);
 		
 		else if (obj instanceof RFXComTemperatureMessage)
 			return convertTemperature2ToState(
@@ -702,7 +705,65 @@ public class RFXComDataConverter {
 		return state;
 	}
 
+	private static State convertThermostat1ToState(
+			RFXComThermostat1Message obj, RFXComValueSelector valueSelector) {
 
+		org.openhab.core.types.State state = UnDefType.UNDEF;
+
+		if (valueSelector.getItemClass() == NumberItem.class) {
+
+			if (valueSelector == RFXComValueSelector.SIGNAL_LEVEL) {
+
+				state = new DecimalType(obj.signalLevel);
+
+			} else if (valueSelector == RFXComValueSelector.TEMPERATURE) {
+
+				state = new DecimalType(obj.temperature);
+				
+			} else if (valueSelector == RFXComValueSelector.SET_POINT) {
+
+				state = new DecimalType(obj.set);
+
+			} else {
+				throw new NumberFormatException("Can't convert "
+						+ valueSelector + " to NumberItem");
+			}
+
+		} else if (valueSelector.getItemClass() == StringItem.class) {
+			if (valueSelector == RFXComValueSelector.RAW_DATA) {
+
+				state = new StringType(
+						DatatypeConverter.printHexBinary(obj.rawMessage));
+
+			} else {
+				throw new NumberFormatException("Can't convert "
+						+ valueSelector + " to StringItem");
+			}
+
+		} else if (valueSelector.getItemClass() == ContactItem.class) {
+			if (valueSelector == RFXComValueSelector.CONTACT) {
+				switch (obj.status) {
+				case DEMAND:
+					state = OpenClosedType.CLOSED;
+					break;
+				case NO_DEMAND:
+					state = OpenClosedType.OPEN;
+					break;
+				default:
+					break;
+				}
+			}
+		}
+
+		else {
+			throw new NumberFormatException("Can't convert " + valueSelector
+					+ " to " + valueSelector.getItemClass());
+		}
+
+		return state;
+	}
+
+			
 	/**
 	 * Convert OpenHAB value to RFXCOM data object.
 	 * 
@@ -924,7 +985,42 @@ public class RFXComDataConverter {
 			}
 			break;		
 
-		case SECURITY1:
+		case SECURITY1: // added  9-11-13  Les Ashworth
+			RFXComSecurity1Message d6 = new RFXComSecurity1Message();
+			d6.subType = (RFXComSecurity1Message.SubType) subType;
+			d6.seqNbr = seqNumber;
+			String ids6 = id;
+			d6.sensorId = Integer.parseInt(ids6);		
+			logger.debug(
+					"convertOpenHABValueToRFXCOMValue 6 (command='{}', type='{}')",
+					new Object[] { valueSelector.toString(), type.toString()});
+			
+			switch (valueSelector) {
+			case COMMAND:
+				if ((type instanceof OnOffType) && (d6.subType == RFXComSecurity1Message.SubType.X10_SECURITY_REMOTE )){
+					d6.status = (type == OnOffType.ON ? RFXComSecurity1Message.Status.ARM_AWAY_DELAYED
+							: RFXComSecurity1Message.Status.DISARM);
+					obj = d6;			
+				} else {
+					throw new NumberFormatException("Can't convert " + type
+							+ " to Command");
+				} break;
+				
+			case STATUS:
+				if (type instanceof StringType){				
+					d6.status = RFXComSecurity1Message.Status.valueOf(type.toString());
+					obj = d6; 						
+				 }	else {
+					throw new NumberFormatException("Can't convert " + type
+							+ " to Status");
+				 }	break;
+				
+			  default:
+		break;
+		}
+		break;
+		
+		case THERMOSTAT1:
 		case TEMPERATURE_HUMIDITY:
 		case INTERFACE_CONTROL:
 		case INTERFACE_MESSAGE:

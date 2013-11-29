@@ -279,7 +279,6 @@ public class SitemapResource {
     	}
     	bean.widgetId = widgetId;
     	bean.icon = itemUIRegistry.getIcon(widget);
-		bean.iconcolor = itemUIRegistry.getIconColor(widget);
 		bean.labelcolor = itemUIRegistry.getLabelColor(widget);
 		bean.valuecolor = itemUIRegistry.getValueColor(widget);
     	bean.label = itemUIRegistry.getLabel(widget);
@@ -309,11 +308,13 @@ public class SitemapResource {
     			MappingBean mappingBean = new MappingBean();
 				// Remove quotes - if they exist
 				if(mapping.getCmd() != null) {
-					if(mapping.getCmd().startsWith("\"") && mapping.getCmd().endsWith("\""))
+					if(mapping.getCmd().startsWith("\"") && mapping.getCmd().endsWith("\"")) {
 						mappingBean.command = mapping.getCmd().substring(1, mapping.getCmd().length()-1);
+					}
 				}
-				else
+				else {
 					mappingBean.command = mapping.getCmd();
+				}
 				mappingBean.label = mapping.getLabel();
 				bean.mappings.add(mappingBean);
 			}
@@ -324,11 +325,13 @@ public class SitemapResource {
 				MappingBean mappingBean = new MappingBean();
 				// Remove quotes - if they exist
 				if(mapping.getCmd() != null) {
-					if(mapping.getCmd().startsWith("\"") && mapping.getCmd().endsWith("\""))
+					if(mapping.getCmd().startsWith("\"") && mapping.getCmd().endsWith("\"")) {
 						mappingBean.command = mapping.getCmd().substring(1, mapping.getCmd().length()-1);
+					}
 				}
-				else
-    			mappingBean.command = mapping.getCmd();
+				else {
+					mappingBean.command = mapping.getCmd();
+				}
     			mappingBean.label = mapping.getLabel();
     			bean.mappings.add(mappingBean);
     		}
@@ -345,14 +348,22 @@ public class SitemapResource {
     	if(widget instanceof Image) {
     		Image imageWidget = (Image) widget;
     		String wId = itemUIRegistry.getWidgetId(widget);
-    		bean.url = uri.getScheme() + "://" + uri.getHost() + ":" + uri.getPort()  + "/proxy?sitemap=" + sitemapName + ".sitemap&widgetId=" + wId;
+			if (uri.getPort() < 0 || uri.getPort() == 80) {
+				bean.url = uri.getScheme() + "://" + uri.getHost() + "/proxy?sitemap=" + sitemapName + ".sitemap&widgetId=" + wId;
+			} else {
+				bean.url = uri.getScheme() + "://" + uri.getHost() + ":" + uri.getPort() + "/proxy?sitemap=" + sitemapName + ".sitemap&widgetId=" + wId;
+			}
     		if(imageWidget.getRefresh()>0) {
     			bean.refresh = imageWidget.getRefresh(); 
     		}
     	}
     	if(widget instanceof Video) {
     		String wId = itemUIRegistry.getWidgetId(widget);
-    		bean.url = uri.getScheme() + "://" + uri.getHost() + ":" + uri.getPort()  + "/proxy?sitemap=" + sitemapName + ".sitemap&widgetId=" + wId;
+			if (uri.getPort() < 0 || uri.getPort() == 80) {
+				bean.url = uri.getScheme() + "://" + uri.getHost() + "/proxy?sitemap=" + sitemapName + ".sitemap&widgetId=" + wId;
+			} else {
+				bean.url = uri.getScheme() + "://" + uri.getHost() + ":" + uri.getPort() + "/proxy?sitemap=" + sitemapName	+ ".sitemap&widgetId=" + wId;
+			}
     	}
     	if(widget instanceof Webview) {
     		Webview webViewWidget = (Webview) widget;

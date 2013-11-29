@@ -9,6 +9,7 @@
 package org.openhab.ui.internal.chart;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -32,10 +33,13 @@ import org.openhab.ui.items.ItemUIRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.BasicStroke;
+
 import com.xeiam.xchart.Chart;
 import com.xeiam.xchart.ChartBuilder;
 import com.xeiam.xchart.Series;
 import com.xeiam.xchart.SeriesMarker;
+import com.xeiam.xchart.StyleManager.LegendPosition;
 
 /**
  * This servlet generates time-series charts for a given set of items. It
@@ -71,6 +75,8 @@ public class DefaultChartProvider implements ChartProvider {
 	protected ItemUIRegistry itemUIRegistry;
 	static protected Map<String, QueryablePersistenceService> persistenceServices = new HashMap<String, QueryablePersistenceService>();
 
+	private int legendPosition = 0;
+	
 	public void setItemUIRegistry(ItemUIRegistry itemUIRegistry) {
 		this.itemUIRegistry = itemUIRegistry;
 	}
@@ -119,6 +125,31 @@ public class DefaultChartProvider implements ChartProvider {
 
 		// Create Chart
 		Chart chart = new ChartBuilder().width(width).height(height).build();
+		
+		// Define the time axis - the defaults are not very nice
+		long period = (endTime.getTime() - startTime.getTime()) / 1000;
+		String pattern = "HH:mm";
+		if(period <= 600) {				// 10 minutes
+			pattern = "mm:ss";
+		}
+		else if(period <= 86400) {		// 1 day
+			pattern = "HH:mm";
+		}
+		else if(period <= 604800) {		// 1 week
+			pattern = "EEE d";
+		}
+		else {
+			pattern = "d MMM";
+		}
+
+		chart.getStyleManager().setDatePattern(pattern);
+		chart.getStyleManager().setAxisTickLabelsFont(new Font("SansSerif", Font.PLAIN, 11));
+		chart.getStyleManager().setChartPadding(5);
+		chart.getStyleManager().setLegendBackgroundColor(Color.LIGHT_GRAY);
+		chart.getStyleManager().setChartBackgroundColor(Color.LIGHT_GRAY);
+
+		chart.getStyleManager().setXAxisMin(startTime.getTime());
+		chart.getStyleManager().setXAxisMax(endTime.getTime());
 
 		// If a persistence service is specified, find the provider
 		persistenceService = null;
@@ -139,7 +170,8 @@ public class DefaultChartProvider implements ChartProvider {
 			String[] itemNames = items.split(",");
 			for (String itemName : itemNames) {
 				Item item = itemUIRegistry.getItem(itemName);
-				addItem(chart, persistenceService, startTime, endTime, item, seriesCounter);
+				if(addItem(chart, persistenceService, startTime, endTime, item, seriesCounter))
+					seriesCounter++;
 			}
 		}
 
@@ -151,12 +183,39 @@ public class DefaultChartProvider implements ChartProvider {
 				if (item instanceof GroupItem) {
 					GroupItem groupItem = (GroupItem) item;
 					for (Item member : groupItem.getMembers()) {
-						addItem(chart, persistenceService, startTime, endTime, member, seriesCounter);
+						if(addItem(chart, persistenceService, startTime, endTime, member, seriesCounter))
+							seriesCounter++;
 					}
 				} else {
 					throw new ItemNotFoundException("Item '" + item.getName() + "' defined in groups is not a group.");
 				}
 			}
+		}
+
+		// If there are no series, render a blank chart
+		if(seriesCounter == 0) {
+			chart.getStyleManager().setLegendVisible(false);
+
+			Collection<Date> xData = new ArrayList<Date>();
+			Collection<Number> yData = new ArrayList<Number>();
+
+			xData.add(startTime);
+			yData.add(0);
+			xData.add(endTime);
+			yData.add(0);
+
+			Series series = chart.addDateSeries("NONE", xData, yData);
+			series.setMarker(SeriesMarker.NONE);
+			series.setLineStyle(new BasicStroke(0f));
+		}
+
+		// Legend position (top-left or bottom-left) is dynamically selected based on the data
+		// This won't be perfect, but it's a good compromise
+		if(legendPosition < 0) {
+			chart.getStyleManager().setLegendPosition(LegendPosition.InsideNW);
+		}
+		else {
+			chart.getStyleManager().setLegendPosition(LegendPosition.InsideSW);
 		}
 
 		// Write the chart as a PNG image
@@ -167,10 +226,9 @@ public class DefaultChartProvider implements ChartProvider {
 		return lBufferedImage;
 	}
 
-	void addItem(Chart chart, QueryablePersistenceService service, Date timeBegin, Date timeEnd, Item item,
+	boolean addItem(Chart chart, QueryablePersistenceService service, Date timeBegin, Date timeEnd, Item item,
 			int seriesCounter) {
 		Color color = LINECOLORS[seriesCounter % LINECOLORS.length];
-		seriesCounter++;
 
 		// Get the item label
 		String label = null;
@@ -181,8 +239,9 @@ public class DefaultChartProvider implements ChartProvider {
 				label = label.substring(0, label.indexOf('['));
 			}
 		}
-		if (label == null)
+		if (label == null) {
 			label = item.getName();
+		}
 
 		// Define the data filter
 		FilterCriteria filter = new FilterCriteria();
@@ -204,21 +263,42 @@ public class DefaultChartProvider implements ChartProvider {
 			HistoricItem historicItem = it.next();
 			org.openhab.core.types.State state = historicItem.getState();
 			if (state instanceof DecimalType) {
-				DecimalType value = (DecimalType) state;
-
 				xData.add(historicItem.getTimestamp());
-				yData.add(value);
+				yData.add((DecimalType) state);
 			}
 		}
 
-		// Add the new series to the chart
+		// Add the new series to the chart - only if there's data elements to display
+		if(xData.size() == 0) {
+			return false;
+		}
+
+		// If there's only 1 data point, plot it again!
+		if(xData.size() == 1) {
+			xData.add(xData.iterator().next());
+			yData.add(yData.iterator().next());
+		}
+
 		Series series = chart.addDateSeries(label, xData, yData);
+		series.setLineStyle(new BasicStroke(1.5f));
 		series.setMarker(SeriesMarker.NONE);
 		series.setLineColor(color);
+		
+		// If the start value is below the median, then count legend position down
+		// Otherwise count up.
+		// We use this to decide whether to put the legend in the top or bottom corner.
+		if(yData.iterator().next().floatValue() > ((series.getyMax().floatValue() - series.getyMin().floatValue()) / 2 + series.getyMin().floatValue())) {
+			legendPosition++;
+		}
+		else {
+			legendPosition--;
+		}
+		
+		return true;
 	}
 
 	@Override
-	public String getChartType() {
-		return ("image/png");
+	public ImageType getChartType() {
+		return (ImageType.png);
 	}
 }
