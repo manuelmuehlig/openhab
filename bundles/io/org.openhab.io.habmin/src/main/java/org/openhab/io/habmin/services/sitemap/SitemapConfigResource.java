@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,6 +47,12 @@ import org.atmosphere.cpr.Broadcaster;
 import org.eclipse.emf.common.util.EList;
 import org.openhab.core.items.Item;
 import org.openhab.core.items.ItemNotFoundException;
+import org.openhab.core.library.types.IncreaseDecreaseType;
+import org.openhab.core.library.types.OnOffType;
+import org.openhab.core.library.types.OpenClosedType;
+import org.openhab.core.library.types.StopMoveType;
+import org.openhab.core.library.types.UpDownType;
+import org.openhab.core.types.UnDefType;
 import org.openhab.io.habmin.HABminApplication;
 import org.openhab.io.habmin.internal.resources.LabelSplitHelper;
 import org.openhab.io.habmin.internal.resources.MediaTypeHelper;
@@ -97,6 +104,13 @@ public class SitemapConfigResource {
 
 	protected static final String SITEMAP_FILEEXT = ".sitemap";
 
+	List<String> validStates = Arrays.asList(OnOffType.ON.toString(), OnOffType.OFF.toString(), 
+			UnDefType.UNDEF.toString(), UnDefType.NULL.toString(),
+			IncreaseDecreaseType.INCREASE.toString(), IncreaseDecreaseType.DECREASE.toString(),
+			OpenClosedType.OPEN.toString(), OpenClosedType.OPEN.toString(),
+			StopMoveType.STOP.toString(), StopMoveType.MOVE.toString(),
+			UpDownType.UP.toString(), UpDownType.DOWN.toString());
+
 	/** The URI path to this resource */
 	public static final String PATH_CONFIG = "config/sitemap";
 
@@ -113,8 +127,8 @@ public class SitemapConfigResource {
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
 			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
-					new SitemapListBean(getSitemapBeans(uriInfo.getAbsolutePathBuilder().build())), callback)
-					: new SitemapListBean(getSitemapBeans(uriInfo.getAbsolutePathBuilder().build()));
+					new SitemapListBean(getSitemapList(uriInfo.getAbsolutePathBuilder().build())), callback)
+					: new SitemapListBean(getSitemapList(uriInfo.getAbsolutePathBuilder().build()));
 			return Response.ok(responseObject, responseType).build();
 		} else {
 			return Response.notAcceptable(null).build();
@@ -195,7 +209,7 @@ public class SitemapConfigResource {
 		}
 	}
 
-	public Collection<SitemapBean> getSitemapBeans(URI uri) {
+	public Collection<SitemapBean> getSitemapList(URI uri) {
 		Collection<SitemapBean> beans = new LinkedList<SitemapBean>();
 		logger.debug("Received HTTP GET request at '{}'.", UriBuilder.fromUri(uri).build().toASCIIString());
 		ModelRepository modelRepository = HABminApplication.getModelRepository();
@@ -229,7 +243,7 @@ public class SitemapConfigResource {
 		repo.removeModel(sitemapname + SITEMAP_FILEEXT);
 
 		// Now return the sitemap list
-		return getSitemapBeans(uri);
+		return getSitemapList(uri);
 	}
 
 	private Collection<SitemapBean> createSitemap(String sitemapname, String copyname, URI uri) {
@@ -288,7 +302,44 @@ public class SitemapConfigResource {
 		}
 
 		// Now return the sitemap list
-		return getSitemapBeans(uri);
+		return getSitemapList(uri);
+	}
+
+	/**
+	 * Write a state. This makes an educated "guess" about the best way to write a state
+	 * @param out
+	 * @param state
+	 * @throws IOException 
+	 */
+	private void writeState(BufferedWriter out, String state) throws IOException {
+		// Sanity check
+		if(state == null)
+			return;
+		
+		boolean typeRaw = true;
+		// Try and convert to a double to test if it's a number
+		try {
+			Double.parseDouble(state);
+		} catch(NumberFormatException e) {
+			typeRaw = false;
+		}
+
+		// If there are any spaces in the string...
+		if(state.contains(" "))
+			typeRaw = false;
+
+		// Check if it already is surrounded by quotes
+		if(state.startsWith("\"") && state.endsWith("\""))
+			typeRaw = true;
+				
+		// Check for known/Valid types
+		if(validStates.contains(state))
+			typeRaw = true;
+
+		if(typeRaw == true)
+			out.write(state);
+		else
+			out.write("\"" + state + "\"");
 	}
 
 	private void writeColor(BufferedWriter out, String colorName, List<ColorBean> colorList) throws IOException {
@@ -304,15 +355,23 @@ public class SitemapConfigResource {
 			else
 				out.write(", ");
 
-			if(color.color == null)
-				out.write("\"" + color.state + "\"");
-			else
-				out.write(color.state + "=\"" + color.color + "\"");
-
+			if(color.item != null) {
+				out.write(color.item);
+			}
+			if(color.condition != null) {
+				out.write(color.condition.toString());
+			}
+			if(color.state == null)
+				out.write("\"" + color.color + "\"");
+			else {
+				writeState(out, color.state);
+				out.write("=\"" + color.color + "\"");
+			}
+			
 			first = false;
 		}
 		if (first == false)
-			out.write("]");
+			out.write("] ");
 	}
 
 	private void writeWidget(BufferedWriter out, java.util.List<WidgetConfigBean> widgets, int level) {
@@ -332,28 +391,6 @@ public class SitemapConfigResource {
 					out.write("label=\"" + label.getLabelString() + "\" ");
 				}
 				
-				writeColor(out, "iconcolor", child.iconcolor);
-				writeColor(out, "valuecolor", child.valuecolor);
-				writeColor(out, "labelcolor", child.labelcolor);
-
-				if (child.visibility != null && child.visibility.size() != 0) {
-					boolean first = true;
-					for (VisibilityBean visibility : child.visibility) {
-						if (visibility.item == null || visibility.state == null)
-							continue;
-						if (first == true)
-							out.write("visibility=[");
-						else
-							out.write(", ");
-
-						out.write(visibility.item + "=" + visibility.state);
-
-						first = false;
-					}
-					if (first == false)
-						out.write("]");
-				}
-				
 				if (child.icon != null && !child.icon.isEmpty())
 					out.write("icon=\"" + child.icon + "\" ");
 
@@ -369,24 +406,6 @@ public class SitemapConfigResource {
 				if (child.type.equals("Image") || child.type.equals("Video") || child.type.equals("Webview")) {
 					if (child.url != null)
 						out.write("url=" + child.url + " ");
-
-					if (child.urlarray != null && child.urlarray.size() != 0) {
-						boolean first = true;
-						for (UrlBean url : child.urlarray) {
-							if (url.state == null || url.url == null)
-								continue;
-							if (first == true)
-								out.write("urlarray=[");
-							else
-								out.write(", ");
-
-							out.write(url.state + "=\"" + url.url + "\"");
-
-							first = false;
-						}
-						if (first == false)
-							out.write("]");
-					}
 				}
 
 				if (child.type.equals("Selection") || child.type.equals("Switch")) {
@@ -400,12 +419,13 @@ public class SitemapConfigResource {
 							else
 								out.write(", ");
 
-							out.write(map.command + "=" + map.label);
+							out.write(map.command + "=");
+							writeState(out, map.label);
 
 							first = false;
 						}
 						if (first == false)
-							out.write("]");
+							out.write("] ");
 					}
 				}
 				
@@ -416,14 +436,37 @@ public class SitemapConfigResource {
 						out.write("sendFrequency=" + child.sendFrequency);
 				}
 
+				writeColor(out, "valuecolor", child.valuecolor);
+				writeColor(out, "labelcolor", child.labelcolor);
+
+				if (child.visibility != null && child.visibility.size() != 0) {
+					boolean first = true;
+					for (VisibilityBean visibility : child.visibility) {
+						if (visibility.item == null || visibility.state == null)
+							continue;
+						if (first == true)
+							out.write(" visibility=[");
+						else
+							out.write(", ");
+
+						out.write(visibility.item + visibility.condition.toString());
+						writeState(out,visibility.state);
+
+						first = false;
+					}
+					if (first == false)
+						out.write("] ");
+				}
+				
 				if (child.type.equals("Group") || child.type.equals("Frame") || child.type.equals("Text")
 						|| child.type.equals("Image")) {
 					if (child.widgets != null && child.widgets.size() != 0) {
-						out.write("{\r\n");
+						out.write(" {\r\n");
 						writeWidget(out, child.widgets, level + 1);
 						out.write(indent + "}");
 					}
 				}
+				
 				out.write(indent + "\r\n");
 			} catch (IOException e) {
 				logger.debug("Error writing sitemap :", e);
@@ -544,7 +587,9 @@ public class SitemapConfigResource {
 			for (VisibilityRule visibility : widget.getVisibility()) {
 				VisibilityBean visibilityBean = new VisibilityBean();
 				visibilityBean.item = visibility.getItem();
-				visibilityBean.state = visibility.getState();
+				visibilityBean.condition = SitemapCondition.fromString(visibility.getCondition());
+				if(visibilityBean.state.startsWith("\"") && visibilityBean.state.endsWith("\""))
+					visibilityBean.state = visibilityBean.state.substring(1, visibilityBean.state.length()-1);
 				bean.visibility.add(visibilityBean);
 			}
 		}
@@ -554,7 +599,9 @@ public class SitemapConfigResource {
 			bean.labelcolor = new ArrayList<ColorBean>();
 			for (ColorArray color : widget.getLabelColor()) {
 				ColorBean colorBean = new ColorBean();
+				colorBean.item = color.getItem();
 				colorBean.state = color.getState();
+				colorBean.condition = SitemapCondition.fromString(color.getCondition());
 				colorBean.color = color.getArg();
 				if(colorBean.state.startsWith("\"") && colorBean.state.endsWith("\""))
 					colorBean.state = colorBean.state.substring(1, colorBean.state.length()-1);
@@ -567,7 +614,9 @@ public class SitemapConfigResource {
 			bean.valuecolor = new ArrayList<ColorBean>();
 			for (ColorArray color : widget.getValueColor()) {
 				ColorBean colorBean = new ColorBean();
+				colorBean.item = color.getItem();
 				colorBean.state = color.getState();
+				colorBean.condition = SitemapCondition.fromString(color.getCondition());
 				colorBean.color = color.getArg();
 				if(colorBean.state.startsWith("\"") && colorBean.state.endsWith("\""))
 					colorBean.state = colorBean.state.substring(1, colorBean.state.length()-1);

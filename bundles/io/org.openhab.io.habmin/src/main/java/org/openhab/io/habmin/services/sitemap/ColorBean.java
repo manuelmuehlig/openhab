@@ -21,6 +21,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name="color")
 public class ColorBean {
 
+	public String item;
+	public SitemapCondition condition;
 	public String state;
 	public String color;
 

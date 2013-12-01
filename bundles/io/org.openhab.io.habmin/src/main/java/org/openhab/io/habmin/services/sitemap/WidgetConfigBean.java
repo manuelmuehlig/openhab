@@ -57,11 +57,8 @@ public class WidgetConfigBean {
 	public String item;
 	
 	public List<VisibilityBean> visibility;
-	public List<ColorBean> iconcolor;
 	public List<ColorBean> labelcolor;
 	public List<ColorBean> valuecolor;
-
-	public List<UrlBean> urlarray;
 
 	// only for frames, other linkable widgets link to a page
 	@XmlElement(name="widget")

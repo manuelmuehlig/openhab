@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class VisibilityBean {
 
 	public String item;
+	public SitemapCondition condition;
 	public String state;
 
 	public VisibilityBean() {}
