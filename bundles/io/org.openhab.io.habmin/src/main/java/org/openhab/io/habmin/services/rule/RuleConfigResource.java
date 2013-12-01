@@ -257,7 +257,7 @@ public class RuleConfigResource {
 			if (ruleModel != null) {
 				RuleModelBean model = new RuleModelBean();
 				model.rules = new ArrayList<RuleBean>();
-				model.modelName = StringUtils.removeEnd(modelName, RULE_FILEEXT);
+				model.model = StringUtils.removeEnd(modelName, RULE_FILEEXT);
 				model.imports = new ArrayList<String>();
 				for(Import importString : ruleModel.getImports()) {
 					model.imports.add(importString.getImportedNamespace());

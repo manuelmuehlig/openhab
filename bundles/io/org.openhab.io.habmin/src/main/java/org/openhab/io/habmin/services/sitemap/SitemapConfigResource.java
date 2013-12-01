@@ -585,9 +585,12 @@ public class SitemapConfigResource {
 		if (widget.getVisibility() != null && widget.getVisibility().size() > 0) {
 			bean.visibility = new ArrayList<VisibilityBean>();
 			for (VisibilityRule visibility : widget.getVisibility()) {
+				if(visibility.getState() == null)
+					continue;
 				VisibilityBean visibilityBean = new VisibilityBean();
 				visibilityBean.item = visibility.getItem();
 				visibilityBean.condition = SitemapCondition.fromString(visibility.getCondition());
+				visibilityBean.state = visibility.getState();
 				if(visibilityBean.state.startsWith("\"") && visibilityBean.state.endsWith("\""))
 					visibilityBean.state = visibilityBean.state.substring(1, visibilityBean.state.length()-1);
 				bean.visibility.add(visibilityBean);

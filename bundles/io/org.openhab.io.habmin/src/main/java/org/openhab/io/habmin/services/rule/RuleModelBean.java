@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name="rules")
 public class RuleModelBean {
-	public String modelName;
+	public String model;
 	public List<String> imports;
 	public List<RuleBean> rules;
 }
