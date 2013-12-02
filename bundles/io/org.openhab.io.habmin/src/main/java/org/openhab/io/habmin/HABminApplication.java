@@ -30,6 +30,7 @@ import org.openhab.io.habmin.services.osgi.BundleResource;
 import org.openhab.io.habmin.services.persistence.PersistenceConfigResource;
 import org.openhab.io.habmin.services.rule.RuleConfigResource;
 import org.openhab.io.habmin.services.sitemap.SitemapConfigResource;
+import org.openhab.io.habmin.services.status.StatusResource;
 import org.openhab.io.habmin.services.zwave.ZWaveConfigResource;
 import org.openhab.io.net.http.SecureHttpContext;
 import org.openhab.io.servicediscovery.DiscoveryService;
@@ -215,6 +216,7 @@ public class HABminApplication extends Application  {
 
         // Register all the resources
         result.add(BindingConfigResource.class);
+        result.add(StatusResource.class);
         result.add(ItemConfigResource.class);
         result.add(PersistenceConfigResource.class);
         result.add(SitemapConfigResource.class);
