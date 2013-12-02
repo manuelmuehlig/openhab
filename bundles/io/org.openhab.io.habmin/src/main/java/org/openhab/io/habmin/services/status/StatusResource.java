@@ -8,49 +8,20 @@
  */
 package org.openhab.io.habmin.services.status;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.openhab.io.habmin.internal.resources.MediaTypeHelper;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import com.sun.jersey.api.json.JSONWithPadding;
 
@@ -80,11 +51,11 @@ public class StatusResource {
 	public static final String	PATH_STATUS	= "status";
 
 	@Context
-	UriInfo						uriInfo;
+	UriInfo		uriInfo;
 
 	@GET
 	@Produces({ MediaType.WILDCARD })
-	public Response getBindings(@Context HttpHeaders headers, @QueryParam("type") String type,
+	public Response getStatus(@Context HttpHeaders headers, @QueryParam("type") String type,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
 		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
 
@@ -97,10 +68,10 @@ public class StatusResource {
 			return Response.notAcceptable(null).build();
 		}
 	}
-	
+
 	private StatusBean getStatusBean() {
 		StatusBean status = new StatusBean();
-		
+
 		return status;
 	}
 

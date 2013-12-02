@@ -33,6 +33,7 @@ import org.openhab.io.habmin.services.sitemap.SitemapConfigResource;
 import org.openhab.io.habmin.services.status.StatusResource;
 import org.openhab.io.habmin.services.zwave.ZWaveConfigResource;
 import org.openhab.io.net.http.SecureHttpContext;
+import org.openhab.io.rest.RESTApplication;
 import org.openhab.io.servicediscovery.DiscoveryService;
 import org.openhab.io.servicediscovery.ServiceDescription;
 import org.openhab.model.core.ModelRepository;
@@ -237,15 +238,22 @@ public class HABminApplication extends Application  {
         jerseyServletParams.put("org.atmosphere.core.servlet-mapping", HABMIN_SERVLET_ALIAS + "/*");
         jerseyServletParams.put("org.atmosphere.useWebSocket", "true");
         jerseyServletParams.put("org.atmosphere.useNative", "true");
-        jerseyServletParams.put("org.atmosphere.cpr.padding", "whitespace");     
         
-        jerseyServletParams.put("org.atmosphere.cpr.broadcastFilterClasses", "org.atmosphere.client.FormParamFilter");
+        jerseyServletParams.put("org.atmosphere.cpr.AtmosphereInterceptor.disableDefaults", "true");
+        
+//        jerseyServletParams.put("org.atmosphere.cpr.padding", "whitespace");     
+        
+        //jerseyServletParams.put("org.atmosphere.cpr.broadcastFilterClasses", "org.atmosphere.client.FormParamFilter");
         jerseyServletParams.put("org.atmosphere.cpr.broadcasterLifeCyclePolicy", "IDLE_DESTROY");
         jerseyServletParams.put("org.atmosphere.cpr.CometSupport.maxInactiveActivity", "300000");
         
         jerseyServletParams.put("com.sun.jersey.spi.container.ResourceFilter", "org.atmosphere.core.AtmosphereFilter");
         //jerseyServletParams.put("org.atmosphere.cpr.broadcasterCacheClass", "org.atmosphere.cache.SessionBroadcasterCache");
         
+        // use the default interceptors without PaddingAtmosphereInterceptor
+        // see: https://groups.google.com/forum/#!topic/openhab/Z-DVBXdNiYE
+        jerseyServletParams.put("org.atmosphere.cpr.AtmosphereInterceptor", "org.atmosphere.interceptor.DefaultHeadersInterceptor,org.atmosphere.interceptor.AndroidAtmosphereInterceptor,org.atmosphere.interceptor.SSEAtmosphereInterceptor,org.atmosphere.interceptor.JSONPAtmosphereInterceptor,org.atmosphere.interceptor.JavaScriptProtocol,org.atmosphere.interceptor.OnDisconnectInterceptor");
+
         // required because of bug http://java.net/jira/browse/JERSEY-361
         jerseyServletParams.put(FeaturesAndProperties.FEATURE_XMLROOTELEMENT_PROCESSING, "true");
 

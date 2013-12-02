@@ -65,8 +65,7 @@ public class HabminConfigDatabase {
 
 			return true;
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.debug("HABmin database not found - reinitialising.");
 
 			configDb = new HabminConfigDatabaseBean();
 			if(configDb == null)
@@ -109,13 +108,11 @@ public class HabminConfigDatabase {
 			long timerStop = System.currentTimeMillis();
 			logger.debug("HABmin database saved in {}ms.", timerStop - timerStart);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.debug("Unable to open HABmin database for SAVE - ", e);
 
 			return false;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.debug("Unable to write HABmin database for SAVE - ", e);
 
 			return false;
 		}

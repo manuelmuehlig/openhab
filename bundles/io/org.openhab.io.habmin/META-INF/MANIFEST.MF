@@ -26,6 +26,7 @@ Import-Package: com.sun.jersey.api.json,
  org.codehaus.jackson.type,
  org.eclipse.emf.common.util,
  org.eclipse.emf.ecore,
+ org.openhab.binding.zwave.internal.config,
  org.openhab.core.events,
  org.openhab.core.items,
  org.openhab.core.library.types,
@@ -37,12 +38,12 @@ Import-Package: com.sun.jersey.api.json,
  org.openhab.model.items,
  org.openhab.model.persistence.persistence,
  org.openhab.model.persistence.persistence.impl,
+ org.openhab.model.rule.rules,
  org.openhab.model.sitemap,
  org.openhab.ui.items,
  org.osgi.framework,
  org.osgi.service.http,
- org.slf4j,
- org.openhab.binding.zwave.internal.config
+ org.slf4j
 Bundle-ClassPath: .,
  lib/xstream-1.4.5.jar
 Bundle-ActivationPolicy: lazy
