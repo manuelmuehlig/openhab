@@ -221,13 +221,22 @@ public class BindingConfigResource {
 		return null;
 	}
 
-	public static BindingBean createBindingBean(Bundle bundle, String uriPath, boolean detail) {		
+	public static BindingBean createBindingBean(Bundle bundle, String uriPath, boolean detail) {
+		// Create the bean
 		BindingBean bean = new BindingBean();
 		bean.bundle = bundle.getSymbolicName();
 		bean.osgiVersion = bundle.getVersion().toString();
 
 		String pid = bean.bundle.substring(bean.bundle.lastIndexOf('.') + 1);
 
+		// Check if there's an XML descriptor for this binding
+		File descriptorFile = new File("webapps/habmin/openhab/" + pid + ".xml");
+
+		if(!descriptorFile.exists()) {
+			// File doesn't exist, so just return what we have
+			return bean;
+		}
+		
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder;
 		Document document = null;
@@ -235,14 +244,14 @@ public class BindingConfigResource {
 			docBuilder = docBuilderFactory.newDocumentBuilder();
 			// TODO: Hard coded path
 			try {
-				document = docBuilder.parse(new File("webapps/habmin/openhab/" + pid + ".xml"));
+				document = docBuilder.parse(descriptorFile);
 			} catch (SAXException e) {
-				logger.error("Error reading XML file - ", e.toString());
+				logger.error("SAX Error reading XML file - ", e.toString());
 			} catch (IOException e) {
-				logger.error("Error reading XML file - ", e.toString());
+				logger.error("IO Error reading XML file - ", e.toString());
 			}
 		} catch (ParserConfigurationException e) {
-			logger.error("Error reading XML file - ", e.toString());
+			logger.error("Parse error reading XML file - ", e.toString());
 		}
 
 		if (document == null)
