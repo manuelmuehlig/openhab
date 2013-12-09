@@ -5,7 +5,8 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- */package org.openhab.io.habmin.services.rule;
+ */
+package org.openhab.io.habmin.services.rule;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -34,6 +35,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.openhab.io.habmin.HABminApplication;
 import org.openhab.io.habmin.internal.resources.MediaTypeHelper;
@@ -86,9 +88,8 @@ public class RuleConfigResource {
 
 	/** The URI path to this resource */
 	public static final String PATH_RULES = "config/rules";
-	
-	protected static final String RULE_FILEEXT = ".rule";
 
+	protected static final String RULE_FILEEXT = ".rule";
 
 	@Context
 	UriInfo uriInfo;
@@ -109,7 +110,7 @@ public class RuleConfigResource {
 			return Response.notAcceptable(null).build();
 		}
 	}
-	
+
 	@GET
 	@Path("/model/list")
 	@Produces({ MediaType.WILDCARD })
@@ -121,6 +122,24 @@ public class RuleConfigResource {
 		if (responseType != null) {
 			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
 					getRuleModelList(null), callback) : getRuleModelList(null);
+			return Response.ok(responseObject, responseType).build();
+		} else {
+			return Response.notAcceptable(null).build();
+		}
+	}
+
+	@GET
+	@Path("/model/source/{modelname: [a-zA-Z_0-9.]*}")
+	@Produces({ MediaType.WILDCARD })
+	public Response httpGetModelSource(@Context HttpHeaders headers, @QueryParam("type") String type,
+			@PathParam("modelname") String modelName,
+			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
+		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+
+		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
+		if (responseType != null) {
+			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
+					getRuleModelSource(modelName), callback) : getRuleModelSource(modelName);
 			return Response.ok(responseObject, responseType).build();
 		} else {
 			return Response.notAcceptable(null).build();
@@ -250,57 +269,57 @@ public class RuleConfigResource {
 
 	private RuleModelListBean getRuleModelList(String type) {
 		Collection<RuleModelBean> beans = new LinkedList<RuleModelBean>();
-//		logger.debug("Received HTTP GET request at '{}'.", UriBuilder.fromUri(uri).build().toASCIIString());
+		// logger.debug("Received HTTP GET request at '{}'.",
+		// UriBuilder.fromUri(uri).build().toASCIIString());
 		ModelRepository modelRepository = HABminApplication.getModelRepository();
 		for (String modelName : modelRepository.getAllModelNamesOfType("rules")) {
-			RuleModel ruleModel = (RuleModel)modelRepository.getModel(modelName);
+			RuleModel ruleModel = (RuleModel) modelRepository.getModel(modelName);
 			if (ruleModel != null) {
 				RuleModelBean model = new RuleModelBean();
 				model.rules = new ArrayList<RuleBean>();
 				model.model = StringUtils.removeEnd(modelName, RULE_FILEEXT);
 				model.imports = new ArrayList<String>();
-				for(Import importString : ruleModel.getImports()) {
+				for (Import importString : ruleModel.getImports()) {
 					model.imports.add(importString.getImportedNamespace());
 				}
 
-				for(Rule rule : ruleModel.getRules()) {
+				for (Rule rule : ruleModel.getRules()) {
 					RuleBean bean = new RuleBean();
 					bean.triggers = new ArrayList<RuleTriggerBean>();
 					bean.name = rule.getName();
 					bean.ruleContent = getScript(PATH_RULES + "/" + modelName, bean.name);
-					
-					for(EventTrigger trigger : rule.getEventtrigger()) {
+
+					for (EventTrigger trigger : rule.getEventtrigger()) {
 						RuleTriggerBean triggerbean = new RuleTriggerBean();
-						if(trigger instanceof SystemOnStartupTrigger) {
+						if (trigger instanceof SystemOnStartupTrigger) {
 							triggerbean.type = "System started";
 							bean.triggers.add(triggerbean);
 						}
-						if(trigger instanceof ChangedEventTrigger) {
+						if (trigger instanceof ChangedEventTrigger) {
 							triggerbean.type = "Change";
 							bean.triggers.add(triggerbean);
 						}
-						if(trigger instanceof UpdateEventTrigger) {
+						if (trigger instanceof UpdateEventTrigger) {
 							triggerbean.type = "Update";
 							bean.triggers.add(triggerbean);
 						}
-						if(trigger instanceof SystemOnShutdownTrigger) {
+						if (trigger instanceof SystemOnShutdownTrigger) {
 							triggerbean.type = "Shutdown";
 							bean.triggers.add(triggerbean);
 						}
-						if(trigger instanceof CommandEventTrigger) {
+						if (trigger instanceof CommandEventTrigger) {
 							triggerbean.type = "Command";
 							bean.triggers.add(triggerbean);
 						}
-						if(trigger instanceof TimerTrigger) {
+						if (trigger instanceof TimerTrigger) {
 							triggerbean.type = "Timer";
 							bean.triggers.add(triggerbean);
 						}
-						
-						
+
 					}
 					model.rules.add(bean);
 				}
-				
+
 				beans.add(model);
 			}
 		}
@@ -336,7 +355,7 @@ public class RuleConfigResource {
 
 			RuleListBean newRules = (RuleListBean) xstream.fromXML(fin);
 			fin.close();
-			
+
 			newRules.item = itemName;
 
 			// Loop through all rules and filter out any that aren't applicable
@@ -572,8 +591,9 @@ public class RuleConfigResource {
 				ItemConfigBean item = new ItemConfigBean();
 				item.name = variable.value;
 				RuleTemplateBean template = getRuleTemplate(ruleData.name);
-				
-				// Set the label here in case we don't find the parent bean later.
+
+				// Set the label here in case we don't find the parent bean
+				// later.
 				if (template != null)
 					item.label = itemName + " " + template.name;
 
@@ -729,11 +749,37 @@ public class RuleConfigResource {
 			return null;
 		}
 	}
-	
+
 	private String getScript(String fileName, String ruleName) {
-		
-		
+
 		return null;
 	}
 
+	private RuleModelBean getRuleModelSource(String modelName) {
+		RuleModelBean model = new RuleModelBean();
+		model.model = modelName;
+
+		FileInputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream("configurations/rules/" + modelName);
+			model.source = IOUtils.toString(inputStream);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if (inputStream != null) {
+			try {
+				inputStream.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return model;
+	}
 }

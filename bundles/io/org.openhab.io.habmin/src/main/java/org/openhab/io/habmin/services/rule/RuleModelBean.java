@@ -23,4 +23,5 @@ public class RuleModelBean {
 	public String model;
 	public List<String> imports;
 	public List<RuleBean> rules;
+	public String source;
 }
