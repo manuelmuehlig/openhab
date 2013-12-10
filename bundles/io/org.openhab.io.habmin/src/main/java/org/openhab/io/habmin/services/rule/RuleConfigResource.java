@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Writer;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -89,7 +90,7 @@ public class RuleConfigResource {
 	/** The URI path to this resource */
 	public static final String PATH_RULES = "config/rules";
 
-	protected static final String RULE_FILEEXT = ".rule";
+	protected static final String RULE_FILEEXT = ".rules";
 
 	@Context
 	UriInfo uriInfo;
@@ -140,6 +141,24 @@ public class RuleConfigResource {
 		if (responseType != null) {
 			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
 					getRuleModelSource(modelName), callback) : getRuleModelSource(modelName);
+			return Response.ok(responseObject, responseType).build();
+		} else {
+			return Response.notAcceptable(null).build();
+		}
+	}
+
+	@PUT
+	@Path("/model/source/{modelname: [a-zA-Z_0-9.]*}")
+	@Produces({ MediaType.WILDCARD })
+	public Response httpPutModelSource(@Context HttpHeaders headers, @QueryParam("type") String type,
+			@PathParam("modelname") String modelName,
+			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, RuleModelBean rule) {
+		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+
+		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
+		if (responseType != null) {
+			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
+					putRuleModelSource(modelName, rule), callback) : putRuleModelSource(modelName, rule);
 			return Response.ok(responseObject, responseType).build();
 		} else {
 			return Response.notAcceptable(null).build();
@@ -755,13 +774,59 @@ public class RuleConfigResource {
 		return null;
 	}
 
+	private RuleModelBean putRuleModelSource(String modelName, RuleModelBean rule) {
+		String orgName = "configurations/rules/" + modelName + RULE_FILEEXT;
+		String newName = "configurations/rules/" + modelName + RULE_FILEEXT + ".new";
+		String bakName = "configurations/rules/" + modelName + RULE_FILEEXT + ".bak";
+
+        try {
+          File file = new File(newName);
+          BufferedWriter output = new BufferedWriter(new FileWriter(file));
+          output.write(rule.source);
+          output.close();
+        } catch ( IOException e ) {
+        	// TODO: update
+           e.printStackTrace();
+        }
+		
+		
+		// Rename the files.
+		File bakFile = new File(bakName);
+		File orgFile = new File(orgName);
+		File newFile = new File(newName);
+
+		// Delete any existing .bak file
+		if (bakFile.exists())
+			bakFile.delete();
+
+		// Rename the existing item file to backup
+//		orgFile.renameTo(bakFile);
+
+		// Rename the new file to the item file
+//		newFile.renameTo(orgFile);
+
+		// Update the model repository
+		ModelRepository repo = HABminApplication.getModelRepository();
+		if (repo == null)
+			return null;
+		InputStream inFile;
+		try {
+			inFile = new FileInputStream(orgName);
+			repo.addOrRefreshModel(modelName, inFile);
+		} catch (FileNotFoundException e) {
+			logger.error("Error refreshing habmin rule file :", e);
+		}
+
+		return getRuleModelSource(modelName);
+	}
+
 	private RuleModelBean getRuleModelSource(String modelName) {
 		RuleModelBean model = new RuleModelBean();
 		model.model = modelName;
 
 		FileInputStream inputStream = null;
 		try {
-			inputStream = new FileInputStream("configurations/rules/" + modelName);
+			inputStream = new FileInputStream("configurations/rules/" + modelName + RULE_FILEEXT);
 			model.source = IOUtils.toString(inputStream);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
