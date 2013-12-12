@@ -130,7 +130,7 @@ public class RuleConfigResource {
 	}
 
 	@GET
-	@Path("/model/source/{modelname: [a-zA-Z_0-9.]*}")
+	@Path("/model/source/{modelname: .+}")
 	@Produces({ MediaType.WILDCARD })
 	public Response httpGetModelSource(@Context HttpHeaders headers, @QueryParam("type") String type,
 			@PathParam("modelname") String modelName,
@@ -148,7 +148,7 @@ public class RuleConfigResource {
 	}
 
 	@PUT
-	@Path("/model/source/{modelname: [a-zA-Z_0-9.]*}")
+	@Path("/model/source/{modelname: .+}")
 	@Produces({ MediaType.WILDCARD })
 	public Response httpPutModelSource(@Context HttpHeaders headers, @QueryParam("type") String type,
 			@PathParam("modelname") String modelName,
