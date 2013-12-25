@@ -123,7 +123,7 @@ public class SitemapConfigResource {
 	@Produces({ MediaType.WILDCARD })
 	public Response getSitemaps(@Context HttpHeaders headers, @QueryParam("type") String type,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
-		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", new String[] { uriInfo.getPath(), type });
+		logger.debug("Received HTTP GET request at '{}' for media type '{}'.",  uriInfo.getPath(), type);
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
 			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
@@ -140,7 +140,7 @@ public class SitemapConfigResource {
 	@Produces({ MediaType.WILDCARD })
 	public Response getSitemapData(@Context HttpHeaders headers, @PathParam("sitemapname") String sitemapname,
 			@QueryParam("type") String type, @QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
-		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", new String[] { uriInfo.getPath(), type });
+		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
 			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
@@ -158,7 +158,7 @@ public class SitemapConfigResource {
 	public Response putSitemapData(@Context HttpHeaders headers, @PathParam("sitemapname") String sitemapname,
 			@QueryParam("type") String type, @QueryParam("jsoncallback") @DefaultValue("callback") String callback,
 			WidgetConfigBean sitemap) {
-		logger.debug("Received HTTP PUT request at '{}' for media type '{}'.", new String[] { uriInfo.getPath(), type });
+		logger.debug("Received HTTP PUT request at '{}' for media type '{}'.", uriInfo.getPath(), type);
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
 			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
@@ -176,8 +176,7 @@ public class SitemapConfigResource {
 	public Response postSitemapData(@Context HttpHeaders headers, @PathParam("sitemapname") String sitemapname,
 			@QueryParam("type") String type, @FormParam("copy") String copyName,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
-		logger.debug("Received HTTP POST request at '{}' for media type '{}'.",
-				new String[] { uriInfo.getPath(), type });
+		logger.debug("Received HTTP POST request at '{}' for media type '{}'.", uriInfo.getPath(), type);
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
 			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
@@ -196,8 +195,7 @@ public class SitemapConfigResource {
 	@Produces({ MediaType.WILDCARD })
 	public Response deleteSitemapData(@Context HttpHeaders headers, @PathParam("sitemapname") String sitemapname,
 			@QueryParam("type") String type, @QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
-		logger.debug("Received HTTP DELETE request at '{}' for media type '{}'.", new String[] { uriInfo.getPath(),
-				type });
+		logger.debug("Received HTTP DELETE request at '{}' for media type '{}'.", uriInfo.getPath(), type);
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
 			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
@@ -521,10 +519,10 @@ public class SitemapConfigResource {
 			bakFile.delete();
 
 		// Rename the existing item file to backup
-//		orgFile.renameTo(bakFile);
+		orgFile.renameTo(bakFile);
 
 		// Rename the new file to the item file
-//		newFile.renameTo(orgFile);
+		newFile.renameTo(orgFile);
 
 		// Update the model repository
 		ModelRepository repo = HABminApplication.getModelRepository();
@@ -534,7 +532,7 @@ public class SitemapConfigResource {
 				inFile = new FileInputStream(newName);
 				repo.addOrRefreshModel(sitemapname + SITEMAP_FILEEXT, inFile);
 			} catch (FileNotFoundException e) {
-				logger.debug("Error refreeshing new sitemap " + sitemapname + ":", e);
+				logger.debug("Error refreshing new sitemap " + sitemapname + ":", e);
 			}
 		}
 

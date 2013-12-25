@@ -15,7 +15,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Writer;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -153,7 +152,7 @@ public class RuleConfigResource {
 	public Response httpPutModelSource(@Context HttpHeaders headers, @QueryParam("type") String type,
 			@PathParam("modelname") String modelName,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, RuleModelBean rule) {
-		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+		logger.debug("Received HTTP PUT request at '{}' for media type '{}'.", uriInfo.getPath(), type);
 
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
@@ -206,7 +205,7 @@ public class RuleConfigResource {
 	public Response httpPutItem(@Context HttpHeaders headers, @QueryParam("type") String type,
 			@PathParam("itemname") String itemName,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, RuleListBean ruleData) {
-		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+		logger.debug("Received HTTP PUT request at '{}' for media type '{}'.", uriInfo.getPath(), type);
 
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
@@ -224,7 +223,7 @@ public class RuleConfigResource {
 	public Response httpPostItemRule(@Context HttpHeaders headers, @QueryParam("type") String type,
 			@PathParam("itemname") String itemName, @PathParam("rulename") String ruleName,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, RuleTemplateBean ruleData) {
-		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+		logger.debug("Received HTTP POST request at '{}' for media type '{}'.", uriInfo.getPath(), type);
 
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
@@ -242,7 +241,7 @@ public class RuleConfigResource {
 	public Response httpDeleteItemRule(@Context HttpHeaders headers, @QueryParam("type") String type,
 			@PathParam("itemname") String itemName, @PathParam("rulename") String ruleName,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
-		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+		logger.debug("Received HTTP DELETE request at '{}' for media type '{}'.", uriInfo.getPath(), type);
 
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
@@ -800,10 +799,10 @@ public class RuleConfigResource {
 			bakFile.delete();
 
 		// Rename the existing item file to backup
-//		orgFile.renameTo(bakFile);
+		orgFile.renameTo(bakFile);
 
 		// Rename the new file to the item file
-//		newFile.renameTo(orgFile);
+		newFile.renameTo(orgFile);
 
 		// Update the model repository
 		ModelRepository repo = HABminApplication.getModelRepository();
