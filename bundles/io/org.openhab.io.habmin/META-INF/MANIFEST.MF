@@ -45,7 +45,7 @@ Import-Package: com.sun.jersey.api.json,
  org.osgi.service.http,
  org.slf4j
 Bundle-ClassPath: .,
- lib/xstream-1.4.5.jar
+ lib/xstream-1.4.6.jar
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.openhab.io.habmin.HABminActivator
 Service-Component: OSGI-INF/habminapplication.xml 
