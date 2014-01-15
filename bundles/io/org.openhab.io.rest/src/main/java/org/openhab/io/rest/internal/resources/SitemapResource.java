@@ -311,6 +311,9 @@ public class SitemapResource {
 					if(mapping.getCmd().startsWith("\"") && mapping.getCmd().endsWith("\"")) {
 						mappingBean.command = mapping.getCmd().substring(1, mapping.getCmd().length()-1);
 					}
+					else {
+						mappingBean.command = mapping.getCmd();
+					}
 				}
 				else {
 					mappingBean.command = mapping.getCmd();
@@ -328,6 +331,9 @@ public class SitemapResource {
 					if(mapping.getCmd().startsWith("\"") && mapping.getCmd().endsWith("\"")) {
 						mappingBean.command = mapping.getCmd().substring(1, mapping.getCmd().length()-1);
 					}
+					else {
+						mappingBean.command = mapping.getCmd();
+					}				
 				}
 				else {
 					mappingBean.command = mapping.getCmd();
@@ -358,7 +364,11 @@ public class SitemapResource {
     		}
     	}
     	if(widget instanceof Video) {
+    		Video videoWidget = (Video) widget;
     		String wId = itemUIRegistry.getWidgetId(widget);
+    		if(videoWidget.getEncoding()!=null) {
+    			bean.encoding = videoWidget.getEncoding();
+    		}
 			if (uri.getPort() < 0 || uri.getPort() == 80) {
 				bean.url = uri.getScheme() + "://" + uri.getHost() + "/proxy?sitemap=" + sitemapName + ".sitemap&widgetId=" + wId;
 			} else {
