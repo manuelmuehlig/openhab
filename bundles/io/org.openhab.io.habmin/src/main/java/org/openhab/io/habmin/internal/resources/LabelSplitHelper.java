@@ -98,6 +98,10 @@ public class LabelSplitHelper {
 
 			format = s1.trim();
 			unit = s2.trim();
+			
+			// Un-escape any quotes
+			unit = unit.replace("\\\"", "\"");;
+			label = label.replace("\\\"", "\"");;
 		}
 	}
 
@@ -149,9 +153,11 @@ public class LabelSplitHelper {
 		translationRule = newRule;
 	}
 
+	/**
+	 * Returns a label string as it is to be stored in the item model
+	 * @return label string
+	 */
 	public String getLabelString() {
-		String config = "";
-
 		// Ensure everything is a string
 		if (label == null)
 			label = "";
@@ -174,7 +180,8 @@ public class LabelSplitHelper {
 		unit = unitOut;
 
 		// Concatenate it all together!
-		config += label;
+		// Escape any quotes in the label or units
+		String config = label.replace("\"", "\\\"");
 		if (!format.isEmpty() || !unit.isEmpty() || !translationService.isEmpty() || !translationRule.isEmpty()) {
 			config += " [";
 			if (!translationService.isEmpty() && !translationRule.isEmpty())
@@ -182,7 +189,7 @@ public class LabelSplitHelper {
 			if (!format.isEmpty())
 				config += format;
 			if (!unit.isEmpty())
-				config += " " + unit;
+				config += " " + unit.replace("\"", "\\\"");
 			config += "]";
 		}
 

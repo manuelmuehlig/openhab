@@ -171,6 +171,8 @@ public class ItemModelHelper {
 				// file
 				EList<ModelItem> modelList = items.getItems();
 				for (ModelItem item : modelList) {
+					if(item.getName() == null)
+						continue;
 					if (item.getName().equals(itemUpdate.name)) {
 						// Write out the new data
 						if (deleteItem == false)
