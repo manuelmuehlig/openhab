@@ -287,15 +287,22 @@ public class RuleConfigResource {
 
 	private RuleModelListBean getRuleModelList(String type) {
 		Collection<RuleModelBean> beans = new LinkedList<RuleModelBean>();
-		// logger.debug("Received HTTP GET request at '{}'.",
-		// UriBuilder.fromUri(uri).build().toASCIIString());
+
 		ModelRepository modelRepository = HABminApplication.getModelRepository();
-		for (String modelName : modelRepository.getAllModelNamesOfType("rules")) {
+		File[] files = new File("configurations/rules").listFiles();
+		
+		for (File file : files) {
+			String modelName = file.getName();
+			
+			if(!modelName.endsWith(RULE_FILEEXT))
+				continue;
+
+			RuleModelBean model = new RuleModelBean();
+			model.rules = new ArrayList<RuleBean>();
+			model.model = StringUtils.removeEnd(modelName, RULE_FILEEXT);
+
 			RuleModel ruleModel = (RuleModel) modelRepository.getModel(modelName);
 			if (ruleModel != null) {
-				RuleModelBean model = new RuleModelBean();
-				model.rules = new ArrayList<RuleBean>();
-				model.model = StringUtils.removeEnd(modelName, RULE_FILEEXT);
 				model.imports = new ArrayList<String>();
 				for (Import importString : ruleModel.getImports()) {
 					model.imports.add(importString.getImportedNamespace());
@@ -337,9 +344,8 @@ public class RuleConfigResource {
 					}
 					model.rules.add(bean);
 				}
-
-				beans.add(model);
 			}
+			beans.add(model);
 		}
 
 		RuleModelListBean beanlist = new RuleModelListBean();
@@ -348,7 +354,7 @@ public class RuleConfigResource {
 
 		return beanlist;
 	}
-
+	
 	/**
 	 * Produces a lit of rules that are applicable to the item. Rules are
 	 * filtered out based on attributes in the rule template file
