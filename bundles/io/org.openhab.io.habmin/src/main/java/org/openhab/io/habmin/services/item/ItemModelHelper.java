@@ -294,7 +294,11 @@ public class ItemModelHelper {
 				List<ItemConfigBean> beans = readItemModel(items,
 						listOfFiles[i].getName().substring(0, listOfFiles[i].getName().indexOf('.')));
 
+				// Search for the requested item
 				for (ItemConfigBean bean : beans) {
+					if(bean.name == null)
+						continue;
+
 					if (bean.name.equals(itemname))
 						return bean;
 				}
