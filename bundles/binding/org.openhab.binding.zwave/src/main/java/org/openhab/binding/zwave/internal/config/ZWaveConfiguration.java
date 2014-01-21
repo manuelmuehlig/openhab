@@ -184,9 +184,12 @@ public class ZWaveConfiguration implements OpenHABConfigurationService, ZWaveEve
 					List<ZWaveDbCommandClass> classList = database.getProductCommandClasses();
 
 					if (classList != null) {
-						// Loop through the associations and add to the
+						// Loop through the command classes and add to the
 						// records...
 						for (ZWaveDbCommandClass iClass : classList) {
+							// Make sure the command class exists!
+							if(ZWaveCommandClass.CommandClass.getCommandClass(iClass.Id) == null)
+								continue;
 							record = new OpenHABConfigurationRecord(domain, "class" + iClass.Id,
 									ZWaveCommandClass.CommandClass.getCommandClass(iClass.Id).getLabel(), true);
 							if(ZWaveCommandClass.CommandClass.getCommandClass(iClass.Id).getCommandClassClass() == null) {
@@ -215,7 +218,7 @@ public class ZWaveConfiguration implements OpenHABConfigurationService, ZWaveEve
 				if (node == null)
 					continue;
 
-				logger.debug("Config requested for node {}", nodeId);
+				logger.trace("Config requested for node {}", nodeId);
 
 				if (node.getName() == null || node.getName().isEmpty()) {
 					record = new OpenHABConfigurationRecord("nodes/" + "node" + nodeId + "/", "Node " + nodeId);
@@ -590,7 +593,7 @@ public class ZWaveConfiguration implements OpenHABConfigurationService, ZWaveEve
 
 	@Override
 	public void doAction(String domain, String action) {
-		logger.debug("doAction domain '{}' to '{}'", domain, action);
+		logger.trace("doAction domain '{}' to '{}'", domain, action);
 
 		String[] splitDomain = domain.split("/");
 
