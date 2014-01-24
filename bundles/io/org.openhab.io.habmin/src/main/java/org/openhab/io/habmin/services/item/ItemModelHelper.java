@@ -24,6 +24,7 @@ import org.openhab.io.habmin.internal.resources.LabelSplitHelper;
 import org.openhab.model.core.ModelRepository;
 import org.openhab.model.items.ItemModel;
 import org.openhab.model.items.ModelBinding;
+import org.openhab.model.items.ModelGroupItem;
 import org.openhab.model.items.ModelItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,10 +44,21 @@ public class ItemModelHelper {
 	private String getItemConfigString(ModelItem item) {
 		String config = "";
 
-		if (item.getType() == null)
+		if(item instanceof ModelGroupItem) {
+			ModelGroupItem gItem = (ModelGroupItem)item;
 			config = "Group";
-		else
+			
+			// Check if this is an active group
+			if (item.getType() != null) {
+				config += ":" + gItem.getType();
+				if(gItem.getFunction() != null) {
+					config += ":" + gItem.getFunction();
+				}
+			}
+		}
+		else {
 			config = item.getType();
+		}
 
 		config += "\t" + item.getName();
 
