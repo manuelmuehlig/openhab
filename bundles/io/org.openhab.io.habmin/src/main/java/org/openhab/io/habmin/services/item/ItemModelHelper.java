@@ -233,6 +233,12 @@ public class ItemModelHelper {
 		return true;
 	}
 
+	/**
+	 * 
+	 * @param items
+	 * @param model
+	 * @return
+	 */
 	public List<ItemConfigBean> readItemModel(ItemModel items, String model) {
 		List<ItemConfigBean> beanList = new ArrayList<ItemConfigBean>();
 
