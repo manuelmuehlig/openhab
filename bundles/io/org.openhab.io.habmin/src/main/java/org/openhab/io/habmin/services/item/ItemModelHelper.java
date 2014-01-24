@@ -33,30 +33,29 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Chris Jackson
  * @since 1.3.0
- *
+ * 
  */
 public class ItemModelHelper {
-	private static final Logger	logger = LoggerFactory.getLogger(ItemModelHelper.class);
-		
+	private static final Logger logger = LoggerFactory.getLogger(ItemModelHelper.class);
+
 	public ItemModelHelper() {
 	}
-	
+
 	private String getItemConfigString(ModelItem item) {
 		String config = "";
 
-		if(item instanceof ModelGroupItem) {
-			ModelGroupItem gItem = (ModelGroupItem)item;
+		if (item instanceof ModelGroupItem) {
+			ModelGroupItem gItem = (ModelGroupItem) item;
 			config = "Group";
-			
+
 			// Check if this is an active group
 			if (item.getType() != null) {
 				config += ":" + gItem.getType();
-				if(gItem.getFunction() != null) {
+				if (gItem.getFunction() != null) {
 					config += ":" + gItem.getFunction();
 				}
 			}
-		}
-		else {
+		} else {
 			config = item.getType();
 		}
 
@@ -88,10 +87,10 @@ public class ItemModelHelper {
 			config += "\t{ ";
 			boolean first = true;
 			for (ModelBinding binding : item.getBindings()) {
-				if(binding.getType() == null || binding.getConfiguration() == null)
+				if (binding.getType() == null || binding.getConfiguration() == null)
 					continue;
-				
-				if(first == false)
+
+				if (first == false)
 					config += ", ";
 
 				config += binding.getType() + "=\"" + binding.getConfiguration() + "\"";
@@ -140,10 +139,10 @@ public class ItemModelHelper {
 			config += "\t{ ";
 			boolean first = true;
 			for (ItemBindingBean binding : item.bindings) {
-				if(binding.binding == null || binding.config == null)
+				if (binding.binding == null || binding.config == null)
 					continue;
-			
-				if(first == false)
+
+				if (first == false)
 					config += ", ";
 
 				config += binding.binding + "=\"" + binding.config + "\"";
@@ -183,7 +182,7 @@ public class ItemModelHelper {
 				// file
 				EList<ModelItem> modelList = items.getItems();
 				for (ModelItem item : modelList) {
-					if(item.getName() == null)
+					if (item.getName() == null)
 						continue;
 					if (item.getName().equals(itemUpdate.name)) {
 						// Write out the new data
@@ -275,13 +274,15 @@ public class ItemModelHelper {
 				bean.groups.add(group.toString());
 			}
 
-/*			bean.persistence = new ArrayList<ItemPersistenceBean>();
-			for (Map.Entry<String, PersistenceService> service : RESTApplication.getPersistenceServices().entrySet()) {
-				PersistenceModelHelper helper = new PersistenceModelHelper(service.getKey());
-				ItemPersistenceBean p = helper.getItemPersistence(item);
-				if (p != null)
-					bean.persistence.add(p);
-			}*/
+			/*
+			 * bean.persistence = new ArrayList<ItemPersistenceBean>(); for
+			 * (Map.Entry<String, PersistenceService> service :
+			 * RESTApplication.getPersistenceServices().entrySet()) {
+			 * PersistenceModelHelper helper = new
+			 * PersistenceModelHelper(service.getKey()); ItemPersistenceBean p =
+			 * helper.getItemPersistence(item); if (p != null)
+			 * bean.persistence.add(p); }
+			 */
 
 			beanList.add(bean);
 		}
@@ -303,16 +304,18 @@ public class ItemModelHelper {
 		for (int i = 0; i < listOfFiles.length; i++) {
 			if (listOfFiles[i].isFile() & listOfFiles[i].getName().endsWith(".items")) {
 				ItemModel items = (ItemModel) repo.getModel(listOfFiles[i].getName());
-				List<ItemConfigBean> beans = readItemModel(items,
-						listOfFiles[i].getName().substring(0, listOfFiles[i].getName().indexOf('.')));
+				if (items != null) {
+					List<ItemConfigBean> beans = readItemModel(items,
+							listOfFiles[i].getName().substring(0, listOfFiles[i].getName().indexOf('.')));
 
-				// Search for the requested item
-				for (ItemConfigBean bean : beans) {
-					if(bean.name == null)
-						continue;
+					// Search for the requested item
+					for (ItemConfigBean bean : beans) {
+						if (bean.name == null)
+							continue;
 
-					if (bean.name.equals(itemname))
-						return bean;
+						if (bean.name.equals(itemname))
+							return bean;
+					}
 				}
 			}
 		}
