@@ -537,15 +537,13 @@ public class PersistenceResource {
 	}
 	
 	private ChartConfigBean putChartBean(Integer chartRef, ChartConfigBean bean) {
-		// Sanity check.
-		// chartRef is 0 for a new interface
-		// if it's not 0, then bean.id must either be missing, or it must be the same as chartRef
-		if((chartRef == 0 && bean.id != null) ||
-				(chartRef != 0 && (bean.id == null || bean.id != chartRef))) {
-			logger.error("Inconsistent id in HTTP call and structure");
-			return null;
+		if(chartRef == 0) {
+			bean.id = null;
 		}
-		
+		else {
+			bean.id = chartRef;
+		}
+
 		// Load the existing list
 		ChartListBean list = loadCharts();
 
