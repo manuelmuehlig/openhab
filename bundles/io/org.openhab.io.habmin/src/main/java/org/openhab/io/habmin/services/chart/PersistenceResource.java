@@ -9,6 +9,10 @@
 package org.openhab.io.habmin.services.chart;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +23,8 @@ import java.util.Map;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -40,6 +46,7 @@ import org.openhab.core.persistence.HistoricItem;
 import org.openhab.core.persistence.PersistenceService;
 import org.openhab.core.persistence.QueryablePersistenceService;
 import org.openhab.core.types.State;
+
 import org.openhab.io.habmin.HABminApplication;
 import org.openhab.io.habmin.internal.resources.LabelSplitHelper;
 import org.openhab.io.habmin.internal.resources.MediaTypeHelper;
@@ -55,6 +62,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.sun.jersey.api.json.JSONWithPadding;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 /**
  * <p>
@@ -73,13 +82,15 @@ import com.sun.jersey.api.json.JSONWithPadding;
  * @author Chris Jackson
  * @since 1.3.0
  */
-@Path(PersistenceResource.PATH_HISTORY)
+@Path(PersistenceResource.PATH)
 public class PersistenceResource {
+	
+	private static String CHART_FILE = "charts.xml";
 
 	private static final Logger logger = LoggerFactory.getLogger(PersistenceResource.class);
 
 	/** The URI path to this resource */
-	public static final String PATH_HISTORY = "persistence";
+	public static final String PATH = "persistence";
 
 	@Context
 	UriInfo uriInfo;
@@ -119,7 +130,78 @@ public class PersistenceResource {
 	}
 
 	@GET
-	@Path("/{servicename: [a-zA-Z_0-9]*}/{itemname: [a-zA-Z_0-9]*}")
+	@Path("/charts")
+	@Produces({ MediaType.WILDCARD })
+	public Response httpGetPersistenceCharts(@Context HttpHeaders headers, @QueryParam("type") String type,
+			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
+		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+
+		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
+		if (responseType != null) {
+			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
+					getPersistenceChartList(), callback) : getPersistenceChartList();
+			return Response.ok(responseObject, responseType).build();
+		} else {
+			return Response.notAcceptable(null).build();
+		}
+	}
+
+	@POST
+	@Path("/charts")
+	@Produces({ MediaType.WILDCARD })
+	public Response httpPostPersistenceCharts(@Context HttpHeaders headers, @QueryParam("type") String type,
+			@QueryParam("jsoncallback") @DefaultValue("callback") String callback,
+			ChartConfigBean chart) {
+		logger.debug("Received HTTP POST request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+
+		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
+		if (responseType != null) {
+			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
+					putChartBean(0, chart), callback) : putChartBean(0, chart);
+			return Response.ok(responseObject, responseType).build();
+		} else {
+			return Response.notAcceptable(null).build();
+		}
+	}
+
+	@PUT
+	@Path("/charts/{chartid: [a-zA-Z_0-9]*}")
+	@Produces({ MediaType.WILDCARD })
+	public Response httpPutPersistenceCharts(@Context HttpHeaders headers, @QueryParam("type") String type,
+			@QueryParam("jsoncallback") @DefaultValue("callback") String callback,
+			@PathParam("chartid") Integer chartId, ChartConfigBean chart) {
+		logger.debug("Received HTTP PUT request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+
+		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
+		if (responseType != null) {
+			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
+					putChartBean(chartId, chart), callback) : putChartBean(chartId, chart);
+			return Response.ok(responseObject, responseType).build();
+		} else {
+			return Response.notAcceptable(null).build();
+		}
+	}
+
+	@GET
+	@Path("/charts/{chartid: [a-zA-Z_0-9]*}")
+	@Produces({ MediaType.WILDCARD })
+	public Response httpGetPersistenceCharts(@Context HttpHeaders headers, @QueryParam("type") String type,
+			@QueryParam("jsoncallback") @DefaultValue("callback") String callback,
+			@PathParam("chartid") Integer chartId) {
+		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+
+		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
+		if (responseType != null) {
+			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
+					getChart(chartId), callback) : getChart(chartId);
+			return Response.ok(responseObject, responseType).build();
+		} else {
+			return Response.notAcceptable(null).build();
+		}
+	}
+
+	@GET
+	@Path("/services/{servicename: [a-zA-Z_0-9]*}/{itemname: [a-zA-Z_0-9]*}")
 	@Produces({ MediaType.WILDCARD })
 	public Response httpGetPersistenceItemData(@Context HttpHeaders headers,
 			@PathParam("servicename") String serviceName, @PathParam("itemname") String itemName,
@@ -453,6 +535,153 @@ public class PersistenceResource {
 
 		return beanList;
 	}
+	
+	private ChartConfigBean putChartBean(Integer chartRef, ChartConfigBean bean) {
+		// Sanity check.
+		// chartRef is 0 for a new interface
+		// if it's not 0, then bean.id must either be missing, or it must be the same as chartRef
+		if((chartRef == 0 && bean.id != null) ||
+				(chartRef != 0 && (bean.id == null || bean.id != chartRef))) {
+			logger.error("Inconsistent id in HTTP call and structure");
+			return null;
+		}
+		
+		// Load the existing list
+		ChartListBean list = loadCharts();
+
+		int high = 0;
+
+		ChartConfigBean foundChart = null;
+		// Loop through the interface list
+		for(ChartConfigBean i : list.entries) {
+			if(i.id > high)
+				high = i.id;
+			if(i.id.intValue() == chartRef) {
+				// If it was found in the list, remember it...
+				foundChart = i;
+			}
+		}
+
+		// If it was found in the list, remove it...
+		if(foundChart != null) {
+			list.entries.remove(foundChart);
+		}
+		
+		// Set defaults if this is a new chart
+		if(bean.id == null) {
+			bean.id = high + 1;
+		}
+
+		// Now save the updated version
+		list.entries.add(bean);
+		saveCharts(list);
+
+		return bean;
+	}
+
+	private ChartListBean getPersistenceChartList() {
+		ChartListBean charts = loadCharts();
+		ChartListBean newList = new ChartListBean();
+
+		// We only want to return the id and name
+			for (ChartConfigBean i : charts.entries) {
+				ChartConfigBean newChart = new ChartConfigBean();
+				newChart.id = i.id;
+				newChart.name = i.name;
+				newChart.icon = i.icon;
+
+				newList.entries.add(newChart);
+			}
+
+		return newList;
+	}
+	
+	private ChartConfigBean getChart(Integer chartRef) {
+		ChartListBean interfaces = loadCharts();
+
+		for (ChartConfigBean i : interfaces.entries) {
+			if(i.id.intValue() == chartRef)
+				return i;
+		}
+
+		return null;
+	}
+	
+	private boolean saveCharts(ChartListBean interfaces) {
+		File folder = new File(HABminApplication.HABMIN_DATA_DIR);
+		// create path for serialization.
+		if (!folder.exists()) {
+			logger.debug("Creating directory {}", HABminApplication.HABMIN_DATA_DIR);
+			folder.mkdirs();
+		}
+		
+		FileOutputStream fout;
+		try {
+			long timerStart = System.currentTimeMillis();
+
+			fout = new FileOutputStream(HABminApplication.HABMIN_DATA_DIR + CHART_FILE);
+
+			XStream xstream = new XStream(new StaxDriver());
+			xstream.alias("charts", ChartListBean.class);
+			xstream.alias("chart", ChartConfigBean.class);
+			xstream.alias("item", ChartItemConfigBean.class);
+			xstream.alias("axis", ChartAxisConfigBean.class);
+			xstream.processAnnotations(ChartListBean.class);
+
+			xstream.toXML(interfaces, fout);
+
+			fout.close();
+
+			long timerStop = System.currentTimeMillis();
+			logger.debug("Chart list saved in {}ms.", timerStop - timerStart);
+		} catch (FileNotFoundException e) {
+			logger.debug("Unable to open Chart list for SAVE - ", e);
+
+			return false;
+		} catch (IOException e) {
+			logger.debug("Unable to write Chart list for SAVE - ", e);
+
+			return false;
+		}
+
+		return true;
+	}
+
+
+	private ChartListBean loadCharts() {
+		ChartListBean charts = null;
+
+		FileInputStream fin;
+		try {
+			long timerStart = System.currentTimeMillis();
+
+			fin = new FileInputStream(HABminApplication.HABMIN_DATA_DIR + CHART_FILE);
+
+			XStream xstream = new XStream(new StaxDriver());
+			xstream.alias("charts", ChartListBean.class);
+			xstream.alias("chart", ChartConfigBean.class);
+			xstream.alias("item", ChartItemConfigBean.class);
+			xstream.alias("axis", ChartAxisConfigBean.class);
+			xstream.processAnnotations(ChartListBean.class);
+
+			charts = (ChartListBean) xstream.fromXML(fin);
+
+			fin.close();
+
+			long timerStop = System.currentTimeMillis();
+			logger.debug("Charts loaded in {}ms.", timerStop - timerStart);
+
+		} catch (FileNotFoundException e) {
+			charts = new ChartListBean();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return charts;
+	}
+
+	
 /*
 	private boolean updateItemHistory(String serviceName, String itemName, String time, String state) {
 		State nState = new StringType(state);

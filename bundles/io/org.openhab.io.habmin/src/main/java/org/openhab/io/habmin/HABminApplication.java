@@ -60,6 +60,7 @@ import com.sun.jersey.core.util.FeaturesAndProperties;
  */
 public class HABminApplication extends Application  {
 
+	public static final String HABMIN_DATA_DIR = "etc/habmin/";
 	public static final String HABMIN_SERVLET_ALIAS = "/services/habmin";
 
 	private static final Logger logger = LoggerFactory.getLogger(HABminApplication.class);
