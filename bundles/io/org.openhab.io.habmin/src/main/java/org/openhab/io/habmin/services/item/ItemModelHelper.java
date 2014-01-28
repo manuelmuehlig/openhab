@@ -53,6 +53,18 @@ public class ItemModelHelper {
 				config += ":" + gItem.getType();
 				if (gItem.getFunction() != null) {
 					config += ":" + gItem.getFunction();
+					
+					if(gItem.getArgs() != null) {
+						config +="(";
+						boolean first = true;
+						for(String arg : gItem.getArgs()) {
+							if(first == false)
+								config += ",";
+							first = false;
+							config += arg;
+						}
+						config +=")";
+					}
 				}
 			}
 		} else {
