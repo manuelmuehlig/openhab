@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -84,7 +85,7 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
  */
 @Path(PersistenceResource.PATH)
 public class PersistenceResource {
-	
+
 	private static String CHART_FILE = "charts.xml";
 
 	private static final Logger logger = LoggerFactory.getLogger(PersistenceResource.class);
@@ -150,8 +151,7 @@ public class PersistenceResource {
 	@Path("/charts")
 	@Produces({ MediaType.WILDCARD })
 	public Response httpPostPersistenceCharts(@Context HttpHeaders headers, @QueryParam("type") String type,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback,
-			ChartConfigBean chart) {
+			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, ChartConfigBean chart) {
 		logger.debug("Received HTTP POST request at '{}' for media type '{}'.", uriInfo.getPath(), type);
 
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
@@ -182,12 +182,28 @@ public class PersistenceResource {
 		}
 	}
 
+	@DELETE
+	@Path("/charts/{chartid: [a-zA-Z_0-9]*}")
+	@Produces({ MediaType.WILDCARD })
+	public Response httpDeletePersistenceCharts(@Context HttpHeaders headers, @QueryParam("type") String type,
+			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, @PathParam("chartid") Integer chartId) {
+		logger.debug("Received HTTP PUT request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+
+		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
+		if (responseType != null) {
+			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
+					deleteChart(chartId), callback) : deleteChart(chartId);
+			return Response.ok(responseObject, responseType).build();
+		} else {
+			return Response.notAcceptable(null).build();
+		}
+	}
+
 	@GET
 	@Path("/charts/{chartid: [a-zA-Z_0-9]*}")
 	@Produces({ MediaType.WILDCARD })
 	public Response httpGetPersistenceCharts(@Context HttpHeaders headers, @QueryParam("type") String type,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback,
-			@PathParam("chartid") Integer chartId) {
+			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, @PathParam("chartid") Integer chartId) {
 		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
 
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
@@ -220,47 +236,59 @@ public class PersistenceResource {
 			return Response.notAcceptable(null).build();
 		}
 	}
-/*
-	@POST
-	@Path("/{servicename: [a-zA-Z_0-9]*}/{itemname: [a-zA-Z_0-9]*}")
-	@Produces({ MediaType.WILDCARD })
-	public Response httpPostPersistenceItemData(@Context HttpHeaders headers,
-			@PathParam("servicename") String serviceName, @PathParam("itemname") String itemName,
-			@QueryParam("time") String time, @QueryParam("state") String state, @QueryParam("type") String type,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
-		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
 
-		final String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
-		if (responseType != null) {
-			final Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
-					updateItemHistory(serviceName, itemName, time, state), callback) : updateItemHistory(serviceName,
-					itemName, time, state);
-			return Response.ok(responseObject, responseType).build();
-		} else {
-			return Response.notAcceptable(null).build();
-		}
-	}
+	/*
+	 * @POST
+	 * 
+	 * @Path("/{servicename: [a-zA-Z_0-9]*}/{itemname: [a-zA-Z_0-9]*}")
+	 * 
+	 * @Produces({ MediaType.WILDCARD }) public Response
+	 * httpPostPersistenceItemData(@Context HttpHeaders headers,
+	 * 
+	 * @PathParam("servicename") String serviceName, @PathParam("itemname")
+	 * String itemName,
+	 * 
+	 * @QueryParam("time") String time, @QueryParam("state") String state,
+	 * @QueryParam("type") String type,
+	 * 
+	 * @QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
+	 * logger.debug("Received HTTP GET request at '{}' for media type '{}'.",
+	 * uriInfo.getPath(), type);
+	 * 
+	 * final String responseType =
+	 * MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(),
+	 * type); if (responseType != null) { final Object responseObject =
+	 * responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new
+	 * JSONWithPadding( updateItemHistory(serviceName, itemName, time, state),
+	 * callback) : updateItemHistory(serviceName, itemName, time, state); return
+	 * Response.ok(responseObject, responseType).build(); } else { return
+	 * Response.notAcceptable(null).build(); } }
+	 * 
+	 * @DELETE
+	 * 
+	 * @Path("/{servicename: [a-zA-Z_0-9]*}/{itemname: [a-zA-Z_0-9]*}}")
+	 * 
+	 * @Produces({ MediaType.WILDCARD }) public Response
+	 * httpDeleteItemData(@Context HttpHeaders headers, @PathParam("serviceame")
+	 * String serviceName,
+	 * 
+	 * @PathParam("itemname") String itemName, @QueryParam("time") String time,
+	 * @QueryParam("type") String type,
+	 * 
+	 * @QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
+	 * logger.debug("Received HTTP GET request at '{}' for media type '{}'.",
+	 * uriInfo.getPath(), type);
+	 * 
+	 * final String responseType =
+	 * MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(),
+	 * type); if (responseType != null) { final Object responseObject =
+	 * responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new
+	 * JSONWithPadding( deleteItemHistory(serviceName, itemName, time),
+	 * callback) : deleteItemHistory(serviceName, itemName, time); return
+	 * Response.ok(responseObject, responseType).build(); } else { return
+	 * Response.notAcceptable(null).build(); } }
+	 */
 
-	@DELETE
-	@Path("/{servicename: [a-zA-Z_0-9]*}/{itemname: [a-zA-Z_0-9]*}}")
-	@Produces({ MediaType.WILDCARD })
-	public Response httpDeleteItemData(@Context HttpHeaders headers, @PathParam("serviceame") String serviceName,
-			@PathParam("itemname") String itemName, @QueryParam("time") String time, @QueryParam("type") String type,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
-		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
-
-		final String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
-		if (responseType != null) {
-			final Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
-					deleteItemHistory(serviceName, itemName, time), callback) : deleteItemHistory(serviceName,
-					itemName, time);
-			return Response.ok(responseObject, responseType).build();
-		} else {
-			return Response.notAcceptable(null).build();
-		}
-	}
-*/
-	
 	Date convertTime(String sTime) {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 
@@ -317,11 +345,11 @@ public class PersistenceResource {
 
 		if (timeEnd != null)
 			dateTimeEnd = convertTime(timeEnd);
-		
+
 		// End now...
-		if(dateTimeEnd.getTime() == 0)
+		if (dateTimeEnd.getTime() == 0)
 			dateTimeEnd = new Date();
-		if(dateTimeBegin.getTime() == 0)
+		if (dateTimeBegin.getTime() == 0)
 			dateTimeBegin = new Date(dateTimeEnd.getTime() - 86400000);
 
 		// Default to 1 days data if the times are the same
@@ -393,12 +421,14 @@ public class PersistenceResource {
 	}
 
 	/**
-	 * Read through an items model. Get all the items and provide the information that's of use
-	 * for graphing/stats etc.
-	 * Only items with persistence services configured are returned.
+	 * Read through an items model. Get all the items and provide the
+	 * information that's of use for graphing/stats etc. Only items with
+	 * persistence services configured are returned.
 	 * 
-	 * @param modelItems the item model
-	 * @param modelName the model name
+	 * @param modelItems
+	 *            the item model
+	 * @param modelName
+	 *            the model name
 	 * @return
 	 */
 	private List<ItemHistoryBean> readItemModel(ItemModel modelItems, String modelName) {
@@ -476,10 +506,10 @@ public class PersistenceResource {
 			serviceBean.actions.add("Create");
 			if (service.getValue() instanceof QueryablePersistenceService)
 				serviceBean.actions.add("Read");
-//			if (service.getValue() instanceof CRUDPersistenceService) {
-//				serviceBean.actions.add("Update");
-//				serviceBean.actions.add("Delete");
-//			}
+			// if (service.getValue() instanceof CRUDPersistenceService) {
+			// serviceBean.actions.add("Update");
+			// serviceBean.actions.add("Delete");
+			// }
 		}
 
 		bean.itemEntries = new ArrayList<ItemHistoryBean>();
@@ -499,10 +529,10 @@ public class PersistenceResource {
 			serviceBean.actions.add("Create");
 			if (service.getValue() instanceof QueryablePersistenceService)
 				serviceBean.actions.add("Read");
-//			if (service.getValue() instanceof CRUDPersistenceService) {
-//				serviceBean.actions.add("Update");
-//				serviceBean.actions.add("Delete");
-//			}
+			// if (service.getValue() instanceof CRUDPersistenceService) {
+			// serviceBean.actions.add("Update");
+			// serviceBean.actions.add("Delete");
+			// }
 
 			beanList.add(serviceBean);
 		}
@@ -535,12 +565,11 @@ public class PersistenceResource {
 
 		return beanList;
 	}
-	
+
 	private ChartConfigBean putChartBean(Integer chartRef, ChartConfigBean bean) {
-		if(chartRef == 0) {
+		if (chartRef == 0) {
 			bean.id = null;
-		}
-		else {
+		} else {
 			bean.id = chartRef;
 		}
 
@@ -551,22 +580,22 @@ public class PersistenceResource {
 
 		ChartConfigBean foundChart = null;
 		// Loop through the interface list
-		for(ChartConfigBean i : list.entries) {
-			if(i.id > high)
+		for (ChartConfigBean i : list.entries) {
+			if (i.id > high)
 				high = i.id;
-			if(i.id.intValue() == chartRef) {
+			if (i.id.intValue() == chartRef) {
 				// If it was found in the list, remember it...
 				foundChart = i;
 			}
 		}
 
 		// If it was found in the list, remove it...
-		if(foundChart != null) {
+		if (foundChart != null) {
 			list.entries.remove(foundChart);
 		}
-		
+
 		// Set defaults if this is a new chart
-		if(bean.id == null) {
+		if (bean.id == null) {
 			bean.id = high + 1;
 		}
 
@@ -582,29 +611,50 @@ public class PersistenceResource {
 		ChartListBean newList = new ChartListBean();
 
 		// We only want to return the id and name
-			for (ChartConfigBean i : charts.entries) {
-				ChartConfigBean newChart = new ChartConfigBean();
-				newChart.id = i.id;
-				newChart.name = i.name;
-				newChart.icon = i.icon;
+		for (ChartConfigBean i : charts.entries) {
+			ChartConfigBean newChart = new ChartConfigBean();
+			newChart.id = i.id;
+			newChart.name = i.name;
+			newChart.icon = i.icon;
 
-				newList.entries.add(newChart);
-			}
+			newList.entries.add(newChart);
+		}
 
 		return newList;
 	}
-	
-	private ChartConfigBean getChart(Integer chartRef) {
-		ChartListBean interfaces = loadCharts();
 
-		for (ChartConfigBean i : interfaces.entries) {
-			if(i.id.intValue() == chartRef)
+	private ChartConfigBean getChart(Integer chartRef) {
+		ChartListBean charts = loadCharts();
+
+		for (ChartConfigBean i : charts.entries) {
+			if (i.id.intValue() == chartRef)
 				return i;
 		}
 
 		return null;
 	}
-	
+
+	private ChartListBean deleteChart(Integer chartRef) {
+		ChartListBean charts = loadCharts();
+
+		ChartConfigBean foundChart = null;
+		for (ChartConfigBean i : charts.entries) {
+			if (i.id.intValue() == chartRef) {
+				// If it was found in the list, remember it...
+				foundChart = i;
+				break;
+			}
+		}
+
+		// If it was found in the list, remove it...
+		if (foundChart != null)
+			charts.entries.remove(foundChart);
+
+		saveCharts(charts);
+
+		return getPersistenceChartList();
+	}
+
 	private boolean saveCharts(ChartListBean interfaces) {
 		File folder = new File(HABminApplication.HABMIN_DATA_DIR);
 		// create path for serialization.
@@ -612,7 +662,7 @@ public class PersistenceResource {
 			logger.debug("Creating directory {}", HABminApplication.HABMIN_DATA_DIR);
 			folder.mkdirs();
 		}
-		
+
 		FileOutputStream fout;
 		try {
 			long timerStart = System.currentTimeMillis();
@@ -644,7 +694,6 @@ public class PersistenceResource {
 
 		return true;
 	}
-
 
 	private ChartListBean loadCharts() {
 		ChartListBean charts = null;
@@ -679,45 +728,34 @@ public class PersistenceResource {
 		return charts;
 	}
 
-	
-/*
-	private boolean updateItemHistory(String serviceName, String itemName, String time, String state) {
-		State nState = new StringType(state);
-		Date recordTime = convertTime(time);
-
-		if(recordTime.getTime() == 0)
-			return false;
-
-		PersistenceService service = HABminApplication.getPersistenceServices().get(serviceName);
-		if (service instanceof CRUDPersistenceService) {
-			CRUDPersistenceService qService = (CRUDPersistenceService) service;
-			FilterCriteria filter = new FilterCriteria();
-			filter.setBeginDate(recordTime);
-			filter.setItemName(itemName);
-			return qService.update(filter, nState);
-		} else {
-			logger.warn("The persistence service does not support UPDATE.");
-			return false;
-		}
-	}
-
-	private boolean deleteItemHistory(String serviceName, String itemName, String time) {
-		Date recordTime = convertTime(time);
-
-		if(recordTime.getTime() == 0)
-			return false;
-		
-		PersistenceService service = HABminApplication.getPersistenceServices().get(serviceName);
-		if (service instanceof CRUDPersistenceService) {
-			CRUDPersistenceService qService = (CRUDPersistenceService) service;
-			FilterCriteria filter = new FilterCriteria();
-			filter.setBeginDate(recordTime);
-			filter.setItemName(itemName);
-			return qService.delete(filter);
-		} else {
-			logger.warn("The persistence service does not support DELETE.");
-			return false;
-		}
-	}
-*/
+	/*
+	 * private boolean updateItemHistory(String serviceName, String itemName,
+	 * String time, String state) { State nState = new StringType(state); Date
+	 * recordTime = convertTime(time);
+	 * 
+	 * if(recordTime.getTime() == 0) return false;
+	 * 
+	 * PersistenceService service =
+	 * HABminApplication.getPersistenceServices().get(serviceName); if (service
+	 * instanceof CRUDPersistenceService) { CRUDPersistenceService qService =
+	 * (CRUDPersistenceService) service; FilterCriteria filter = new
+	 * FilterCriteria(); filter.setBeginDate(recordTime);
+	 * filter.setItemName(itemName); return qService.update(filter, nState); }
+	 * else { logger.warn("The persistence service does not support UPDATE.");
+	 * return false; } }
+	 * 
+	 * private boolean deleteItemHistory(String serviceName, String itemName,
+	 * String time) { Date recordTime = convertTime(time);
+	 * 
+	 * if(recordTime.getTime() == 0) return false;
+	 * 
+	 * PersistenceService service =
+	 * HABminApplication.getPersistenceServices().get(serviceName); if (service
+	 * instanceof CRUDPersistenceService) { CRUDPersistenceService qService =
+	 * (CRUDPersistenceService) service; FilterCriteria filter = new
+	 * FilterCriteria(); filter.setBeginDate(recordTime);
+	 * filter.setItemName(itemName); return qService.delete(filter); } else {
+	 * logger.warn("The persistence service does not support DELETE."); return
+	 * false; } }
+	 */
 }
