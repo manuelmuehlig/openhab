@@ -33,7 +33,6 @@ import org.openhab.io.habmin.services.sitemap.SitemapConfigResource;
 import org.openhab.io.habmin.services.status.StatusResource;
 import org.openhab.io.habmin.services.zwave.ZWaveConfigResource;
 import org.openhab.io.net.http.SecureHttpContext;
-import org.openhab.io.rest.RESTApplication;
 import org.openhab.io.servicediscovery.DiscoveryService;
 import org.openhab.io.servicediscovery.ServiceDescription;
 import org.openhab.model.core.ModelRepository;
