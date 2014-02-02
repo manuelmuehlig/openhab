@@ -59,7 +59,7 @@ public class ItemHistoryBean {
 	
 	public ItemHistoryBean() {};
 
-	public void addData(String time, String value) {
+	public void addData(Long time, String value) {
 		if(data == null)
 			data = new ArrayList<HistoryDataBean>();
 		HistoryDataBean newVal = new HistoryDataBean();
@@ -71,7 +71,7 @@ public class ItemHistoryBean {
 //	@JsonSerialize(using = ItemHistoryBean.JsonHistorySerializer.class)
 	public static class HistoryDataBean {
 //		@XmlAttribute
-		public String time;
+		public Long time;
 		
 //		@XmlValue
 		public String state;

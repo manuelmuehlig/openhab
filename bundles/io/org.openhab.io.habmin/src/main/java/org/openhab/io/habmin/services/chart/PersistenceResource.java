@@ -249,6 +249,7 @@ public class PersistenceResource {
 	 * String itemName,
 	 * 
 	 * @QueryParam("time") String time, @QueryParam("state") String state,
+	 * 
 	 * @QueryParam("type") String type,
 	 * 
 	 * @QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
@@ -273,6 +274,7 @@ public class PersistenceResource {
 	 * String serviceName,
 	 * 
 	 * @PathParam("itemname") String itemName, @QueryParam("time") String time,
+	 * 
 	 * @QueryParam("type") String type,
 	 * 
 	 * @QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
@@ -320,6 +322,9 @@ public class PersistenceResource {
 
 	private ItemHistoryBean getItemHistoryBean(String serviceName, String itemName, String timeBegin, String timeEnd) {
 		PersistenceService service = (PersistenceService) HABminApplication.getPersistenceServices().get(serviceName);
+
+		long timerStart = System.currentTimeMillis();
+
 		if (service == null) {
 			logger.debug("Persistence service not found '{}'.", serviceName);
 			throw new WebApplicationException(404);
@@ -357,13 +362,8 @@ public class PersistenceResource {
 			dateTimeBegin = new Date(dateTimeEnd.getTime() - 86400000);
 
 		FilterCriteria filter = new FilterCriteria();
-		filter.setBeginDate(dateTimeBegin);
-		filter.setEndDate(dateTimeEnd);
-		filter.setItemName(item.getName());
-		filter.setOrdering(Ordering.ASCENDING);
-
-		Iterable<HistoricItem> result = qService.query(filter);
-		Iterator<HistoricItem> it = result.iterator();
+		Iterable<HistoricItem> result;
+		org.openhab.core.types.State state = null;
 
 		Long quantity = 0l;
 		double average = 0;
@@ -377,14 +377,53 @@ public class PersistenceResource {
 
 		bean.name = item.getName();
 
-		// Iterate through the data
-		while (it.hasNext()) {
-			HistoricItem historicItem = it.next();
-			State state = historicItem.getState();
+		// First, get the value at the start time.
+		// This is necessary for values that don't change often otherwise data
+		// will start
+		// after the start of the graph (or not at all if there's no change
+		// during the graph period)
+		filter = new FilterCriteria();
+		filter.setEndDate(dateTimeBegin);
+		filter.setItemName(item.getName());
+		filter.setPageSize(1);
+		filter.setOrdering(Ordering.DESCENDING);
+		result = qService.query(filter);
+		if (result.iterator().hasNext()) {
+			HistoricItem historicItem = result.iterator().next();
+
+			state = historicItem.getState();
 			if (state instanceof DecimalType) {
 				DecimalType value = (DecimalType) state;
 
-				bean.addData(Long.toString(historicItem.getTimestamp().getTime()), value.toString());
+				bean.addData(dateTimeBegin.getTime(), value.toString());
+
+				average += value.doubleValue();
+				quantity++;
+
+				minimum = value;
+				timeMinimum = historicItem.getTimestamp();
+
+				maximum = value;
+				timeMaximum = historicItem.getTimestamp();
+			}
+		}
+
+		filter.setBeginDate(dateTimeBegin);
+		filter.setEndDate(dateTimeEnd);
+		filter.setOrdering(Ordering.ASCENDING);
+		filter.setPageSize(Integer.MAX_VALUE);
+		
+		result = qService.query(filter);
+		Iterator<HistoricItem> it = result.iterator();
+
+		// Iterate through the data
+		while (it.hasNext()) {
+			HistoricItem historicItem = it.next();
+			state = historicItem.getState();
+			if (state instanceof DecimalType) {
+				DecimalType value = (DecimalType) state;
+
+				bean.addData(historicItem.getTimestamp().getTime(), value.toString());
 
 				average += value.doubleValue();
 				quantity++;
@@ -399,6 +438,16 @@ public class PersistenceResource {
 					timeMaximum = historicItem.getTimestamp();
 				}
 			}
+		}
+
+		// Add the last value again at the end time
+		if (state instanceof DecimalType) {
+			DecimalType value = (DecimalType) state;
+
+			bean.addData(dateTimeEnd.getTime(), value.toString());
+
+			average += value.doubleValue();
+			quantity++;
 		}
 
 		bean.datapoints = Long.toString(quantity);
@@ -416,6 +465,9 @@ public class PersistenceResource {
 		}
 
 		bean.type = item.getClass().getSimpleName();
+
+		long timerStop = System.currentTimeMillis();
+		logger.debug("CHART: returned {} rows in {}ms", bean.datapoints, timerStop - timerStart);
 
 		return bean;
 	}
