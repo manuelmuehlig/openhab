@@ -57,7 +57,7 @@ public class StatusResource {
 	@Produces({ MediaType.WILDCARD })
 	public Response getStatus(@Context HttpHeaders headers, @QueryParam("type") String type,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
-		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
@@ -74,5 +74,4 @@ public class StatusResource {
 
 		return status;
 	}
-
 }

@@ -60,7 +60,7 @@ public class ZWaveConfigResource {
     		@QueryParam("type") String type,
     		@PathParam("domain") String domain,
     		@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
-		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", new String[] { uriInfo.getPath(), type });
+		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if(responseType!=null) {
@@ -88,7 +88,7 @@ public class ZWaveConfigResource {
     		@QueryParam("type") String type,
     		@PathParam("domain") String domain,
     		@QueryParam("jsoncallback") @DefaultValue("callback") String callback, String action) {
-		logger.debug("Received HTTP PUT request at '{}' for media type '{}'.", new String[] { uriInfo.getPath(), type });
+		logger.trace("Received HTTP PUT request at '{}'.", uriInfo.getPath());
 
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if(responseType!=null) {
@@ -118,7 +118,7 @@ public class ZWaveConfigResource {
     		@QueryParam("type") String type,
     		@PathParam("domain") String domain,
     		@QueryParam("jsoncallback") @DefaultValue("callback") String callback, String set) {
-		logger.debug("Received HTTP PUT request at '{}' for media type '{}'.", new String[] { uriInfo.getPath(), type });
+		logger.trace("Received HTTP PUT request at '{}'.", uriInfo.getPath());
 
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if(responseType!=null) {

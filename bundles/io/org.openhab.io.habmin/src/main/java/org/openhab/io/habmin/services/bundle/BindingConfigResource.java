@@ -86,7 +86,7 @@ public class BindingConfigResource {
 	@Produces({ MediaType.WILDCARD })
 	public Response getBindings(@Context HttpHeaders headers, @QueryParam("type") String type,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
-		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
@@ -105,7 +105,7 @@ public class BindingConfigResource {
 	public Response getBindingData(@Context HttpHeaders headers,
 			@PathParam("bindingname") String bindingname, @QueryParam("type") String type,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
-		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
 			final String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 			if (responseType != null) {
@@ -125,7 +125,7 @@ public class BindingConfigResource {
 	public Response putBindingData(@Context HttpHeaders headers,
 			@PathParam("bindingname") String bindingname, @QueryParam("type") String type,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, BindingConfigListBean bindingData) {
-		logger.debug("Received HTTP PUT request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+		logger.trace("Received HTTP PUT request at '{}'.", uriInfo.getPath());
 
 			final String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 			if (responseType != null) {

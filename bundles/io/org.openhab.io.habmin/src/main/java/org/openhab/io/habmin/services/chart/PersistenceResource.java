@@ -101,7 +101,7 @@ public class PersistenceResource {
 	@Produces({ MediaType.WILDCARD })
 	public Response httpGetPersistenceServices(@Context HttpHeaders headers, @QueryParam("type") String type,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
-		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
@@ -118,7 +118,7 @@ public class PersistenceResource {
 	@Produces({ MediaType.WILDCARD })
 	public Response httpGetPersistenceItems(@Context HttpHeaders headers, @QueryParam("type") String type,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
-		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
@@ -135,7 +135,7 @@ public class PersistenceResource {
 	@Produces({ MediaType.WILDCARD })
 	public Response httpGetPersistenceCharts(@Context HttpHeaders headers, @QueryParam("type") String type,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
-		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
@@ -152,7 +152,7 @@ public class PersistenceResource {
 	@Produces({ MediaType.WILDCARD })
 	public Response httpPostPersistenceCharts(@Context HttpHeaders headers, @QueryParam("type") String type,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, ChartConfigBean chart) {
-		logger.debug("Received HTTP POST request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+		logger.trace("Received HTTP POST request at '{}'.", uriInfo.getPath());
 
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
@@ -170,7 +170,7 @@ public class PersistenceResource {
 	public Response httpPutPersistenceCharts(@Context HttpHeaders headers, @QueryParam("type") String type,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback,
 			@PathParam("chartid") Integer chartId, ChartConfigBean chart) {
-		logger.debug("Received HTTP PUT request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+		logger.trace("Received HTTP PUT request at '{}'.", uriInfo.getPath());
 
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
@@ -187,7 +187,7 @@ public class PersistenceResource {
 	@Produces({ MediaType.WILDCARD })
 	public Response httpDeletePersistenceCharts(@Context HttpHeaders headers, @QueryParam("type") String type,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, @PathParam("chartid") Integer chartId) {
-		logger.debug("Received HTTP PUT request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+		logger.trace("Received HTTP DELETE request at '{}'.", uriInfo.getPath());
 
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
@@ -204,7 +204,7 @@ public class PersistenceResource {
 	@Produces({ MediaType.WILDCARD })
 	public Response httpGetPersistenceCharts(@Context HttpHeaders headers, @QueryParam("type") String type,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, @PathParam("chartid") Integer chartId) {
-		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
@@ -224,7 +224,7 @@ public class PersistenceResource {
 			@QueryParam("starttime") String startTime, @QueryParam("endtime") String endTime,
 			@QueryParam("page") long pageNumber, @QueryParam("pagelength") long pageLength,
 			@QueryParam("type") String type, @QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
-		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
 		final String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
