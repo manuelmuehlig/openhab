@@ -12,9 +12,11 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -127,7 +129,7 @@ public class ItemModelHelper {
 			config += "\t\"" + label.getLabelString() + "\"";
 		}
 
-		if (item.icon != null)
+		if (item.icon != null && !item.icon.isEmpty())
 			config += "\t<" + item.icon + ">";
 
 		if (item.groups != null) {
@@ -184,10 +186,13 @@ public class ItemModelHelper {
 		try {
 			boolean itemSaved = deleteItem;
 
-			FileWriter fw = null;
-			fw = new FileWriter(newName, false);
-			BufferedWriter out = new BufferedWriter(fw);
+//			FileWriter fw = null;
+//			fw = new FileWriter(newName, false);
+//			BufferedWriter out = new BufferedWriter(fw);
 
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(newName),"UTF-8"));
+			
+			
 			// Are there any items in this model?
 			if (items != null) {
 				// Loop through all items in the model and write them to the new
@@ -213,7 +218,7 @@ public class ItemModelHelper {
 				out.write(getItemConfigString(itemUpdate) + "\r\n");
 
 			out.close();
-			fw.close();
+//			fw.close();
 
 			// Rename the files.
 			File bakFile = new File(bakName);
