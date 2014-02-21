@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
@@ -258,6 +257,9 @@ public class ItemModelHelper {
 	 */
 	public List<ItemConfigBean> readItemModel(ItemModel items, String model) {
 		List<ItemConfigBean> beanList = new ArrayList<ItemConfigBean>();
+
+		if(items == null)
+			return beanList;
 
 		EList<ModelItem> modelList = items.getItems();
 		for (ModelItem item : modelList) {
