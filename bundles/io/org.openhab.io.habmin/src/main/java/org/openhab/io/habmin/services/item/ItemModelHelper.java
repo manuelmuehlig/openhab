@@ -185,13 +185,8 @@ public class ItemModelHelper {
 		try {
 			boolean itemSaved = deleteItem;
 
-//			FileWriter fw = null;
-//			fw = new FileWriter(newName, false);
-//			BufferedWriter out = new BufferedWriter(fw);
-
 			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(newName),"UTF-8"));
-			
-			
+	
 			// Are there any items in this model?
 			if (items != null) {
 				// Loop through all items in the model and write them to the new

@@ -12,9 +12,11 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,9 +76,7 @@ public class PersistenceModelHelper {
 		try {
 			// boolean itemSaved = deleteItem;
 
-			FileWriter fw = null;
-			fw = new FileWriter(newName, false);
-			BufferedWriter out = new BufferedWriter(fw);
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(newName),"UTF-8"));
 
 			out.write("// Persistence strategies have a name and a definition and are referred to in the \"Items\" section\r\n");
 
@@ -173,7 +173,6 @@ public class PersistenceModelHelper {
 
 			out.write("\r\n}\r\n");
 			out.close();
-			fw.close();
 
 			// Rename the files.
 			File bakFile = new File(bakName);

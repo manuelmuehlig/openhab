@@ -12,8 +12,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -432,8 +434,7 @@ public class BindingConfigResource {
 			}
 			
 			// Everything is updated - just write the file to disk!
-			FileWriter fw = new FileWriter(configFile, false);
-			BufferedWriter out = new BufferedWriter(fw);
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(configFile),"UTF-8"));
 
 			IOUtils.writeLines(linesIn, "\r\n", out);
 
@@ -445,5 +446,4 @@ public class BindingConfigResource {
 
 		return getBinding(uriPath, bundle);
 	}
-
 }

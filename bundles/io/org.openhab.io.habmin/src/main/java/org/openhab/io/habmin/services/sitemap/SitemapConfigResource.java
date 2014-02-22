@@ -12,9 +12,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -275,9 +276,9 @@ public class SitemapConfigResource {
 			File file = new File(fname);
 			if (!file.exists()) {
 				// Create the new sitemap
-				FileWriter fw;
-				fw = new FileWriter(file, false);
-				BufferedWriter out = new BufferedWriter(fw);
+				file.createNewFile();
+
+				BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"UTF-8"));
 
 				IOUtils.writeLines(sitemapData, "\r\n", out);
 
@@ -483,14 +484,17 @@ public class SitemapConfigResource {
 		if (sitemap.widgets == null)
 			return null;
 
-		// Check if the file exists
-		File file = new File(newName);
 		// Create the new sitemap
-		FileWriter fw;
 		try {
-			fw = new FileWriter(file, false);
-			BufferedWriter out = new BufferedWriter(fw);
+			// Check if the file exists
+			File file = new File(newName);
+			if (!file.exists()) {
+				// Create the new sitemap
+				file.createNewFile();
+			}
 
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"UTF-8"));
+		
 			WidgetConfigBean main = sitemap.widgets.get(0);
 
 			out.write("sitemap " + sitemapname);
