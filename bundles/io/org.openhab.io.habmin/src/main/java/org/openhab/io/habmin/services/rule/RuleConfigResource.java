@@ -12,9 +12,11 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -520,9 +522,7 @@ public class RuleConfigResource {
 
 		// Load the HABmin database so we have all the rules for all items
 		try {
-			FileWriter fw = null;
-			fw = new FileWriter(newName, false);
-			BufferedWriter out = new BufferedWriter(fw);
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(newName),"UTF-8"));
 
 			List<HabminItemBean> items = HabminConfigDatabase.getItems();
 
@@ -559,7 +559,6 @@ public class RuleConfigResource {
 			out.write("\r\n");
 
 			out.close();
-			fw.close();
 
 			// Rename the files.
 			File bakFile = new File(bakName);
@@ -785,10 +784,10 @@ public class RuleConfigResource {
 		String bakName = "configurations/rules/" + modelName + RULE_FILEEXT + ".bak";
 
         try {
-          File file = new File(newName);
-          BufferedWriter output = new BufferedWriter(new FileWriter(file));
-          output.write(rule.source);
-          output.close();
+          BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(newName),"UTF-8"));
+
+          out.write(rule.source);
+          out.close();
         } catch ( IOException e ) {
         	// TODO: update
            e.printStackTrace();
