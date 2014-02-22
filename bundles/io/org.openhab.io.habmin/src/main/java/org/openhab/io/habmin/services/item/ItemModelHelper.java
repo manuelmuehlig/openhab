@@ -77,7 +77,7 @@ public class ItemModelHelper {
 		if (item.getLabel() != null)
 			config += "\t\"" + item.getLabel() + "\"";
 
-		if (item.getIcon() != null)
+		if (item.getIcon() != null && !item.getIcon().isEmpty())
 			config += "\t<" + item.getIcon() + ">";
 
 		if (item.getGroups() != null) {
