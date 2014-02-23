@@ -165,7 +165,10 @@ public class SitemapConfigResource {
 			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
 					saveSitemap(sitemapname, uriInfo.getBaseUriBuilder().build(), sitemap), callback) : saveSitemap(
 					sitemapname, uriInfo.getBaseUriBuilder().build(), sitemap);
-			return Response.ok(responseObject, responseType).build();
+			if(responseObject == null)
+				return Response.notAcceptable(null).build();
+			else
+				return Response.ok(responseObject, responseType).build();
 		} else {
 			return Response.notAcceptable(null).build();
 		}
@@ -235,7 +238,9 @@ public class SitemapConfigResource {
 		File bakFile = new File(bakName);
 
 		// Rename the file
-		orgFile.renameTo(bakFile);
+		if(orgFile.renameTo(bakFile) == false) {
+			logger.error("Error renaming sitemap files: {} to {}", orgFile.getName(), bakFile.getName());			
+		}
 
 		// Update the model repository
 		ModelRepository repo = HABminApplication.getModelRepository();
@@ -519,14 +524,22 @@ public class SitemapConfigResource {
 		File newFile = new File(newName);
 
 		// Delete any existing .bak file
-		if (bakFile.exists())
-			bakFile.delete();
+		if (bakFile.exists()) {
+			if(bakFile.delete() == false) {
+				logger.error("Error deleting sitemap file: {}", bakFile.getName());				
+			}
+		}
 
 		// Rename the existing item file to backup
-		orgFile.renameTo(bakFile);
+		if(orgFile.renameTo(bakFile) == false) {
+			logger.error("Error renaming sitemap files: {} to {}", orgFile.getName(), bakFile.getName());			
+		}
 
 		// Rename the new file to the item file
-		newFile.renameTo(orgFile);
+		if(newFile.renameTo(orgFile) == false) {
+			logger.error("Error renaming sitemap files: {} to {}", newFile.getName(), orgFile.getName());
+			return null;
+		}
 
 		// Update the model repository
 		ModelRepository repo = HABminApplication.getModelRepository();
@@ -536,7 +549,7 @@ public class SitemapConfigResource {
 				inFile = new FileInputStream(newName);
 				repo.addOrRefreshModel(sitemapname + SITEMAP_FILEEXT, inFile);
 			} catch (FileNotFoundException e) {
-				logger.debug("Error refreshing new sitemap " + sitemapname + ":", e);
+				logger.error("Error refreshing new sitemap " + sitemapname + ":", e);
 			}
 		}
 
