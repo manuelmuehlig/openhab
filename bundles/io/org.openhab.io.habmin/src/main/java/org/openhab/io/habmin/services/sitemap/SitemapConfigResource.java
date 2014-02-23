@@ -546,7 +546,7 @@ public class SitemapConfigResource {
 		if (repo != null) {
 			InputStream inFile;
 			try {
-				inFile = new FileInputStream(newName);
+				inFile = new FileInputStream(orgFile);
 				repo.addOrRefreshModel(sitemapname + SITEMAP_FILEEXT, inFile);
 			} catch (FileNotFoundException e) {
 				logger.error("Error refreshing new sitemap " + sitemapname + ":", e);
