@@ -528,6 +528,10 @@ public class ZWaveConfiguration implements OpenHABConfigurationService, ZWaveEve
 				record.value = Integer.toString(wakeupCommandClass.getInterval());
 				records.add(record);
 
+				record = new OpenHABConfigurationRecord(domain, "Target", "Target Node", true);
+				record.value = Integer.toString(wakeupCommandClass.getTargetNodeId());
+				records.add(record);
+
 				record = new OpenHABConfigurationRecord(domain, "Minimum", "Minimum Interval", true);
 				record.value = Integer.toString(wakeupCommandClass.getMinInterval());
 				records.add(record);
