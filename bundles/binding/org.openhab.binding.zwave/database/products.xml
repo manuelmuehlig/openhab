@@ -52,6 +52,15 @@
 		</Product>
 		<Product>
 			<Reference>
+				<Type>0101</Type>
+				<Id>0001</Id>
+			</Reference>
+			<Model>SP103</Model>
+			<Label lang="en">Motion Detector</Label>
+			<ConfigFile>everspring/sp103.xml</ConfigFile>
+		</Product>
+		<Product>
+			<Reference>
 				<Type>0001</Type>
 				<Id>0002</Id>
 			</Reference>
@@ -109,6 +118,15 @@
 			<Model>45606</Model>
 			<Label lang="en">2-Way Dimmer Switch</Label>
 			<ConfigFile>ge/dimmer.xml</ConfigFile>
+		</Product>
+		<Product>
+			<Reference>
+				<Type>5250</Type>
+				<Id>3030</Id>
+			</Reference>
+			<Model>45603</Model>
+			<Label lang="en">Fluorescent Light &amp; Appliance Module</Label>
+			<ConfigFile>ge/relay.xml</ConfigFile>
 		</Product>
 	</Manufacturer>
 	<Manufacturer>
@@ -309,6 +327,39 @@
 		</Product>
 		<Product>
 			<Reference>
+				<Type>0400</Type>
+				<Id>0104</Id>
+			</Reference>
+			<Reference>
+				<Type>0400</Type>
+				<Id>0105</Id>
+			</Reference>
+			<Reference>
+				<Type>0400</Type>
+				<Id>0106</Id>
+			</Reference>
+			<Reference>
+				<Type>0400</Type>
+				<Id>0107</Id>
+			</Reference>
+			<Reference>
+				<Type>0400</Type>
+				<Id>0108</Id>
+			</Reference>
+			<Reference>
+				<Type>0400</Type>
+				<Id>0109</Id>
+			</Reference>
+			<Reference>
+				<Type>0400</Type>
+				<Id>100A</Id>
+			</Reference>
+			<Model>FGS211</Model>
+			<Label lang="en">Relay Switch 1x3kW</Label>
+			<ConfigFile>fibaro/fgs211.xml</ConfigFile>
+		</Product>
+		<Product>
+			<Reference>
 				<Type>0200</Type>
 				<Id>0104</Id>
 			</Reference>
@@ -365,11 +416,24 @@
 		<Product>
 			<Reference>
 				<Type>0B00</Type>
+				<Id>1001</Id>
+			</Reference>
+			<Reference>
+				<Type>0B00</Type>
 				<Id>3001</Id>
 			</Reference>
 			<Model>FGFS101</Model>
 			<Label lang="en">Flood Sensor</Label>
 			<ConfigFile>fibaro/fgfs101.xml</ConfigFile>
+		</Product>
+		<Product>
+			<Reference>
+				<Type>0C00</Type>
+				<Id>1000</Id>
+			</Reference>
+			<Model>FGSS101</Model>
+			<Label lang="en">Smoke Sensor</Label>
+			<ConfigFile>fibaro/fgss101.xml</ConfigFile>
 		</Product>
 		<Product>
 			<Reference>
