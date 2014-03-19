@@ -8,6 +8,7 @@
  */
 package org.openhab.io.habmin.services.rule;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -24,6 +25,9 @@ public class RuleVariableBean {
 	public String name;
 	public String type;
 	public String label;
+	
+	public String itemtype;
+
 	public String value;
 	public String description;
 	public String scope;

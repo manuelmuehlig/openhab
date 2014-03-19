@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
@@ -39,10 +38,12 @@ import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.openhab.core.items.Item;
+import org.openhab.core.items.ItemNotFoundException;
+import org.openhab.core.types.PrimitiveType;
+import org.openhab.core.types.State;
 import org.openhab.io.habmin.HABminApplication;
 import org.openhab.io.habmin.internal.resources.MediaTypeHelper;
-import org.openhab.io.habmin.repository.HabminConfigDatabase;
-import org.openhab.io.habmin.repository.HabminItemBean;
 import org.openhab.io.habmin.services.item.ItemConfigBean;
 import org.openhab.io.habmin.services.item.ItemModelHelper;
 import org.openhab.model.core.ModelRepository;
@@ -85,6 +86,8 @@ public class RuleConfigResource {
 
 	private static final Logger logger = LoggerFactory.getLogger(RuleConfigResource.class);
 
+	private static String RULE_FILE = "rules.xml";
+
 	private final String HABMIN_RULES = "habmin-autorules";
 	private final String HABMIN_RULES_LIBRARY = "rules_library.xml";
 
@@ -107,6 +110,24 @@ public class RuleConfigResource {
 		if (responseType != null) {
 			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
 					getRuleTemplateList(null), callback) : getRuleTemplateList(null);
+			return Response.ok(responseObject, responseType).build();
+		} else {
+			return Response.notAcceptable(null).build();
+		}
+	}
+
+	@GET
+	@Path("/library/list/{itemname: .+}")
+	@Produces({ MediaType.WILDCARD })
+	public Response httpGetTemplateTypeList(@Context HttpHeaders headers, @QueryParam("type") String type,
+			@PathParam("itemname") String itemName,
+			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
+		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
+
+		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
+		if (responseType != null) {
+			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
+					getRuleTemplateList(itemName), callback) : getRuleTemplateList(itemName);
 			return Response.ok(responseObject, responseType).build();
 		} else {
 			return Response.notAcceptable(null).build();
@@ -255,26 +276,61 @@ public class RuleConfigResource {
 		}
 	}
 
-	private RuleListBean getRuleTemplateList(String type) {
-		// List<RuleTemplateBean> beanList = new ArrayList<RuleTemplateBean>();
+	private RuleListBean getRuleTemplateList(String itemName) {
+		Item item = null;
+		try {
+			item = HABminApplication.getItemUIRegistry().getItem(itemName);
+		} catch (ItemNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(item == null) {
+			return null;
+		}
 
 		FileInputStream fin;
 		try {
 			fin = new FileInputStream("webapps/habmin/openhab/" + HABMIN_RULES_LIBRARY);
 
-			// for (Map.Entry<String, PersistenceService> service :
-			// RESTApplication.getPersistenceServices().entrySet()) {
-			// RuleTemplateBean ruleBean = new RuleTemplateBean();
-
+			// Load the rule library
 			XStream xstream = new XStream(new StaxDriver());
 			xstream.alias("rules", RuleListBean.class);
+			xstream.alias("variable", RuleVariableBean.class);
 			xstream.processAnnotations(RuleListBean.class);
+			xstream.processAnnotations(RuleVariableBean.class);
 
-			RuleListBean newRules = (RuleListBean) xstream.fromXML(fin);
-
+			RuleListBean ruleList = (RuleListBean) xstream.fromXML(fin);
 			fin.close();
 
-			return newRules;
+			// If itemName is specified, then we only return rules applicable to this type
+			if(itemName != null) {
+				List<RuleTemplateBean> resultList = new ArrayList<RuleTemplateBean>();
+				
+				// Loop through all rules and filter out any that aren't applicable
+				// for this item type
+				for (RuleTemplateBean rule : ruleList.rule) {
+					boolean applicable = false;
+					if (rule.applicableType != null) {
+						for (String type : rule.applicableType) {
+							for(Class<? extends State> itemType : item.getAcceptedDataTypes()) {
+								String[] splitter = itemType.getName().split("\\.");
+								if(type.equalsIgnoreCase(splitter[splitter.length-1])) {
+									applicable = true;
+									break;
+								}
+							}
+						}
+					}
+					if (applicable == true) {
+						resultList.add(rule);
+					}
+				}
+				
+				ruleList.rule.clear();
+				ruleList.rule.addAll(resultList);
+			}
+			
+			return ruleList;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -366,71 +422,32 @@ public class RuleConfigResource {
 	 * @return returns a list of rules applicable and configured for this item
 	 */
 	private RuleListBean getRuleTemplateItemList(String itemName) {
-		// List<RuleTemplateBean> beanList = new ArrayList<RuleTemplateBean>();
+		RuleListBean newRules = getRuleTemplateList(itemName);
+		if(newRules == null)
+			return null;
 
-		// Get the item from the itemName
-		// This is used so we can get the type, and filter only relevant rules
-
-		FileInputStream fin;
-		try {
-			fin = new FileInputStream("webapps/habmin/openhab/" + HABMIN_RULES_LIBRARY);
-
-			XStream xstream = new XStream(new StaxDriver());
-			xstream.alias("rules", RuleListBean.class);
-			xstream.processAnnotations(RuleListBean.class);
-
-			RuleListBean newRules = (RuleListBean) xstream.fromXML(fin);
-			fin.close();
-
-			newRules.item = itemName;
-
-			// Loop through all rules and filter out any that aren't applicable
-			// for this item
-			for (RuleTemplateBean rule : newRules.rule) {
-				boolean delete = false;
-				if (rule.itemType != null) {
-					for (String type : rule.itemType) {
-						// if(type)
+		// Loop through the rules and add any relevant config from the item
+		// config database
+		for (RuleTemplateBean rulelist : newRules.rule) {
+			RuleTemplateBean rule = getItemRule(itemName, rulelist.name);
+			if (rule != null) {
+				for (RuleVariableBean vars : rule.variable) {
+					// Correlate the values
+					for (RuleVariableBean x : rulelist.variable) {
+						if (x.name.equals(vars.name)) {
+							x.value = vars.value;
+							break;
+						}
 					}
-				}
-				if (delete == true) {
-					// Remove this from the list
-					newRules.rule.remove(rule);
-				}
-			}
 
-			// Loop through the rules and add any relevant config from the item
-			// config database
-			for (RuleTemplateBean rulelist : newRules.rule) {
-				RuleTemplateBean rule = HabminConfigDatabase.getItemRule(itemName, rulelist.name);
-				if (rule != null) {
-					for (RuleVariableBean vars : rule.variable) {
-						// Correlate the values
-						for (RuleVariableBean x : rulelist.variable) {
-							if (x.name.equals(vars.name)) {
-								x.value = vars.value;
-								break;
-							}
-						}
-
-						if (vars.name.equals("DerivedItem")) {
-							rulelist.linkeditem = vars.value;
-						}
+					if (vars.name.equals("DerivedItem")) {
+						rulelist.linkeditem = vars.value;
 					}
 				}
 			}
-
-			return newRules;
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-
-			return null;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
 		}
+
+		return newRules;
 	}
 
 	private RuleTemplateBean getRuleTemplate(String ruleName) {
@@ -524,24 +541,19 @@ public class RuleConfigResource {
 		try {
 			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(newName),"UTF-8"));
 
-			List<HabminItemBean> items = HabminConfigDatabase.getItems();
+			RuleListBean rules = loadRules();
 
-			// Loop through the items
-			for (HabminItemBean item : items) {
-				if (item.rules != null) {
-					// And now loop through all the rules for this item
-					for (RuleTemplateBean rule : item.rules) {
-						RuleTemplateBean template = getRuleTemplate(rule.name);
-						if (template.imports != null) {
-							for (String i : template.imports) {
-								if (importList.indexOf(i) == -1)
-									importList.add(i);
-							}
-						}
-
-						ruleList.add(writeRule(item.name, rule.variable, template));
+			// Loop through all the rules for this item
+			for (RuleTemplateBean rule : rules.rule) {
+				RuleTemplateBean template = getRuleTemplate(rule.name);
+				if (template.imports != null) {
+					for (String i : template.imports) {
+						if (importList.indexOf(i) == -1)
+							importList.add(i);
 					}
 				}
+
+				ruleList.add(writeRule(rule.item, rule.variable, template));
 			}
 
 			// Write a warning!
@@ -603,11 +615,11 @@ public class RuleConfigResource {
 	 */
 	private RuleListBean postRule(String itemName, String ruleName, RuleTemplateBean ruleData) {
 		// Add the rule into the database
-		HabminConfigDatabase.updateItemRule(itemName, ruleData);
+		updateItemRule(itemName, ruleData);
 
 		// Check if there is an item to create
 		for (RuleVariableBean variable : ruleData.variable) {
-			if (variable.name.equals("DerivedItem")) {
+			if (!variable.itemtype.isEmpty()) {
 				// Create a new item
 				ItemModelHelper itemHelper = new ItemModelHelper();
 
@@ -633,12 +645,7 @@ public class RuleConfigResource {
 					item.units = itemBean.units;
 					item.translateRule = itemBean.translateRule;
 					item.translateService = itemBean.translateService;
-					if (variable.type != null)
-						item.type = variable.type;
-					else if (itemBean.type.equals("Group"))
-						item.type = "Number";
-					else
-						item.type = itemBean.type;
+					item.type = variable.itemtype;
 
 					// Save
 					itemHelper.updateItem(item.name, item, false);
@@ -663,7 +670,7 @@ public class RuleConfigResource {
 	 * @return list of rules configured for the item
 	 */
 	private RuleListBean deleteRule(String itemName, String ruleName) {
-		HabminConfigDatabase.removeItemRule(itemName, ruleName);
+		removeItemRule(itemName, ruleName);
 
 		// Update the rules for openHAB
 		writeRules();
@@ -681,14 +688,14 @@ public class RuleConfigResource {
 	 * @return
 	 */
 	private RuleListBean putItemRules(String itemName, RuleListBean ruleData) {
-		// Loop through all the rules in the data
+		// Loop through all the rules
 		for (RuleTemplateBean rule : ruleData.rule) {
 			// Make sure there are variables in this rule
 			if (rule.variable == null)
 				continue;
 
 			// Get the rule from the config database
-			RuleTemplateBean bean = HabminConfigDatabase.getItemRule(itemName, rule.name);
+			RuleTemplateBean bean = getItemRule(itemName, rule.name);
 			if (bean == null)
 				continue;
 
@@ -707,8 +714,9 @@ public class RuleConfigResource {
 			}
 		}
 
+		RuleListBean ruleList = new RuleListBean();
 		// Write the config database
-		HabminConfigDatabase.saveDatabase();
+		saveRules(ruleList);
 
 		// Update the rules for openHAB
 		writeRules();
@@ -718,7 +726,7 @@ public class RuleConfigResource {
 	}
 
 	private RuleListBean getRuleList() {
-		List<HabminItemBean> items = HabminConfigDatabase.getItems();
+		RuleListBean rules = loadRules();
 
 		FileInputStream fin;
 		try {
@@ -734,25 +742,19 @@ public class RuleConfigResource {
 			List<RuleTemplateBean> itemRuleList = new ArrayList<RuleTemplateBean>();
 
 			// Loop through the items
-			for (HabminItemBean item : items) {
-				if (item.rules != null) {
-					// And now loop through all the rules for this item
-					for (RuleTemplateBean rule : item.rules) {
-						// And finally find the template for this rule
-						for (RuleTemplateBean template : ruleTemplates.rule) {
-							if (rule.name.equals(template.name)) {
-								//
-								RuleTemplateBean newRule = new RuleTemplateBean();
-								newRule.item = item.name;
-								newRule.label = template.label;
-								newRule.name = template.name;
-								newRule.description = template.description;
+			for (RuleTemplateBean rule : rules.rule) {
+				// And finally find the template for this rule
+				for (RuleTemplateBean template : ruleTemplates.rule) {
+					if (rule.name.equals(template.name)) {
+						//
+						RuleTemplateBean newRule = new RuleTemplateBean();
+						newRule.item = rule.item;
+						newRule.label = template.label;
+						newRule.name = template.name;
+						newRule.description = template.description;
 
-								// Add the new rule to the list
-								itemRuleList.add(newRule);
-							}
-						}
-
+						// Add the new rule to the list
+						itemRuleList.add(newRule);
 					}
 				}
 			}
@@ -850,5 +852,155 @@ public class RuleConfigResource {
 		}
 
 		return model;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	synchronized public boolean removeItemRule(String itemName, String ruleName) {
+		logger.debug("HABmin database: Removing rule {}", ruleName);
+
+		RuleListBean rules = loadRules();
+		if(rules == null) {
+			return false;
+		}
+
+		// Are there any rules?
+		if(rules.rule == null)
+			return false;
+
+		// See if the rule exists
+		for(RuleTemplateBean iRule : rules.rule) {
+			if(iRule.name.equals(ruleName)) {
+				// Remove from the list
+				rules.rule.remove(iRule);
+				break;
+			}
+		}
+
+		// Save the database to disk
+		saveRules(rules);
+		
+		return true;
+	}
+
+	synchronized public RuleTemplateBean getItemRule(String itemName, String ruleName) {
+/*		HabminItemBean item = xxx.getItemConfig(itemName);
+		if(item == null) {
+			return null;
+		}
+
+		// See if the rule already exists
+		for(RuleTemplateBean iRule : item.rules) {
+			if(iRule.name.equals(ruleName)) {
+				return iRule;
+			}
+		}
+		*/
+		return null;
+	}
+
+	synchronized static public boolean updateItemRule(String itemName, RuleTemplateBean rule) {
+		logger.debug("HABmin database: Adding rule {}", rule.name);
+/*
+		HabminItemBean item = xxx.getItemConfig(itemName);
+		if(item == null) {
+			return false;
+		}
+
+		// Make sure rules is initialised
+		if(item.rules == null)
+			item.rules = new ArrayList<RuleTemplateBean>();
+		if(item.rules == null)
+			return false;
+
+		// See if the rule already exists
+		for(RuleTemplateBean iRule : item.rules) {
+			if(iRule.name.equals(rule.name)) {
+				// Remove from the list
+				item.rules.remove(iRule);
+				break;
+			}
+		}
+
+		// We now know the rule isn't in the list so it can simply be added
+		item.rules.add(rule);
+
+		// Save the database to disk
+//		saveRules();
+		*/
+		return true;
+	}
+
+	private boolean saveRules(RuleListBean rule) {
+		File folder = new File(HABminApplication.HABMIN_DATA_DIR);
+		// create path for serialization.
+		if (!folder.exists()) {
+			logger.debug("Creating directory {}", HABminApplication.HABMIN_DATA_DIR);
+			folder.mkdirs();
+		}
+
+		FileOutputStream fout;
+		try {
+			long timerStart = System.currentTimeMillis();
+
+			fout = new FileOutputStream(HABminApplication.HABMIN_DATA_DIR + RULE_FILE);
+
+			XStream xstream = new XStream(new StaxDriver());
+			xstream.alias("rules", RuleListBean.class);
+			xstream.processAnnotations(RuleListBean.class);
+
+			xstream.toXML(rule, fout);
+
+			fout.close();
+
+			long timerStop = System.currentTimeMillis();
+			logger.debug("Chart list saved in {}ms.", timerStop - timerStart);
+		} catch (FileNotFoundException e) {
+			logger.debug("Unable to open Rule list for SAVE - ", e);
+
+			return false;
+		} catch (IOException e) {
+			logger.debug("Unable to write Rule list for SAVE - ", e);
+
+			return false;
+		}
+
+		return true;
+	}
+
+	private RuleListBean loadRules() {
+		RuleListBean rules = null;
+
+		FileInputStream fin;
+		try {
+			long timerStart = System.currentTimeMillis();
+
+			fin = new FileInputStream(HABminApplication.HABMIN_DATA_DIR + RULE_FILE);
+
+			XStream xstream = new XStream(new StaxDriver());
+			xstream.alias("rules", RuleListBean.class);
+			xstream.processAnnotations(RuleListBean.class);
+
+			rules = (RuleListBean) xstream.fromXML(fin);
+
+			fin.close();
+
+			long timerStop = System.currentTimeMillis();
+			logger.debug("Charts loaded in {}ms.", timerStop - timerStart);
+
+		} catch (FileNotFoundException e) {
+			rules = new RuleListBean();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return rules;
 	}
 }

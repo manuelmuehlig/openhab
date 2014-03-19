@@ -35,8 +35,15 @@ public class RuleTemplateBean {
 	@XmlElement(name="type")
 	public String type;
 
+	@XmlElement(name="singleton")
+	public boolean singleton;
+
 	@XmlElement(name="description")
 	public String description;
+
+	@XmlElement(name="applicabletype")
+	@XStreamImplicit(itemFieldName="applicabletype")
+	public List<String> applicableType;
 
 	@XmlElement(name="itemtype")
 	@XStreamImplicit(itemFieldName="itemtype")

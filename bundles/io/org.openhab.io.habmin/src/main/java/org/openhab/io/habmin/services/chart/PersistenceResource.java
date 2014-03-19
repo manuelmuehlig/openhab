@@ -707,7 +707,7 @@ public class PersistenceResource {
 		return getPersistenceChartList();
 	}
 
-	private boolean saveCharts(ChartListBean interfaces) {
+	private boolean saveCharts(ChartListBean chart) {
 		File folder = new File(HABminApplication.HABMIN_DATA_DIR);
 		// create path for serialization.
 		if (!folder.exists()) {
@@ -728,7 +728,7 @@ public class PersistenceResource {
 			xstream.alias("axis", ChartAxisConfigBean.class);
 			xstream.processAnnotations(ChartListBean.class);
 
-			xstream.toXML(interfaces, fout);
+			xstream.toXML(chart, fout);
 
 			fout.close();
 
