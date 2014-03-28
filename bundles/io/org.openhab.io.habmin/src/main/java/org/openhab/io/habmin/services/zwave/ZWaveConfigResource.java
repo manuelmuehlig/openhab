@@ -100,7 +100,6 @@ public class ZWaveConfigResource {
 			cfg.doAction(domain, action);
 			
 			ConfigServiceListBean cfgList = new ConfigServiceListBean();
-			cfgList.records = cfg.getConfiguration(domain);
 
 	    	Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ?
 	    			new JSONWithPadding(cfgList, callback) : cfgList;
@@ -130,7 +129,6 @@ public class ZWaveConfigResource {
 			cfg.doSet(domain, set);
 			
 			ConfigServiceListBean cfgList = new ConfigServiceListBean();
-			cfgList.records = cfg.getConfiguration(domain);
 
 	    	Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ?
 	    			new JSONWithPadding(cfgList, callback) : cfgList;
@@ -139,5 +137,4 @@ public class ZWaveConfigResource {
 			return Response.notAcceptable(null).build();
 		}
     }
-
 }
