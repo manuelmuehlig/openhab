@@ -40,7 +40,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.openhab.core.items.Item;
 import org.openhab.core.items.ItemNotFoundException;
-import org.openhab.core.types.PrimitiveType;
 import org.openhab.core.types.State;
 import org.openhab.io.habmin.HABminApplication;
 import org.openhab.io.habmin.internal.resources.MediaTypeHelper;
@@ -100,7 +99,7 @@ public class RuleConfigResource {
 	UriInfo uriInfo;
 
 	@GET
-	@Path("/library/list")
+	@Path("/designer")
 	@Produces({ MediaType.WILDCARD })
 	public Response httpGetTemplateList(@Context HttpHeaders headers, @QueryParam("type") String type,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
@@ -124,14 +123,14 @@ public class RuleConfigResource {
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
 		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
 
-		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
+/*		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
 			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
 					getRuleTemplateList(itemName), callback) : getRuleTemplateList(itemName);
 			return Response.ok(responseObject, responseType).build();
-		} else {
+		} else {*/
 			return Response.notAcceptable(null).build();
-		}
+//		}
 	}
 
 	@GET
@@ -194,14 +193,14 @@ public class RuleConfigResource {
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
 		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
 
-		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
+/*		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
 			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
 					getRuleList(), callback) : getRuleList();
 			return Response.ok(responseObject, responseType).build();
-		} else {
+		} else {*/
 			return Response.notAcceptable(null).build();
-		}
+//		}
 	}
 
 	@GET
@@ -212,14 +211,14 @@ public class RuleConfigResource {
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
 		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
 
-		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
+/*		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
 			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
 					getRuleTemplateItemList(itemName), callback) : getRuleTemplateItemList(itemName);
 			return Response.ok(responseObject, responseType).build();
-		} else {
+		} else {*/
 			return Response.notAcceptable(null).build();
-		}
+//		}
 	}
 
 	@PUT
@@ -248,14 +247,14 @@ public class RuleConfigResource {
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, RuleTemplateBean ruleData) {
 		logger.debug("Received HTTP POST request at '{}' for media type '{}'.", uriInfo.getPath(), type);
 
-		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
+/*		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
 			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
 					postRule(itemName, ruleName, ruleData), callback) : postRule(itemName, ruleName, ruleData);
 			return Response.ok(responseObject, responseType).build();
-		} else {
+		} else {*/
 			return Response.notAcceptable(null).build();
-		}
+//		}
 	}
 
 	@DELETE
@@ -266,14 +265,14 @@ public class RuleConfigResource {
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
 		logger.debug("Received HTTP DELETE request at '{}' for media type '{}'.", uriInfo.getPath(), type);
 
-		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
+/*		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
 			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
 					deleteRule(itemName, ruleName), callback) : deleteRule(itemName, ruleName);
 			return Response.ok(responseObject, responseType).build();
-		} else {
+		} else {*/
 			return Response.notAcceptable(null).build();
-		}
+//		}
 	}
 
 	private RuleListBean getRuleTemplateList(String itemName) {
