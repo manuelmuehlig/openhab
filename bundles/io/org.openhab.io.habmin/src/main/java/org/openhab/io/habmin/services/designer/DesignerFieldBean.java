@@ -6,7 +6,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.openhab.io.habmin.services.rule;
+package org.openhab.io.habmin.services.designer;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -16,17 +16,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @since 1.5.0
  *
  */
-@XmlRootElement(name="block")
-public class RuleBlockBean {
+@XmlRootElement(name="field")
+public class DesignerFieldBean {
 	public String type;
-	
-	public Integer id;
-	
-	public Integer x;
-	public Integer y;
-	
-	public Boolean inline;
-	
-	public String mutation;
-	public String comment;
+	public String value;
 }

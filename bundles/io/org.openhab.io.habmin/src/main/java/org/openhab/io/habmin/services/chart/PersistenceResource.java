@@ -46,7 +46,6 @@ import org.openhab.core.persistence.FilterCriteria.Ordering;
 import org.openhab.core.persistence.HistoricItem;
 import org.openhab.core.persistence.PersistenceService;
 import org.openhab.core.persistence.QueryablePersistenceService;
-import org.openhab.core.types.State;
 
 import org.openhab.io.habmin.HABminApplication;
 import org.openhab.io.habmin.internal.resources.LabelSplitHelper;

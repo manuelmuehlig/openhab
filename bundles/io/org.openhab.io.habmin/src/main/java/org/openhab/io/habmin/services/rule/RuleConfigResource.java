@@ -99,23 +99,6 @@ public class RuleConfigResource {
 	UriInfo uriInfo;
 
 	@GET
-	@Path("/designer")
-	@Produces({ MediaType.WILDCARD })
-	public Response httpGetTemplateList(@Context HttpHeaders headers, @QueryParam("type") String type,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
-		logger.debug("Received HTTP GET request at '{}' for media type '{}'.", uriInfo.getPath(), type);
-
-		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
-		if (responseType != null) {
-			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
-					getRuleTemplateList(null), callback) : getRuleTemplateList(null);
-			return Response.ok(responseObject, responseType).build();
-		} else {
-			return Response.notAcceptable(null).build();
-		}
-	}
-
-	@GET
 	@Path("/library/list/{itemname: .+}")
 	@Produces({ MediaType.WILDCARD })
 	public Response httpGetTemplateTypeList(@Context HttpHeaders headers, @QueryParam("type") String type,
@@ -959,7 +942,7 @@ public class RuleConfigResource {
 			fout.close();
 
 			long timerStop = System.currentTimeMillis();
-			logger.debug("Chart list saved in {}ms.", timerStop - timerStart);
+			logger.debug("Rule list saved in {}ms.", timerStop - timerStart);
 		} catch (FileNotFoundException e) {
 			logger.debug("Unable to open Rule list for SAVE - ", e);
 

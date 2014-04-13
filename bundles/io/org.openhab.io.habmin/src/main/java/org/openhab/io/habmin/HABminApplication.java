@@ -24,6 +24,7 @@ import org.openhab.core.items.ItemRegistry;
 import org.openhab.core.persistence.PersistenceService;
 import org.openhab.io.habmin.services.bundle.BindingConfigResource;
 import org.openhab.io.habmin.services.chart.PersistenceResource;
+import org.openhab.io.habmin.services.designer.DesignerResource;
 import org.openhab.io.habmin.services.events.EventResource;
 import org.openhab.io.habmin.services.icon.ItemIconResource;
 import org.openhab.io.habmin.services.item.ItemConfigResource;
@@ -224,6 +225,7 @@ public class HABminApplication extends Application  {
         result.add(SitemapConfigResource.class);
         result.add(ItemIconResource.class);
         result.add(RuleConfigResource.class);
+        result.add(DesignerResource.class);
 
         result.add(EventResource.class);
         result.add(PersistenceResource.class);

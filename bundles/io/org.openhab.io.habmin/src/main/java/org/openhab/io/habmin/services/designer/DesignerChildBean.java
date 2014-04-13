@@ -6,31 +6,20 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.openhab.io.habmin.services.rule;
-
-import java.util.List;
+package org.openhab.io.habmin.services.designer;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * 
  * @author Chris Jackson
- * @since 1.4.0
+ * @since 1.5.0
  *
  */
-@XmlRootElement(name="block")
-public class RuleFieldBean {
+@XmlRootElement(name="children")
+public class DesignerChildBean {
 	public String type;
-	
-	public Integer id;
-	
-	public Integer x;
-	public Integer y;
-	
-	public String mutation;
-	
-	public List<RuleTriggerBean> triggers;
-
-	public String ruleContent;
+	public String name;
+	public DesignerBlockBean block;
 }
 
