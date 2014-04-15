@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
@@ -204,6 +205,8 @@ public class DesignerResource {
 
 			XStream xstream = new XStream(new StaxDriver());
 			xstream.alias("designlist", DesignerListBean.class);
+			xstream.alias("field", DesignerFieldBean.class);
+			xstream.alias("child", DesignerChildBean.class);
 			xstream.processAnnotations(DesignerListBean.class);
 			xstream.processAnnotations(DesignerBean.class);
 			xstream.processAnnotations(DesignerBlockBean.class);
@@ -224,6 +227,9 @@ public class DesignerResource {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		if(designs.entries == null)
+			designs.entries = new ArrayList<DesignerBean>();
 
 		return designs;
 	}
@@ -292,6 +298,8 @@ public class DesignerResource {
 
 			XStream xstream = new XStream(new StaxDriver());
 			xstream.alias("designlist", DesignerListBean.class);
+			xstream.alias("field", DesignerFieldBean.class);
+			xstream.alias("child", DesignerChildBean.class);
 			xstream.processAnnotations(DesignerListBean.class);
 			xstream.processAnnotations(DesignerBean.class);
 			xstream.processAnnotations(DesignerBlockBean.class);

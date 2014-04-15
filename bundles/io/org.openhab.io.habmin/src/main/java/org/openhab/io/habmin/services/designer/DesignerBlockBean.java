@@ -12,8 +12,6 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.openhab.binding.zwave.internal.config.ZWaveDbLabel;
-
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 /**

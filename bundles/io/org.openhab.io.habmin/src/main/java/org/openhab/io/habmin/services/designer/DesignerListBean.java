@@ -25,7 +25,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 public class DesignerListBean {
 	@XmlElement(name="designs")
 	@XStreamImplicit(itemFieldName="designs")
-	public final List<DesignerBean> entries = new ArrayList<DesignerBean>();
+	public List<DesignerBean> entries = new ArrayList<DesignerBean>();
 
 	public DesignerListBean() {};
 }
