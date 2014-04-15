@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class DesignerBean {
 	public String name;
 	
-	Integer id;
+	public Integer id;
 
 	public DesignerBlockBean block;
 }

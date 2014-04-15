@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
@@ -20,6 +21,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
  * @since 1.5.0
  *
  */
+@XmlRootElement(name="designlist")
 public class DesignerListBean {
 	@XmlElement(name="designs")
 	@XStreamImplicit(itemFieldName="designs")

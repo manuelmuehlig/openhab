@@ -18,6 +18,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name="field")
 public class DesignerFieldBean {
-	public String type;
+	public String name;
 	public String value;
 }
