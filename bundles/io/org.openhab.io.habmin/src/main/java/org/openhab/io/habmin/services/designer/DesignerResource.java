@@ -206,8 +206,10 @@ public class DesignerResource {
 			XStream xstream = new XStream(new StaxDriver());
 			xstream.alias("designlist", DesignerListBean.class);
 			xstream.alias("field", DesignerFieldBean.class);
+			xstream.alias("mutation", DesignerMutationBean.class);
 			xstream.alias("child", DesignerChildBean.class);
 			xstream.processAnnotations(DesignerListBean.class);
+			xstream.processAnnotations(DesignerMutationBean.class);
 			xstream.processAnnotations(DesignerBean.class);
 			xstream.processAnnotations(DesignerBlockBean.class);
 			xstream.processAnnotations(DesignerChildBean.class);
@@ -299,8 +301,10 @@ public class DesignerResource {
 			XStream xstream = new XStream(new StaxDriver());
 			xstream.alias("designlist", DesignerListBean.class);
 			xstream.alias("field", DesignerFieldBean.class);
+			xstream.alias("mutation", DesignerMutationBean.class);
 			xstream.alias("child", DesignerChildBean.class);
 			xstream.processAnnotations(DesignerListBean.class);
+			xstream.processAnnotations(DesignerMutationBean.class);
 			xstream.processAnnotations(DesignerBean.class);
 			xstream.processAnnotations(DesignerBlockBean.class);
 			xstream.processAnnotations(DesignerChildBean.class);

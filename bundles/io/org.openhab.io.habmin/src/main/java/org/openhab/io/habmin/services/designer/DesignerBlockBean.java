@@ -30,8 +30,10 @@ public class DesignerBlockBean {
 	public Boolean deletable;
 	public Boolean editable;
 	
-	public String mutation;
 	public DesignerCommentBean comment;
+
+	@XStreamImplicit
+	public List<DesignerMutationBean> mutation;
 
 	@XStreamImplicit
 	public List<DesignerChildBean> children;
