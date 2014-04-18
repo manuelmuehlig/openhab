@@ -409,7 +409,7 @@ public class SitemapConfigResource {
 
 				if (child.type.equals("Image") || child.type.equals("Video") || child.type.equals("Webview")) {
 					if (child.url != null)
-						out.write("url=" + child.url + " ");
+						out.write("url=\"" + child.url + "\" ");
 				}
 
 				if (child.type.equals("Selection") || child.type.equals("Switch")) {
