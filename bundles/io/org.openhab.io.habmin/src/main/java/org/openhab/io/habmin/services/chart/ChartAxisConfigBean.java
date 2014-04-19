@@ -23,6 +23,7 @@ public class ChartAxisConfigBean {
 
 	public Integer axis;
 	public String label;
+	public String color;
 	public String format;
 	public Double minimum;
 	public Double maximum;
