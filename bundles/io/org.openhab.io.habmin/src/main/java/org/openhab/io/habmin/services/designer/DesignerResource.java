@@ -32,6 +32,7 @@ import javax.ws.rs.core.UriInfo;
 
 import org.openhab.io.habmin.HABminApplication;
 import org.openhab.io.habmin.internal.resources.MediaTypeHelper;
+import org.openhab.io.habmin.services.designer.blocks.DesignerRuleCreator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -280,6 +281,8 @@ public class DesignerResource {
 		// Now save the updated version
 		list.entries.add(bean);
 		saveDesigns(list);
+		
+		DesignerRuleCreator.makeRule(bean.block);
 
 		return bean;
 	}
