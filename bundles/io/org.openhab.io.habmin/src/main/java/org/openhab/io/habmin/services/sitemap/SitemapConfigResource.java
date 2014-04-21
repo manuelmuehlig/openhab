@@ -442,6 +442,15 @@ public class SitemapConfigResource {
 						out.write("sendFrequency=" + child.sendFrequency);
 				}
 
+				if (child.type.equals("Chart")) {
+					if(child.period != null && child.period.length() != 0)
+						out.write("period=" + child.period);
+					if(child.service != null && child.service.length() != 0)
+						out.write("service=" + child.service);
+					if(child.refresh != null && child.refresh != 0)
+							out.write("refresh=" + child.refresh);
+				}
+				
 				writeColor(out, "valuecolor", child.valuecolor);
 				writeColor(out, "labelcolor", child.labelcolor);
 
