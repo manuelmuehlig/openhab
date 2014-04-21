@@ -448,7 +448,7 @@ public class SitemapConfigResource {
 					if(child.service != null && child.service.length() != 0)
 						out.write("service=" + child.service);
 					if(child.refresh != null && child.refresh != 0)
-							out.write("refresh=" + child.refresh);
+						out.write("refresh=" + child.refresh);
 				}
 				
 				writeColor(out, "valuecolor", child.valuecolor);
