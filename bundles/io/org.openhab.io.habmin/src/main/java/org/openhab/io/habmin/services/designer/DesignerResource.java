@@ -282,7 +282,7 @@ public class DesignerResource {
 		list.entries.add(bean);
 		saveDesigns(list);
 		
-		DesignerRuleCreator.makeRule(bean.block);
+		DesignerRuleCreator.makeRule(bean.id, bean.name, bean.block);
 
 		return bean;
 	}

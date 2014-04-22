@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -41,6 +42,8 @@ import org.eclipse.emf.common.util.EList;
 import org.openhab.core.items.Item;
 import org.openhab.core.items.ItemNotFoundException;
 import org.openhab.core.library.types.DecimalType;
+import org.openhab.core.library.types.OnOffType;
+import org.openhab.core.library.types.OpenClosedType;
 import org.openhab.core.persistence.FilterCriteria;
 import org.openhab.core.persistence.FilterCriteria.Ordering;
 import org.openhab.core.persistence.HistoricItem;
@@ -366,8 +369,8 @@ public class PersistenceResource {
 
 		Long quantity = 0l;
 		double average = 0;
-		DecimalType minimum = null;
-		DecimalType maximum = null;
+		Double minimum = null;
+		Double maximum = null;
 		Date timeMinimum = null;
 		Date timeMaximum = null;
 
@@ -391,20 +394,16 @@ public class PersistenceResource {
 			HistoricItem historicItem = result.iterator().next();
 
 			state = historicItem.getState();
-			if (state instanceof DecimalType) {
-				DecimalType value = (DecimalType) state;
+			double value = bean.addData(dateTimeBegin.getTime(), state);
 
-				bean.addData(dateTimeBegin.getTime(), value.toString());
+			average += value;
+			quantity++;
 
-				average += value.doubleValue();
-				quantity++;
+			minimum = value;
+			timeMinimum = historicItem.getTimestamp();
 
-				minimum = value;
-				timeMinimum = historicItem.getTimestamp();
-
-				maximum = value;
-				timeMaximum = historicItem.getTimestamp();
-			}
+			maximum = value;
+			timeMaximum = historicItem.getTimestamp();
 		}
 
 		filter.setBeginDate(dateTimeBegin);
@@ -419,35 +418,32 @@ public class PersistenceResource {
 		while (it.hasNext()) {
 			HistoricItem historicItem = it.next();
 			state = historicItem.getState();
-			if (state instanceof DecimalType) {
-				DecimalType value = (DecimalType) state;
 
-				bean.addData(historicItem.getTimestamp().getTime(), value.toString());
+			// For 'binary' states, we need to replicate the data
+			// to avoid diagonal lines
+			if(state instanceof OnOffType || state instanceof OpenClosedType) {
+				bean.addData(historicItem.getTimestamp().getTime(), state);
+			}
 
-				average += value.doubleValue();
-				quantity++;
+			double value = bean.addData(historicItem.getTimestamp().getTime(), state);
 
-				if (minimum == null || value.compareTo(minimum) < 0) {
-					minimum = value;
-					timeMinimum = historicItem.getTimestamp();
-				}
+			average += value;
+			quantity++;
 
-				if (maximum == null || value.compareTo(maximum) > 0) {
-					maximum = value;
-					timeMaximum = historicItem.getTimestamp();
-				}
+			if (minimum == null || value < minimum) {
+				minimum = value;
+				timeMinimum = historicItem.getTimestamp();
+			}
+
+			if (maximum == null || value > maximum) {
+				maximum = value;
+				timeMaximum = historicItem.getTimestamp();
 			}
 		}
 
 		// Add the last value again at the end time
-		if (state instanceof DecimalType) {
-			DecimalType value = (DecimalType) state;
-
-			bean.addData(dateTimeEnd.getTime(), value.toString());
-
-			average += value.doubleValue();
-			quantity++;
-		}
+		average += bean.addData(dateTimeEnd.getTime(), state);
+		quantity++;
 
 		bean.datapoints = Long.toString(quantity);
 		if (quantity > 0)

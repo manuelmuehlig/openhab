@@ -19,6 +19,9 @@ import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
 //import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.openhab.core.library.types.DecimalType;
+import org.openhab.core.library.types.OnOffType;
+import org.openhab.core.library.types.OpenClosedType;
 
 
 /**
@@ -59,13 +62,37 @@ public class ItemHistoryBean {
 	
 	public ItemHistoryBean() {};
 
-	public void addData(Long time, String value) {
+	public double addData(Long time, org.openhab.core.types.State state) {
 		if(data == null)
 			data = new ArrayList<HistoryDataBean>();
+
+		double value;
+		if (state instanceof DecimalType) {
+			value = ((DecimalType) state).doubleValue();				
+		}
+		else if(state instanceof OnOffType) {
+			if(state == OnOffType.OFF)
+				value = 0;
+			else
+				value = 1;
+		}
+		else if(state instanceof OpenClosedType) {
+			if(state == OpenClosedType.CLOSED)
+				value = 0;
+			else
+				value = 1;
+		}
+		else {
+//			logger.debug("Unsupported item type in chart: {}", value.getClass().toString());
+			value = 0;
+		}
+
 		HistoryDataBean newVal = new HistoryDataBean();
 		newVal.time = time;
-		newVal.state = value;
+		newVal.state = Double.toString(value);
 		data.add(newVal);
+		
+		return value;
 	}
 	
 //	@JsonSerialize(using = ItemHistoryBean.JsonHistorySerializer.class)
