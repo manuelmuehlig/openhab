@@ -18,7 +18,6 @@ import org.openhab.io.habmin.services.designer.DesignerBlockBean;
 import org.openhab.io.habmin.services.designer.DesignerChildBean;
 import org.openhab.io.habmin.services.designer.DesignerFieldBean;
 import org.openhab.io.habmin.services.designer.DesignerMutationBean;
-import org.openhab.io.habmin.services.designer.blocks.LogicOperationBlock.Operators;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -169,13 +168,15 @@ public abstract class DesignerRuleCreator {
 	public static DesignerRuleCreator getBlockProcessor(String type) {
 		if (blockMap == null) {
 			blockMap = new HashMap<String, Class<? extends DesignerRuleCreator>>();
-			blockMap.put("openhab_rule", OpenhabRuleBlock.class);
 			blockMap.put("controls_if", ControlIfBlock.class);
 			blockMap.put("logic_operation", LogicOperationBlock.class);
 			blockMap.put("logic_compare", LogicCompareBlock.class);
+			blockMap.put("math_arithmetic", MathArithmeticBlock.class);
 			blockMap.put("math_number", MathNumberBlock.class);
 			blockMap.put("variables_get", VariableGetBlock.class);
 			blockMap.put("variables_set", VariableSetBlock.class);
+			blockMap.put("openhab_rule", OpenhabRuleBlock.class);
+			blockMap.put("openhab_persistence_get", OpenhabPersistenceGetBlock.class);
 		}
 
 		if(blockMap.get(type) == null) {

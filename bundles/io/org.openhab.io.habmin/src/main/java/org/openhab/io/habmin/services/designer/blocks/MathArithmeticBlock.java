@@ -20,8 +20,8 @@ import org.slf4j.LoggerFactory;
  * @since 1.5.0
  * 
  */
-public class LogicOperationBlock extends DesignerRuleCreator {
-	private static final Logger logger = LoggerFactory.getLogger(LogicOperationBlock.class);
+public class MathArithmeticBlock extends DesignerRuleCreator {
+	private static final Logger logger = LoggerFactory.getLogger(MathArithmeticBlock.class);
 
 	String processBlock(int level, DesignerBlockBean block) {
 		String blockString = new String();
@@ -29,26 +29,26 @@ public class LogicOperationBlock extends DesignerRuleCreator {
 
 		child = findChild(block.children, "A");
 		if (child == null) {
-			logger.error("LOGIC COMPARE contains no A");
+			logger.error("MATH ARITHMETIC contains no A");
 			return null;
 		}
 		String blockA = callBlock(level, child.block);
 
 		child = findChild(block.children, "B");
 		if (child == null) {
-			logger.error("LOGIC COMPARE contains no B");
+			logger.error("MATH ARITHMETIC contains no B");
 			return null;
 		}
 		String blockB = callBlock(level, child.block);
 
 		DesignerFieldBean operatorField = findField(block.fields, "OP");
 		if(operatorField == null) {
-			logger.error("LOGIC OPERATION contains no field OP");
+			logger.error("MATH ARITHMETIC contains no field OP");
 			return null;
 		}
 		Operators op = Operators.valueOf(operatorField.value.toUpperCase());
 		if(op == null) {
-			logger.error("LOGIC OPERATION contains invalid field OP ({})", operatorField.name.toUpperCase());
+			logger.error("LOGIC COMPARE contains invalid field OP ({})", operatorField.name.toUpperCase());
 			return null;
 		}
 
@@ -57,7 +57,7 @@ public class LogicOperationBlock extends DesignerRuleCreator {
 	}
 	
 	enum Operators {
-		OR("||");
+		ADD("+"), MINUS("-"), MULTIPLY("*"), DIVIDE("/"), POWER("^");
 
 		private String value;
 

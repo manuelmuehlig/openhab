@@ -51,14 +51,6 @@ public class LogicCompareBlock extends DesignerRuleCreator {
 			logger.error("LOGIC COMPARE contains invalid field OP ({})", operatorField.name.toUpperCase());
 			return null;
 		}
-		
-		switch(op) {
-		case GT:
-			break;
-		default:
-			logger.error("LOGIC COMPARE contains unprocessed field OP ({})", operatorField.name.toUpperCase());
-			break;
-		}
 
 		blockString = "(" + blockA + " " + op.toString() + " " + blockB + ")";
 		return blockString;

@@ -26,7 +26,7 @@ public class VariableSetBlock extends DesignerRuleCreator {
 	String processBlock(int level, DesignerBlockBean block) {
 		DesignerFieldBean varField = findField(block.fields, "VAR");
 		if (varField == null) {
-			logger.error("VARIABLE SET contains no NUM");
+			logger.error("VARIABLE SET contains no VAR");
 			return null;
 		}
 
@@ -37,6 +37,10 @@ public class VariableSetBlock extends DesignerRuleCreator {
 		}
 		String value = callBlock(level, child.block);
 
+		// TODO: Work out what type of item this is.
+		// If it's a command, then use 'sendCommand'
+		// If it's not, then use 'postUpdate'
+		// TODO: Can this be reliable???
 
 		return startLine(level) + "sendCommand(" + varField.value + ", " + value + ")" + EOL;
 	}
