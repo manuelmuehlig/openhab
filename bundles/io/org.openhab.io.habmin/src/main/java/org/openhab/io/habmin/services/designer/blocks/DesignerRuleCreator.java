@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
+ * This class acts as a block factory and provides most of the core functionality.
  * @author Chris Jackson
  * @since 1.5.0
  * 
@@ -53,7 +53,7 @@ public abstract class DesignerRuleCreator {
 		DesignerRuleCreator processor = getBlockProcessor(block.type);
 		if(processor == null) {
 			logger.error("Error finding processor for block type '{}'.", block.type);
-			return null;
+			return EOL + "*** Unknown Block \"" + block.type + "\"" + EOL;
 		}
 		
 		// Process the block
@@ -248,8 +248,11 @@ public abstract class DesignerRuleCreator {
 			blockMap.put("controls_if", ControlIfBlock.class);
 			blockMap.put("logic_operation", LogicOperationBlock.class);
 			blockMap.put("logic_compare", LogicCompareBlock.class);
+			blockMap.put("logic_negate", LogicNegateBlock.class);
 			blockMap.put("math_arithmetic", MathArithmeticBlock.class);
 			blockMap.put("math_number", MathNumberBlock.class);
+			blockMap.put("math_round", MathRoundBlock.class);
+			blockMap.put("math_constrain", MathConstrainBlock.class);
 			blockMap.put("variables_get", VariableGetBlock.class);
 			blockMap.put("variables_set", VariableSetBlock.class);
 			blockMap.put("openhab_rule", OpenhabRuleBlock.class);

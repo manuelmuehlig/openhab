@@ -57,7 +57,7 @@ public class LogicOperationBlock extends DesignerRuleCreator {
 	}
 	
 	enum Operators {
-		OR("||");
+		AND("&&"), OR("||");
 
 		private String value;
 

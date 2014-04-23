@@ -48,7 +48,7 @@ public class MathArithmeticBlock extends DesignerRuleCreator {
 		}
 		Operators op = Operators.valueOf(operatorField.value.toUpperCase());
 		if(op == null) {
-			logger.error("LOGIC COMPARE contains invalid field OP ({})", operatorField.name.toUpperCase());
+			logger.error("MATH ARITHMETIC contains invalid field OP ({})", operatorField.name.toUpperCase());
 			return null;
 		}
 

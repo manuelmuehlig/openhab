@@ -20,44 +20,38 @@ import org.slf4j.LoggerFactory;
  * @since 1.5.0
  * 
  */
-public class LogicCompareBlock extends DesignerRuleCreator {
-	private static final Logger logger = LoggerFactory.getLogger(LogicCompareBlock.class);
+public class MathRoundBlock extends DesignerRuleCreator {
+	private static final Logger logger = LoggerFactory.getLogger(MathRoundBlock.class);
 
 	String processBlock(int level, DesignerBlockBean block) {
 		String blockString = new String();
 		DesignerChildBean child;
 
-		child = findChild(block.children, "A");
+		child = findChild(block.children, "NUM");
 		if (child == null) {
-			logger.error("LOGIC COMPARE contains no A");
+			logger.error("MATH ROUND contains no NUM");
 			return null;
 		}
 		String blockA = callBlock(level, child.block);
 
-		child = findChild(block.children, "B");
-		if (child == null) {
-			logger.error("LOGIC COMPARE contains no B");
-			return null;
-		}
-		String blockB = callBlock(level, child.block);
-
 		DesignerFieldBean operatorField = findField(block.fields, "OP");
 		if(operatorField == null) {
-			logger.error("LOGIC COMPARE contains no field OP");
+			logger.error("MATH ROUND contains no field OP");
 			return null;
 		}
 		Operators op = Operators.valueOf(operatorField.value.toUpperCase());
 		if(op == null) {
-			logger.error("LOGIC COMPARE contains invalid field OP ({})", operatorField.name.toUpperCase());
+			logger.error("MATH ROUND contains invalid field OP ({})", operatorField.name.toUpperCase());
 			return null;
 		}
 
-		blockString = "(" + blockA + " " + op.toString() + " " + blockB + ")";
+		// TODO: support round up/down...
+		blockString = "Math.round(" + blockA + ")";
 		return blockString;
 	}
-
+	
 	enum Operators {
-		GT(">"), GTE(">="), LT("<"), LTE("<="), EQ("=="), NEQ("!=");
+		ADD("+"), MINUS("-"), MULTIPLY("*"), DIVIDE("/"), POWER("^");
 
 		private String value;
 

@@ -11,7 +11,6 @@ package org.openhab.io.habmin.services.designer.blocks;
 import org.openhab.io.habmin.services.designer.DesignerBlockBean;
 import org.openhab.io.habmin.services.designer.DesignerChildBean;
 import org.openhab.io.habmin.services.designer.DesignerFieldBean;
-import org.openhab.io.habmin.services.designer.blocks.DesignerRuleCreator.TriggerType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

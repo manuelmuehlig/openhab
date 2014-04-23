@@ -88,21 +88,6 @@ public class OpenhabRuleBlock extends DesignerRuleCreator {
 		}
 		blockString += "then\r\n";
 		blockString += ruleString;
-		
-		// for (String line : rule.action) {
-		// ruleString += "  " + resolveVariable(line, variables) + "\r\n";
-		// }
-
-		
-		// Create a new copy of the variables so we can add the ItemName without
-		// messing with the rules variables
-		// List<RuleVariableBean> variables = new
-		// ArrayList<RuleVariableBean>(ruleVariables);
-		// RuleVariableBean thisItem = new RuleVariableBean();
-		// thisItem.name = "ItemName";
-		// thisItem.value = itemName;
-		// variables.add(thisItem);
-		
 		blockString += "end" + EOL;
 
 		return blockString;
