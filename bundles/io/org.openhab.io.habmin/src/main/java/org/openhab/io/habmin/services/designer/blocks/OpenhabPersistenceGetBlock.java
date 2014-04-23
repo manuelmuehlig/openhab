@@ -11,6 +11,7 @@ package org.openhab.io.habmin.services.designer.blocks;
 import org.openhab.io.habmin.services.designer.DesignerBlockBean;
 import org.openhab.io.habmin.services.designer.DesignerChildBean;
 import org.openhab.io.habmin.services.designer.DesignerFieldBean;
+import org.openhab.io.habmin.services.designer.blocks.DesignerRuleCreator.TriggerType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,36 +76,45 @@ public class OpenhabPersistenceGetBlock extends DesignerRuleCreator {
 			return null;
 		}
 		
+		int timeSeconds = 0;
 		String timer = null;
 		// Firstly see if just a single parameter is set
 		if(Integer.parseInt(days) != 0 
 				&& Integer.parseInt(hours) == 0 && Integer.parseInt(minutes) == 0 && Integer.parseInt(seconds) == 0) {
 			timer = "minusDays(" + Integer.parseInt(days) + ")";
+			timeSeconds = Integer.parseInt(days) * 86400;
 		}
 		else if(Integer.parseInt(hours) != 0 
 				&& Integer.parseInt(days) == 0 && Integer.parseInt(minutes) == 0 && Integer.parseInt(seconds) == 0) {
 			timer = "minusHours(" + Integer.parseInt(hours) + ")";
+			timeSeconds = Integer.parseInt(hours) * 3600;
 		}
 		else if(Integer.parseInt(minutes) != 0 
 				&& Integer.parseInt(days) == 0 && Integer.parseInt(hours) == 0 && Integer.parseInt(seconds) == 0) {
 			timer = "minusMinutes(" + Integer.parseInt(minutes) + ")";
+			timeSeconds = Integer.parseInt(minutes) * 60;
 		}
 		else if(Integer.parseInt(seconds) != 0 
 				&& Integer.parseInt(days) == 0 && Integer.parseInt(hours) == 0 && Integer.parseInt(minutes) == 0) {
 			timer = "minusSeconds(" + Integer.parseInt(seconds) + ")";
+			timeSeconds = Integer.parseInt(seconds);
 		}
 		else {
-			long time = (Integer.parseInt(days) * 86400 + 
-					Integer.parseInt(hours) * 3600 + Integer.parseInt(minutes) * 60 + Integer.parseInt(seconds)) * 1000;
-			timer = "minus(" + time + ")";	
+			timeSeconds = (Integer.parseInt(days) * 86400 + 
+					Integer.parseInt(hours) * 3600 + Integer.parseInt(minutes) * 60 + Integer.parseInt(seconds));
+			timer = "minus(" + timeSeconds * 1000 + ")";
 		}
-		
+
+		// Add triggers
+		// We simply add a timer - 500th of the persistence period seems like a good place to start (?)
+		setCron(Math.max(5,timeSeconds / 500));
+
 		// TODO - lots!
 		// TODO: resolve type
 		String dataType = "DecimalType";
 
 		// Generate the rule string
-		blockString = startLine(level) + varField.value + "." + type.toString() + "(now." + timer + "" + ").state as " + dataType;
+		blockString = varField.value + "." + type.toString() + "(now." + timer + "" + ").state as " + dataType;
 		return blockString;
 	}
 	

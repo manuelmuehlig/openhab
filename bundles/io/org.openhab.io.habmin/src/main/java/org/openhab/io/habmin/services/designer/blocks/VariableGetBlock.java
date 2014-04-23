@@ -31,6 +31,9 @@ public class VariableGetBlock extends DesignerRuleCreator {
 		
 		addTrigger(varField.value, TriggerType.CHANGED);
 
-		return varField.value + ".state";
+		// TODO: resolve type
+		String dataType = "DecimalType";
+
+		return varField.value + ".state as " + dataType;
 	}
 }

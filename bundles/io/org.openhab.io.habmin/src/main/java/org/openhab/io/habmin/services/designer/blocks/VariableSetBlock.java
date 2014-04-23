@@ -42,6 +42,6 @@ public class VariableSetBlock extends DesignerRuleCreator {
 		// If it's not, then use 'postUpdate'
 		// TODO: Can this be reliable???
 
-		return startLine(level) + "sendCommand(" + varField.value + ", " + value + ")" + EOL;
+		return startLine(level) + "postUpdate(" + varField.value + ", " + value + ")" + EOL;
 	}
 }

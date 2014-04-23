@@ -55,10 +55,17 @@ public class OpenhabRuleBlock extends DesignerRuleCreator {
 
 		blockString += "rule \"" + nameField.value + "\"\r\n";
 		blockString += "when\r\n";
-		int triggerTotal = getTriggerList().size();
-		int triggerCnt = 0;
+		boolean firstTrigger = true;
+		if(cronTime != 0) {
+			CronType cron = CronType.fromPeriod(cronTime);
+			if(cron != null) {
+				blockString += "    " + cron.toString() + EOL;
+			}
+			firstTrigger = false;
+		}
 		for (Trigger trigger : getTriggerList()) {
-			triggerCnt++;
+			if(!firstTrigger)
+				blockString += "    or" + EOL;
 			blockString += "    Item " + trigger.item + " " + trigger.type.toString();
 			switch(trigger.type) {
 			case CHANGED:
@@ -76,9 +83,8 @@ public class OpenhabRuleBlock extends DesignerRuleCreator {
 					blockString += " " + trigger.value1;
 				break;
 			}
-			if(triggerCnt < triggerTotal)
-				blockString += " or";
 			blockString += EOL;
+			firstTrigger = false;
 		}
 		blockString += "then\r\n";
 		blockString += ruleString;
