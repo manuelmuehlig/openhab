@@ -8,6 +8,8 @@
  */
 package org.openhab.io.habmin.services.designer.blocks;
 
+import org.openhab.core.items.ItemNotFoundException;
+import org.openhab.io.habmin.HABminApplication;
 import org.openhab.io.habmin.services.designer.DesignerBlockBean;
 import org.openhab.io.habmin.services.designer.DesignerChildBean;
 import org.openhab.io.habmin.services.designer.DesignerFieldBean;
@@ -41,6 +43,12 @@ public class VariableSetBlock extends DesignerRuleCreator {
 		// If it's a command, then use 'sendCommand'
 		// If it's not, then use 'postUpdate'
 		// TODO: Can this be reliable???
+		try {
+			HABminApplication.getItemUIRegistry().getItem(varField.value);
+		} catch (ItemNotFoundException e) {
+			// TODO Auto-generated catch block
+			return "*** Unknown item: " + varField.value + EOL;
+		}
 
 		return startLine(level) + "postUpdate(" + varField.value + ", " + value + ")" + EOL;
 	}
