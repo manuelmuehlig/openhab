@@ -40,4 +40,6 @@ public class DesignerBlockBean {
 
 	@XStreamImplicit
 	public List<DesignerFieldBean> fields;
+	
+	public DesignerBlockBean next;
 }

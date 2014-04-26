@@ -8,8 +8,6 @@
  */
 package org.openhab.io.habmin.services.designer.blocks;
 
-import org.openhab.core.items.ItemNotFoundException;
-import org.openhab.io.habmin.HABminApplication;
 import org.openhab.io.habmin.services.designer.DesignerBlockBean;
 import org.openhab.io.habmin.services.designer.DesignerChildBean;
 import org.openhab.io.habmin.services.designer.DesignerFieldBean;
@@ -38,18 +36,20 @@ public class VariableSetBlock extends DesignerRuleCreator {
 			return null;
 		}
 		String value = callBlock(level, child.block);
-
-		// TODO: Work out what type of item this is.
-		// If it's a command, then use 'sendCommand'
-		// If it's not, then use 'postUpdate'
-		// TODO: Can this be reliable???
+		
+		String type = "Number";
 		try {
-			HABminApplication.getItemUIRegistry().getItem(varField.value);
-		} catch (ItemNotFoundException e) {
-			// TODO Auto-generated catch block
-			return "*** Unknown item: " + varField.value + EOL;
+			Integer.parseInt(value);
+		} catch (NumberFormatException e) {
+			type = null;
 		}
-
-		return startLine(level) + "postUpdate(" + varField.value + ", " + value + ")" + EOL;
+		if(type == null) {
+			if(value.equals("true") || value.equals("false")) {
+				type = "boolean";
+			}
+		}
+		
+		addGlobal("var " + type + " " + varField.value + " = null");
+		return startLine(level) + varField.value + " = " + value + EOL;
 	}
 }

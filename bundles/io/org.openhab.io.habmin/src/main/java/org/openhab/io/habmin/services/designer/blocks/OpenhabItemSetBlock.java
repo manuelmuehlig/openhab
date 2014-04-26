@@ -9,6 +9,7 @@
 package org.openhab.io.habmin.services.designer.blocks;
 
 import org.openhab.io.habmin.services.designer.DesignerBlockBean;
+import org.openhab.io.habmin.services.designer.DesignerChildBean;
 import org.openhab.io.habmin.services.designer.DesignerFieldBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,19 +20,23 @@ import org.slf4j.LoggerFactory;
  * @since 1.5.0
  * 
  */
-public class VariableGetBlock extends DesignerRuleCreator {
-	private static final Logger logger = LoggerFactory.getLogger(VariableGetBlock.class);
+public class OpenhabItemSetBlock extends DesignerRuleCreator {
+	private static final Logger logger = LoggerFactory.getLogger(OpenhabItemSetBlock.class);
 
 	String processBlock(int level, DesignerBlockBean block) {
-		DesignerFieldBean varField = findField(block.fields, "VAR");
+		DesignerFieldBean varField = findField(block.fields, "ITEM");
 		if (varField == null) {
-			logger.error("VARIABLE GET contains no NUM");
+			logger.error("ITEM SET contains no VAR");
 			return null;
 		}
 
-		// If this is a valid item, then add .state
-		String val = varField.value;
+		DesignerChildBean child = findChild(block.children, "VALUE");
+		if (child == null) {
+			logger.error("ITEM SET contains no VALUE");
+			return null;
+		}
+		String value = callBlock(level, child.block);
 
-		return val;
+		return startLine(level) + "postUpdate(" + varField.value + ", " + value + ")" + EOL;
 	}
 }

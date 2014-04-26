@@ -8,6 +8,8 @@
  */
 package org.openhab.io.habmin.services.designer.blocks;
 
+import org.openhab.core.items.ItemNotFoundException;
+import org.openhab.io.habmin.HABminApplication;
 import org.openhab.io.habmin.services.designer.DesignerBlockBean;
 import org.openhab.io.habmin.services.designer.DesignerFieldBean;
 import org.slf4j.Logger;
@@ -19,18 +21,25 @@ import org.slf4j.LoggerFactory;
  * @since 1.5.0
  * 
  */
-public class VariableGetBlock extends DesignerRuleCreator {
-	private static final Logger logger = LoggerFactory.getLogger(VariableGetBlock.class);
+public class OpenhabItemGetBlock extends DesignerRuleCreator {
+	private static final Logger logger = LoggerFactory.getLogger(OpenhabItemGetBlock.class);
 
 	String processBlock(int level, DesignerBlockBean block) {
-		DesignerFieldBean varField = findField(block.fields, "VAR");
+		DesignerFieldBean varField = findField(block.fields, "ITEM");
 		if (varField == null) {
-			logger.error("VARIABLE GET contains no NUM");
+			logger.error("ITEM GET contains no NUM");
 			return null;
 		}
 
 		// If this is a valid item, then add .state
 		String val = varField.value;
+		try {
+			if(HABminApplication.getItemUIRegistry().getItem(val) != null) {
+				val += ".state";
+				addTrigger(varField.value, TriggerType.CHANGED);
+			}
+		} catch (ItemNotFoundException e) {
+		}
 
 		return val;
 	}

@@ -28,6 +28,10 @@ public class OpenhabRuleBlock extends DesignerRuleCreator {
 		String blockString = new String();
 		String ruleString = new String();
 
+		addImport("org.openhab.core.library.types.*");
+		addImport("org.openhab.core.persistence.*");
+		addImport("org.openhab.model.script.actions.*");
+
 		// Loop through the fields to find the rule name
 		DesignerFieldBean nameField = findField(block.fields, "NAME");
 		if(nameField == null) {
@@ -36,7 +40,9 @@ public class OpenhabRuleBlock extends DesignerRuleCreator {
 		}
 
 		// Process the children
-		for(DesignerChildBean child : block.children) {
+//		for(DesignerChildBean child : block.children) {
+		DesignerChildBean child = findChild(block.children, "STACK");
+		if(child != null) {
 			String response = callBlock(level, child.block);
 			if(response == null)
 				return null;

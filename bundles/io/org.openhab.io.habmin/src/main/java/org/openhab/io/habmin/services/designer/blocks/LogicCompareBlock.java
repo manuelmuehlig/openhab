@@ -8,6 +8,8 @@
  */
 package org.openhab.io.habmin.services.designer.blocks;
 
+import org.openhab.core.items.ItemNotFoundException;
+import org.openhab.io.habmin.HABminApplication;
 import org.openhab.io.habmin.services.designer.DesignerBlockBean;
 import org.openhab.io.habmin.services.designer.DesignerChildBean;
 import org.openhab.io.habmin.services.designer.DesignerFieldBean;
@@ -52,7 +54,27 @@ public class LogicCompareBlock extends DesignerRuleCreator {
 			return null;
 		}
 
-		blockString = "(" + blockA + " " + op.toString() + " " + blockB + ")";
+		// No type casting required with comparisons
+		
+		// If this is an item, then we need to add '.state'
+
+		String A = blockA;
+		try {
+			if(HABminApplication.getItemUIRegistry().getItem(blockA) != null) {
+				A += ".state";
+			}
+		} catch (ItemNotFoundException e) {
+		}
+
+		String B = blockB;
+		try {
+			if(HABminApplication.getItemUIRegistry().getItem(blockB) != null) {
+				B += ".state";
+			}
+		} catch (ItemNotFoundException e) {
+		}
+		
+		blockString = "(" + A + " " + op.toString() + " " + B + ")";
 		return blockString;
 	}
 

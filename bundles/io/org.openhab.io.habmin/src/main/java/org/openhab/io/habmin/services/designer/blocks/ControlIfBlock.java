@@ -28,6 +28,13 @@ public class ControlIfBlock extends DesignerRuleCreator {
 		String response;
 		DesignerChildBean child;
 
+		// Add a comment if there is one
+		if (block.comment != null) {
+			String[] comments = block.comment.text.split("\\r?\\n");
+			for (String comment : comments)
+				blockString += "// " + comment + "\r\n";
+		}
+
 		// Check how many if/then/else we have
 		DesignerMutationBean mutation;
 		mutation = findMutation(block.mutation, "elseif");

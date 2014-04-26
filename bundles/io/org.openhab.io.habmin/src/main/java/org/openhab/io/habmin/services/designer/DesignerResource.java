@@ -247,8 +247,8 @@ public class DesignerResource {
 		// Sanity check.
 		// designRef is 0 for a new design
 		// if it's not 0, then bean.id must either be missing, or it must be the same as designRef
-		if(designRef != 0 && bean.id != null && bean.id != designRef) {
-			logger.error("Inconsistent id in HTTP call and structure");
+		if(designRef != 0 && bean.id != null && bean.id.intValue() != designRef.intValue()) {
+			logger.error("Inconsistent id in HTTP call '{}' and structure '{}'", designRef, bean.id);
 			return null;
 		}
 		

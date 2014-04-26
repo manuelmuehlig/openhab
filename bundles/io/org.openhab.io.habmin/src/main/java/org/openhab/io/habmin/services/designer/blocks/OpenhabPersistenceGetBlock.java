@@ -8,6 +8,8 @@
  */
 package org.openhab.io.habmin.services.designer.blocks;
 
+import org.openhab.core.items.ItemNotFoundException;
+import org.openhab.io.habmin.HABminApplication;
 import org.openhab.io.habmin.services.designer.DesignerBlockBean;
 import org.openhab.io.habmin.services.designer.DesignerChildBean;
 import org.openhab.io.habmin.services.designer.DesignerFieldBean;
@@ -30,7 +32,7 @@ public class OpenhabPersistenceGetBlock extends DesignerRuleCreator {
 		String blockString = new String();
 		DesignerChildBean child;
 
-		DesignerFieldBean varField = findField(block.fields, "VAR");
+		DesignerFieldBean varField = findField(block.fields, "ITEM");
 		if (varField == null) {
 			logger.error("PERSISTENCE GET contains no VAR");
 			return null;
@@ -108,12 +110,16 @@ public class OpenhabPersistenceGetBlock extends DesignerRuleCreator {
 		// We simply add a timer - 500th of the persistence period seems like a good place to start (?)
 		setCron(Math.max(5,timeSeconds / 500));
 
-		// TODO - lots!
-		// TODO: resolve type
-		String dataType = "DecimalType";
+		String val = varField.value;
+		try {
+			if(HABminApplication.getItemUIRegistry().getItem(val) != null) {
+				addTrigger(varField.value, TriggerType.CHANGED);
+			}
+		} catch (ItemNotFoundException e) {
+		}
 
 		// Generate the rule string
-		blockString = varField.value + "." + type.toString() + "(now." + timer + "" + ").state as " + dataType;
+		blockString = varField.value + "." + type.toString() + "(now." + timer + ").state";
 		return blockString;
 	}
 	

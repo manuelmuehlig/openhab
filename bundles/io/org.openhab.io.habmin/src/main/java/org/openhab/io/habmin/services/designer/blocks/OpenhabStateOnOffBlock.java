@@ -19,19 +19,28 @@ import org.slf4j.LoggerFactory;
  * @since 1.5.0
  * 
  */
-public class VariableGetBlock extends DesignerRuleCreator {
-	private static final Logger logger = LoggerFactory.getLogger(VariableGetBlock.class);
+public class OpenhabStateOnOffBlock extends DesignerRuleCreator {
+	private static final Logger logger = LoggerFactory.getLogger(OpenhabStateOnOffBlock.class);
 
 	String processBlock(int level, DesignerBlockBean block) {
-		DesignerFieldBean varField = findField(block.fields, "VAR");
-		if (varField == null) {
-			logger.error("VARIABLE GET contains no NUM");
+		String blockString = new String();
+
+		DesignerFieldBean operatorField = findField(block.fields, "STATE");
+		if(operatorField == null) {
+			logger.error("OPENHAB STATE ONOFF contains no field STATE");
+			return null;
+		}
+		Operators op = Operators.valueOf(operatorField.value.toUpperCase());
+		if(op == null) {
+			logger.error("OPENHAB STATE ONOFF contains invalid field STATE ({})", operatorField.name.toUpperCase());
 			return null;
 		}
 
-		// If this is a valid item, then add .state
-		String val = varField.value;
-
-		return val;
+		blockString = op.toString();
+		return blockString;
+	}
+	
+	enum Operators {
+		ON, OFF;
 	}
 }

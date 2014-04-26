@@ -9,7 +9,6 @@
 package org.openhab.io.habmin.services.designer.blocks;
 
 import org.openhab.io.habmin.services.designer.DesignerBlockBean;
-import org.openhab.io.habmin.services.designer.DesignerChildBean;
 import org.openhab.io.habmin.services.designer.DesignerFieldBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,54 +19,29 @@ import org.slf4j.LoggerFactory;
  * @since 1.5.0
  * 
  */
-public class MathArithmeticBlock extends DesignerRuleCreator {
-	private static final Logger logger = LoggerFactory.getLogger(MathArithmeticBlock.class);
+public class LogicBooleanBlock extends DesignerRuleCreator {
+	private static final Logger logger = LoggerFactory.getLogger(LogicBooleanBlock.class);
 
 	String processBlock(int level, DesignerBlockBean block) {
 		String blockString = new String();
-		DesignerChildBean child;
 
-		addImport("org.java.math.*");
-
-		child = findChild(block.children, "A");
-		if (child == null) {
-			logger.error("MATH ARITHMETIC contains no A");
-			return null;
-		}
-		String blockA = callBlock(level, child.block);
-
-		child = findChild(block.children, "B");
-		if (child == null) {
-			logger.error("MATH ARITHMETIC contains no B");
-			return null;
-		}
-		String blockB = callBlock(level, child.block);
-
-		DesignerFieldBean operatorField = findField(block.fields, "OP");
+		DesignerFieldBean operatorField = findField(block.fields, "BOOL");
 		if(operatorField == null) {
-			logger.error("MATH ARITHMETIC contains no field OP");
+			logger.error("LOGIC OPERATION contains no field BOOL");
 			return null;
 		}
 		Operators op = Operators.valueOf(operatorField.value.toUpperCase());
 		if(op == null) {
-			logger.error("MATH ARITHMETIC contains invalid field OP ({})", operatorField.name.toUpperCase());
+			logger.error("LOGIC BOOLEAN contains invalid field BOOL ({})", operatorField.name.toUpperCase());
 			return null;
 		}
 
-		String A = blockA;
-		if(A.endsWith(".state"))
-			A += " as DecimalType";
-
-		String B = blockB;
-		if(B.endsWith(".state"))
-			B += " as DecimalType";
-		
-		blockString = "(" + A + " " + op.toString() + " " + B + ")";
+		blockString = op.toString();
 		return blockString;
 	}
-
+	
 	enum Operators {
-		ADD("+"), MINUS("-"), MULTIPLY("*"), DIVIDE("/"), POWER("^");
+		TRUE("true"), FALSE("false");
 
 		private String value;
 
