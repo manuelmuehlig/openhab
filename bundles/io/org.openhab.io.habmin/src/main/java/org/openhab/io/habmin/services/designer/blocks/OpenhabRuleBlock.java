@@ -8,6 +8,8 @@
  */
 package org.openhab.io.habmin.services.designer.blocks;
 
+import java.util.Iterator;
+import java.util.Map;
 
 import org.openhab.io.habmin.services.designer.DesignerBlockBean;
 import org.openhab.io.habmin.services.designer.DesignerChildBean;
@@ -34,58 +36,70 @@ public class OpenhabRuleBlock extends DesignerRuleCreator {
 
 		// Loop through the fields to find the rule name
 		DesignerFieldBean nameField = findField(block.fields, "NAME");
-		if(nameField == null) {
+		if (nameField == null) {
 			logger.error("ROOT block must have a name.");
 			return null;
 		}
 
 		// Process the children
-//		for(DesignerChildBean child : block.children) {
+		// for(DesignerChildBean child : block.children) {
 		DesignerChildBean child = findChild(block.children, "STACK");
-		if(child != null) {
+		if (child != null) {
 			String response = callBlock(level, child.block);
-			if(response == null)
+			if (response == null)
 				return null;
 			ruleString += response;
 		}
-		
+
 		//
 		// Write the rule
-		
+
 		// Add a comment if there is one
 		if (block.comment != null) {
 			String[] comments = block.comment.text.split("\\r?\\n");
 			for (String comment : comments)
-				blockString += "// " + comment + "\r\n";
+				blockString += "// " + comment + EOL;
+			blockString += EOL;
+		}
+
+		// Write the constants is there are any - just for reference
+		if (getConstantList() != null) {
+			blockString += "// Constants used to generate this rule" + EOL;
+			Iterator it = getConstantList().entrySet().iterator();
+			while (it.hasNext()) {
+				Map.Entry pairs = (Map.Entry) it.next();
+				blockString += pairs.getKey() + " == " + pairs.getValue();
+			}
+			blockString += EOL;
 		}
 
 		blockString += "rule \"" + nameField.value + "\"\r\n";
 		blockString += "when\r\n";
 		boolean firstTrigger = true;
-		if(cronTime != 0) {
+		if (cronTime != 0) {
 			CronType cron = CronType.fromPeriod(cronTime);
-			if(cron != null) {
+			if (cron != null) {
 				blockString += "    " + cron.toString() + EOL;
 			}
 			firstTrigger = false;
 		}
 		for (Trigger trigger : getTriggerList()) {
-			if(!firstTrigger)
+			if (!firstTrigger)
 				blockString += "    or" + EOL;
 			blockString += "    Item " + trigger.item + " " + trigger.type.toString();
-			switch(trigger.type) {
+			switch (trigger.type) {
 			case CHANGED:
-				if(trigger.value1 != null)
+				if (trigger.value1 != null)
 					blockString += " from " + trigger.value1;
-				if(trigger.value2 != null)
+				if (trigger.value2 != null)
 					blockString += " to " + trigger.value2;
 				break;
 			case UPDATED:
-				if(trigger.value1 != null)
+				if (trigger.value1 != null)
 					blockString += " " + trigger.value1;
 				break;
 			case COMMAND:
-				if(trigger.value1 != null)
+				if (trigger.value1 != null)
 					blockString += " " + trigger.value1;
 				break;
 			}

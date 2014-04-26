@@ -35,14 +35,21 @@ import org.slf4j.LoggerFactory;
 public abstract class DesignerRuleCreator {
 	private static final Logger logger = LoggerFactory.getLogger(DesignerRuleCreator.class);
 
+	RuleContext ruleContext = null;
+
 	List<Trigger> triggerList = new ArrayList<Trigger>();
 	List<String> importList = new ArrayList<String>();
 	List<String> globalList = new ArrayList<String>();
+	HashMap<String, String> constantList = new HashMap<String, String>();
 
 	int cronTime = 0;
 	final static String EOL = "\r\n";
 	
 	static int globalId = 0;
+	
+	void setContext(RuleContext context) {
+		ruleContext = context;
+	}
 
 	public static final String PATH_RULES = "configurations/rules";
 	abstract String processBlock(int level, DesignerBlockBean block);
@@ -53,16 +60,20 @@ public abstract class DesignerRuleCreator {
 			return null;
 		}
 
+		// Get the block processor
 		DesignerRuleCreator processor = getBlockProcessor(block.type);
 		if(processor == null) {
 			logger.error("Error finding processor for block type '{}'.", block.type);
 			return EOL + "*** Unknown Block \"" + block.type + "\"" + EOL;
 		}
+		// Give it context
+		processor.setContext(ruleContext);
 		
 		// Process the block
 		String blockString = processor.processBlock(level + 1, block);
 		if(blockString == null)
 			return null;
+		
 		
 		// Get any triggers identified in this block
 		for(Trigger trigger : processor.getTriggerList()) {
@@ -136,7 +147,19 @@ public abstract class DesignerRuleCreator {
 
 		triggerList.add(trigger);
 	}
+	
+	void addConstant(String name, String value) {
+		constantList.put(name, value);
+	}
 
+	String getConstant(String name) {
+		return constantList.get(name);
+	}
+
+	HashMap<String, String> getConstantList() {
+		return constantList;
+	}
+	
 	List<String> getImportList() {
 		return importList;
 	}
@@ -319,6 +342,8 @@ public abstract class DesignerRuleCreator {
 			blockMap.put("math_constrain", MathConstrainBlock.class);
 			blockMap.put("variables_get", VariableGetBlock.class);
 			blockMap.put("variables_set", VariableSetBlock.class);
+			blockMap.put("openhab_constantget", OpenhabConstantGetBlock.class);
+			blockMap.put("openhab_constantset", OpenhabConstantSetBlock.class);
 			blockMap.put("openhab_itemget", OpenhabItemGetBlock.class);
 			blockMap.put("openhab_itemset", OpenhabItemSetBlock.class);
 			blockMap.put("openhab_itemcmd", OpenhabItemCmdBlock.class);

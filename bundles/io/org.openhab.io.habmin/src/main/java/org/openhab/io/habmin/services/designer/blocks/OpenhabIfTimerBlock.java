@@ -29,7 +29,7 @@ public class OpenhabIfTimerBlock extends DesignerRuleCreator {
 		DesignerChildBean child;
 		DesignerFieldBean field;
 
-		String timerID = "timer" + getGlobalId();
+		String timerID = "_timer" + getGlobalId();
 		addGlobal("var Timer " + timerID + " = null");
 
 		// Add a comment if there is one

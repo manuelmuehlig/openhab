@@ -19,28 +19,19 @@ import org.slf4j.LoggerFactory;
  * @since 1.5.0
  * 
  */
-public class OpenhabStateOpenClosedBlock extends DesignerRuleCreator {
-	private static final Logger logger = LoggerFactory.getLogger(OpenhabStateOpenClosedBlock.class);
+public class OpenhabConstantGetBlock extends DesignerRuleCreator {
+	private static final Logger logger = LoggerFactory.getLogger(OpenhabConstantGetBlock.class);
 
 	String processBlock(int level, DesignerBlockBean block) {
-		String blockString = new String();
-
-		DesignerFieldBean operatorField = findField(block.fields, "STATE");
-		if(operatorField == null) {
-			logger.error("OPENHAB STATE OPENCLOSED contains no field STATE");
-			return null;
-		}
-		Operators op = Operators.valueOf(operatorField.value.toUpperCase());
-		if(op == null) {
-			logger.error("OPENHAB STATE OPENCLOSED contains invalid field STATE ({})", operatorField.name.toUpperCase());
+		DesignerFieldBean varField = findField(block.fields, "CONSTANT");
+		if (varField == null) {
+			logger.error("CONSTANT GET contains no CONSTANT");
 			return null;
 		}
 
-		blockString = op.toString();
-		return blockString;
-	}
-	
-	enum Operators {
-		ON, OFF;
+		// If this is a valid item, then add .state
+		String val = varField.value;
+
+		return val;
 	}
 }
