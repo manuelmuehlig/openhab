@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 public class MathConstrainBlock extends DesignerRuleCreator {
 	private static final Logger logger = LoggerFactory.getLogger(MathConstrainBlock.class);
 
-	String processBlock(int level, DesignerBlockBean block) {
+	String processBlock(RuleContext ruleContext, DesignerBlockBean block) {
 		String blockString = new String();
 		DesignerChildBean child;
 
@@ -31,21 +31,21 @@ public class MathConstrainBlock extends DesignerRuleCreator {
 			logger.error("MATH CONSTRAIN contains no VALUE");
 			return null;
 		}
-		String blockValue = callBlock(level, child.block);
+		String blockValue = callBlock(ruleContext, child.block);
 
 		child = findChild(block.children, "LOW");
 		if (child == null) {
 			logger.error("MATH CONSTRAIN contains no LOW");
 			return null;
 		}
-		String blockLow = callBlock(level, child.block);
+		String blockLow = callBlock(ruleContext, child.block);
 
 		child = findChild(block.children, "HIGH");
 		if (child == null) {
 			logger.error("MATH CONSTRAIN contains no HIGH");
 			return null;
 		}
-		String blockHigh = callBlock(level, child.block);
+		String blockHigh = callBlock(ruleContext, child.block);
 
 		blockString = "if(" + blockValue + ">" + blockHigh + ") " + blockHigh + EOL;
 		blockString = "if(" + blockValue + "<" + blockLow + ") " + blockLow + EOL;

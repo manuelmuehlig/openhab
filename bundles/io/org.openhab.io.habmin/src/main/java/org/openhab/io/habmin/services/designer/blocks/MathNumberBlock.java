@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 public class MathNumberBlock extends DesignerRuleCreator {
 	private static final Logger logger = LoggerFactory.getLogger(MathNumberBlock.class);
 
-	String processBlock(int level, DesignerBlockBean block) {
+	String processBlock(RuleContext ruleContext, DesignerBlockBean block) {
 		DesignerFieldBean numField = findField(block.fields, "NUM");
 		if (numField == null) {
 			logger.error("MATH NUMBER contains no NUM");

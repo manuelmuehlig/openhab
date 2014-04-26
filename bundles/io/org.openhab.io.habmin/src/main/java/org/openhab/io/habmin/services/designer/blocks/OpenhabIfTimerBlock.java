@@ -23,14 +23,14 @@ import org.slf4j.LoggerFactory;
 public class OpenhabIfTimerBlock extends DesignerRuleCreator {
 	private static final Logger logger = LoggerFactory.getLogger(OpenhabIfTimerBlock.class);
 
-	String processBlock(int level, DesignerBlockBean block) {
+	String processBlock(RuleContext ruleContext, DesignerBlockBean block) {
 		String blockString = new String();
 		String response;
 		DesignerChildBean child;
 		DesignerFieldBean field;
 
-		String timerID = "_timer" + getGlobalId();
-		addGlobal("var Timer " + timerID + " = null");
+		String timerID = "_timer" + ruleContext.getGlobalId();
+		ruleContext.addGlobal("var Timer " + timerID + " = null");
 
 		// Add a comment if there is one
 		if (block.comment != null) {
@@ -45,9 +45,9 @@ public class OpenhabIfTimerBlock extends DesignerRuleCreator {
 			logger.error("OPENHAB IF TIMER contains no IF0.");
 			return null;
 		}
-		response = callBlock(level, child.block);
+		response = callBlock(ruleContext, child.block);
 
-		blockString += startLine(level) + "if" + response + " {" + EOL;
+		blockString += startLine(ruleContext.level) + "if" + response + " {" + EOL;
 
 		field = findField(block.fields, "PERIOD");
 		if (field == null) {
@@ -68,7 +68,8 @@ public class OpenhabIfTimerBlock extends DesignerRuleCreator {
 		}
 
 		// Now add the timer
-		blockString += startLine(level + 1) + timerID + " = createTimer(now.plus" + period.toString() + "("
+		ruleContext.level++;
+		blockString += startLine(ruleContext.level) + timerID + " = createTimer(now.plus" + period.toString() + "("
 				+ field.value + ")) [|" + EOL;
 
 		// And then the DO...
@@ -77,16 +78,22 @@ public class OpenhabIfTimerBlock extends DesignerRuleCreator {
 			logger.error("OPENHAB IF TIMER contains no DO0");
 			return null;
 		}
-		blockString += callBlock(level + 1, child.block);
+		ruleContext.level++;
+		blockString += callBlock(ruleContext, child.block);
+		ruleContext.level--;
 
 		// Terminate the timer block
-		blockString += startLine(level + 1) + "]" + EOL;
-		blockString += startLine(level) + "}" + EOL;
+		blockString += startLine(ruleContext.level) + "]" + EOL;
+		ruleContext.level--;
+		blockString += startLine(ruleContext.level) + "}" + EOL;
+
 
 		// And the cancel timer part...
-		blockString += startLine(level) + "else if(" + timerID + " != null) {" + EOL;
-		blockString += startLine(level + 1) + timerID + ".cancel()" + EOL;
-		blockString += startLine(level) + "}" + EOL;
+		blockString += startLine(ruleContext.level) + "else if(" + timerID + " != null) {" + EOL;
+		ruleContext.level++;
+		blockString += startLine(ruleContext.level) + timerID + ".cancel()" + EOL;
+		ruleContext.level--;
+		blockString += startLine(ruleContext.level) + "}" + EOL;
 
 		return blockString;
 	}

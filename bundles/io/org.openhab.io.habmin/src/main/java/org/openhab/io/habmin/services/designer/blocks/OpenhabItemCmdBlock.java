@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 public class OpenhabItemCmdBlock extends DesignerRuleCreator {
 	private static final Logger logger = LoggerFactory.getLogger(OpenhabItemCmdBlock.class);
 
-	String processBlock(int level, DesignerBlockBean block) {
+	String processBlock(RuleContext ruleContext, DesignerBlockBean block) {
 		DesignerFieldBean varField = findField(block.fields, "ITEM");
 		if (varField == null) {
 			logger.error("VARIABLE SET contains no VAR");
@@ -35,10 +35,10 @@ public class OpenhabItemCmdBlock extends DesignerRuleCreator {
 			logger.error("VARIABLE SET contains no VALUE");
 			return null;
 		}
-		String value = callBlock(level, child.block);
+		String value = callBlock(ruleContext, child.block);
 		
 		// TODO: Any type conversion or checking?
 
-		return startLine(level) + "sendCommand(" + varField.value + ", " + value + ")" + EOL;
+		return startLine(ruleContext.level) + "sendCommand(" + varField.value + ", " + value + ")" + EOL;
 	}
 }

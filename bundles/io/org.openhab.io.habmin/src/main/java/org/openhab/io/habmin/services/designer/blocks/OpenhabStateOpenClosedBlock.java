@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 public class OpenhabStateOpenClosedBlock extends DesignerRuleCreator {
 	private static final Logger logger = LoggerFactory.getLogger(OpenhabStateOpenClosedBlock.class);
 
-	String processBlock(int level, DesignerBlockBean block) {
+	String processBlock(RuleContext ruleContext, DesignerBlockBean block) {
 		String blockString = new String();
 
 		DesignerFieldBean operatorField = findField(block.fields, "STATE");

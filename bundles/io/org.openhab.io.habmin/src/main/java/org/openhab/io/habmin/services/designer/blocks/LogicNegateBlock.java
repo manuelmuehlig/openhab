@@ -17,7 +17,7 @@ import org.openhab.io.habmin.services.designer.DesignerBlockBean;
  * 
  */
 public class LogicNegateBlock extends DesignerRuleCreator {
-	String processBlock(int level, DesignerBlockBean block) {
+	String processBlock(RuleContext ruleContext, DesignerBlockBean block) {
 		return "!";
 	}
 }

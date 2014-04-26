@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 public class OpenhabConstantSetBlock extends DesignerRuleCreator {
 	private static final Logger logger = LoggerFactory.getLogger(OpenhabConstantSetBlock.class);
 
-	String processBlock(int level, DesignerBlockBean block) {
+	String processBlock(RuleContext ruleContext, DesignerBlockBean block) {
 		DesignerFieldBean varField = findField(block.fields, "CONSTANT");
 		if (varField == null) {
 			logger.error("CONSTANT SET contains no CONSTANT");
@@ -35,21 +35,9 @@ public class OpenhabConstantSetBlock extends DesignerRuleCreator {
 			logger.error("CONSTANT SET contains no VALUE");
 			return null;
 		}
-		String value = callBlock(level, child.block);
+		String value = callBlock(ruleContext, child.block);
 		
-		String type = "Number";
-		try {
-			Integer.parseInt(value);
-		} catch (NumberFormatException e) {
-			type = null;
-		}
-		if(type == null) {
-			if(value.equals("true") || value.equals("false")) {
-				type = "boolean";
-			}
-		}
-		
-		addConstant(varField.value, value);
-		return startLine(level) + varField.value + " = " + value + EOL;
+		ruleContext.addConstant(varField.value, value);
+		return "";
 	}
 }

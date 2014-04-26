@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 public class MathRoundBlock extends DesignerRuleCreator {
 	private static final Logger logger = LoggerFactory.getLogger(MathRoundBlock.class);
 
-	String processBlock(int level, DesignerBlockBean block) {
+	String processBlock(RuleContext ruleContext, DesignerBlockBean block) {
 		String blockString = new String();
 		DesignerChildBean child;
 
@@ -32,7 +32,7 @@ public class MathRoundBlock extends DesignerRuleCreator {
 			logger.error("MATH ROUND contains no NUM");
 			return null;
 		}
-		String blockA = callBlock(level, child.block);
+		String blockA = callBlock(ruleContext, child.block);
 
 		DesignerFieldBean operatorField = findField(block.fields, "OP");
 		if(operatorField == null) {

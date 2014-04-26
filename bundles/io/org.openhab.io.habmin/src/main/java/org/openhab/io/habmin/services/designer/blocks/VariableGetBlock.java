@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 public class VariableGetBlock extends DesignerRuleCreator {
 	private static final Logger logger = LoggerFactory.getLogger(VariableGetBlock.class);
 
-	String processBlock(int level, DesignerBlockBean block) {
+	String processBlock(RuleContext ruleContext, DesignerBlockBean block) {
 		DesignerFieldBean varField = findField(block.fields, "VAR");
 		if (varField == null) {
 			logger.error("VARIABLE GET contains no NUM");

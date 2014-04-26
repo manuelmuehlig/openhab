@@ -13,6 +13,7 @@ import org.openhab.io.habmin.HABminApplication;
 import org.openhab.io.habmin.services.designer.DesignerBlockBean;
 import org.openhab.io.habmin.services.designer.DesignerChildBean;
 import org.openhab.io.habmin.services.designer.DesignerFieldBean;
+import org.openhab.io.habmin.services.designer.blocks.RuleContext.TriggerType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +26,7 @@ import org.slf4j.LoggerFactory;
 public class OpenhabPersistenceGetBlock extends DesignerRuleCreator {
 	private static final Logger logger = LoggerFactory.getLogger(OpenhabPersistenceGetBlock.class);
 
-	String processBlock(int level, DesignerBlockBean block) {
+	String processBlock(RuleContext ruleContext, DesignerBlockBean block) {
 
 		//addImport("import org.openhab.core.persistence.*");
 	
@@ -43,28 +44,28 @@ public class OpenhabPersistenceGetBlock extends DesignerRuleCreator {
 			logger.error("PERSISTENCE GET contains no DAYS");
 			return null;
 		}
-		String days = callBlock(level, child.block);
+		String days = callBlock(ruleContext, child.block);
 
 		child = findChild(block.children, "HOURS");
 		if (child == null) {
 			logger.error("PERSISTENCE GET contains no HOURS");
 			return null;
 		}
-		String hours = callBlock(level, child.block);
+		String hours = callBlock(ruleContext, child.block);
 
 		child = findChild(block.children, "MINUTES");
 		if (child == null) {
 			logger.error("PERSISTENCE GET contains no MINUTES");
 			return null;
 		}
-		String minutes = callBlock(level, child.block);
+		String minutes = callBlock(ruleContext, child.block);
 
 		child = findChild(block.children, "SECONDS");
 		if (child == null) {
 			logger.error("PERSISTENCE GET contains no SECONDS");
 			return null;
 		}
-		String seconds = callBlock(level, child.block);
+		String seconds = callBlock(ruleContext, child.block);
 
 		DesignerFieldBean typeField = findField(block.fields, "TYPE");
 		if(typeField == null) {
@@ -108,12 +109,12 @@ public class OpenhabPersistenceGetBlock extends DesignerRuleCreator {
 
 		// Add triggers
 		// We simply add a timer - 500th of the persistence period seems like a good place to start (?)
-		setCron(Math.max(5,timeSeconds / 500));
+		ruleContext.setCron(Math.max(5,timeSeconds / 500));
 
 		String val = varField.value;
 		try {
 			if(HABminApplication.getItemUIRegistry().getItem(val) != null) {
-				addTrigger(varField.value, TriggerType.CHANGED);
+				ruleContext.addTrigger(varField.value, TriggerType.CHANGED);
 			}
 		} catch (ItemNotFoundException e) {
 		}

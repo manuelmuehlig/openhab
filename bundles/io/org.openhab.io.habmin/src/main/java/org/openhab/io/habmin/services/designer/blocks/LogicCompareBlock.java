@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 public class LogicCompareBlock extends DesignerRuleCreator {
 	private static final Logger logger = LoggerFactory.getLogger(LogicCompareBlock.class);
 
-	String processBlock(int level, DesignerBlockBean block) {
+	String processBlock(RuleContext ruleContext, DesignerBlockBean block) {
 		String blockString = new String();
 		DesignerChildBean child;
 
@@ -34,14 +34,14 @@ public class LogicCompareBlock extends DesignerRuleCreator {
 			logger.error("LOGIC COMPARE contains no A");
 			return null;
 		}
-		String blockA = callBlock(level, child.block);
+		String blockA = callBlock(ruleContext, child.block);
 
 		child = findChild(block.children, "B");
 		if (child == null) {
 			logger.error("LOGIC COMPARE contains no B");
 			return null;
 		}
-		String blockB = callBlock(level, child.block);
+		String blockB = callBlock(ruleContext, child.block);
 
 		DesignerFieldBean operatorField = findField(block.fields, "OP");
 		if(operatorField == null) {

@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 public class ControlIfBlock extends DesignerRuleCreator {
 	private static final Logger logger = LoggerFactory.getLogger(ControlIfBlock.class);
 
-	String processBlock(int level, DesignerBlockBean block) {
+	String processBlock(RuleContext ruleContext, DesignerBlockBean block) {
 		String blockString = new String();
 		String response;
 		DesignerChildBean child;
@@ -49,13 +49,15 @@ public class ControlIfBlock extends DesignerRuleCreator {
 				logger.error("IF CONTROL contains no IF{} (mutation count was {}).", x, elseif - 1);
 				return null;
 			}
-			response = callBlock(level, child.block);
+			ruleContext.level++;
+			response = callBlock(ruleContext, child.block);
+			ruleContext.level--;
 //			if(response == null)
 //				return null;
 			if(x == 0)
-				blockString += startLine(level) + "if" + response + " {" + EOL;
+				blockString += startLine(ruleContext.level) + "if" + response + " {" + EOL;
 			else
-				blockString += startLine(level) + "elseif" + response + " {" + EOL;
+				blockString += startLine(ruleContext.level) + "elseif" + response + " {" + EOL;
 
 			// And then the DO...
 			child = findChild(block.children, "DO" + x);
@@ -64,11 +66,13 @@ public class ControlIfBlock extends DesignerRuleCreator {
 				return null;
 			}
 			
-			response = callBlock(level, child.block);
+			ruleContext.level++;
+			response = callBlock(ruleContext, child.block);
+			ruleContext.level--;
 //			if(response == null)
 //				return null;
 			blockString += response;
-			blockString += startLine(level) + "}" + EOL;
+			blockString += startLine(ruleContext.level) + "}" + EOL;
 		}
 
 		mutation = findMutation(block.mutation, "else");
@@ -76,12 +80,12 @@ public class ControlIfBlock extends DesignerRuleCreator {
 			// Finally process the ELSE if it exists
 			child = findChild(block.children, "ELSE");
 			if (child != null) {
-				response = callBlock(level, child.block);
+				response = callBlock(ruleContext, child.block);
 //				if(response == null)
 //					return null;
-				blockString += startLine(level) + "else {" + EOL;
+				blockString += startLine(ruleContext.level) + "else {" + EOL;
 				blockString += response;
-				blockString += startLine(level) + "}" + EOL;
+				blockString += startLine(ruleContext.level) + "}" + EOL;
 			}
 		}
 

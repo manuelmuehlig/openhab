@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 public class VariableSetBlock extends DesignerRuleCreator {
 	private static final Logger logger = LoggerFactory.getLogger(VariableSetBlock.class);
 
-	String processBlock(int level, DesignerBlockBean block) {
+	String processBlock(RuleContext ruleContext, DesignerBlockBean block) {
 		DesignerFieldBean varField = findField(block.fields, "VAR");
 		if (varField == null) {
 			logger.error("VARIABLE SET contains no VAR");
@@ -35,7 +35,7 @@ public class VariableSetBlock extends DesignerRuleCreator {
 			logger.error("VARIABLE SET contains no VALUE");
 			return null;
 		}
-		String value = callBlock(level, child.block);
+		String value = callBlock(ruleContext, child.block);
 		
 		String type = "Number";
 		try {
@@ -49,7 +49,7 @@ public class VariableSetBlock extends DesignerRuleCreator {
 			}
 		}
 		
-		addGlobal("var " + type + " " + varField.value + " = null");
-		return startLine(level) + varField.value + " = " + value + EOL;
+		ruleContext.addGlobal("var " + type + " " + varField.value + " = null");
+		return startLine(ruleContext.level) + varField.value + " = " + value + EOL;
 	}
 }

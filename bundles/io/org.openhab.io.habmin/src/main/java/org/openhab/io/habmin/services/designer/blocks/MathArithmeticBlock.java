@@ -23,25 +23,25 @@ import org.slf4j.LoggerFactory;
 public class MathArithmeticBlock extends DesignerRuleCreator {
 	private static final Logger logger = LoggerFactory.getLogger(MathArithmeticBlock.class);
 
-	String processBlock(int level, DesignerBlockBean block) {
+	String processBlock(RuleContext ruleContext, DesignerBlockBean block) {
 		String blockString = new String();
 		DesignerChildBean child;
 
-		addImport("org.java.math.*");
+		ruleContext.addImport("org.java.math.*");
 
 		child = findChild(block.children, "A");
 		if (child == null) {
 			logger.error("MATH ARITHMETIC contains no A");
 			return null;
 		}
-		String blockA = callBlock(level, child.block);
+		String blockA = callBlock(ruleContext, child.block);
 
 		child = findChild(block.children, "B");
 		if (child == null) {
 			logger.error("MATH ARITHMETIC contains no B");
 			return null;
 		}
-		String blockB = callBlock(level, child.block);
+		String blockB = callBlock(ruleContext, child.block);
 
 		DesignerFieldBean operatorField = findField(block.fields, "OP");
 		if(operatorField == null) {

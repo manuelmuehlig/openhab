@@ -14,6 +14,8 @@ import java.util.Map;
 import org.openhab.io.habmin.services.designer.DesignerBlockBean;
 import org.openhab.io.habmin.services.designer.DesignerChildBean;
 import org.openhab.io.habmin.services.designer.DesignerFieldBean;
+import org.openhab.io.habmin.services.designer.blocks.RuleContext.CronType;
+import org.openhab.io.habmin.services.designer.blocks.RuleContext.Trigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,13 +28,13 @@ import org.slf4j.LoggerFactory;
 public class OpenhabRuleBlock extends DesignerRuleCreator {
 	private static final Logger logger = LoggerFactory.getLogger(OpenhabRuleBlock.class);
 
-	String processBlock(int level, DesignerBlockBean block) {
+	String processBlock(RuleContext ruleContext, DesignerBlockBean block) {
 		String blockString = new String();
 		String ruleString = new String();
 
-		addImport("org.openhab.core.library.types.*");
-		addImport("org.openhab.core.persistence.*");
-		addImport("org.openhab.model.script.actions.*");
+		ruleContext.addImport("org.openhab.core.library.types.*");
+		ruleContext.addImport("org.openhab.core.persistence.*");
+		ruleContext.addImport("org.openhab.model.script.actions.*");
 
 		// Loop through the fields to find the rule name
 		DesignerFieldBean nameField = findField(block.fields, "NAME");
@@ -41,15 +43,22 @@ public class OpenhabRuleBlock extends DesignerRuleCreator {
 			return null;
 		}
 
-		// Process the children
-		// for(DesignerChildBean child : block.children) {
-		DesignerChildBean child = findChild(block.children, "STACK");
+		DesignerChildBean child;
+		child = findChild(block.children, "CONSTANT");
 		if (child != null) {
-			String response = callBlock(level, child.block);
+			callBlock(ruleContext, child.block);
+		}
+
+		// Process the children
+		ruleContext.level++;
+		child = findChild(block.children, "STACK");
+		if (child != null) {
+			String response = callBlock(ruleContext, child.block);
 			if (response == null)
 				return null;
 			ruleString += response;
 		}
+		ruleContext.level--;
 
 		//
 		// Write the rule
@@ -63,12 +72,12 @@ public class OpenhabRuleBlock extends DesignerRuleCreator {
 		}
 
 		// Write the constants is there are any - just for reference
-		if (getConstantList() != null) {
+		if (ruleContext.getConstantList() != null) {
 			blockString += "// Constants used to generate this rule" + EOL;
-			Iterator it = getConstantList().entrySet().iterator();
+			Iterator it = ruleContext.getConstantList().entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry pairs = (Map.Entry) it.next();
-				blockString += pairs.getKey() + " == " + pairs.getValue();
+				blockString += "// " + pairs.getKey() + " == " + pairs.getValue() + EOL;
 			}
 			blockString += EOL;
 		}
@@ -76,14 +85,14 @@ public class OpenhabRuleBlock extends DesignerRuleCreator {
 		blockString += "rule \"" + nameField.value + "\"\r\n";
 		blockString += "when\r\n";
 		boolean firstTrigger = true;
-		if (cronTime != 0) {
-			CronType cron = CronType.fromPeriod(cronTime);
+		if (ruleContext.cronTime != 0) {
+			CronType cron = CronType.fromPeriod(ruleContext.cronTime);
 			if (cron != null) {
 				blockString += "    " + cron.toString() + EOL;
 			}
 			firstTrigger = false;
 		}
-		for (Trigger trigger : getTriggerList()) {
+		for (Trigger trigger : ruleContext.getTriggerList()) {
 			if (!firstTrigger)
 				blockString += "    or" + EOL;
 			blockString += "    Item " + trigger.item + " " + trigger.type.toString();

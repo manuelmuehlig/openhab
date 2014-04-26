@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 public class OpenhabItemSetBlock extends DesignerRuleCreator {
 	private static final Logger logger = LoggerFactory.getLogger(OpenhabItemSetBlock.class);
 
-	String processBlock(int level, DesignerBlockBean block) {
+	String processBlock(RuleContext ruleContext, DesignerBlockBean block) {
 		DesignerFieldBean varField = findField(block.fields, "ITEM");
 		if (varField == null) {
 			logger.error("ITEM SET contains no VAR");
@@ -35,8 +35,8 @@ public class OpenhabItemSetBlock extends DesignerRuleCreator {
 			logger.error("ITEM SET contains no VALUE");
 			return null;
 		}
-		String value = callBlock(level, child.block);
+		String value = callBlock(ruleContext, child.block);
 
-		return startLine(level) + "postUpdate(" + varField.value + ", " + value + ")" + EOL;
+		return startLine(ruleContext.level) + "postUpdate(" + varField.value + ", " + value + ")" + EOL;
 	}
 }

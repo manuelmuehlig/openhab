@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,26 +34,12 @@ import org.slf4j.LoggerFactory;
 public abstract class DesignerRuleCreator {
 	private static final Logger logger = LoggerFactory.getLogger(DesignerRuleCreator.class);
 
-	RuleContext ruleContext = null;
-
-	List<Trigger> triggerList = new ArrayList<Trigger>();
-	List<String> importList = new ArrayList<String>();
-	List<String> globalList = new ArrayList<String>();
-	HashMap<String, String> constantList = new HashMap<String, String>();
-
-	int cronTime = 0;
 	final static String EOL = "\r\n";
-	
-	static int globalId = 0;
-	
-	void setContext(RuleContext context) {
-		ruleContext = context;
-	}
 
 	public static final String PATH_RULES = "configurations/rules";
-	abstract String processBlock(int level, DesignerBlockBean block);
+	abstract String processBlock(RuleContext ruleContext, DesignerBlockBean block);
 
-	String callBlock(int level, DesignerBlockBean block) {
+	String callBlock(RuleContext context, DesignerBlockBean block) {
 		if(block == null) {
 			logger.error("Block is null!");
 			return null;
@@ -66,37 +51,17 @@ public abstract class DesignerRuleCreator {
 			logger.error("Error finding processor for block type '{}'.", block.type);
 			return EOL + "*** Unknown Block \"" + block.type + "\"" + EOL;
 		}
-		// Give it context
-		processor.setContext(ruleContext);
-		
+
 		// Process the block
-		String blockString = processor.processBlock(level + 1, block);
+		String blockString = processor.processBlock(context, block);
 		if(blockString == null)
 			return null;
 		
-		
-		// Get any triggers identified in this block
-		for(Trigger trigger : processor.getTriggerList()) {
-			addTrigger(trigger.item, trigger.type);
-		}
-		
-		// Get any imports identified in this block
-		for(String s : processor.getImportList()) {
-			addImport(s);
-		}
-
-		for(String s : processor.getGlobalList()) {
-			addGlobal(s);
-		}
-
-		// Get the lowest cron time
-		setCron(processor.getCron());
-		
 		if(block.next != null) {
 			blockString += EOL;
-			blockString += callBlock(level, block.next);
+			blockString += callBlock(context, block.next);
 		}
-		
+
 		// And we're done
 		return blockString;
 	}
@@ -109,93 +74,6 @@ public abstract class DesignerRuleCreator {
 		
 		return line;
 	};
-	
-	String getGlobalId() {
-		int a = globalId / 26;
-		int b = globalId % 26;
-		
-		String id = new String();
-		if(a > 0) {
-			id += (char)(a + 'A');
-		}
-		id += (char)(b + 'A');
-
-		globalId++;
-		
-		return id;
-	}
-
-	List<Trigger> getTriggerList() {
-		return triggerList;
-	}
-
-	void addTrigger(String item, TriggerType type) {
-		// Check if this trigger already exists
-		for(Trigger trigger : triggerList) {
-			if(!trigger.item.equalsIgnoreCase(item))
-				continue;
-			if(trigger.type == TriggerType.COMMAND && type == TriggerType.COMMAND)
-				return;
-			// This trigger already exists - if either are UPDATED, then set to UPDATED
-			if(trigger.type == TriggerType.UPDATED || type == TriggerType.UPDATED)
-				trigger.type = TriggerType.UPDATED;
-			return;
-		}
-		Trigger trigger = new Trigger();
-		trigger.item = item;
-		trigger.type = type;
-
-		triggerList.add(trigger);
-	}
-	
-	void addConstant(String name, String value) {
-		constantList.put(name, value);
-	}
-
-	String getConstant(String name) {
-		return constantList.get(name);
-	}
-
-	HashMap<String, String> getConstantList() {
-		return constantList;
-	}
-	
-	List<String> getImportList() {
-		return importList;
-	}
-	
-	void addImport(String newImport) {
-		for(String s : importList) {
-			if(s.equals(newImport))
-				return;
-		}
-		importList.add(newImport);
-	}
-
-	List<String> getGlobalList() {
-		return globalList;
-	}
-	
-	void addGlobal(String newGlobal) {
-		for(String s : globalList) {
-			if(s.equals(newGlobal))
-				return;
-		}
-		globalList.add(newGlobal);
-	}
-
-	void setCron(int time) {
-		if(time == 0)
-			return;
-		if(cronTime == 0)
-			cronTime = time;
-		if(time < cronTime)
-			cronTime = time;
-	}
-
-	int getCron() {
-		return cronTime;
-	}
 
 	DesignerChildBean findChild(List<DesignerChildBean>children, String name) {
 		if(children == null)
@@ -262,6 +140,8 @@ public abstract class DesignerRuleCreator {
 		// Trim any whitespace
 		name = name.trim();
 
+		RuleContext context = new RuleContext();
+
 		DesignerRuleCreator processor = getBlockProcessor(rootBlock.type);
 		if (processor == null) {
 			logger.error("Error finding processor for ROOT block type '{}'.", rootBlock.type);
@@ -269,7 +149,7 @@ public abstract class DesignerRuleCreator {
 		}
 
 		// Process the block
-		String ruleString = processor.callBlock(0, rootBlock);
+		String ruleString = processor.callBlock(context, rootBlock);
 		if (ruleString == null)
 			return null;
 
@@ -301,17 +181,17 @@ public abstract class DesignerRuleCreator {
 			out.write("// Any changes made manually to this file will be overwritten next time HABmin rules are saved." + EOL);
 			out.write(EOL);
 
-			if(processor.getImportList().size() != 0) {
+			if(context.getImportList().size() != 0) {
 				out.write("// Imports" + EOL);
-				for(String i : processor.getImportList()) {
+				for(String i : context.getImportList()) {
 					out.write("import " + i + EOL);
 				}
 				out.write(EOL);
 			}
 
-			if(processor.getImportList().size() != 0) {
+			if(context.getImportList().size() != 0) {
 				out.write("// Globals" + EOL);
-				for(String i : processor.getGlobalList()) {
+				for(String i : context.getGlobalList()) {
 					out.write(i + EOL);
 				}
 				out.write(EOL);
@@ -377,121 +257,5 @@ public abstract class DesignerRuleCreator {
 		}
 
 		return null;
-	}
-	
-	class Trigger {
-		String item;
-		TriggerType type;
-		String value1;
-		String value2;
-	}
-	
-	enum TriggerType {
-		CHANGED("changed"), UPDATED("received update"), COMMAND("received command");
-
-			private String value;
-
-			private TriggerType(String value) {
-				this.value = value;
-			}
-
-			public static TriggerType fromString(String text) {
-				if (text != null) {
-					for (TriggerType c : TriggerType.values()) {
-						if (text.equalsIgnoreCase(c.name())) {
-							return c;
-						}
-					}
-				}
-				return null;
-			}
-
-			public String toString() {
-				return this.value;
-			}
-		
-	}
-
-	enum CronType {
-		STARTED(0, "System started"),
-		SHUTDOWN(0, "System shutdown"),
-		MIDNIGHT(0, "Time is midnight"), 
-		MIDDAY(0, "Time is midday"),
-		CRON5SECONDS(5, "Time cron \"*/5 * * * * ?\""),
-		CRON6SECONDS(6, "Time cron \"*/6 * * * * ?\""),
-		CRON7SECONDS(7, "Time cron \"*/7 * * * * ?\""),
-		CRON8SECONDS(8, "Time cron \"*/8 * * * * ?\""),
-		CRON9SECONDS(9, "Time cron \"*/9 * * * * ?\""),
-		CRON10SECONDS(10, "Time cron \"*/10 * * * * ?\""),
-		CRON11SECONDS(11, "Time cron \"*/11 * * * * ?\""),
-		CRON12SECONDS(12, "Time cron \"*/12 * * * * ?\""),
-		CRON13SECONDS(13, "Time cron \"*/13 * * * * ?\""),
-		CRON14SECONDS(14, "Time cron \"*/14 * * * * ?\""),
-		CRON15SECONDS(15, "Time cron \"*/15 * * * * ?\""),
-		CRON20SECONDS(20, "Time cron \"*/20 * * * * ?\""),
-		CRON30SECONDS(30, "Time cron \"*/30 * * * * ?\""),
-		CRON1MINUTE(60, "Time cron \"0 * * * * ?\""),
-		CRON2MINUTE(120, "Time cron \"0 */2 * * * ?\""),
-		CRON3MINUTE(180, "Time cron \"0 */3 * * * ?\""),
-		CRON4MINUTE(240, "Time cron \"0 */4 * * * ?\""),
-		CRON5MINUTE(300, "Time cron \"0 */5 * * * ?\""),
-		CRON6MINUTE(360, "Time cron \"0 */6 * * * ?\""),
-		CRON7MINUTE(420, "Time cron \"0 */7 * * * ?\""),
-		CRON8MINUTE(480, "Time cron \"0 */8 * * * ?\""),
-		CRON9MINUTE(540, "Time cron \"0 */9 * * * ?\""),
-		CRON10MINUTE(600, "Time cron \"0 */10 * * * ?\""),
-		CRON15MINUTE(900, "Time cron \"0 */15 * * * ?\""),
-		CRON20MINUTE(1200, "Time cron \"0 */20 * * * ?\""),
-		CRON30MINUTE(1800, "Time cron \"0 */30 * * * ?\""),
-		CRON1HOUR(3600, "Time cron \"0 0 * * * ?\""),
-		CRON2HOUR(7200, "Time cron \"0 0 */2 * * ?\""),
-		CRON3HOUR(10800, "Time cron \"0 0 */3 * * ?\""),
-		CRON4HOUR(14400, "Time cron \"0 0 */4 * * ?\""),
-		CRON6HOUR(21600, "Time cron \"0 0 */6 * * ?\""),
-		CRON8HOUR(28800, "Time cron \"0 0 */8 * * ?\""),
-		CRON12HOUR(43200, "Time cron \"0 0 */12 * * ?\""),
-		CRON1DAY(86400, "Time cron \"0 0 0 * * ?\""),
-		CRONFOREVER(Integer.MAX_VALUE, "Time cron \"0 0 0 * * ?\"");
-
-		private int period;
-		private String value;
-
-		private CronType(int period, String value) {
-			this.period = period;
-			this.value = value;
-		}
-
-		// Find the value closest to, but below, the requested period
-		public static CronType fromPeriod(int period) {
-			// Don't allow anything faster than 5 seconds!
-			CronType lowest = null;
-			for (CronType c : CronType.values()) {
-				// Ignore non-cron statements
-				if (c.period == 0)
-					continue;
-				if (lowest == null)
-					lowest = c;
-				if (period > lowest.period && c.period <= period) {
-					lowest = c;
-				}
-			}
-			return lowest;
-		}
-
-		public static CronType fromString(String text) {
-			if (text != null) {
-				for (CronType c : CronType.values()) {
-					if (text.equalsIgnoreCase(c.name())) {
-						return c;
-					}
-				}
-			}
-			return null;
-		}
-
-		// TODO: Maybe we should randomise the seconds, so not all rules trigger at exactly the same time!?!
-		public String toString() {
-			return this.value;
-		}
 	}
 }

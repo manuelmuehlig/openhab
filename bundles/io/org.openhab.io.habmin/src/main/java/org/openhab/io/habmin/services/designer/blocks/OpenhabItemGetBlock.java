@@ -12,6 +12,7 @@ import org.openhab.core.items.ItemNotFoundException;
 import org.openhab.io.habmin.HABminApplication;
 import org.openhab.io.habmin.services.designer.DesignerBlockBean;
 import org.openhab.io.habmin.services.designer.DesignerFieldBean;
+import org.openhab.io.habmin.services.designer.blocks.RuleContext.TriggerType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +25,7 @@ import org.slf4j.LoggerFactory;
 public class OpenhabItemGetBlock extends DesignerRuleCreator {
 	private static final Logger logger = LoggerFactory.getLogger(OpenhabItemGetBlock.class);
 
-	String processBlock(int level, DesignerBlockBean block) {
+	String processBlock(RuleContext ruleContext, DesignerBlockBean block) {
 		DesignerFieldBean varField = findField(block.fields, "ITEM");
 		if (varField == null) {
 			logger.error("ITEM GET contains no NUM");
@@ -36,7 +37,7 @@ public class OpenhabItemGetBlock extends DesignerRuleCreator {
 		try {
 			if(HABminApplication.getItemUIRegistry().getItem(val) != null) {
 				val += ".state";
-				addTrigger(varField.value, TriggerType.CHANGED);
+				ruleContext.addTrigger(varField.value, TriggerType.CHANGED);
 			}
 		} catch (ItemNotFoundException e) {
 		}
