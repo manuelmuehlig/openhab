@@ -157,7 +157,7 @@ public abstract class DesignerRuleCreator {
 		// Since we'll use the rule name as part of the filename
 		// and this can change (id is constant) we need to perform
 		// a wildcard delete!
-		String fWildcard = "\\[" + id + "\\]_.*\\.txt";
+		String fWildcard = "\\(" + id + "\\)_.*\\.txt";
 		final File folder = new File(PATH_RULES);
 		final File[] allFiles = folder.listFiles();
 		if(allFiles != null) {
@@ -171,7 +171,7 @@ public abstract class DesignerRuleCreator {
 		}
 
 		String fileRule = name.toLowerCase().replaceAll("[^a-z0-9.-]", "_");
-		String fileName = PATH_RULES + "/[" + id + "]_" + fileRule + ".txt";
+		String fileName = PATH_RULES + "/(" + id + ")_" + fileRule + ".txt";
 		logger.debug(ruleString);
 		try {
 			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8"));
