@@ -37,19 +37,21 @@ public class VariableSetBlock extends DesignerRuleCreator {
 		}
 		String value = callBlock(ruleContext, child.block);
 		
-		String type = "Number";
+		String varType = "Number";
+		String varDefault = "0";
 		try {
 			Integer.parseInt(value);
 		} catch (NumberFormatException e) {
-			type = null;
+			varType = null;
 		}
-		if(type == null) {
+		if(varType == null) {
 			if(value.equals("true") || value.equals("false")) {
-				type = "boolean";
+				varType = "boolean";
+				varDefault = "false";
 			}
 		}
 		
-		ruleContext.addGlobal("var " + type + " " + varField.value + " = null");
+		ruleContext.addGlobal("var " + varType + " " + varField.value + " = " + varDefault);
 		return startLine(ruleContext.level) + varField.value + " = " + value + EOL;
 	}
 }

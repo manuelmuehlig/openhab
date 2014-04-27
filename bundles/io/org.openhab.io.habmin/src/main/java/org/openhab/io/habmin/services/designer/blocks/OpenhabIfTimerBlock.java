@@ -49,6 +49,9 @@ public class OpenhabIfTimerBlock extends DesignerRuleCreator {
 
 		blockString += startLine(ruleContext.level) + "if" + response + " {" + EOL;
 
+		ruleContext.level++;
+		blockString += startLine(ruleContext.level) + "if(" + timerID + " == null) {" + EOL;
+		
 		field = findField(block.fields, "PERIOD");
 		if (field == null) {
 			logger.error("OPENHAB IF TIMER contains no PERIOD.");
@@ -82,16 +85,19 @@ public class OpenhabIfTimerBlock extends DesignerRuleCreator {
 		blockString += callBlock(ruleContext, child.block);
 		ruleContext.level--;
 
-		// Terminate the timer block
 		blockString += startLine(ruleContext.level) + "]" + EOL;
 		ruleContext.level--;
-		blockString += startLine(ruleContext.level) + "}" + EOL;
 
+		// Terminate the timer block
+		blockString += startLine(ruleContext.level) + "}" + EOL;
+		ruleContext.level--;
+		blockString += startLine(ruleContext.level) + "}" + EOL;
 
 		// And the cancel timer part...
 		blockString += startLine(ruleContext.level) + "else if(" + timerID + " != null) {" + EOL;
 		ruleContext.level++;
 		blockString += startLine(ruleContext.level) + timerID + ".cancel()" + EOL;
+		blockString += startLine(ruleContext.level) + timerID + " = null" + EOL;
 		ruleContext.level--;
 		blockString += startLine(ruleContext.level) + "}" + EOL;
 
