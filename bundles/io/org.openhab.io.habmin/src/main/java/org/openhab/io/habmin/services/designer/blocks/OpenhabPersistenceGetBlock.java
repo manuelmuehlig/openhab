@@ -11,7 +11,6 @@ package org.openhab.io.habmin.services.designer.blocks;
 import org.openhab.core.items.ItemNotFoundException;
 import org.openhab.io.habmin.HABminApplication;
 import org.openhab.io.habmin.services.designer.DesignerBlockBean;
-import org.openhab.io.habmin.services.designer.DesignerChildBean;
 import org.openhab.io.habmin.services.designer.DesignerFieldBean;
 import org.openhab.io.habmin.services.designer.blocks.RuleContext.TriggerType;
 import org.slf4j.Logger;
@@ -31,80 +30,56 @@ public class OpenhabPersistenceGetBlock extends DesignerRuleCreator {
 		//addImport("import org.openhab.core.persistence.*");
 	
 		String blockString = new String();
-		DesignerChildBean child;
+		DesignerFieldBean field;
 
 		DesignerFieldBean varField = findField(block.fields, "ITEM");
 		if (varField == null) {
 			logger.error("PERSISTENCE GET contains no VAR");
 			return null;
 		}
-		
-		child = findChild(block.children, "DAYS");
-		if (child == null) {
-			logger.error("PERSISTENCE GET contains no DAYS");
+		field = findField(block.fields, "PERIOD");
+		if (field == null) {
+			logger.error("PERSISTENCE GET TIMER contains no PERIOD.");
 			return null;
 		}
-		String days = callBlock(ruleContext, child.block);
 
-		child = findChild(block.children, "HOURS");
-		if (child == null) {
-			logger.error("PERSISTENCE GET contains no HOURS");
+		Period period = Period.fromString(field.value);
+		if (period == null) {
+			logger.error("PERSISTENCE GET TIMER contains invalid PERIOD.");
 			return null;
 		}
-		String hours = callBlock(ruleContext, child.block);
 
-		child = findChild(block.children, "MINUTES");
-		if (child == null) {
-			logger.error("PERSISTENCE GET contains no MINUTES");
+		field = findField(block.fields, "NUM");
+		if (field == null) {
+			logger.error("PERSISTENCE GET TIMER contains no NUM.");
 			return null;
 		}
-		String minutes = callBlock(ruleContext, child.block);
 
-		child = findChild(block.children, "SECONDS");
-		if (child == null) {
-			logger.error("PERSISTENCE GET contains no SECONDS");
-			return null;
+		int periodNum = Integer.parseInt(field.value);
+		int timeSeconds = 0;
+
+		switch(period) {
+		case SECONDS:
+			timeSeconds = periodNum;
+			break;
+		case MINUTES:
+			timeSeconds = periodNum * 60;
+			break;
+		case HOURS:
+			timeSeconds = periodNum * 3600;
+			break;
 		}
-		String seconds = callBlock(ruleContext, child.block);
 
 		DesignerFieldBean typeField = findField(block.fields, "TYPE");
 		if(typeField == null) {
 			logger.error("PERSISTENCE GET contains no field TYPE");
 			return null;
 		}
+
 		Operators type = Operators.valueOf(typeField.value.toUpperCase());
 		if(type == null) {
-			logger.error("PERSISTENCE GET contains invalid field OP ({})", typeField.name.toUpperCase());
+			logger.error("PERSISTENCE GET contains invalid field TYPE ({})", typeField.name.toUpperCase());
 			return null;
-		}
-		
-		int timeSeconds = 0;
-		String timer = null;
-		// Firstly see if just a single parameter is set
-		if(Integer.parseInt(days) != 0 
-				&& Integer.parseInt(hours) == 0 && Integer.parseInt(minutes) == 0 && Integer.parseInt(seconds) == 0) {
-			timer = "minusDays(" + Integer.parseInt(days) + ")";
-			timeSeconds = Integer.parseInt(days) * 86400;
-		}
-		else if(Integer.parseInt(hours) != 0 
-				&& Integer.parseInt(days) == 0 && Integer.parseInt(minutes) == 0 && Integer.parseInt(seconds) == 0) {
-			timer = "minusHours(" + Integer.parseInt(hours) + ")";
-			timeSeconds = Integer.parseInt(hours) * 3600;
-		}
-		else if(Integer.parseInt(minutes) != 0 
-				&& Integer.parseInt(days) == 0 && Integer.parseInt(hours) == 0 && Integer.parseInt(seconds) == 0) {
-			timer = "minusMinutes(" + Integer.parseInt(minutes) + ")";
-			timeSeconds = Integer.parseInt(minutes) * 60;
-		}
-		else if(Integer.parseInt(seconds) != 0 
-				&& Integer.parseInt(days) == 0 && Integer.parseInt(hours) == 0 && Integer.parseInt(minutes) == 0) {
-			timer = "minusSeconds(" + Integer.parseInt(seconds) + ")";
-			timeSeconds = Integer.parseInt(seconds);
-		}
-		else {
-			timeSeconds = (Integer.parseInt(days) * 86400 + 
-					Integer.parseInt(hours) * 3600 + Integer.parseInt(minutes) * 60 + Integer.parseInt(seconds));
-			timer = "minus(" + timeSeconds * 1000 + ")";
 		}
 
 		// Add triggers
@@ -120,7 +95,7 @@ public class OpenhabPersistenceGetBlock extends DesignerRuleCreator {
 		}
 
 		// Generate the rule string
-		blockString = varField.value + "." + type.toString() + "(now." + timer + ").state";
+		blockString = varField.value + "." + type.toString() + "(now.minus" + period.toString() + "(" + periodNum + ").state";
 		return blockString;
 	}
 	
@@ -141,6 +116,31 @@ public class OpenhabPersistenceGetBlock extends DesignerRuleCreator {
 		public static Operators fromString(String text) {
 			if (text != null) {
 				for (Operators c : Operators.values()) {
+					if (text.equalsIgnoreCase(c.name())) {
+						return c;
+					}
+				}
+			}
+			return null;
+		}
+
+		public String toString() {
+			return this.value;
+		}
+	}
+	
+	enum Period {
+		SECONDS("Seconds"), MINUTES("Minutes"), HOURS("Hours");
+
+		private String value;
+
+		private Period(String value) {
+			this.value = value;
+		}
+
+		public static Period fromString(String text) {
+			if (text != null) {
+				for (Period c : Period.values()) {
 					if (text.equalsIgnoreCase(c.name())) {
 						return c;
 					}

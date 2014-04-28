@@ -36,7 +36,7 @@ public class OpenhabIfTimerBlock extends DesignerRuleCreator {
 		if (block.comment != null) {
 			String[] comments = block.comment.text.split("\\r?\\n");
 			for (String comment : comments)
-				blockString += "// " + comment + "\r\n";
+				blockString += startLine(ruleContext.level) + "// " + comment + "\r\n";
 		}
 
 		// Process the IF...

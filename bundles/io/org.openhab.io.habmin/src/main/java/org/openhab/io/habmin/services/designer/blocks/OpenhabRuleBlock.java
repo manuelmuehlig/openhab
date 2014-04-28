@@ -71,17 +71,6 @@ public class OpenhabRuleBlock extends DesignerRuleCreator {
 			blockString += EOL;
 		}
 
-		// Write the constants is there are any - just for reference
-		if (ruleContext.getConstantList() != null) {
-			blockString += "// Constants used to generate this rule" + EOL;
-			Iterator it = ruleContext.getConstantList().entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry pairs = (Map.Entry) it.next();
-				blockString += "// " + pairs.getKey() + " == " + pairs.getValue() + EOL;
-			}
-			blockString += EOL;
-		}
-
 		blockString += "rule \"" + nameField.value + "\"\r\n";
 		blockString += "when\r\n";
 		boolean firstTrigger = true;

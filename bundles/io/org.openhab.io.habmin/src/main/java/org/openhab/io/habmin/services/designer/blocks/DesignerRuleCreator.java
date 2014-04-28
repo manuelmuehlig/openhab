@@ -16,7 +16,9 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.openhab.io.habmin.services.designer.DesignerBlockBean;
 import org.openhab.io.habmin.services.designer.DesignerChildBean;
@@ -190,9 +192,20 @@ public abstract class DesignerRuleCreator {
 			}
 
 			if(context.getImportList().size() != 0) {
-				out.write("// Globals" + EOL);
+				out.write("// Global Variables" + EOL);
 				for(String i : context.getGlobalList()) {
 					out.write(i + EOL);
+				}
+				out.write(EOL);
+			}
+			
+			// Write the constants if there are any - just for reference
+			if (context.getConstantList().size() != 0) {
+				out.write("// Constants used to generate this rule" + EOL);
+				Iterator it = context.getConstantList().entrySet().iterator();
+				while (it.hasNext()) {
+					Map.Entry pairs = (Map.Entry) it.next();
+					out.write("// " + pairs.getKey() + " == " + pairs.getValue() + EOL);
 				}
 				out.write(EOL);
 			}
