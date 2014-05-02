@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -41,7 +40,6 @@ import javax.ws.rs.core.UriInfo;
 import org.eclipse.emf.common.util.EList;
 import org.openhab.core.items.Item;
 import org.openhab.core.items.ItemNotFoundException;
-import org.openhab.core.library.types.DecimalType;
 import org.openhab.core.library.types.OnOffType;
 import org.openhab.core.library.types.OpenClosedType;
 import org.openhab.core.persistence.FilterCriteria;
@@ -480,6 +478,8 @@ public class PersistenceResource {
 	 */
 	private List<ItemHistoryBean> readItemModel(ItemModel modelItems, String modelName) {
 		List<ItemHistoryBean> beanList = new ArrayList<ItemHistoryBean>();
+		if(modelItems == null)
+			return beanList;
 
 		EList<ModelItem> modelList = modelItems.getItems();
 		for (ModelItem item : modelList) {

@@ -95,7 +95,7 @@ public class OpenhabPersistenceGetBlock extends DesignerRuleCreator {
 		}
 
 		// Generate the rule string
-		blockString = varField.value + "." + type.toString() + "(now.minus" + period.toString() + "(" + periodNum + ").state";
+		blockString = varField.value + "." + type.toString() + "(now.minus" + period.toString() + "(" + periodNum + ")).state";
 		return blockString;
 	}
 	
