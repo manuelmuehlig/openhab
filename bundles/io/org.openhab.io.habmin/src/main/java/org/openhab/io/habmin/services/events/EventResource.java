@@ -24,6 +24,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.atmosphere.annotation.Broadcast;
+import org.atmosphere.annotation.Suspend;
 import org.atmosphere.annotation.Suspend.SCOPE;
 import org.atmosphere.cpr.AtmosphereConfig;
 import org.atmosphere.cpr.AtmosphereResource;
@@ -77,6 +79,13 @@ public class EventResource {
 	@Context
 	UriInfo uriInfo;
 
+	@Suspend(contentType = "application/json")
+	@GET
+	public String suspend() {
+		return "";
+	}
+
+	@Broadcast(writeEntity = false)
 	@GET
 	@Produces({ MediaType.WILDCARD })
 	public SuspendResponse<Response> getItems(@Context HttpHeaders headers,
@@ -89,19 +98,22 @@ public class EventResource {
 
 		if (atmosphereTransport == null || atmosphereTransport.isEmpty()) {
 			// first request => return all values
-//			if (responseType != null) {
-//				throw new WebApplicationException(Response.ok(
-//						getItemStateListBean(itemNames, System.currentTimeMillis()), responseType).build());
-//			} else {
-				throw new WebApplicationException(Response.notAcceptable(null).build());
-//			}
+			// if (responseType != null) {
+			// throw new WebApplicationException(Response.ok(
+			// getItemStateListBean(itemNames, System.currentTimeMillis()),
+			// responseType).build());
+			// } else {
+			throw new WebApplicationException(Response.notAcceptable(null).build());
+			// }
 		}
 
 		String p = resource.getRequest().getPathInfo();
-		EventBroadcaster broadcaster = (EventBroadcaster) BroadcasterFactory.getDefault().lookup(EventBroadcaster.class, p, true);
+		EventBroadcaster broadcaster = (EventBroadcaster) BroadcasterFactory.getDefault().lookup(
+				EventBroadcaster.class, p, true);
 		broadcaster.register();
-		
-//		itemBroadcaster.addStateChangeListener(new ItemStateChangeListener(itemNames));
+
+		// itemBroadcaster.addStateChangeListener(new
+		// ItemStateChangeListener(itemNames));
 		return new SuspendResponse.SuspendResponseBuilder<Response>().scope(SCOPE.REQUEST)
 				.resumeOnBroadcast(!ResponseTypeHelper.isStreamingTransport(resource.getRequest()))
 				.broadcaster(broadcaster).outputComments(true).build();
@@ -117,6 +129,7 @@ public class EventResource {
 	 * bundlename,
 	 * 
 	 * @QueryParam("type") String type, @QueryParam("jsoncallback")
+	 * 
 	 * @DefaultValue("callback") String callback,
 	 * 
 	 * @HeaderParam(HeaderConfig.X_ATMOSPHERE_TRANSPORT) String
@@ -181,6 +194,5 @@ public class EventResource {
 	 * 
 	 * if(bean != null) beans.add(bean); } return beans; }
 	 */
-
 
 }
