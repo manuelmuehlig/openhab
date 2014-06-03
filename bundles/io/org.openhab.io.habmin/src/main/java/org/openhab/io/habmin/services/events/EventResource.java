@@ -8,9 +8,6 @@
  */
 package org.openhab.io.habmin.services.events;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -75,7 +72,7 @@ public class EventResource {
 
 	/** The URI path to this resource */
 	public static final String PATH_EVENTS = "events";
-
+/*
 	@Context
 	UriInfo uriInfo;
 
@@ -118,7 +115,7 @@ public class EventResource {
 				.resumeOnBroadcast(!ResponseTypeHelper.isStreamingTransport(resource.getRequest()))
 				.broadcaster(broadcaster).outputComments(true).build();
 	}
-
+*/
 	/*
 	 * @GET
 	 * 
