@@ -104,6 +104,15 @@ public class ApplicationUpdateMessageClass  extends ZWaveCommandProcessor {
 			}
 			transactionComplete = true;
 			break;
+		case NEW_ID_ASSIGNED:
+			logger.debug("NODE {}: New node added", 9999);
+			break;
+		case DELETE_DONE:
+			logger.debug("NODE {}: Node removed", 9999);
+			break;
+		case SUC_ID:
+			logger.debug("NODE {}: New SUC ID", 9999);
+			break;
 		default:
 			logger.warn(String.format("TODO: Implement Application Update Request Handling of %s (0x%02X).", updateState.getLabel(), updateState.getKey()));
 		}		
