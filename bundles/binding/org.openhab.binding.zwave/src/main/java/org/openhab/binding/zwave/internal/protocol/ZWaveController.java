@@ -260,8 +260,15 @@ public class ZWaveController {
 				// If we want to be the SUC, enable it here
 				if(this.setSUC == true && this.sucID == 0) {
 					// We want to be SUC
-					this.enqueue(new EnableSucMessageClass().doRequest(EnableSucMessageClass.SUCType.SERVER));
-					this.enqueue(new SetSucNodeMessageClass().doRequest(this.ownNodeId, SetSucNodeMessageClass.SUCType.SERVER));
+					if(this.controllerType == ZWaveDeviceType.PRIMARY) {
+						this.enqueue(new EnableSucMessageClass().doRequest(EnableSucMessageClass.SUCType.SERVER));
+						this.enqueue(new SetSucNodeMessageClass().doRequest(this.ownNodeId, SetSucNodeMessageClass.SUCType.SERVER));
+					}
+					else {
+						// If we are a secondary controller, then don't use SERVER mode
+						this.enqueue(new EnableSucMessageClass().doRequest(EnableSucMessageClass.SUCType.BASIC));
+						this.enqueue(new SetSucNodeMessageClass().doRequest(this.ownNodeId, SetSucNodeMessageClass.SUCType.BASIC));
+					}
 				}
 				else if(this.setSUC == false && this.sucID == this.ownNodeId) {
 					// We don't want to be SUC, but we currently are!
@@ -269,6 +276,7 @@ public class ZWaveController {
 					this.enqueue(new EnableSucMessageClass().doRequest(EnableSucMessageClass.SUCType.NONE));
 					this.enqueue(new SetSucNodeMessageClass().doRequest(this.ownNodeId, SetSucNodeMessageClass.SUCType.NONE));
 				}
+				// Request the controller capabilities again, so we have the final type.
 				this.enqueue(new GetControllerCapabilitiesMessageClass().doRequest());
 				break;
 			case SerialApiGetCapabilities:
@@ -451,6 +459,7 @@ public class ZWaveController {
 		this.enqueue(new GetVersionMessageClass().doRequest());
 		this.enqueue(new MemoryGetIdMessageClass().doRequest());
 		this.enqueue(new SerialApiGetCapabilitiesMessageClass().doRequest());
+		this.enqueue(new GetControllerCapabilitiesMessageClass().doRequest());
 		this.enqueue(new GetSucNodeIdMessageClass().doRequest());
 	}
 	
