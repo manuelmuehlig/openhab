@@ -19,9 +19,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name="design")
 public class DesignerBean {
 	public String name;
-	
+
+	public String filename;
+
 	public Integer id;
 
 	public DesignerBlockBean block;
+
+	public String source;
+
+	public Boolean sourceEdited;
 }
 

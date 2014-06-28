@@ -166,8 +166,10 @@ public class DesignerResource {
 		DesignerListBean designs = loadDesigns();
 
 		for (DesignerBean i : designs.entries) {
-			if(i.id.intValue() == designRef)
+			if(i.id.intValue() == designRef) {
+				i.source = DesignerRuleCreator.loadSource(i.id, i.name);
 				return i;
+			}
 		}
 
 		return null;
@@ -282,7 +284,7 @@ public class DesignerResource {
 		list.entries.add(bean);
 		saveDesigns(list);
 		
-		DesignerRuleCreator.makeRule(bean.id, bean.name, bean.block);
+		bean.source = DesignerRuleCreator.saveRule(bean.id, bean.name, bean.block);
 
 		return bean;
 	}

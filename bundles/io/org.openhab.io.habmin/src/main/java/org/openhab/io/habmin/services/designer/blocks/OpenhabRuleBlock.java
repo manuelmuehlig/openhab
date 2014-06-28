@@ -8,9 +8,6 @@
  */
 package org.openhab.io.habmin.services.designer.blocks;
 
-import java.util.Iterator;
-import java.util.Map;
-
 import org.openhab.io.habmin.services.designer.DesignerBlockBean;
 import org.openhab.io.habmin.services.designer.DesignerChildBean;
 import org.openhab.io.habmin.services.designer.DesignerFieldBean;
