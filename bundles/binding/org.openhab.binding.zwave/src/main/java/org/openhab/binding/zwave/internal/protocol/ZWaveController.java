@@ -49,12 +49,13 @@ import org.openhab.binding.zwave.internal.protocol.serialmessage.GetControllerCa
 import org.openhab.binding.zwave.internal.protocol.serialmessage.GetSucNodeIdMessageClass;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.IdentifyNodeMessageClass;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.RemoveNodeMessageClass;
+import org.openhab.binding.zwave.internal.protocol.serialmessage.RequestNetworkUpdateMessageClass;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.RequestNodeNeighborUpdateMessageClass;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.RemoveFailedNodeMessageClass;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.RequestNodeInfoMessageClass;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.GetRoutingInfoMessageClass;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.SendDataMessageClass;
-import org.openhab.binding.zwave.internal.protocol.serialmessage.SerialApiSoftResetMessageClass;
+import org.openhab.binding.zwave.internal.protocol.serialmessage.SetLearnModeMessageClass;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.SetSucNodeMessageClass;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.ZWaveCommandProcessor;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.GetVersionMessageClass;
@@ -566,6 +567,22 @@ public class ZWaveController {
 	}
 
 	/**
+	 * Puts the controller into learn mode to transfer the network config from the SUC/SIS 
+	 */
+	public void requestSetLearnModeStart()
+	{
+		this.enqueue(new SetLearnModeMessageClass().doRequest(true));
+	}
+	
+	/**
+	 * Puts the controller into learn mode to transfer the network config from the SUC/SIS 
+	 */
+	public void requestSetLearnModeStop()
+	{
+		this.enqueue(new SetLearnModeMessageClass().doRequest(false));
+	}
+	
+	/**
 	 * Puts the controller into inclusion mode to add new nodes
 	 */
 	public void requestAddNodesStart()
@@ -605,6 +622,15 @@ public class ZWaveController {
 	public void requestRemoveFailedNode(int nodeId)
 	{
 		this.enqueue(new RemoveFailedNodeMessageClass().doRequest(nodeId));
+	}
+
+	/**
+	 * Requests a network update. Used by a controller to request the latest
+	 * network topology from the Primary/Static controller
+	 */
+	public void requestRequestNetworkUpdate()
+	{
+		this.enqueue(new RequestNetworkUpdateMessageClass().doRequest());
 	}
 
 	/**
@@ -1072,6 +1098,11 @@ public class ZWaveController {
 						break;
 					case ACK:
     					logger.trace("Received ACK");
+    					// If there is no response expected, then release the transaction
+    					if(lastSentMessage.getExpectedReply() == null) {
+    						logger.debug("No response expected: Transaction released.");
+        					transactionCompleted.release();
+    					}
 						ACKCount++;
 						break;
 					case NAK:
