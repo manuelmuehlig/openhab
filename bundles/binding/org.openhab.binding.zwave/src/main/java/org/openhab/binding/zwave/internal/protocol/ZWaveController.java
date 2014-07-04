@@ -748,6 +748,14 @@ public class ZWaveController {
 	}
 
 	/**
+	 * Gets the Home ID of the network. 
+	 * @return the homeId
+	 */
+	public int getHomeId() {
+		return homeId;
+	}
+
+	/**
 	 * Gets the Manufacturer ID of the controller. 
 	 * @return the manufactureId
 	 */
