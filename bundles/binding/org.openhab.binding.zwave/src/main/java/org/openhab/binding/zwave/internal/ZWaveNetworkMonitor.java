@@ -87,7 +87,8 @@ public final class ZWaveNetworkMonitor implements ZWaveEventListener {
 	Map<Integer, HealNode> healNodes = new HashMap<Integer, HealNode>();
 
 	enum HealState {
-		INITIALIZING, WAITING, PING, SETSUCROUTE, UPDATENEIGHBORS, GETASSOCIATIONS, UPDATEROUTES, UPDATEROUTESNEXT, GETNEIGHBORS, PINGEND, SAVE, DONE, FAILED;
+		INITIALIZING, WAITING, PING, SETSUCROUTE, UPDATENETWORK, UPDATENEIGHBORS, GETASSOCIATIONS,
+		UPDATEROUTES, UPDATEROUTESNEXT, GETNEIGHBORS, PINGEND, SAVE, DONE, FAILED;
 
 		public boolean isActive() {
 			switch (this) {
@@ -391,26 +392,26 @@ public final class ZWaveNetworkMonitor implements ZWaveEventListener {
 			}
 			healing.state = HealState.SETSUCROUTE;
 		case SETSUCROUTE:
-			// Check if there's an SUC controller in the network
-			if (zController.getSucId() != 0) {
+			// Only set the SUC route if this is not the SUC
+			if (zController.getSucId() != 0 && healing.nodeId != zController.getSucId()) {
+				healing.stateNext = HealState.UPDATENETWORK;
+				// Update the route to the controller
+				logger.debug("NODE {}: Heal is setting SUC route.", healing.nodeId);
+				healing.event = ZWaveNetworkEvent.Type.AssignSucReturnRoute;
+				zController.requestAssignSucReturnRoute(healing.nodeId);
+				break;
+			}
+			healing.state = HealState.UPDATENETWORK;
+		case UPDATENETWORK:
+			// If this node is our controller, and we're not the SUC, we use
+			// the opportunity to update the network
+			if (zController.getSucId() != 0 && healing.nodeId == zController.getOwnNodeId()
+					&& healing.nodeId != zController.getSucId()) {
 				healing.stateNext = HealState.UPDATENEIGHBORS;
-
-				// Only set the SUC route if this is not the SUC
-				if (healing.nodeId != zController.getSucId()) {
-					// Update the route to the controller
-					logger.debug("NODE {}: Heal is setting SUC route.", healing.nodeId);
-					healing.event = ZWaveNetworkEvent.Type.AssignSucReturnRoute;
-					zController.requestAssignSucReturnRoute(healing.nodeId);
-					break;
-				}
-				// If this node is our controller, and we're not the SUC, we use
-				// the opportunity to update the network
-				else if (healing.nodeId == zController.getOwnNodeId() && healing.nodeId != zController.getSucId()) {
-					logger.debug("NODE {}: Heal is updating the network.", healing.nodeId);
-					healing.event = ZWaveNetworkEvent.Type.RequestNetworkUpdate;
-					zController.requestRequestNetworkUpdate();
-					break;
-				}
+				logger.debug("NODE {}: Heal is updating the network.", healing.nodeId);
+				healing.event = ZWaveNetworkEvent.Type.RequestNetworkUpdate;
+				zController.requestRequestNetworkUpdate();
+				break;
 			}
 			healing.state = HealState.UPDATENEIGHBORS;
 		case UPDATENEIGHBORS:
