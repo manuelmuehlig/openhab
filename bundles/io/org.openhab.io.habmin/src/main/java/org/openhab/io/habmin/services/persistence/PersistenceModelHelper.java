@@ -29,6 +29,7 @@ import org.openhab.model.persistence.persistence.ItemConfig;
 import org.openhab.model.persistence.persistence.PersistenceConfiguration;
 import org.openhab.model.persistence.persistence.PersistenceModel;
 import org.openhab.model.persistence.persistence.Strategy;
+import org.openhab.model.persistence.persistence.impl.AllConfigImpl;
 import org.openhab.model.persistence.persistence.impl.CronStrategyImpl;
 import org.openhab.model.persistence.persistence.impl.GroupConfigImpl;
 import org.openhab.model.persistence.persistence.impl.ItemConfigImpl;
@@ -237,6 +238,12 @@ public class PersistenceModelHelper {
 							Strategy strategyItem = config.getStrategies().get(str);
 							bean.itemstrategies.add(strategyItem.getName());
 						}
+					}
+				}
+				if (modelItem instanceof AllConfigImpl) {
+					for (int str = 0; str < config.getStrategies().size(); str++) {
+						Strategy strategyItem = config.getStrategies().get(str);
+						bean.groupstrategies.add(strategyItem.getName());
 					}
 				}
 			}
