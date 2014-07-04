@@ -8,8 +8,13 @@
  */
 package org.openhab.core.library.types;
 
+import static java.util.Calendar.HOUR;
 import static org.junit.Assert.assertEquals;
 
+import java.util.Calendar;
+import java.util.TimeZone;
+
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -18,29 +23,36 @@ import org.junit.Test;
  */
 public class DateTimeTypeTest {
 	
-	String input = "2014-03-30T04:58:47";
-	String inputWithTZ = "2014-03-30T04:58:47UTC";
-	String inputWithBrokenTZ = "2014-03-30T04:58:47UTS";
+	Calendar calendarUTC = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 	
-	String expectedDateTime = "2014-03-30T04:58:47";
-	String expectedDateTimeWithTZ = "2014-03-30T06:58:47";
+	String inputUTC = "2014-03-30T04:58:47";
+	String inputCET = inputUTC + "CET";
+	String inputWithBrokenTZ = inputUTC + "brokenTZ";
+	
+	int expectedUTC = 4;
+	int expectedCET = 5;
+	
+	@Before
+	public void setup() {
+		calendarUTC.set(2014, 2, 30, 4, 58, 47);
+	}
 
 	@Test
 	public void createDate() {
-		DateTimeType dt = DateTimeType.valueOf(input);
-		assertEquals(expectedDateTime, dt.toString());
+		DateTimeType dt = DateTimeType.valueOf(inputUTC);
+		assertEquals(expectedUTC, dt.getCalendar().get(HOUR));
 	}
 	
 	@Test
 	public void createDateWithTz() {
-		DateTimeType dt = DateTimeType.valueOf(inputWithTZ);
-		assertEquals(expectedDateTimeWithTZ, dt.toString());
+		DateTimeType dt = DateTimeType.valueOf(inputCET);
+		assertEquals(expectedCET, dt.getCalendar().get(HOUR));
 	}
 	
 	@Test
 	public void createDateWithBrokenTz() {
 		DateTimeType dt = DateTimeType.valueOf(inputWithBrokenTZ);
-		assertEquals(expectedDateTime, dt.toString());
+		assertEquals(expectedUTC, dt.getCalendar().get(HOUR));
 	}
 	
 }
