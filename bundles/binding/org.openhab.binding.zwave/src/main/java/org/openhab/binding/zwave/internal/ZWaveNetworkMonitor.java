@@ -391,14 +391,26 @@ public final class ZWaveNetworkMonitor implements ZWaveEventListener {
 			}
 			healing.state = HealState.SETSUCROUTE;
 		case SETSUCROUTE:
-			// Only set the route if this is not the controller and there is an SUC in the network
-			if (healing.nodeId != zController.getOwnNodeId() && zController.getSucId() != 0) {
-				// Update the route to the controller
-				logger.debug("NODE {}: Heal is setting SUC route.", healing.nodeId);
-				healing.event = ZWaveNetworkEvent.Type.AssignSucReturnRoute;
+			// Check if there's an SUC controller in the network
+			if (zController.getSucId() != 0) {
 				healing.stateNext = HealState.UPDATENEIGHBORS;
-				zController.requestAssignSucReturnRoute(healing.nodeId);
-				break;
+
+				// Only set the SUC route if this is not the SUC
+				if (healing.nodeId != zController.getSucId()) {
+					// Update the route to the controller
+					logger.debug("NODE {}: Heal is setting SUC route.", healing.nodeId);
+					healing.event = ZWaveNetworkEvent.Type.AssignSucReturnRoute;
+					zController.requestAssignSucReturnRoute(healing.nodeId);
+					break;
+				}
+				// If this node is our controller, and we're not the SUC, we use
+				// the opportunity to update the network
+				else if (healing.nodeId == zController.getOwnNodeId() && healing.nodeId != zController.getSucId()) {
+					logger.debug("NODE {}: Heal is updating the network.", healing.nodeId);
+					healing.event = ZWaveNetworkEvent.Type.RequestNetworkUpdate;
+					zController.requestRequestNetworkUpdate();
+					break;
+				}
 			}
 			healing.state = HealState.UPDATENEIGHBORS;
 		case UPDATENEIGHBORS:
