@@ -25,6 +25,7 @@ import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClas
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveNoOperationCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClass.CommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveWakeUpCommandClass;
+import org.openhab.binding.zwave.internal.protocol.event.ZWaveControllerEvent;
 import org.openhab.binding.zwave.internal.protocol.event.ZWaveEvent;
 import org.openhab.binding.zwave.internal.protocol.event.ZWaveInitializationCompletedEvent;
 import org.openhab.binding.zwave.internal.protocol.event.ZWaveNetworkEvent;
@@ -397,7 +398,7 @@ public final class ZWaveNetworkMonitor implements ZWaveEventListener {
 				healing.stateNext = HealState.UPDATENETWORK;
 				// Update the route to the controller
 				logger.debug("NODE {}: Heal is setting SUC route.", healing.nodeId);
-				healing.event = ZWaveNetworkEvent.Type.AssignSucReturnRoute;
+				healing.ntwkEvent = ZWaveNetworkEvent.Type.AssignSucReturnRoute;
 				zController.requestAssignSucReturnRoute(healing.nodeId);
 				break;
 			}
@@ -409,14 +410,14 @@ public final class ZWaveNetworkMonitor implements ZWaveEventListener {
 					&& healing.nodeId != zController.getSucId()) {
 				healing.stateNext = HealState.UPDATENEIGHBORS;
 				logger.debug("NODE {}: Heal is updating the network.", healing.nodeId);
-				healing.event = ZWaveNetworkEvent.Type.RequestNetworkUpdate;
+				healing.cntlrEvent = ZWaveControllerEvent.Type.RequestNetworkUpdate;
 				zController.requestRequestNetworkUpdate();
 				break;
 			}
 			healing.state = HealState.UPDATENEIGHBORS;
 		case UPDATENEIGHBORS:
 			logger.debug("NODE {}: Heal is updating node neighbors.", healing.nodeId);
-			healing.event = ZWaveNetworkEvent.Type.NodeNeighborUpdate;
+			healing.ntwkEvent = ZWaveNetworkEvent.Type.NodeNeighborUpdate;
 			healing.stateNext = HealState.GETASSOCIATIONS;
 			zController.requestNodeNeighborUpdate(healing.nodeId);
 			break;
@@ -427,7 +428,7 @@ public final class ZWaveNetworkMonitor implements ZWaveEventListener {
 			if (associationCommandClass != null) {
 				logger.debug("NODE {}: Heal is requesting device associations.", healing.nodeId);
 				healing.stateNext = HealState.UPDATEROUTES;
-				healing.event = ZWaveNetworkEvent.Type.AssociationUpdate;
+				healing.ntwkEvent = ZWaveNetworkEvent.Type.AssociationUpdate;
 				associationCommandClass.getAllAssociations();
 				break;
 			}
@@ -437,7 +438,7 @@ public final class ZWaveNetworkMonitor implements ZWaveEventListener {
 			if (healing.routeList != null && healing.routeList.size() != 0) {
 				// Delete all the return routes for the node
 				logger.debug("NODE {}: Heal is deleting routes.", healing.nodeId);
-				healing.event = ZWaveNetworkEvent.Type.DeleteReturnRoute;
+				healing.ntwkEvent = ZWaveNetworkEvent.Type.DeleteReturnRoute;
 				healing.stateNext = HealState.UPDATEROUTESNEXT;
 				zController.requestDeleteAllReturnRoutes(healing.nodeId);
 				break;
@@ -447,12 +448,12 @@ public final class ZWaveNetworkMonitor implements ZWaveEventListener {
 				// Loop through all the nodes and set the return route
 				logger.debug("NODE {}: Adding return route to {}", healing.nodeId, healing.routeList.get(0));
 				healing.stateNext = HealState.GETNEIGHBORS;
-				healing.event = ZWaveNetworkEvent.Type.AssignReturnRoute;
+				healing.ntwkEvent = ZWaveNetworkEvent.Type.AssignReturnRoute;
 				zController.requestAssignReturnRoute(healing.nodeId, healing.routeList.get(0));
 				break;
 			}
 		case GETNEIGHBORS:
-			healing.event = ZWaveNetworkEvent.Type.NodeRoutingInfo;
+			healing.ntwkEvent = ZWaveNetworkEvent.Type.NodeRoutingInfo;
 			healing.stateNext = HealState.PINGEND;
 
 			logger.debug("NODE {}: Heal is requesting node neighbor info.", healing.nodeId);
@@ -525,8 +526,9 @@ public final class ZWaveNetworkMonitor implements ZWaveEventListener {
 				return;
 
 			// Is this the event we're waiting for
-			if (nwEvent.getEvent() != node.event)
+			if (nwEvent.getEvent() != node.ntwkEvent)
 				return;
+			node.ntwkEvent = null;
 
 			switch (nwEvent.getState()) {
 			case Success:
@@ -545,6 +547,38 @@ public final class ZWaveNetworkMonitor implements ZWaveEventListener {
 
 			// Continue....
 			nextHealStage(node);
+		}
+		else if (event instanceof ZWaveControllerEvent) {
+				ZWaveControllerEvent cntlrEvent = (ZWaveControllerEvent) event;
+				logger.debug("NODE {}: Controller heal EVENT", cntlrEvent.getNodeId());
+
+				// Get the heal class for this notification
+				HealNode node = healNodes.get(zController.getOwnNodeId());
+				if (node == null)
+					return;
+
+				// Is this the event we're waiting for
+				if (cntlrEvent.getEvent() != node.cntlrEvent)
+					return;
+				node.cntlrEvent = null;
+
+				switch (cntlrEvent.getState()) {
+				case Success:
+					node.retryCnt = 0;
+					node.state = node.stateNext;
+					break;
+				case Failure:
+					logger.debug("NODE {}: Network heal received FAILURE event", node.nodeId);
+					break;
+				}
+
+				// If retry count is 0 and we have a list of routes, then this must have
+				// been a successful route set - remove this node
+				if (node.retryCnt == 0 && node.routeList != null && node.routeList.size() > 0)
+					node.routeList.remove(0);
+
+				// Continue....
+				nextHealStage(node);
 		} else if (event instanceof ZWaveTransactionCompletedEvent) {
 			SerialMessage serialMessage = ((ZWaveTransactionCompletedEvent) event).getCompletedMessage();
 
@@ -643,7 +677,8 @@ public final class ZWaveNetworkMonitor implements ZWaveEventListener {
 		public int retryCnt = 0;
 		public Date lastChange;
 		public ArrayList<Integer> routeList;
-		public ZWaveNetworkEvent.Type event;
+		public ZWaveNetworkEvent.Type ntwkEvent;
+		public ZWaveControllerEvent.Type cntlrEvent;
 		ZWaveNode node;
 	}
 }

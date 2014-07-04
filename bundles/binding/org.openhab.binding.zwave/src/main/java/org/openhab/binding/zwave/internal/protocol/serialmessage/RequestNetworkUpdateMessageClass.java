@@ -13,7 +13,7 @@ import org.openhab.binding.zwave.internal.protocol.ZWaveController;
 import org.openhab.binding.zwave.internal.protocol.SerialMessage.SerialMessageClass;
 import org.openhab.binding.zwave.internal.protocol.SerialMessage.SerialMessagePriority;
 import org.openhab.binding.zwave.internal.protocol.SerialMessage.SerialMessageType;
-import org.openhab.binding.zwave.internal.protocol.event.ZWaveNetworkEvent;
+import org.openhab.binding.zwave.internal.protocol.event.ZWaveControllerEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,28 +59,28 @@ public class RequestNetworkUpdateMessageClass extends ZWaveCommandProcessor {
 		switch (incomingMessage.getMessagePayloadByte(1)) {
 		case ZW_SUC_UPDATE_DONE:
 			logger.debug("RequestNetworkUpdate DONE.");
-			zController.notifyEventListeners(new ZWaveNetworkEvent(ZWaveNetworkEvent.Type.RequestNetworkUpdate,
-					incomingMessage.getMessageNode(), ZWaveNetworkEvent.State.Success));
+			zController.notifyEventListeners(new ZWaveControllerEvent(ZWaveControllerEvent.Type.RequestNetworkUpdate,
+					ZWaveControllerEvent.State.Success));
 			break;
 		case ZW_SUC_UPDATE_ABORT:
 			logger.debug("RequestNetworkUpdate ABORT.");
-			zController.notifyEventListeners(new ZWaveNetworkEvent(ZWaveNetworkEvent.Type.RequestNetworkUpdate,
-					incomingMessage.getMessageNode(), ZWaveNetworkEvent.State.Failure));
+			zController.notifyEventListeners(new ZWaveControllerEvent(ZWaveControllerEvent.Type.RequestNetworkUpdate,
+					ZWaveControllerEvent.State.Failure));
 			break;
 		case ZW_SUC_UPDATE_WAIT:
 			logger.debug("RequestNetworkUpdate WAIT.");
-			zController.notifyEventListeners(new ZWaveNetworkEvent(ZWaveNetworkEvent.Type.RequestNetworkUpdate,
-					incomingMessage.getMessageNode(), ZWaveNetworkEvent.State.Failure));
+			zController.notifyEventListeners(new ZWaveControllerEvent(ZWaveControllerEvent.Type.RequestNetworkUpdate,
+					ZWaveControllerEvent.State.Failure));
 			break;
 		case ZW_SUC_UPDATE_DISABLED:
 			logger.debug("RequestNetworkUpdate DISABLED.");
-			zController.notifyEventListeners(new ZWaveNetworkEvent(ZWaveNetworkEvent.Type.RequestNetworkUpdate,
-					incomingMessage.getMessageNode(), ZWaveNetworkEvent.State.Failure));
+			zController.notifyEventListeners(new ZWaveControllerEvent(ZWaveControllerEvent.Type.RequestNetworkUpdate,
+					ZWaveControllerEvent.State.Failure));
 			break;
 		case ZW_SUC_UPDATE_OVERFLOW:
 			logger.debug("RequestNetworkUpdate OVERFLOW.");
-			zController.notifyEventListeners(new ZWaveNetworkEvent(ZWaveNetworkEvent.Type.RequestNetworkUpdate,
-					incomingMessage.getMessageNode(), ZWaveNetworkEvent.State.Failure));
+			zController.notifyEventListeners(new ZWaveControllerEvent(ZWaveControllerEvent.Type.RequestNetworkUpdate,
+					ZWaveControllerEvent.State.Failure));
 			break;
 		}
 

@@ -15,7 +15,7 @@
  * @author Chris Jackson
  * @since 1.4.0
  */
-public class ZWaveNetworkEvent extends ZWaveEvent {
+public class ZWaveControllerEvent extends ZWaveEvent {
 	Type type;
 	State state;
 	
@@ -24,8 +24,8 @@ public class ZWaveNetworkEvent extends ZWaveEvent {
 	 * class.
 	 * @param nodeId the nodeId of the event.
 	 */
-	public ZWaveNetworkEvent(Type type, int nodeId, State state) {
-		super(nodeId, 1);
+	public ZWaveControllerEvent(Type type, State state) {
+		super(255, 1);
 		
 		this.type = type;
 		this.state = state;
@@ -40,7 +40,7 @@ public class ZWaveNetworkEvent extends ZWaveEvent {
 	}
 
 	public enum Type {
-		AssignSucReturnRoute, AssignReturnRoute, DeleteReturnRoute, NodeNeighborUpdate, NodeRoutingInfo, AssociationUpdate
+		RequestNetworkUpdate
 	}
 
 	public enum State {
