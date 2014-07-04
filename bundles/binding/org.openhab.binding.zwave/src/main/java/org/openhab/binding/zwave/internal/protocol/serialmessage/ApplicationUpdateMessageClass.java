@@ -22,6 +22,7 @@ import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClas
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveMultiInstanceCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveWakeUpCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClass.CommandClass;
+import org.openhab.binding.zwave.internal.protocol.event.ZWaveInclusionEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,6 +47,15 @@ public class ApplicationUpdateMessageClass  extends ZWaveCommandProcessor {
 			logger.debug("NODE {}: Application update request, node information received.", nodeId);			
 			int length = incomingMessage.getMessagePayloadByte(2);
 			ZWaveNode node = zController.getNode(nodeId);
+			
+			// If node is null, then it means this is a new node
+			// This can happen is a new node is included using another controller and we then
+			// get updates from the SUC/SIS
+			if(node == null) {
+				logger.info("NODE {}: Node doesn't exist - adding it!", nodeId);			
+				zController.notifyEventListeners(new ZWaveInclusionEvent(ZWaveInclusionEvent.Type.IncludeDone, nodeId));
+				return false;
+			}
 			
 			node.resetResendCount();
 
