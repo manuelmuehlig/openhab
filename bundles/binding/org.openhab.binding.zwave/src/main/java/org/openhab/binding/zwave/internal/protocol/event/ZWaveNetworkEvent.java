@@ -41,7 +41,7 @@ public class ZWaveNetworkEvent extends ZWaveEvent {
 
 	public enum Type {
 		AssignSucReturnRoute, AssignReturnRoute, DeleteReturnRoute, NodeNeighborUpdate, NodeRoutingInfo, AssociationUpdate,
-		
+		RequestNetworkUpdate
 		
 	}
 

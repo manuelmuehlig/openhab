@@ -13,64 +13,77 @@ import org.openhab.binding.zwave.internal.protocol.ZWaveController;
 import org.openhab.binding.zwave.internal.protocol.SerialMessage.SerialMessageClass;
 import org.openhab.binding.zwave.internal.protocol.SerialMessage.SerialMessagePriority;
 import org.openhab.binding.zwave.internal.protocol.SerialMessage.SerialMessageType;
+import org.openhab.binding.zwave.internal.protocol.event.ZWaveNetworkEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * This class processes a serial message from the zwave controller
+ * 
  * @author Chris Jackson
  * @since 1.6.0
  */
-public class RequestNetworkUpdateMessageClass  extends ZWaveCommandProcessor {
+public class RequestNetworkUpdateMessageClass extends ZWaveCommandProcessor {
 	private static final Logger logger = LoggerFactory.getLogger(RequestNetworkUpdateMessageClass.class);
 
-	final int ZW_SUC_UPDATE_DONE      = 0x00;
-	final int ZW_SUC_UPDATE_ABORT     = 0x01;
-	final int ZW_SUC_UPDATE_WAIT      = 0x02;
-	final int ZW_SUC_UPDATE_DISABLED  = 0x03;
-	final int ZW_SUC_UPDATE_OVERFLOW  = 0x04;
+	final int ZW_SUC_UPDATE_DONE = 0x00;
+	final int ZW_SUC_UPDATE_ABORT = 0x01;
+	final int ZW_SUC_UPDATE_WAIT = 0x02;
+	final int ZW_SUC_UPDATE_DISABLED = 0x03;
+	final int ZW_SUC_UPDATE_OVERFLOW = 0x04;
 
-	public SerialMessage doRequest(int nodeId) {
-		SerialMessage newMessage = new SerialMessage(nodeId, SerialMessageClass.RequestNetworkUpdate, SerialMessageType.Request, SerialMessageClass.RequestNetworkUpdate, SerialMessagePriority.High);
-    	byte[] newPayload = { (byte) nodeId };
-    	newMessage.setMessagePayload(newPayload);
-    	return newMessage;
+	public SerialMessage doRequest() {
+		SerialMessage newMessage = new SerialMessage(255, SerialMessageClass.RequestNetworkUpdate,
+				SerialMessageType.Request, SerialMessageClass.RequestNetworkUpdate, SerialMessagePriority.High);
+		return newMessage;
 	}
 
 	@Override
-	public boolean handleResponse(ZWaveController zController, SerialMessage lastSentMessage, SerialMessage incomingMessage) {
+	public boolean handleResponse(ZWaveController zController, SerialMessage lastSentMessage,
+			SerialMessage incomingMessage) {
 		logger.trace("Handle RequestNetworkUpdate Response");
-		if(incomingMessage.getMessagePayloadByte(0) != 0x00)
+		if (incomingMessage.getMessagePayloadByte(0) != 0x00)
 			logger.debug("Request node info successfully placed on stack.");
 		else
 			logger.error("Request node info not placed on stack due to error.");
-		
+
 		checkTransactionComplete(lastSentMessage, incomingMessage);
 
 		return true;
 	}
 
 	@Override
-	public boolean handleRequest(ZWaveController zController, SerialMessage lastSentMessage, SerialMessage incomingMessage) {
+	public boolean handleRequest(ZWaveController zController, SerialMessage lastSentMessage,
+			SerialMessage incomingMessage) {
 		logger.trace("Handle RequestNetworkUpdate Request");
-		switch(incomingMessage.getMessagePayloadByte(0)) {
+		switch (incomingMessage.getMessagePayloadByte(1)) {
 		case ZW_SUC_UPDATE_DONE:
 			logger.debug("RequestNetworkUpdate DONE.");
+			zController.notifyEventListeners(new ZWaveNetworkEvent(ZWaveNetworkEvent.Type.RequestNetworkUpdate,
+					incomingMessage.getMessageNode(), ZWaveNetworkEvent.State.Success));
 			break;
 		case ZW_SUC_UPDATE_ABORT:
 			logger.debug("RequestNetworkUpdate ABORT.");
+			zController.notifyEventListeners(new ZWaveNetworkEvent(ZWaveNetworkEvent.Type.RequestNetworkUpdate,
+					incomingMessage.getMessageNode(), ZWaveNetworkEvent.State.Failure));
 			break;
 		case ZW_SUC_UPDATE_WAIT:
 			logger.debug("RequestNetworkUpdate WAIT.");
+			zController.notifyEventListeners(new ZWaveNetworkEvent(ZWaveNetworkEvent.Type.RequestNetworkUpdate,
+					incomingMessage.getMessageNode(), ZWaveNetworkEvent.State.Failure));
 			break;
 		case ZW_SUC_UPDATE_DISABLED:
 			logger.debug("RequestNetworkUpdate DISABLED.");
+			zController.notifyEventListeners(new ZWaveNetworkEvent(ZWaveNetworkEvent.Type.RequestNetworkUpdate,
+					incomingMessage.getMessageNode(), ZWaveNetworkEvent.State.Failure));
 			break;
 		case ZW_SUC_UPDATE_OVERFLOW:
 			logger.debug("RequestNetworkUpdate OVERFLOW.");
+			zController.notifyEventListeners(new ZWaveNetworkEvent(ZWaveNetworkEvent.Type.RequestNetworkUpdate,
+					incomingMessage.getMessageNode(), ZWaveNetworkEvent.State.Failure));
 			break;
 		}
-		
+
 		checkTransactionComplete(lastSentMessage, incomingMessage);
 
 		return true;

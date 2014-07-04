@@ -32,7 +32,7 @@ public class SetLearnModeMessageClass extends ZWaveCommandProcessor {
 
 		// Queue the request
 		SerialMessage newMessage = new SerialMessage(SerialMessage.SerialMessageClass.SetLearnMode, SerialMessage.SerialMessageType.Request,
-				SerialMessage.SerialMessageClass.SetLearnMode, SerialMessage.SerialMessagePriority.High);
+				null, SerialMessage.SerialMessagePriority.High);
 		byte[] newPayload = { (byte) (start ? 1 : 0) };
 
     	newMessage.setMessagePayload(newPayload);
@@ -44,15 +44,15 @@ public class SetLearnModeMessageClass extends ZWaveCommandProcessor {
 		switch(incomingMessage.getMessagePayloadByte(1)) {
 		case ASSIGN_COMPLETE:
 			logger.debug("Learn ASSIGN_COMPLETE.");
-			zController.notifyEventListeners(new ZWaveInclusionEvent(ZWaveInclusionEvent.Type.IncludeStart));
+//			zController.notifyEventListeners(new ZWaveInclusionEvent(ZWaveInclusionEvent.Type.IncludeStart));
 			break;
 		case ASSIGN_NODEID_DONE:
 			logger.debug("Learn ASSIGN_NODEID_DONE.");
-			zController.notifyEventListeners(new ZWaveInclusionEvent(ZWaveInclusionEvent.Type.IncludeStart));
+//			zController.notifyEventListeners(new ZWaveInclusionEvent(ZWaveInclusionEvent.Type.IncludeStart));
 			break;
 		case ASSIGN_RANGE_INFO_UPDATE:
 			logger.debug("Learn ASSIGN_RANGE_INFO_UPDATE.");
-			zController.notifyEventListeners(new ZWaveInclusionEvent(ZWaveInclusionEvent.Type.IncludeStart));
+//			zController.notifyEventListeners(new ZWaveInclusionEvent(ZWaveInclusionEvent.Type.IncludeStart));
 			break;
 		default:
 			logger.debug("Unknown request ({}).", incomingMessage.getMessagePayloadByte(1));
