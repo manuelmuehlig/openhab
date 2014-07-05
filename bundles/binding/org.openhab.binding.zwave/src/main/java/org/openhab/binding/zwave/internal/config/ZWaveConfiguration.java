@@ -295,10 +295,17 @@ public class ZWaveConfiguration implements OpenHABConfigurationService, ZWaveEve
 
 				// Add the action buttons
 				record.addAction("Heal", "Heal Node");
-				
+
 				// Add the delete button if the node is not "operational"
-				if(canDelete) {
+				// TODO: This is only possible if our stick is a primary controller
+				if (canDelete) {
 					record.addAction("Delete", "Delete Node");
+				}
+
+				// Is this a controller - add some more actions
+				if (node.getNodeId() == zController.getOwnNodeId()) {
+					record.addAction("Replicate", "Replicate");
+//					record.addAction("Replicate", "Replicate");
 				}
 				records.add(record);
 
@@ -819,7 +826,7 @@ public class ZWaveConfiguration implements OpenHABConfigurationService, ZWaveEve
 
 				// This is temporary
 				// It should be in the startup code, but that needs refactoring
-				if (action.equals("Version1")) {
+				if (action.equals("Version")) {
 					logger.debug("NODE {}: Get node version", nodeId);
 					ZWaveVersionCommandClass versionCommandClass = (ZWaveVersionCommandClass) node
 							.getCommandClass(CommandClass.VERSION);
@@ -833,7 +840,7 @@ public class ZWaveConfiguration implements OpenHABConfigurationService, ZWaveEve
 					this.zController.sendData(versionCommandClass.getVersionMessage());
 				}
 
-				if (action.equals("Version")) {
+				if (action.equals("Replicate")) {
 					logger.debug("NODE {}: Get Network Update", nodeId);
 					
 					// Request the version report for this node
