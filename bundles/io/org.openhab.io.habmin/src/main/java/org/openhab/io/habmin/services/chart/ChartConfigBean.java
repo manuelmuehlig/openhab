@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ChartConfigBean {
 	public Integer id;
 	public String name;
+	public String title;
 	public String icon;
 	public Integer period;
 

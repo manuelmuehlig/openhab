@@ -32,4 +32,5 @@ public class ChartItemConfigBean {
 	public String lineStyle;
 	public String markerColor;
 	public String markerSymbol;
+	public Integer repeatTime;
 }
