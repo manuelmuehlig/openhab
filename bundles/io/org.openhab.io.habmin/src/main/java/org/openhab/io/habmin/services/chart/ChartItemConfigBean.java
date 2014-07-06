@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ChartItemConfigBean {
 
 	public String item;
-	public Integer axis;
+	public String axis;
 	public String label;
 	public String chart;
 	public Boolean legend;

@@ -28,4 +28,10 @@ public class ChartAxisConfigBean {
 	public Double minimum;
 	public Double maximum;
 	public String position;
+	public String majorColor;
+	public Integer majorWidth;
+	public String majorStyle;
+	public String minorColor;
+	public Integer minorWidth;
+	public String minorStyle;
 }
