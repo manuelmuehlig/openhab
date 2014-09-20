@@ -375,7 +375,7 @@ public class SitemapConfigResource {
 			first = false;
 		}
 		if (first == false)
-			out.write("] ");
+			out.write("]");
 	}
 
 	private void writeWidget(BufferedWriter out, java.util.List<WidgetConfigBean> widgets, int level) {
@@ -385,33 +385,33 @@ public class SitemapConfigResource {
 
 		for (WidgetConfigBean child : widgets) {
 			try {
-				out.write(indent + child.type + " ");
+				out.write(indent + child.type);
 				if (child.item != null && !child.item.isEmpty())
-					out.write("item=" + child.item + " ");
+					out.write(" item=" + child.item);
 
 				if (child.label != null && !child.label.isEmpty()) {
 					LabelSplitHelper label = new LabelSplitHelper(child.label, child.format, child.units,
 							child.translateService, child.translateRule);
-					out.write("label=\"" + label.getLabelString() + "\" ");
+					out.write(" label=\"" + label.getLabelString() + "\"");
 				}
 				
 				if (child.icon != null && !child.icon.isEmpty())
-					out.write("icon=\"" + child.icon + "\" ");
+					out.write(" icon=\"" + child.icon + "\"");
 
 				if (child.type.equals("Setpoint")) {
 					if (child.minValue != null)
-						out.write("minValue=" + child.minValue + " ");
+						out.write(" minValue=" + child.minValue);
 					if (child.maxValue != null)
-						out.write("maxValue=" + child.maxValue + " ");
+						out.write(" maxValue=" + child.maxValue);
 					if (child.step != null)
-						out.write("step=" + child.step + " ");
+						out.write(" step=" + child.step);
 				}
 
 				if (child.type.equals("Image") || child.type.equals("Video") || child.type.equals("Webview")) {
 					if (child.url != null)
-						out.write("url=\"" + child.url + "\" ");
+						out.write(" url=\"" + child.url + "\"");
 					if (child.height != null)
-						out.write("height=" + child.height + " ");
+						out.write(" height=" + child.height);
 				}
 
 				if (child.type.equals("Selection") || child.type.equals("Switch")) {
@@ -421,7 +421,7 @@ public class SitemapConfigResource {
 							if (map.command == null || map.label == null)
 								continue;
 							if (first == true)
-								out.write("mappings=[");
+								out.write(" mappings=[");
 							else
 								out.write(", ");
 
@@ -431,28 +431,28 @@ public class SitemapConfigResource {
 							first = false;
 						}
 						if (first == false)
-							out.write("] ");
+							out.write("]");
 					}
 				}
 				
 				if (child.type.equals("Slider")) {
 					if(child.switchSupport)
-						out.write("switchSupport ");
+						out.write(" switchSupport");
 					if(child.sendFrequency != 0)
-						out.write("sendFrequency=" + child.sendFrequency);
+						out.write(" sendFrequency=" + child.sendFrequency);
 				}
 
 				if (child.type.equals("Chart")) {
 					if(child.period != null && child.period.length() != 0)
-						out.write("period=" + child.period);
+						out.write(" period=" + child.period);
 					if(child.service != null && child.service.length() != 0)
-						out.write("service=" + child.service);
+						out.write(" service=" + child.service);
 					if(child.refresh != null && child.refresh != 0)
-						out.write("refresh=" + child.refresh);
+						out.write(" refresh=" + child.refresh);
 				}
 				
-				writeColor(out, "valuecolor", child.valuecolor);
-				writeColor(out, "labelcolor", child.labelcolor);
+				writeColor(out, " valuecolor", child.valuecolor);
+				writeColor(out, " labelcolor", child.labelcolor);
 
 				if (child.visibility != null && child.visibility.size() != 0) {
 					boolean first = true;
@@ -470,7 +470,7 @@ public class SitemapConfigResource {
 						first = false;
 					}
 					if (first == false)
-						out.write("] ");
+						out.write("]");
 				}
 				
 				if (child.type.equals("Group") || child.type.equals("Frame") || child.type.equals("Text")
