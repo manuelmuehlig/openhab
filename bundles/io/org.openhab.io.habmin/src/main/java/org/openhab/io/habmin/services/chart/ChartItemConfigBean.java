@@ -27,6 +27,7 @@ public class ChartItemConfigBean {
 	public String label;
 	public String chart;
 	public Boolean legend;
+	public Boolean fill;
 	public String lineColor;
 	public String lineWidth;
 	public String lineStyle;
