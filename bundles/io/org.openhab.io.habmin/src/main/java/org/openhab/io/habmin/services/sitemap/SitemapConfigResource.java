@@ -444,7 +444,7 @@ public class SitemapConfigResource {
 				}
 				
 				if (child.type.equals("Slider")) {
-					if(child.switchSupport)
+					if(child.switchSupport != null && child.switchSupport == true)
 						out.write(" switchSupport");
 					if(child.sendFrequency != 0)
 						out.write(" sendFrequency=" + child.sendFrequency);
