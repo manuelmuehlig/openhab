@@ -407,13 +407,21 @@ public class SitemapConfigResource {
 						out.write(" step=" + child.step);
 				}
 
-				if (child.type.equals("Image") || child.type.equals("Video") || child.type.equals("Webview")) {
+				if (child.type.equals("Image") || child.type.equals("Webview")) {
 					if (child.url != null)
 						out.write(" url=\"" + child.url + "\"");
 					if (child.height != null)
 						out.write(" height=" + child.height);
 				}
-
+				if (child.type.equals("Video")) {
+					if (child.url != null)
+						out.write(" url=\"" + child.url + "\"");
+					if (child.height != null)
+						out.write(" height=" + child.height);
+					if (child.encoding != null)
+						out.write(" encoding=\"" + child.encoding + "\"");
+				}
+				
 				if (child.type.equals("Selection") || child.type.equals("Switch")) {
 					if (child.mapping != null && child.mapping.size() != 0) {
 						boolean first = true;
@@ -698,6 +706,7 @@ public class SitemapConfigResource {
 		if (widget instanceof Video) {
 			Video videoWidget = (Video) widget;
 			bean.url = videoWidget.getUrl();
+			bean.encoding = videoWidget.getEncoding();
 		}
 		if (widget instanceof Webview) {
 			Webview webViewWidget = (Webview) widget;

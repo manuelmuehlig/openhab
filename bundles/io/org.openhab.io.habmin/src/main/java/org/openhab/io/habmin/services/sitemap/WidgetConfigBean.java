@@ -53,6 +53,8 @@ public class WidgetConfigBean {
 	public String url;
 	public String service;
 	public String period;
+
+	public String encoding;
 	
 	public String item;
 	
