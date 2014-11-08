@@ -36,6 +36,7 @@ import org.openhab.binding.homematic.internal.model.HmDevice;
 import org.openhab.binding.homematic.internal.model.HmDeviceList;
 import org.openhab.binding.homematic.internal.model.HmInterface;
 import org.openhab.binding.homematic.internal.model.HmResult;
+import org.openhab.binding.homematic.internal.model.HmRssiInfo;
 import org.openhab.binding.homematic.internal.model.HmValueItem;
 import org.openhab.binding.homematic.internal.model.HmVariable;
 import org.openhab.binding.homematic.internal.model.HmVariableList;
@@ -103,6 +104,7 @@ public class CcuClient extends BaseHomematicClient {
 	public void registerCallback() throws HomematicClientException {
 		rpcClient.init(getDefaultInterface());
 		rpcClient.init(HmInterface.WIRED);
+		rpcClient.init(HmInterface.CUXD);
 	}
 
 	/**
@@ -112,13 +114,16 @@ public class CcuClient extends BaseHomematicClient {
 	public void releaseCallback() throws HomematicClientException {
 		rpcClient.release(getDefaultInterface());
 		rpcClient.release(HmInterface.WIRED);
+		rpcClient.release(HmInterface.CUXD);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void iterateAllDatapoints(HmValueItemIteratorCallback callback) throws HomematicClientException {
 		List<HmDevice> devices = sendScriptByName("getAllDevices", HmDeviceList.class).getDevices();
+		Map<String, HmRssiInfo> rssiList = rpcClient.getRssiInfo(HmInterface.RF);
 		for (HmDevice device : devices) {
 			addBatteryInfo(device);
 
@@ -126,6 +131,14 @@ public class CcuClient extends BaseHomematicClient {
 				for (HmDatapoint dp : channel.getDatapoints()) {
 					DatapointConfig bindingConfig = new DatapointConfig(device.getAddress(), channel.getNumber(),
 							dp.getName());
+					HmRssiInfo rssiInfo = rssiList.get(bindingConfig.getAddress());
+					if (rssiInfo != null) {
+						if ("RSSI_DEVICE".equals(bindingConfig.getParameter())) {
+							dp.setValue(rssiInfo.getDevice());
+						} else if ("RSSI_PEER".equals(bindingConfig.getParameter())) {
+							dp.setValue(rssiInfo.getPeer());
+						}
+					}
 					callback.iterate(bindingConfig, dp);
 				}
 			}
@@ -135,6 +148,15 @@ public class CcuClient extends BaseHomematicClient {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
+	public Map<String, HmRssiInfo> getRssiInfo() throws HomematicClientException {
+		return rpcClient.getRssiInfo(HmInterface.RF);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void iterateAllVariables(HmValueItemIteratorCallback callback) throws HomematicClientException {
 		List<HmVariable> variables = sendScriptByName("getAllVariables", HmVariableList.class).getVariables();
 		for (HmVariable variable : variables) {
@@ -146,6 +168,7 @@ public class CcuClient extends BaseHomematicClient {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void executeProgram(String programName) throws HomematicClientException {
 		logger.debug("Executing program on CCU: {}", programName);
 		HmResult result = sendScriptByName("executeProgram", HmResult.class, new String[] { "program_name" },
@@ -181,6 +204,7 @@ public class CcuClient extends BaseHomematicClient {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void setVariable(HmValueItem hmValueItem, Object value) throws HomematicClientException {
 		String strValue = ObjectUtils.toString(value);
 		if (hmValueItem.isStringValue()) {
