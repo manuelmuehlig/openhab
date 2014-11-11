@@ -295,6 +295,7 @@ public abstract class DesignerRuleCreator {
 			blockMap.put("openhab_persistence_get", OpenhabPersistenceGetBlock.class);
 			blockMap.put("openhab_state_onoff", OpenhabStateOnOffBlock.class);
 			blockMap.put("openhab_state_openclosed", OpenhabStateOpenClosedBlock.class);
+			blockMap.put("openhab_time", OpenhabTimeBlock.class);
 		}
 
 		if (blockMap.get(type) == null) {

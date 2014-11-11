@@ -279,6 +279,11 @@ public class DesignerResource {
 		if(bean.id == null) {
 			bean.id = high + 1;
 		}
+		
+		// Sanity check the name
+		if(bean.name == null) {
+			bean.name = "";
+		}
 
 		// Now save the updated version
 		list.entries.add(bean);
