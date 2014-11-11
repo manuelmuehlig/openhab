@@ -84,7 +84,7 @@ public class OpenhabPersistenceGetBlock extends DesignerRuleCreator {
 
 		// Add triggers
 		// We simply add a timer - 500th of the persistence period seems like a good place to start (?)
-		ruleContext.setCron(Math.max(5,timeSeconds / 500));
+		ruleContext.setCron(timeSeconds / 500);
 
 		String val = varField.value;
 		try {
