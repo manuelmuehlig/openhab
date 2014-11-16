@@ -23,27 +23,85 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  */
 @XStreamAlias("associationGroup")
 public class AssociationGroup {
-	int Index;
-	List<Integer> Nodes = new ArrayList<Integer>();
-	
+	int index;
+	List<Association> associations = new ArrayList<Association>();
+
 	public AssociationGroup(int index) {
-		Index = index;
+		this.index = index;
 	}
 
 	public int getIndex() {
-		return Index;
+		return index;
 	}
-	
+
 	public void setIndex(int newIndex) {
-		Index = newIndex;
+		index = newIndex;
 	}
-	
-	public void addNode(int Node) {
-		Nodes.add(Node);
+
+	public void addAssociation(int node) {
+		addAssociation(node, 0);
 	}
-	
-	public List<Integer> getNodes() {
-		return Nodes;
+
+	public void addAssociation(int node, int endpoint) {
+		// Check if we're already associated
+		if(isAssociated(node, endpoint)) {
+			return;
+		}
+		
+		// No - add a new association
+		Association newAssociation = new Association(node, endpoint);
+		associations.add(newAssociation);
 	}
-	
+
+	public boolean removeAssociation(int node) {
+		return removeAssociation(node, 0);
+	}
+
+	public boolean removeAssociation(int node, int endpoint) {
+		int associationCnt = associations.size();
+		for(int index = 0; index < associationCnt; index++) {
+			Association association = associations.get(index);
+			if(association.node == node && association.endpoint == endpoint) {
+				associations.remove(index);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean isAssociated(int node) {
+		return isAssociated(node, 0);
+	}
+
+	public boolean isAssociated(int node, int endpoint) {
+		int associationCnt = associations.size();
+		for(int index = 0; index < associationCnt; index++) {
+			Association association = associations.get(index);
+			if(association.node == node && association.endpoint == endpoint) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public List<Association> getAssociations() {
+		return associations;
+	}
+
+	public class Association {
+		int node;
+		int endpoint;
+
+		public Association(int node) {
+			this.node = node;
+			this.endpoint = 0;
+		}
+
+		public Association(int node, int endpoint) {
+			this.node = node;
+			this.endpoint = endpoint;
+		}
+	}
 }

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.openhab.binding.zwave.internal.protocol.AssociationGroup;
+import org.openhab.binding.zwave.internal.protocol.AssociationGroup.Association;
 import org.openhab.binding.zwave.internal.protocol.SerialMessage;
 import org.openhab.binding.zwave.internal.protocol.ZWaveController;
 import org.openhab.binding.zwave.internal.protocol.ZWaveEndpoint;
@@ -21,6 +22,7 @@ import org.openhab.binding.zwave.internal.protocol.ZWaveNode;
 import org.openhab.binding.zwave.internal.protocol.SerialMessage.SerialMessageClass;
 import org.openhab.binding.zwave.internal.protocol.SerialMessage.SerialMessagePriority;
 import org.openhab.binding.zwave.internal.protocol.SerialMessage.SerialMessageType;
+import org.openhab.binding.zwave.internal.protocol.event.ZWaveAssociationEvent;
 import org.openhab.binding.zwave.internal.protocol.event.ZWaveEvent;
 import org.openhab.binding.zwave.internal.protocol.event.ZWaveNetworkEvent;
 import org.slf4j.Logger;
@@ -161,7 +163,7 @@ public class ZWaveAssociationCommandClass extends ZWaveCommandClass {
 			int numAssociations = serialMessage.getMessagePayload().length - (offset + 4);
 			for (int cnt = 0; cnt < numAssociations; cnt++) {
 				int node = serialMessage.getMessagePayloadByte(offset + 4 + cnt);
-				logger.debug("Node {}", node);
+				logger.debug("NODE {}: Associated with Node {} in group", this.getNode().getNodeId(), node, group);
 
 				// Add the node to the group
 				pendingAssociation.addNode(node);
@@ -179,12 +181,7 @@ public class ZWaveAssociationCommandClass extends ZWaveCommandClass {
 
 			// Send an event to the users
 			ZWaveAssociationEvent zEvent = new ZWaveAssociationEvent(this.getNode().getNodeId(), group);
-			List<Integer> members = getGroupMembers(group);
-			if(members != null) {
-				for(int node : members) {
-					zEvent.addMember(node);
-				}
-			}
+			zEvent.addMembers(getGroupMembers(group));
 			this.getController().notifyEventListeners(zEvent);			
 		}
 
@@ -218,7 +215,7 @@ public class ZWaveAssociationCommandClass extends ZWaveCommandClass {
 	 */
 	protected void processGroupingsReport(SerialMessage serialMessage, int offset) {
 		maxGroups = serialMessage.getMessagePayloadByte(offset + 1);
-		logger.debug("NODE {} processGroupingsReport number of groups {}", getNode().getNodeId(), maxGroups);
+		logger.debug("NODE {} processGroupingsReport number of groups {}", getNode(), maxGroups);
 		//Start the process to query these nodes
 		updateAssociationsNode = 1;
 		configAssociations.clear();
@@ -316,8 +313,9 @@ public class ZWaveAssociationCommandClass extends ZWaveCommandClass {
 	 */
 	public void getAllAssociations() {
 		SerialMessage serialMessage = getGroupingsMessage();
-		if(serialMessage != null)
+		if(serialMessage != null) {
 			this.getController().sendData(serialMessage);
+		}
 	}
 	
 	/**
@@ -331,10 +329,8 @@ public class ZWaveAssociationCommandClass extends ZWaveCommandClass {
 	 *            number of the association group
 	 * @return List of nodes in the group
 	 */
-	public List<Integer> getGroupMembers(int group) {
-		if(configAssociations.get(group) == null)
-			return null;
-		return configAssociations.get(group).getNodes();
+	public AssociationGroup getGroupMembers(int group) {
+		return configAssociations.get(group);
 	}
 
 	/**
@@ -344,45 +340,5 @@ public class ZWaveAssociationCommandClass extends ZWaveCommandClass {
 	public int getGroupCount() {
 		return configAssociations.size();
 	}
-
-	/**
-	 * ZWave association group received event.
-	 * Send from the association members to the binding
-	 * Note that multiple events can be required to build up the full list.
-	 * 
-	 * @author Chris Jackson
-	 * @since 1.4.0
-	 */
-	public class ZWaveAssociationEvent extends ZWaveEvent {
-
-		private int group;
-		private List<Integer> members = new ArrayList<Integer>();
-		
-		/**
-		 * Constructor. Creates a new instance of the ZWaveAssociationEvent
-		 * class.
-		 * @param nodeId the nodeId of the event. Must be set to the controller node.
-		 */
-		public ZWaveAssociationEvent(int nodeId, int group) {
-			super(nodeId);
-			
-			this.group = group;
-		}
-
-		public int getGroup() {
-			return group;
-		}
-
-		public List<Integer> getMembers() {
-			return members;
-		}
-
-		public int getMemberCnt() {
-			return members.size();
-		}
-
-		public void addMember(int member) {
-			members.add(member);
-		}
-	}
 }
+	

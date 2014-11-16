@@ -18,6 +18,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.openhab.binding.zwave.internal.ZWaveNetworkMonitor;
+import org.openhab.binding.zwave.internal.protocol.AssociationGroup;
 import org.openhab.binding.zwave.internal.protocol.ConfigurationParameter;
 import org.openhab.binding.zwave.internal.protocol.ZWaveController;
 import org.openhab.binding.zwave.internal.protocol.ZWaveDeviceClass;
@@ -25,7 +26,6 @@ import org.openhab.binding.zwave.internal.protocol.ZWaveDeviceType;
 import org.openhab.binding.zwave.internal.protocol.ZWaveEventListener;
 import org.openhab.binding.zwave.internal.protocol.ZWaveNode;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveAssociationCommandClass;
-import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveAssociationCommandClass.ZWaveAssociationEvent;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveBatteryCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClass.CommandClass;
@@ -33,6 +33,7 @@ import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveConfigurati
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveConfigurationCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveVersionCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveWakeUpCommandClass;
+import org.openhab.binding.zwave.internal.protocol.event.ZWaveAssociationEvent;
 import org.openhab.binding.zwave.internal.protocol.event.ZWaveEvent;
 import org.openhab.binding.zwave.internal.protocol.event.ZWaveInclusionEvent;
 import org.openhab.binding.zwave.internal.protocol.initialization.ZWaveNodeSerializer;
@@ -604,9 +605,10 @@ public class ZWaveConfiguration implements OpenHABConfigurationService, ZWaveEve
 							ZWaveAssociationCommandClass associationCommandClass = (ZWaveAssociationCommandClass) node
 									.getCommandClass(CommandClass.ASSOCIATION);
 							int memberCnt = 0;
-							List<Integer> members = associationCommandClass.getGroupMembers(group.Index);
-							if(members != null)
+							AssociationGroup members = associationCommandClass.getGroupMembers(group.Index);
+							if(members != null) {
 								memberCnt = members.size();
+							}
 							record.value = memberCnt + " of " + group.Maximum + " group members";
 
 							// Add the action for refresh
@@ -649,12 +651,13 @@ public class ZWaveConfiguration implements OpenHABConfigurationService, ZWaveEve
 					ZWaveAssociationCommandClass associationCommandClass = (ZWaveAssociationCommandClass) node
 							.getCommandClass(CommandClass.ASSOCIATION);
 
-					List<Integer> members = associationCommandClass.getGroupMembers(groupId);
+					AssociationGroup members = associationCommandClass.getGroupMembers(groupId);
 					for(ZWaveNode nodeList : zController.getNodes()) {
 						// Don't allow an association with itself
-						if(nodeList.getNodeId() == node.getNodeId())
+						if(nodeList.getNodeId() == node.getNodeId()) {
 							continue;
-						
+						}
+
 						// Add the member
 						if (nodeList.getName() == null || nodeList.getName().isEmpty())
 							record = new OpenHABConfigurationRecord(domain, "node" + nodeList.getNodeId(), "Node " + nodeList.getNodeId(), false);
@@ -665,7 +668,7 @@ public class ZWaveConfiguration implements OpenHABConfigurationService, ZWaveEve
 						record.addValue("true", "Member");
 						record.addValue("false", "Non-Member");
 
-						if (members != null && members.contains(nodeList.getNodeId())) {
+						if (members != null && members.isAssociated(nodeList.getNodeId())) {
 							record.value = "true";
 						} else {
 							record.value = "false";

@@ -21,6 +21,7 @@ import org.openhab.binding.zwave.internal.protocol.ZWaveNode;
 import org.openhab.binding.zwave.internal.protocol.SerialMessage.SerialMessageClass;
 import org.openhab.binding.zwave.internal.protocol.SerialMessage.SerialMessagePriority;
 import org.openhab.binding.zwave.internal.protocol.SerialMessage.SerialMessageType;
+import org.openhab.binding.zwave.internal.protocol.event.ZWaveAssociationEvent;
 import org.openhab.binding.zwave.internal.protocol.event.ZWaveEvent;
 import org.openhab.binding.zwave.internal.protocol.event.ZWaveNetworkEvent;
 import org.slf4j.Logger;
@@ -41,7 +42,7 @@ public class ZWaveMultiAssociationCommandClass extends ZWaveCommandClass {
 
 	private static final Logger logger = LoggerFactory.getLogger(ZWaveMultiAssociationCommandClass.class);
 
-	private static final int MULTI_INSTANCE_MARKER 0x00;
+	private static final int MULTI_INSTANCE_MARKER = 0x00;
 	private static final int MULTI_ASSOCIATIONCMD_SET = 0x01;
 	private static final int MULTI_ASSOCIATIONCMD_GET = 0x02;
 	private static final int MULTI_ASSOCIATIONCMD_REPORT = 0x03;
@@ -62,7 +63,7 @@ public class ZWaveMultiAssociationCommandClass extends ZWaveCommandClass {
 	private int maxGroups = 0;
 
 	/**
-	 * Creates a new instance of the ZWaveAssociationCommandClass class.
+	 * Creates a new instance of the ZWaveMultiAssociationCommandClass class.
 	 * 
 	 * @param node
 	 *            the node this command class belongs to
@@ -71,7 +72,7 @@ public class ZWaveMultiAssociationCommandClass extends ZWaveCommandClass {
 	 * @param endpoint
 	 *            the endpoint this Command class belongs to
 	 */
-	public ZWaveAssociationCommandClass(ZWaveNode node, ZWaveController controller, ZWaveEndpoint endpoint) {
+	public ZWaveMultiAssociationCommandClass(ZWaveNode node, ZWaveController controller, ZWaveEndpoint endpoint) {
 		super(node, controller, endpoint);
 	}
 
@@ -205,7 +206,7 @@ public class ZWaveMultiAssociationCommandClass extends ZWaveCommandClass {
 
 			// Send an event to the users
 			ZWaveAssociationEvent zEvent = new ZWaveAssociationEvent(this.getNode().getNodeId(), group);
-			zEvent.addMembers(getGroupMembers(group););
+			zEvent.addMembers(getGroupMembers(group));
 			this.getController().notifyEventListeners(zEvent);			
 		}
 
@@ -268,14 +269,15 @@ public class ZWaveMultiAssociationCommandClass extends ZWaveCommandClass {
 			logger.trace("NODE {}: Endpoint is 0. Sending only node.", this.getNode().getNodeId());
 			byte[] newPayload = { (byte) this.getNode().getNodeId(), 4, (byte) getCommandClass().getKey(),
 					(byte) MULTI_ASSOCIATIONCMD_SET, (byte) (group & 0xff), (byte) (node & 0xff) };
+			result.setMessagePayload(newPayload);
 		}
 		else {
 			logger.trace("NODE {}: Endpoint not 0. Sending node and endpoint.", this.getNode().getNodeId());
 			byte[] newPayload = { (byte) this.getNode().getNodeId(), 6, (byte) getCommandClass().getKey(),
 					(byte) MULTI_ASSOCIATIONCMD_SET, (byte) (group & 0xff), 0, (byte) (node & 0xff), (byte) (endpoint & 0xff) };
+			result.setMessagePayload(newPayload);
 		}
 
-		result.setMessagePayload(newPayload);
 		return result;
 	}
 
@@ -297,12 +299,12 @@ public class ZWaveMultiAssociationCommandClass extends ZWaveCommandClass {
 		if(endpoint == 0) {
 			logger.trace("NODE {}: Endpoint is 0. Sending only node.", this.getNode().getNodeId());
 			byte[] newPayload = { (byte) this.getNode().getNodeId(), 4, (byte) getCommandClass().getKey(),
-					(byte) MULTI_ ASSOCIATIONCMD_REMOVE, (byte) (group & 0xff), (byte) (node & 0xff) };
+					(byte) MULTI_ASSOCIATIONCMD_REMOVE, (byte) (group & 0xff), (byte) (node & 0xff) };
 		}
 		else {
 			logger.trace("NODE {}: Endpoint not 0. Sending node and endpoint.", this.getNode().getNodeId());
 			byte[] newPayload = { (byte) this.getNode().getNodeId(), 6, (byte) getCommandClass().getKey(),
-					(byte) MULTI_ ASSOCIATIONCMD_REMOVE, (byte) (group & 0xff), 0, (byte) (node & 0xff), (byte) (endpoint & 0xff) };
+					(byte) MULTI_ASSOCIATIONCMD_REMOVE, (byte) (group & 0xff), 0, (byte) (node & 0xff), (byte) (endpoint & 0xff) };
 		}
 		result.setMessagePayload(newPayload);
 		return result;
@@ -369,7 +371,7 @@ public class ZWaveMultiAssociationCommandClass extends ZWaveCommandClass {
 	 *            number of the association group
 	 * @return List of nodes in the group
 	 */
-	public List<Association> getGroupMembers(int group) {
+	public AssociationGroup getGroupMembers(int group) {
 		return configAssociations.get(group);
 	}
 

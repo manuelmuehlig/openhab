@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.openhab.binding.zwave.internal.HexToIntegerConverter;
+import org.openhab.binding.zwave.internal.protocol.AssociationGroup.Association;
 import org.openhab.binding.zwave.internal.protocol.ZWaveDeviceClass.Basic;
 import org.openhab.binding.zwave.internal.protocol.ZWaveDeviceClass.Generic;
 import org.openhab.binding.zwave.internal.protocol.ZWaveDeviceClass.Specific;
@@ -647,8 +648,8 @@ public class ZWaveNode {
 		if(groups != 0) {
 			// Loop through each association group and add the node ID to the list
 			for(int group = 1; group <= groups; group++) {
-				for(Integer associationNodeId : associationCmdClass.getGroupMembers(group)) {
-					routedNodes.add(associationNodeId);
+				for(Association associationNodeId : associationCmdClass.getGroupMembers(group).associations) {
+					routedNodes.add(associationNodeId.node);
 				}
 			}
 		}
