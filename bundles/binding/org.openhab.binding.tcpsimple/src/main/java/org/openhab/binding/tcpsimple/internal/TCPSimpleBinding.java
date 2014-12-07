@@ -112,7 +112,13 @@ public class TCPSimpleBinding extends
 				config.keepaliveperiod = 0;
 			}
 
-			TCPSimpleConnector connector = new TCPSimpleConnector();
+			TCPSimpleConnector connector = null;
+			if(config.type.equalsIgnoreCase("UDP")) {
+				connector = new TCPSimpleConnectorUDP();				
+			} else {
+				connector = new TCPSimpleConnectorTCP();
+			}
+
 			if (connector != null) {
 				// Initialise the IP connection
 				connector.addEventListener(eventListener);
@@ -166,8 +172,7 @@ public class TCPSimpleBinding extends
 			if (config.connector != null) {
 				logger.debug("TCPSimple: Checktimeout("+ config.name + ") - now:"+lDateTime+" then:"+config.connector.getLastReceive()+" dif:"+(config.connector.getLastReceive()-lDateTime));
 				// Timeout
-				if (lDateTime > config.connector.getLastReceive()
-						+ config.restartperiod) {
+				if (lDateTime > config.connector.getLastReceive() + config.restartperiod) {
 					logger.debug("TCPSimple: Connection Timeout!");
 					config.connector.disconnect();
 					try {
@@ -303,7 +308,9 @@ public class TCPSimpleBinding extends
 				} else if ("keepaliveperiod".equals(configKey)) {
 					deviceConfig.keepaliveperiod = Integer.parseInt(value);
 				} else if ("keepalivestring".equals(configKey)) {
-						deviceConfig.keepalivestring = value;
+					deviceConfig.keepalivestring = value;
+				} else if ("type".equals(configKey)) {
+					deviceConfig.type = value;
 				} else {
 					throw new ConfigurationException(configKey,
 							"The given TCPSimple configKey '" + configKey
@@ -433,5 +440,6 @@ public class TCPSimpleBinding extends
 		public String keepalivestring;
 		public TCPSimpleConnector connector = null;
 		public long lastKeepAlive = 0;
+		public String type = "TCP";
 	}
 }
