@@ -67,7 +67,6 @@ import org.teleal.cling.model.types.UDN;
 import org.teleal.cling.registry.Registry;
 import org.teleal.cling.registry.RegistryListener;
 import org.teleal.cling.transport.impl.apache.StreamClientConfigurationImpl;
-import org.teleal.cling.transport.impl.apache.StreamClientImpl;
 import org.teleal.cling.transport.impl.apache.StreamServerConfigurationImpl;
 import org.teleal.cling.transport.impl.apache.StreamServerImpl;
 import org.teleal.cling.transport.spi.NetworkAddressFactory;
@@ -316,6 +315,7 @@ implements ManagedService {
 
 				if (sonosID != null) {
 					if (sonosCommandType != null) {
+						logger.debug("Executing command: item:{}, command:{}, ID:{}, CommandType:{}, commandString:{}",new Object[] {itemName, someCommand, sonosID, sonosCommandType, commandAsString} );
 						executeCommand(itemName, someCommand, sonosID,
 								sonosCommandType, commandAsString);
 					} else {
@@ -923,7 +923,6 @@ implements ManagedService {
 
 	public void setSonosZoneGroups(List<SonosZoneGroup> sonosZoneGroups) {
 		this.sonosZoneGroups = sonosZoneGroups;
-		logger.debug("The following Zone Groups are in operation {}",sonosZoneGroups.toString());
 	}
 
 	@Override

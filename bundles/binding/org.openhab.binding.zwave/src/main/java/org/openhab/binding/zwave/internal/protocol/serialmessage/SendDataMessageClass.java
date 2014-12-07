@@ -32,10 +32,10 @@ public class SendDataMessageClass extends ZWaveCommandProcessor {
 	public boolean handleResponse(ZWaveController zController, SerialMessage lastSentMessage,
 			SerialMessage incomingMessage) {
 		logger.trace("Handle Message Send Data Response");
-		if (incomingMessage.getMessageBuffer()[2] != 0x00)
+		if (incomingMessage.getMessagePayloadByte(0) != 0x00)
 			logger.debug("Sent Data successfully placed on stack.");
 		else
-			logger.error("Sent Data was not placed on stack due to error {}.", incomingMessage.getMessageBuffer()[2]);
+			logger.error("Sent Data was not placed on stack due to error {}.", incomingMessage.getMessagePayloadByte(0));
 
 		return true;
 	}
@@ -65,12 +65,24 @@ public class SendDataMessageClass extends ZWaveCommandProcessor {
 		switch (status) {
 		case COMPLETE_OK:
 			ZWaveNode node = zController.getNode(originalMessage.getMessageNode());
+			if(node == null)
+				break;
+			
+			// Consider this as a received frame since the controller did receive an ACK from the device.
+			node.incrementReceiveCount();
 
-			node.resetResendCount();
-			// in case we received a ping response and the node is alive, we
-			// proceed with the next node stage for this node.
-			if (node != null && node.getNodeStage() == NodeStage.PING) {
-				node.advanceNodeStage(NodeStage.DETAILS);
+			// If the node is DEAD, but we've just received a message from it, then it's not dead!
+			if(node.isDead()) {
+				node.setAlive();
+				logger.debug("NODE {}: Node has risen from the DEAD. Set stage to {}.", node.getNodeId(), node.getNodeStage());			
+			}
+			else {
+				node.resetResendCount();
+				// in case we received a ping response and the node is alive, we
+				// proceed with the next node stage for this node.
+				if (node.getNodeStage() == NodeStage.PING) {
+					node.advanceNodeStage(NodeStage.DETAILS);
+				}
 			}
 			checkTransactionComplete(lastSentMessage, incomingMessage);
 			return true;
@@ -94,9 +106,10 @@ public class SendDataMessageClass extends ZWaveCommandProcessor {
 
 		ZWaveNode node = zController.getNode(originalMessage.getMessageNode());
 
-		// No retries if the node is DEAD
-		if (node.getNodeStage() == NodeStage.DEAD)
+		// No retries if the node is DEAD or FAILED
+		if (node.isDead()) {
 			return false;
+		}
 
 		// High priority messages get requeued, low priority get dropped
 		if (!node.isListening() && !node.isFrequentlyListening()

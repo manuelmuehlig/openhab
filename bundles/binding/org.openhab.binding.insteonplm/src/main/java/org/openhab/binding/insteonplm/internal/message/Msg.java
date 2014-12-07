@@ -15,8 +15,8 @@ import java.util.HashMap;
 import java.util.TreeSet;
 
 import org.openhab.binding.insteonplm.internal.device.InsteonAddress;
-import org.openhab.binding.insteonplm.internal.message.XMLMessageReader.ParsingException;
 import org.openhab.binding.insteonplm.internal.utils.Utils;
+import org.openhab.binding.insteonplm.internal.utils.Utils.ParsingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -177,11 +177,33 @@ public class Msg {
 		}
 		return true;
 	}
+	public boolean isCleanup() {
+		try {
+			MsgType t = MsgType.s_fromValue(getByte("messageFlags"));
+			if (t == MsgType.ALL_LINK_CLEANUP) {
+				return true;
+			}
+		} catch (FieldException e) {
+			return false;
+		}
+		return false;
+	}
 
 	public boolean isAckOfDirect() {
 		try {
 			MsgType t = MsgType.s_fromValue(getByte("messageFlags"));
 			if (t == MsgType.ACK_OF_DIRECT)	return true;
+		} catch (FieldException e) {
+		}
+		return false;
+	}
+	
+	public boolean isX10() {
+		try {
+			int cmd = getByte("Cmd") & 0xff;
+			if (cmd == 0x63 || cmd == 0x52) {
+				return true;
+			} 
 		} catch (FieldException e) {
 		}
 		return false;

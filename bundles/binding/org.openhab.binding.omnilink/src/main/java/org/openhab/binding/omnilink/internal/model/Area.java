@@ -27,7 +27,7 @@ import com.digitaldan.jomnilinkII.MessageTypes.properties.AreaProperties;
  * @since 1.5.0
  */
 public class Area extends OmnilinkDevice {
-	private static final Logger logger = LoggerFactory.getLogger(Aux.class);
+	private static final Logger logger = LoggerFactory.getLogger(Area.class);
 
 	public static final String[] omniText = { "Off", "Day", "Night", "Away",
 			"Vacation", "Day-Instant", "Night-Delayed" };
@@ -35,7 +35,6 @@ public class Area extends OmnilinkDevice {
 			"Vacation", "Party", "Special" };
 	public static final String[] alarms = { "Burglary", "Fire", "Gas",
 			"Auxiliary", "Freeze", "Water", "Duress", "Temperature" };
-	static int alarm_bits[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };
 	private AreaProperties properties;
 	private boolean omni;
 
@@ -98,16 +97,13 @@ public class Area extends OmnilinkDevice {
 			setting = properties.getAlarms();
 
 			for (int i = 0; i < alarms.length; i++) {
-				if ((setting & alarm_bits[i]) != 0) {
+				if(((setting >> i) & 1) > 0){
 					if (str.length() > 0)
 						str += " | ";
 					str += alarms[i];
 				}
 			}
-
-			if (setting < alarms.length)
-				;
-			str = alarms[setting];
+			
 			break;
 		default:
 			break;

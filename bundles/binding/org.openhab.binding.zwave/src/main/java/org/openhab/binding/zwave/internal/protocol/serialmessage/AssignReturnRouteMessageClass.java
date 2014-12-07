@@ -25,13 +25,13 @@ import org.slf4j.LoggerFactory;
 public class AssignReturnRouteMessageClass extends ZWaveCommandProcessor {
 	private static final Logger logger = LoggerFactory.getLogger(AssignReturnRouteMessageClass.class);
 
-	public SerialMessage doRequest(int nodeId, int destinationId) {
+	public SerialMessage doRequest(int nodeId, int destinationId, int callbackId) {
 		logger.debug("NODE {}: Assigning return route to node {}", nodeId, destinationId);
 
 		// Queue the request
 		SerialMessage newMessage = new SerialMessage(SerialMessageClass.AssignReturnRoute, SerialMessageType.Request,
 				SerialMessageClass.AssignReturnRoute, SerialMessagePriority.High);
-		byte[] newPayload = { (byte) nodeId, (byte) destinationId };
+		byte[] newPayload = { (byte) nodeId, (byte) destinationId, (byte) callbackId };
 		newMessage.setMessagePayload(newPayload);
     	return newMessage;
 	}
@@ -59,7 +59,7 @@ public class AssignReturnRouteMessageClass extends ZWaveCommandProcessor {
 
 		logger.debug("NODE {}: Got AssignReturnRoute request.", nodeId);
 		if(incomingMessage.getMessagePayloadByte(1) != 0x00) {
-			logger.error("NODE {}: Assign return routes failed with error 0x{}.", nodeId, Integer.toHexString(incomingMessage.getMessagePayloadByte(0)));
+			logger.error("NODE {}: Assign return routes failed with error 0x{}.", nodeId, Integer.toHexString(incomingMessage.getMessagePayloadByte(1)));
 			zController.notifyEventListeners(new ZWaveNetworkEvent(ZWaveNetworkEvent.Type.AssignReturnRoute, nodeId,
 					ZWaveNetworkEvent.State.Failure));
 		}
