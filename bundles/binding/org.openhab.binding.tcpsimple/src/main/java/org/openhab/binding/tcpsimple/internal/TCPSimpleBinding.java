@@ -115,8 +115,10 @@ public class TCPSimpleBinding extends
 			TCPSimpleConnector connector = null;
 			if(config.type.equalsIgnoreCase("UDP")) {
 				connector = new TCPSimpleConnectorUDP();				
-			} else {
-				connector = new TCPSimpleConnectorTCP();
+			} else if(config.type.equalsIgnoreCase("TCPServer")) {
+					connector = new TCPSimpleConnectorTCPServer();				
+				} else {
+				connector = new TCPSimpleConnectorTCPClient();
 			}
 
 			if (connector != null) {
@@ -364,8 +366,7 @@ public class TCPSimpleBinding extends
 
 			String addressName = matcher.group(1);
 			String addressVal = matcher.group(2);
-			String valueName = matcher.group(3);
-			String valueVal = matcher.group(4);
+			String valueName = matcher.group(3);			String valueVal = matcher.group(4);
 
 			for (TCPSimpleBindingProvider provider : providers) {
 				for (String itemName : provider

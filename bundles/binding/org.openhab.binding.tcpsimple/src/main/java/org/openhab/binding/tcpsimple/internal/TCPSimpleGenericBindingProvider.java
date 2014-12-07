@@ -63,15 +63,15 @@ public class TCPSimpleGenericBindingProvider extends
 
 	/** {@link Pattern} which matches an In-Binding */
 	private static final Pattern IN_BINDING_PATTERN = Pattern
-			.compile("<\\[([0-9.\\-a-zA-Z]+)\\]");
+			.compile("<\\[([0-9.\\-a-zA-Z_]+)\\]");
 
 	/** {@link Pattern} which matches an In-Binding */
 	private static final Pattern OUT_BINDING_PATTERN = Pattern
-			.compile(">\\[([0-9.\\-a-zA-Z]+):([0-9.\\-a-zA-Z]+):([0-9.\\-a-zA-Z]+)]");
+			.compile(">\\[([0-9.\\-a-zA-Z_]+):([0-9.\\-a-zA-Z_]+):([0-9.\\-a-zA-Z_]+)]");
 
 	/** {@link Pattern} which matches an Gen-Binding */
 	private static final Pattern GEN_BINDING_PATTERN = Pattern
-			.compile("\\*\\[([0-9.\\-a-zA-Z]+):([0-9.\\-a-zA-Z]+):([0-9.\\-a-zA-Z]+)\\]");
+			.compile("\\*\\[([0-9.\\-a-zA-Z_]+):([0-9.\\-a-zA-Z_]+):([0-9.\\-a-zA-Z_]+)\\]");
 
 	/**
 	 * Artificial command for the snmp-in configuration

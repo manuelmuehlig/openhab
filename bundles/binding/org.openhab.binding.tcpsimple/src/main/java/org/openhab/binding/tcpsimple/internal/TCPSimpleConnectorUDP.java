@@ -30,12 +30,8 @@ package org.openhab.binding.tcpsimple.internal;
 
 import java.io.IOException;
 import java.io.InterruptedIOException;
-import java.io.InputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 //import javax.xml.bind.DatatypeConverter;
 
@@ -54,13 +50,9 @@ public class TCPSimpleConnectorUDP extends TCPSimpleConnector {
 	private static final Logger logger = LoggerFactory
 			.getLogger(TCPSimpleConnectorUDP.class);
 
-	private List<TCPSimpleEventListener> _listeners = new ArrayList<TCPSimpleEventListener>();
-
 	private int ipPort;
 
 	private DatagramSocket socket = null;
-	
-	private long lastReceive;
 
 	Thread inputThread = null;
 
@@ -71,8 +63,7 @@ public class TCPSimpleConnectorUDP extends TCPSimpleConnector {
 		ipPort = port;
 
 		// Initialise the last receive time to avoid immediate reconnect
-		lastReceive = System.currentTimeMillis();
-
+		updateLastReceive();
 		doConnect();
 	}
 
@@ -126,10 +117,6 @@ public class TCPSimpleConnectorUDP extends TCPSimpleConnector {
 			disconnect();
 		}*/
 	}
-	
-	public long getLastReceive() {
-		return lastReceive;
-	}
 
 	public class InputReader extends Thread {
 		TCPSimpleConnectorUDP connector;
@@ -156,33 +143,25 @@ public class TCPSimpleConnectorUDP extends TCPSimpleConnector {
 				socket.receive(receivePacket);
 
 				String sentence = new String( receivePacket.getData(), 0, receivePacket.getLength() );
-				logger.debug("Received: {}", sentence);
+				logger.debug("TCPSimple Received: {}", sentence);
 
-				lastReceive = System.currentTimeMillis();
+				updateLastReceive();
 
 				for (char ch : sentence.toCharArray()) {
 					// Ignore CR
-					if (ch == '\r') {
+					if (ch == '\r' || ch == '\n') {
 						continue;
 					}
 
-					// Process new line
-					if (ch == '\n') {
-						try {
-							TCPSimpleResponseEvent event = new TCPSimpleResponseEvent(connector);
+					rxData += ch;
 
-							Iterator<TCPSimpleEventListener> iterator = _listeners.iterator();
-							while (iterator.hasNext()) {
-								((TCPSimpleEventListener) iterator.next()).packetReceived(event, rxData);
-							}
-						} catch (Exception e) {
-							logger.error("Event listener error", e);
-						}
+					// Process new line
+					if (ch == '>') {
+						sendToListeners(rxData);
 						rxData = "";
 					}
 					else {
-						rxData += ch;
-						if(rxData.length() > 1024) {
+						if(rxData.length() > 2048) {
 							rxData = "";
 						}
 					}

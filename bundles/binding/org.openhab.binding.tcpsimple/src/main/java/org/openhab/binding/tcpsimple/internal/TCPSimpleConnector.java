@@ -29,11 +29,6 @@
 package org.openhab.binding.tcpsimple.internal;
 
 import java.io.IOException;
-import java.io.InterruptedIOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -80,7 +75,24 @@ public abstract class TCPSimpleConnector {
 		_listeners.remove(listener);
 	}
 	
+	public void sendToListeners(String rxData) {
+		try {
+			TCPSimpleResponseEvent event = new TCPSimpleResponseEvent(this);
+	
+			Iterator<TCPSimpleEventListener> iterator = _listeners.iterator();
+			while (iterator.hasNext()) {
+				((TCPSimpleEventListener) iterator.next()).packetReceived(event, rxData);
+			}
+		} catch (Exception e) {
+			logger.error("Event listener error", e);
+		}
+	}
+	
 	public long getLastReceive() {
 		return lastReceive;
+	}
+	
+	public void updateLastReceive() {
+		lastReceive = System.currentTimeMillis();
 	}
 }
