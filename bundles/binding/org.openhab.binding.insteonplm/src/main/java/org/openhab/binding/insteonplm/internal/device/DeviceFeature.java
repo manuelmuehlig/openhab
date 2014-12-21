@@ -8,6 +8,8 @@
  */
 package org.openhab.binding.insteonplm.internal.device;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -77,20 +79,6 @@ public class DeviceFeature {
 				new HashMap<Class<? extends Command>, CommandHandler>();
 	private ArrayList<DeviceFeatureListener> m_listeners = new ArrayList<DeviceFeatureListener>();
 	
-	static {
-		// read features from xml file and store them in a map
-		try {
-			InputStream input = DeviceFeature.class.getResourceAsStream("/device_features.xml");
-			ArrayList<FeatureTemplate> features = FeatureTemplateLoader.s_readTemplates(input);
-			for (FeatureTemplate f : features) {
-				s_features.put(f.getName(), f);
-			}
-		} catch (IOException e) {
-			logger.error("IOException while reading device features", e);
-		} catch (ParsingException e) {
-			logger.error("Parsing exception while reading device features", e);
-		}
-	}
 	
 	/**
 	 * Constructor
@@ -131,6 +119,7 @@ public class DeviceFeature {
 		logger.trace("{} set query status to: {}", m_name, status);
 		m_queryStatus = status;
 	}
+
 	/**
 	 * Add a listener (item) to a device feature
 	 * @param l the listener
@@ -145,12 +134,12 @@ public class DeviceFeature {
 			m_listeners.add(l);
 		}
 	}
+
 	/**
 	 * removes a DeviceFeatureListener from this feature
 	 * @param aItemName name of the item to remove as listener
 	 * @return true if a listener was removed 
 	 */
-	
 	public boolean removeListener(String aItemName) {
 		boolean listenerRemoved = false;
 		synchronized(m_listeners) {
@@ -164,6 +153,16 @@ public class DeviceFeature {
 		}
 		return listenerRemoved;
 	}
+	
+	public boolean isReferencedByItem(String aItemName) {
+		synchronized(m_listeners) {
+			for (DeviceFeatureListener fl : m_listeners) {
+				if (fl.getItemName().equals(aItemName)) return true;
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * Called when message is incoming. Dispatches message according to message dispatcher
 	 * @param msg The message to dispatch
@@ -268,12 +267,52 @@ public class DeviceFeature {
 	 */
 	public static DeviceFeature s_makeDeviceFeature(String s) {
 		DeviceFeature f = null;
-		if (s_features.containsKey(s)) {
-			f = s_features.get(s).build();
-		} else {
-			logger.error("unimplemented feature requested: {}", s);
+		synchronized(s_features) {
+			if (s_features.containsKey(s)) {
+				f = s_features.get(s).build();
+			} else {
+				logger.error("unimplemented feature requested: {}", s);
+			}
 		}
 		return f;
 	}
-
+	/**
+	 * Reads the features templates from an input stream and puts them in global map
+	 * @param input the input stream from which to read the feature templates
+	 */
+	public static void s_readFeatureTemplates(InputStream input) {
+		try {
+			ArrayList<FeatureTemplate> features = FeatureTemplateLoader.s_readTemplates(input);
+			synchronized (s_features) {
+				for (FeatureTemplate f : features) {
+					s_features.put(f.getName(), f);
+				}
+			}
+		} catch (IOException e) {
+			logger.error("IOException while reading device features", e);
+		} catch (ParsingException e) {
+			logger.error("Parsing exception while reading device features", e);
+		}
+	}
+	/**
+	 * Reads the feature templates from a file and adds them to a global map
+	 * @param file name of the file to read from
+	 */
+	public static void s_readFeatureTemplates(String file) {
+		try {
+			FileInputStream fis = new FileInputStream(file);
+			s_readFeatureTemplates(fis);
+		} catch (FileNotFoundException e) {
+			logger.error("cannot read feature templates from file {} ", file, e);
+		}
+	}
+	
+	/**
+	 * static initializer
+	 */
+	static {
+		// read features from xml file and store them in a map
+		InputStream input = DeviceFeature.class.getResourceAsStream("/device_features.xml");
+		s_readFeatureTemplates(input);
+	}
 }
