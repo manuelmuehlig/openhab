@@ -24,6 +24,7 @@ import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClas
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveManufacturerSpecificCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveMultiInstanceCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveNoOperationCommandClass;
+import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveSecurityCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveVersionCommandClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,6 +120,19 @@ public class ZWaveNodeStageAdvancer {
 			this.controller.requestNodeInfo(this.node.getNodeId());
 			break;
 		case DETAILS:
+			// For devices that support the Security class, we have to request a list of
+			// Command Classes that require security.
+			if(this.node.supportsCommandClass(CommandClass.SECURITY)) {
+				// kicks off the Security initialization process so we can communicate
+				// securely with the Node from here on
+				ZWaveSecurityCommandClass securityCommandClass = (ZWaveSecurityCommandClass) this.node.getCommandClass(CommandClass.SECURITY);
+				securityCommandClass.securityInit();
+				this.node.setNodeStage(NodeStage.SECURITY_REPORT);
+				break;
+			}
+			logger.warn("NODE {}: does not support SECURITY_REPORT, proceeding to manspec1 stage.",
+					this.node.getNodeId());
+		case SECURITY_REPORT:
 			// try and get the manufacturerSpecific command class.
 			ZWaveManufacturerSpecificCommandClass manufacturerSpecific = (ZWaveManufacturerSpecificCommandClass) this.node
 					.getCommandClass(CommandClass.MANUFACTURER_SPECIFIC);

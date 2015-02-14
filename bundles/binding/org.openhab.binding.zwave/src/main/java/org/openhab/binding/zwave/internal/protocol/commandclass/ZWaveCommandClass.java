@@ -413,7 +413,7 @@ public abstract class ZWaveCommandClass {
 		AV_CONTENT_DIRECTORY_MD(0x95,"AV_CONTENT_DIRECTORY_MD",null),
 		AV_RENDERER_STATUS(0x96,"AV_RENDERER_STATUS",null),
 		AV_CONTENT_SEARCH_MD(0x97,"AV_CONTENT_SEARCH_MD",null),
-		SECURITY(0x98,"SECURITY",null),
+		SECURITY(0x98,"SECURITY",ZWaveSecurityCommandClass.class),
 		AV_TAGGING_MD(0x99,"AV_TAGGING_MD",null),
 		IP_CONFIGURATION(0x9A,"IP_CONFIGURATION",null),
 		ASSOCIATION_COMMAND_CONFIGURATION(0x9B,"ASSOCIATION_COMMAND_CONFIGURATION",null),
@@ -421,7 +421,8 @@ public abstract class ZWaveCommandClass {
 		SILENCE_ALARM(0x9D,"SILENCE_ALARM",null),
 		SENSOR_CONFIGURATION(0x9E,"SENSOR_CONFIGURATION",null),
 		MARK(0xEF,"MARK",null),
-		NON_INTEROPERABLE(0xF0,"NON_INTEROPERABLE",null);
+		NON_INTEROPERABLE(0xF0,"NON_INTEROPERABLE",null),
+		;
 
 		/**
 		 * A mapping between the integer code and its corresponding
@@ -466,7 +467,11 @@ public abstract class ZWaveCommandClass {
 				initMapping();
 			}
 			
-			return codeToCommandClassMapping.get(i);
+			CommandClass commandClass = codeToCommandClassMapping.get(i);
+			if(commandClass == null) {
+				logger.error(String.format("CommandClass not found for 0x%02X, possible bug", i));
+			}
+			return commandClass;
 		}
 		
 		/**
