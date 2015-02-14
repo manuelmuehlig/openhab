@@ -13,8 +13,10 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.openhab.binding.zwave.internal.HexToIntegerConverter;
 import org.openhab.binding.zwave.internal.protocol.ZWaveDeviceClass.Basic;
@@ -22,6 +24,7 @@ import org.openhab.binding.zwave.internal.protocol.ZWaveDeviceClass.Generic;
 import org.openhab.binding.zwave.internal.protocol.ZWaveDeviceClass.Specific;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveAssociationCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClass;
+import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveSecurityCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveWakeUpCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClass.CommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveMultiInstanceCommandClass;
@@ -73,6 +76,7 @@ public class ZWaveNode {
 	private String healState;
 	
 	private Map<CommandClass, ZWaveCommandClass> supportedCommandClasses = new HashMap<CommandClass, ZWaveCommandClass>();
+	private Set<CommandClass> securedCommandClasses = new HashSet<>(); 
 	private List<Integer> nodeNeighbors = new ArrayList<Integer>();
 	private Date lastSent;
 	private Date lastReceived;
@@ -727,5 +731,77 @@ public class ZWaveNode {
 	 */
 	public int getSendCount() {
 		return sendCount;
+	}
+
+	/**
+	 * Invoked by {@link ZWaveSecurityCommandClass} when a SECURITY_SUPPORTED_REPORT
+	 * is received.   
+	 * @param data the class id for each class which must be encrypted in transmission
+	 */
+	public void setSecuredClasses(byte[] data) {
+		logger.info("NODE {}:  Secured command classes for node ", this.getNodeId());
+		boolean afterMark = false;
+		securedCommandClasses.clear(); // reset the existing list
+		for(byte aByte : data) {
+			if(ZWaveSecurityCommandClass.bytesAreEqual(aByte, ZWaveSecurityCommandClass.COMMAND_CLASS_MARK)) {
+				/**
+				 * Marks the end of the list of supported command classes.  The remaining classes are those 
+				 * that can be controlled by the device.  These classes are created without values.  
+				 * Messages received cause notification events instead.
+				 */
+				afterMark = true;
+				continue;
+			}
+			
+			// Check if this is a commandClass that is already registered with the node
+			CommandClass commandClass = CommandClass.getCommandClass(aByte);
+			if(commandClass == null) {
+				// Not supported by OpenHab
+				logger.info("NODE {}:  setSecuredClasses requested class not supported by OpenHab: {}   afterMark={}", 
+						this.getNodeId(), commandClass, afterMark);
+			} else if(this.supportsCommandClass(commandClass)) {
+				// Sometimes security will be transmitted as a secure class, but it 
+				// can't be set that way since it's the one doing the encryption work  So ignore that.
+				boolean isSecureSupported = commandClass != CommandClass.SECURITY;
+				if(afterMark) {
+					// TODO: pCommandClass->SetAfterMark();
+					logger.info("NODE {}:  is after mark for commandClass {}", this.getNodeId(), commandClass);
+				} else if(isSecureSupported) {
+					securedCommandClasses.add(commandClass);
+					logger.info("NODE {}:  (Secured) {}", this.getNodeId(), commandClass.getLabel());
+				} else {
+					logger.info("NODE {}:  (Downgraded) {}", this.getNodeId(), commandClass.getLabel());
+					// TODO: WFF? 					// Start with an instance count of one.  If the device supports COMMMAND_CLASS_MULTI_INSTANCE
+					// then some command class instance counts will increase once the responses to the RequestState
+					// call at the end of this method have been processed.
+					// pCommandClass->SetInstance( 1 );
+				}
+			} else {
+				logger.error("NODE {}:  Secure CommandClass for {} is NOT SUPPORTED", this.getNodeId(), commandClass);
+			}			
+			// show which classes are still insecure after the update
+			StringBuilder buf = new StringBuilder("NODE "+this.getNodeId()+": After update, INSECURE command classes are: ");
+			for(ZWaveCommandClass zwCommandClass : this.getCommandClasses()) {
+				if(!securedCommandClasses.contains(zwCommandClass.getCommandClass())) {
+					buf.append(zwCommandClass.getCommandClass()+", ");
+				}
+			}
+			logger.info(buf.toString().substring(0, buf.toString().length() - 1));
+		}		
+	}
+
+	public boolean doesMessageRequireEncapsulation(SerialMessage serialMessage) {
+		// Does this node support security at all?
+		if(!supportedCommandClasses.containsKey(CommandClass.SECURITY)) { 
+			return false;
+		}
+		int commandClassCode = (byte) serialMessage.getMessagePayloadByte(3);
+		CommandClass commandClassOfMessage = CommandClass.getCommandClass(commandClassCode);
+		if(commandClassOfMessage == null) {
+			// not sure how we would ever create a message if the com
+			logger.error(String.format("CommandClass not found for 0x%02X so treating as INSECURE", commandClassCode));
+			return false;
+		}
+		return securedCommandClasses.contains(commandClassOfMessage);
 	}
 }

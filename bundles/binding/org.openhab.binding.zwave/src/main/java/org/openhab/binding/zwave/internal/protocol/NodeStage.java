@@ -23,21 +23,22 @@ public enum NodeStage {
 	PING(2, "Ping Node"),
 	WAKEUP(3, "Wake Up"),
 	DETAILS(4, "Node Information"),
-	MANSPEC01(5, "Manufacture Name and Product Identification"),
-	MANSPEC02(6, "Manufacture Name and Product Identification"),
-	VERSION(7, "Node Version"),
-	INSTANCES_ENDPOINTS(8, "Command Class Instances"),
-	STATIC_VALUES(9, "Static Information"),
+	SECURITY_REPORT(5, "Security Report"),
+	MANSPEC01(6, "Manufacture Name and Product Identification"),
+	MANSPEC02(7, "Manufacture Name and Product Identification"),
+	VERSION(8, "Node Version"),
+	INSTANCES_ENDPOINTS(9, "Command Class Instances"),
+	STATIC_VALUES(10, "Static Information"),
 	// States below are not restored from the configuration files
-	ASSOCIATIONS(10, "Association Information"),
-	NEIGHBORS(11, "Node Neighbor Information"),
-	SESSION(12, "Infrequently Changed Information"),
-	DYNAMIC(13, "Frequently Changed Information"),
-	CONFIG(14, "Parameter Information"),
-	DONE(15, "Node Complete"),
-	INIT(16, "Node Not Started"),
-	DEAD(17, "Node Dead"),
-	FAILED(18,"Node Failed");
+	ASSOCIATIONS(11, "Association Information"),
+	NEIGHBORS(12, "Node Neighbor Information"),
+	SESSION(13, "Infrequently Changed Information"),
+	DYNAMIC(14, "Frequently Changed Information"),
+	CONFIG(15, "Parameter Information"),
+	DONE(16, "Node Complete"),
+	INIT(17, "Node Not Started"),
+	DEAD(18, "Node Dead"),
+	FAILED(19,"Node Failed");
 	
 	private int stage;
 	private String label;

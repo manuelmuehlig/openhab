@@ -36,6 +36,7 @@ import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClas
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClassDynamicState;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveMultiInstanceCommandClass;
+import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveSecurityCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveWakeUpCommandClass;
 import org.openhab.binding.zwave.internal.protocol.event.ZWaveEvent;
 import org.openhab.binding.zwave.internal.protocol.event.ZWaveInclusionEvent;
@@ -88,8 +89,8 @@ public class ZWaveController {
 	private static final int INITIAL_QUEUE_SIZE = 128; 
 	private static final long WATCHDOG_TIMER_PERIOD = 10000;	// 10 seconds watchdog timer
 
-	private static final int TRANSMIT_OPTION_ACK = 0x01;
-	private static final int TRANSMIT_OPTION_AUTO_ROUTE = 0x04;
+	public static final int TRANSMIT_OPTION_ACK = 0x01;
+	public static final int TRANSMIT_OPTION_AUTO_ROUTE = 0x04;
 	private static final int TRANSMIT_OPTION_EXPLORE = 0x20;
 	
 	private final Map<Integer, ZWaveNode> zwaveNodes = new HashMap<Integer, ZWaveNode>();
@@ -129,7 +130,7 @@ public class ZWaveController {
 	private boolean initializationComplete = false;
 	
 	private boolean isConnected;
-
+	
 	// Constructors
 	
 	/**
@@ -463,6 +464,17 @@ public class ZWaveController {
 	 * @param serialMessage the serial message to enqueue.
 	 */
 	public void enqueue(SerialMessage serialMessage) {
+		// TODO: is this the right/optimal place in this method for this?
+		// Does this message need to be encapsulated (encrypted)?
+		ZWaveNode node = getNode(serialMessage.getMessageNode());
+		if(node.doesMessageRequireEncapsulation(serialMessage)) {
+			ZWaveSecurityCommandClass securityCommandClass = (ZWaveSecurityCommandClass) node.getCommandClass(CommandClass.SECURITY);
+			securityCommandClass.queueMessageForEncapsulation(serialMessage);
+			// the above call will call enqueue again with the <b>encapsulated<b/> message,
+			// so we discard this one without putting it on the queue
+			return; 
+		}
+			
 		this.sendQueue.add(serialMessage);
 		logger.debug("Enqueueing message. Queue length = {}", this.sendQueue.size());
 	}
@@ -862,7 +874,10 @@ public class ZWaveController {
 			}
 		}
     	
-    	serialMessage.setTransmitOptions(TRANSMIT_OPTION_ACK | TRANSMIT_OPTION_AUTO_ROUTE | TRANSMIT_OPTION_EXPLORE);
+    	// ZWaveSecurityCommandClass needs to set it's own transmit options.  Only set them here if not already done
+    	if(!serialMessage.areTransmitOptionsSet()) {
+    		serialMessage.setTransmitOptions(TRANSMIT_OPTION_ACK | TRANSMIT_OPTION_AUTO_ROUTE | TRANSMIT_OPTION_EXPLORE);
+    	}
     	serialMessage.setCallbackId(getCallbackId());
     	this.enqueue(serialMessage);
 	}

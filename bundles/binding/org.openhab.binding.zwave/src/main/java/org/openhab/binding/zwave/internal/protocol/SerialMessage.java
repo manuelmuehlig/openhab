@@ -18,7 +18,9 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClass.CommandClass;
+import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveSecurityCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveWakeUpCommandClass;
+import org.openhab.binding.zwave.internal.protocol.serialmessage.ApplicationCommandMessageClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,11 +39,13 @@ import org.slf4j.LoggerFactory;
  * @author Victor Belov
  * @author Brian Crosby
  * @author Chris Jackson
+ * @author Dave Badia
  * @since 1.3.0
  */
 public class SerialMessage {
 
 	private static final Logger logger = LoggerFactory.getLogger(SerialMessage.class);
+	public static final int TRANSMIT_OPTIONS_NOT_SET = 0;
 	private final static AtomicLong sequence = new AtomicLong();
 
 	private long sequenceNumber;
@@ -54,10 +58,18 @@ public class SerialMessage {
 
 	private int messageNode = 255;
 	
-	private int transmitOptions = 0;
+	private int transmitOptions = TRANSMIT_OPTIONS_NOT_SET;
 	private int callbackId = 0;
 	
 	private boolean transActionCanceled = false;
+	
+	/**
+	 * Indicates if this message was transmitted securely.
+	 * Meaning this {@link SerialMessage} was encrypted and 
+	 * stored inside of a {@link ZWaveSecurityCommandClass#SECURITY_MESSAGE_ENCAP}
+	 * message.  
+	 */
+	private boolean wasEncapsulated = false;
 
 	/**
 	 * Indicates whether the serial message is valid.
@@ -324,6 +336,14 @@ public class SerialMessage {
 	public void setTransmitOptions(int transmitOptions) {
 		this.transmitOptions = transmitOptions;
 	}
+	
+	/**
+	 * Identifies if transmit options have been set yet for this SendData Req
+	 * @return true if they were set
+	 */
+	public boolean areTransmitOptionsSet() {
+		return transmitOptions != TRANSMIT_OPTIONS_NOT_SET;
+	}
 
 	/**
 	 * Gets the callback ID for this SendData Request.
@@ -372,7 +392,28 @@ public class SerialMessage {
 	public void setTransActionCanceled(boolean transActionCanceled) {
 		this.transActionCanceled = transActionCanceled;
 	}
+	
+	/**
+	 * Indicates if this message was transmitted securely.
+	 * Meaning this {@link SerialMessage} was encrypted and 
+	 * stored inside of a {@link ZWaveSecurityCommandClass#SECURITY_MESSAGE_ENCAP}
+	 * message.  
+	 * @return true if it was encrypted during transmission
+	 */
+	public boolean wasEncapsulated() {
+		return wasEncapsulated;
+	}
 
+	/**
+	 * Sets the indicator stating that this {@link SerialMessage}
+	 * was securely transmitted via encapsulation (encryption).
+	 * This is only called by {@link ApplicationCommandMessageClass}
+	 * @param wasEncapsulated
+	 */
+	public void setWasEncapsulated(boolean wasEncapsulated) {
+		this.wasEncapsulated = wasEncapsulated;
+	}
+	
 	/**
 	 * Serial message type enumeration. Indicates whether the message
 	 * is a request or a response.
@@ -605,4 +646,5 @@ public class SerialMessage {
 		}
 
 	}
+
 }
