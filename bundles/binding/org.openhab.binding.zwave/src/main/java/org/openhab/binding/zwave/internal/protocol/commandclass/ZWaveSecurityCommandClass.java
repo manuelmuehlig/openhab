@@ -12,6 +12,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 import java.util.AbstractQueue;
 import java.util.Arrays;
@@ -59,10 +61,22 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 	 * How long the device has to respond to nonce requests.  Per spec, min=3, recommended=10, max=20
 	 */
 	private static final long NONCE_MAX_MILLIS = TimeUnit.SECONDS.toMillis(10);
-	private static final byte[] ENCRYPT_PASSWORD = { (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA,
+	/**
+	 * It's a security best practice to periodically reseed our random number
+	 * generator
+	 * http://www.cigital.com/justice-league-blog/2009/08/14/proper-use-of-javas-securerandom/
+	 */
+	private static final long SECURE_RANDOM_RESEED_INTERVAL_MILLIS = TimeUnit.DAYS.toMillis(1);
+	/**
+	 * Per the z-wave spec, this is the AES key used to derive {@link #encryptKey} from {@link #networkKey}
+	 */
+	private static final byte[] DERIVE_ENCRYPT_KEY = { (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA,
 			(byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA,
 			(byte) 0xAA, (byte) 0xAA, (byte) 0xAA };
-	private static final byte[] AUTH_PASSWORD = { 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55,
+	/**
+	 * Per the z-wave spec, this is the AES key used to derive {@link #authKey} from {@link #networkKey}
+	 */
+	private static final byte[] DERIVE_AUTH_KEY = { 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55,
 			0x55, 0x55, 0x55, 0x55, 0x55 };
 	private static final String AES = "AES";
 	private static final int MAC_LENGTH = 8;
@@ -193,9 +207,14 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 	private final NonceTable nonceTable = new NonceTable();
 	/**
 	 * Timer to track time elapsed between sending {@link #SECURITY_NONCE_GET} and
-	 * receiving {@link #SECURITY_NONCE_REPORT} 
+	 * receiving {@link #SECURITY_NONCE_REPORT}.  Per the z-wave spec, if too
+	 * much time elapses we should request a new nonce
 	 */
 	private final NonceTimer requestNonceTimer = new NonceTimer();
+	/**
+	 * Queue of {@link SecurityPayload} that are waiting for nonces
+	 * so they can be encapsulated and set
+	 */
 	private AbstractQueue<SecurityPayload> payloadQueue = new ConcurrentLinkedQueue<>();
 	private AtomicBoolean waitingForNonce = new AtomicBoolean(false);
 	/**
@@ -217,7 +236,7 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 	 * The error that occurred when trying to load the encryption key from openhab.cfg -> zwave:networkey
 	 * Will be null if the load succeeded
 	 */
-	private static IllegalArgumentException keyException; // TODO: check this
+	private static IllegalArgumentException keyException; // TODO: keep logging this when it's set
 	
 	/**
 	 * The network key currently in use.  My be {@link #realNetworkKey} or a scheme network key
@@ -439,10 +458,7 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 			debugHex("IV", initializationVector);
 			byte[] macFromPacket = new byte[MAC_LENGTH];
 			bais.read(macFromPacket);
-			Cipher cipher = Cipher.getInstance("AES/OFB/NoPadding"); // TODO remove all comments like this after
-																		// testing: remove aes_ofb_encrypt(plaintextmsg,
-																		// encryptedpayload, payload->m_length+1,
-																		// initializationVector, this->EncryptKey)
+			Cipher cipher = Cipher.getInstance("AES/OFB/NoPadding");
 			cipher.init(Cipher.DECRYPT_MODE, encryptKey, new IvParameterSpec(initializationVector));
 			byte[] plaintextBytes = cipher.doFinal(ciphertextBytes);
 			debugHex("plaintextBytes", plaintextBytes);
@@ -450,7 +466,6 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 			byte driverNodeId = (byte) this.getController().getOwnNodeId();
 			byte[] mac = generateMACComplex(data, data.length, (byte) this.getNode().getNodeId(), driverNodeId,
 					initializationVector);
-			// this->GenerateAuthentication(_data, _length, GetNodeId(), GetDriver()->GetNodeId(), iv, mac);
 			if (!Arrays.equals(mac, macFromPacket)) {
 				logger.error("NODE {}: MAC Authentication of packet failed. dropping", this.getNode().getNodeId());
 				debugHex("full packet", data);
@@ -672,8 +687,7 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 			debugHex("IV:", initializationVector);
 
 			// This will use hardware AES acceleration when possible (default in JDK 8)
-			Cipher encryptCipher = Cipher.getInstance("AES/OFB/NoPadding"); // TODO remove all comments like this after
-																			// initializationVector, this->EncryptKey)
+			Cipher encryptCipher = Cipher.getInstance("AES/OFB/NoPadding");
 			encryptCipher.init(Cipher.ENCRYPT_MODE, encryptKey, new IvParameterSpec(initializationVector));
 			byte[] ciphertextBytes = encryptCipher.doFinal(plaintextMessageBytes);
 			debugHex("Encrypted Output", ciphertextBytes);
@@ -699,8 +713,6 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 			// as the reply we will get back will be encrypted with the new Network key
 			if (!networkKeySet && bytesAreEqual(securityPayload.getMessageBytes()[0], 0x98)
 					&& bytesAreEqual(securityPayload.getMessageBytes()[1], 0x06)) {
-				// if ((this->m_networkkeyset == false) && (payload->m_data[0] == 0x98) && (payload->m_data[1] == 0x06))
-				// {
 				logger.info("NODE {}: Reseting Network Key after Inclusion", this.getNode().getNodeId());
 				networkKeySet = true;
 				setupNetworkKey();
@@ -727,15 +739,15 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 		debugHex("Network Key", networkKey.getEncoded());
 
 		try {
-			// Derived the message encryption key from the xnetwork key
+			// Derived the message encryption key from the network key
 			Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
-			cipher.init(Cipher.ENCRYPT_MODE, networkKey); // aes_ecb_encrypt(iv, tmpauth, 16, this->AuthKey
-			encryptKey = new SecretKeySpec(cipher.doFinal(ENCRYPT_PASSWORD), AES);
+			cipher.init(Cipher.ENCRYPT_MODE, networkKey);
+			encryptKey = new SecretKeySpec(cipher.doFinal(DERIVE_ENCRYPT_KEY), AES);
 			debugHex("Encrypt Key", encryptKey.getEncoded());
 
 			// Derived the message auth key from the network key
-			cipher.init(Cipher.ENCRYPT_MODE, networkKey); // aes_ecb_encrypt(iv, tmpauth, 16, this->AuthKey
-			authKey = new SecretKeySpec(cipher.doFinal(AUTH_PASSWORD), AES);
+			cipher.init(Cipher.ENCRYPT_MODE, networkKey);
+			authKey = new SecretKeySpec(cipher.doFinal(DERIVE_AUTH_KEY), AES);
 			debugHex("Auth Key", authKey.getEncoded());
 		} catch (GeneralSecurityException e) {
 			logger.error("NODE {}: Error building derived keys", e);
@@ -788,8 +800,6 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 			return;
 		}
 		waitingForNonce.set(true); // now we are
-		// Msg* msg = new Msg( "SecurityCmd_NonceGet", GetNodeId(), REQUEST, FUNC_ID_ZW_SEND_DATA, true, true,
-		// FUNC_ID_APPLICATION_COMMAND_HANDLER, GetCommandClassId() );
 		SerialMessage result = new SerialMessage(this.getNode().getNodeId(), SerialMessageClass.SendData,
 				SerialMessageType.Request, SerialMessageClass.SendData, SECURITY_MESSAGE_PRIORITY);
 		byte[] payload = { 
@@ -818,34 +828,33 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 		debugHex("BAD iv", iv);
 		// Build a buffer containing a 4-byte header and the encrypted message data, padded with zeros to a 16-byte
 		// boundary.
-		byte[] buffer = new byte[256]; // uint8 buffer[256]; TODO: set this accurately
-		byte[] tempAuth = new byte[16]; // uint8 tmpauth[16];
+		byte[] buffer = new byte[256]; // TODO: set this accurately
+		byte[] tempAuth = new byte[16];
 
 		buffer[0] = commandClass;
 		buffer[1] = sendingNode;
 		buffer[2] = receivingNode;
-		// TODO: validate data size?
 		buffer[3] = (byte) ciphertext.length;
 		System.arraycopy(ciphertext, 0, buffer, 4, ciphertext.length);
-		int bufferSize = ciphertext.length + 4; // the size of the buffer TODO: what? why + 4?
+		int bufferSize = ciphertext.length + 4; // +4 to account for the header above
 		debugHex("NetworkKey", networkKey.getEncoded(), 0, 16);
 		debugHex("Raw Auth (minus IV)", buffer, 0, bufferSize);
 		logger.debug("NODE {}: Raw Auth (Minus IV) Size:{} ({})", bufferSize, bufferSize + 16);
 
 		// Encrypt the IV with ECB
-		Cipher encryptCipher = Cipher.getInstance("AES/ECB/NoPadding"); // TODO remove all comments like this after
-		encryptCipher.init(Cipher.ENCRYPT_MODE, authKey); // aes_ecb_encrypt(iv, tmpauth, 16, this->AuthKey
+		Cipher encryptCipher = Cipher.getInstance("AES/ECB/NoPadding");
+		encryptCipher.init(Cipher.ENCRYPT_MODE, authKey);
 		tempAuth = encryptCipher.doFinal(iv);
 		debugHex("BAD tmp1", tempAuth);
 		// our temporary holding
-		byte[] encpck = new byte[16]; // TODO rename this uint8 encpck[16];
+		byte[] encpck = new byte[16];
 		int block = 0;
 
 		// now xor the buffer with our encrypted IV
 		for (int i = 0; i < bufferSize; i++) {
 			encpck[block] = buffer[i];
 			block++;
-			// if we hit a blocksize, then encrypt TODO: encrypt? looks like xor to me...
+			// if we hit a blocksize, then xor and encrypt
 			if (block == 16) {
 				for (int j = 0; j < 16; j++) {
 					debugHex("BAD prexor tmp", tempAuth);
@@ -862,8 +871,8 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 				block = 0;
 
 				encryptCipher.init(Cipher.ENCRYPT_MODE, authKey); 
-				tempAuth = encryptCipher.doFinal(tempAuth); // if (aes_ecb_encrypt(tmpauth, tmpauth, 16, this->AuthKey)
-				debugHex("BAD tmp2", tempAuth);										// == EXIT_FAILURE) {
+				tempAuth = encryptCipher.doFinal(tempAuth); 
+				debugHex("BAD tmp2", tempAuth); // TODO: remove some of these debugs
 			}
 		}
 		debugHex("BAD afterxor tempAuth", tempAuth);	
@@ -873,17 +882,17 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 		// any left over data that isn't a full block size
 		if (block > 0) {
 			for (int i = 0; i < 16; i++) {
-				// encpck from block to 16 is already guaranteed to be 0 so its safe to xor it with out tmpmac
+				// encpck from block to 16 is already guaranteed to be 0 so its safe to xor it with out tempAuth
 				debugHex("BAD prexor2 tmp", tempAuth);
 				debugHex("BAD prexor2 encpck", encpck);
 				tempAuth[i] = (byte) (encpck[i] ^ tempAuth[i]);
 			}
 
 			
-			encryptCipher.init(Cipher.ENCRYPT_MODE, authKey); // aes_mode_reset(this->AuthKey);
-			tempAuth = encryptCipher.doFinal(tempAuth); // (aes_ecb_encrypt(tmpauth, tmpauth, 16, this->AuthKey)
+			encryptCipher.init(Cipher.ENCRYPT_MODE, authKey);
+			tempAuth = encryptCipher.doFinal(tempAuth);
 		}
-		/* we only care about the first 8 bytes of tmpauth as the mac */
+		// we only care about the first 8 bytes of tempAuth as the mac
 		debugHex("Computed Auth", tempAuth);
 		byte[] mac = new byte[8];
 		System.arraycopy(tempAuth, 0, mac, 0, 8);
@@ -901,37 +910,35 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 		debugHex("BAD iv", iv);
 		// Build a buffer containing a 4-byte header and the encrypted message data, padded with zeros to a 16-byte
 		// boundary.
-		byte[] buffer = new byte[256]; // uint8 buffer[256];
-		byte[] tempAuth = new byte[16]; // uint8 tmpauth[16];
+		byte[] buffer = new byte[256];
+		byte[] tempAuth = new byte[16];
 
-		buffer[0] = data[0]; // Security command class command // buffer[0] = _data[0];
+		buffer[0] = data[0]; // Security command class command
 		buffer[1] = sendingNode;
 		buffer[2] = receivingNode;
-		// TODO: validate data size?
 		byte copyLength = (byte) (length - 19); // Subtract 19 to account for the 9 security command class bytes that
 												// come before and after the encrypted data
 		buffer[3] = copyLength;
-		System.arraycopy(data, 9, buffer, 4, copyLength); // Copy the cipher bytes over //memcpy( &buffer[4], &_data[9],
-															// _length-19 ); // Encrypted message
+		System.arraycopy(data, 9, buffer, 4, copyLength); // Copy the cipher bytes over
 
-		int bufferSize = copyLength + 4; // the size of the buffer TODO: what? why + 4?
+		int bufferSize = copyLength + 4; // +4 to account for the header above
 		debugHex("Raw Auth (minus IV)", buffer, 0, bufferSize);
 		logger.debug("NODE {}: Raw Auth (Minus IV) Size:{} ({})", bufferSize, bufferSize + 16);
 
 		// Encrypt the IV with ECB
-		Cipher encryptCipher = Cipher.getInstance("AES/ECB/NoPadding"); // TODO remove all comments like this after
-		encryptCipher.init(Cipher.ENCRYPT_MODE, authKey); // aes_ecb_encrypt(iv, tmpauth, 16, this->AuthKey
+		Cipher encryptCipher = Cipher.getInstance("AES/ECB/NoPadding");
+		encryptCipher.init(Cipher.ENCRYPT_MODE, authKey);
 		tempAuth = encryptCipher.doFinal(iv);
 		debugHex("BAD tmp1", tempAuth);
 		// our temporary holding
-		byte[] encpck = new byte[16]; // TODO rename this uint8 encpck[16];
+		byte[] encpck = new byte[16];
 		int block = 0;
 
 		// now xor the buffer with our encrypted IV
 		for (int i = 0; i < bufferSize; i++) {
 			encpck[block] = buffer[i];
 			block++;
-			// if we hit a blocksize, then encrypt TODO: encrypt? looks like xor to me...
+			// if we hit a blocksize, then encrypt
 			if (block == 16) {
 				debugHex("BAD prexor tmp", tempAuth);
 				for (int j = 0; j < 16; j++) {
@@ -947,8 +954,8 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 				block = 0;
 
 				encryptCipher.init(Cipher.ENCRYPT_MODE, authKey); 
-				tempAuth = encryptCipher.doFinal(tempAuth); // if (aes_ecb_encrypt(tmpauth, tmpauth, 16, this->AuthKey)
-				debugHex("BAD tmp2", tempAuth);										// == EXIT_FAILURE) {
+				tempAuth = encryptCipher.doFinal(tempAuth);
+				debugHex("BAD tmp2", tempAuth);
 			}
 		}
 		debugHex("BAD afterxor tempAuth", tempAuth);	
@@ -965,8 +972,8 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 			}
 
 			
-			encryptCipher.init(Cipher.ENCRYPT_MODE, authKey); // aes_mode_reset(this->AuthKey);
-			tempAuth = encryptCipher.doFinal(tempAuth); // (aes_ecb_encrypt(tmpauth, tmpauth, 16, this->AuthKey)
+			encryptCipher.init(Cipher.ENCRYPT_MODE, authKey);
+			tempAuth = encryptCipher.doFinal(tempAuth);
 		}
 		/* we only care about the first 8 bytes of tmpauth as the mac */
 		debugHex("Computed Auth", tempAuth);
@@ -1077,6 +1084,7 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 			byte[] keyBytes = javax.xml.bind.DatatypeConverter.parseHexBinary(ourString);
 			ZWaveSecurityCommandClass.realNetworkKey = new SecretKeySpec(keyBytes, "AES");
 			logger.info("Update networkKey");
+			ZWaveSecurityCommandClass.keyException = null; // we have a valid key
 		} catch (IllegalArgumentException e) {
 			logger.error("Error parsing zwave:networkKey", e);
 			ZWaveSecurityCommandClass.keyException = e;
@@ -1159,6 +1167,22 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 			return length;
 		}
 	}
+	
+	private static SecureRandom createNewSecureRandom() {
+		SecureRandom secureRandom = null;
+		// SecureRandom advice taken from 
+		// http://www.cigital.com/justice-league-blog/2009/08/14/proper-use-of-javas-securerandom/
+		try {
+			secureRandom = SecureRandom.getInstance("SHA1PRNG", "SUN");
+		} catch (NoSuchAlgorithmException | NoSuchProviderException e) {
+			secureRandom = new SecureRandom();
+		}
+		// force an internal seeding
+		secureRandom.nextBoolean();
+		// Add some entropy of our own to the seed
+		secureRandom.setSeed(Runtime.getRuntime().freeMemory());
+		return secureRandom;
+	}
 
 	/**
 	 * per the spec we must track how long it has been since we
@@ -1178,7 +1202,7 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 	}
 	
 	/**
-	 * Structure to hold the nonce itself and the it's related data
+	 * Class to hold the nonce itself and the it's related data
 	 */
 	private static class Nonce {
 		private final byte[] nonceBytes;
@@ -1211,15 +1235,19 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 	 *
 	 */
 	private class NonceTable {
-		private final SecureRandom secureRandom = new SecureRandom();
+		private SecureRandom secureRandom = null;
 		private Map<Byte, Nonce> table = new ConcurrentHashMap<>();
+		private long reseedAt = 0L;
 
 		private NonceTable() {
 			super();
-			// TODO: seed secure random?
 		}
 		
 		private Nonce generateNewNonce() {
+			if(System.currentTimeMillis() > reseedAt) {
+				secureRandom = createNewSecureRandom();
+				reseedAt = System.currentTimeMillis() + SECURE_RANDOM_RESEED_INTERVAL_MILLIS;
+			}
 			cleanup();
 			byte[] nonceBytes = new byte[8]; 
 			secureRandom.nextBytes(nonceBytes);
@@ -1234,7 +1262,8 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 		
 		private Nonce getNonceById(byte id) {
 			cleanup();
-			return table.get(id);
+			// Nonces can only be used once so remove it
+			return table.remove(id);
 		}
 		
 		/**
