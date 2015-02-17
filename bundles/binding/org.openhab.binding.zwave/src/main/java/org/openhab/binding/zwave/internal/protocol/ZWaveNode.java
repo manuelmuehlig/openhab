@@ -734,8 +734,8 @@ public class ZWaveNode {
 	}
 
 	/**
-	 * Invoked by {@link ZWaveSecurityCommandClass} when a SECURITY_SUPPORTED_REPORT
-	 * is received.   
+	 * Invoked by {@link ZWaveSecurityCommandClass} when a 
+	 *  {@link ZWaveSecurityCommandClass#SECURITY_SUPPORTED_REPORT} is received.   
 	 * @param data the class id for each class which must be encrypted in transmission
 	 */
 	public void setSecuredClasses(byte[] data) {
@@ -757,7 +757,8 @@ public class ZWaveNode {
 			CommandClass commandClass = CommandClass.getCommandClass(aByte);
 			if(commandClass == null) {
 				// Not supported by OpenHab
-				logger.info("NODE {}:  setSecuredClasses requested class not supported by OpenHab: {}   afterMark={}", 
+				logger.info("NODE {}:  setSecuredClasses requested secure " +
+						"class not supported by OpenHab: {}   afterMark={}", 
 						this.getNodeId(), commandClass, afterMark);
 			} else if(this.supportsCommandClass(commandClass)) {
 				// Sometimes security will be transmitted as a secure class, but it 
@@ -798,7 +799,7 @@ public class ZWaveNode {
 		int commandClassCode = (byte) serialMessage.getMessagePayloadByte(3);
 		CommandClass commandClassOfMessage = CommandClass.getCommandClass(commandClassCode);
 		if(commandClassOfMessage == null) {
-			// not sure how we would ever create a message if the com
+			// not sure how we would ever get here
 			logger.error(String.format("CommandClass not found for 0x%02X so treating as INSECURE", commandClassCode));
 			return false;
 		}

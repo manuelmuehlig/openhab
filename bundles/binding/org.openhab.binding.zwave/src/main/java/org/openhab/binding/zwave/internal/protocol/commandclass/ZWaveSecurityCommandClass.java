@@ -10,6 +10,7 @@ package org.openhab.binding.zwave.internal.protocol.commandclass;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
@@ -54,7 +55,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @since 1.6.0
  */
 @XStreamAlias("securityCommandClass")
-public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWaveBasicCommands,
+public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements 
 		ZWaveCommandClassInitialization {
 	private static final Logger logger = LoggerFactory.getLogger(ZWaveSecurityCommandClass.class);
 	/**
@@ -189,8 +190,13 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 	 * best practices
 	 */
 	// TODO; test and set to true permanently after initial tests
-	private static final boolean USE_SECURE_CRYPTO_PRACTICES = false;
-	private static final boolean DROP_PACKETS_ON_MAC_FAILURE = false; // TODO: set true and maybe remove?
+	static boolean USE_SECURE_CRYPTO_PRACTICES = false;
+	static boolean DROP_PACKETS_ON_MAC_FAILURE = true;
+	/**
+	 * OZW code comments say that {@link #SECURITY_MESSAGE_ENCAP_NONCE_GET} 
+	 * doesn't work so keep a flag to enable/disable
+	 */
+	static boolean USE_SECURITY_MESSAGE_ENCAP_NONCE_GET = false; // TODO: set true and maybe remove?
 	/**
 	 * Security messages are time sensitive so mark them as high priority
 	 */
@@ -223,10 +229,6 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 	private byte sequenceCounter = 0;
 	private boolean networkKeySet = false;
 	private boolean schemeAgreed = false;
-	/**
-	 * TODO: what is the purpose of this?
-	 */
-	private boolean secured = false;
 
 	/**
 	 * The network key as configured in the openhab.cfg -> zwave:networkey
@@ -236,7 +238,7 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 	 * The error that occurred when trying to load the encryption key from openhab.cfg -> zwave:networkey
 	 * Will be null if the load succeeded
 	 */
-	private static IllegalArgumentException keyException; // TODO: keep logging this when it's set
+	private static Exception keyException;
 	
 	/**
 	 * The network key currently in use.  My be {@link #realNetworkKey} or a scheme network key
@@ -301,16 +303,11 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 		debugHex("payload bytes for incoming security message", serialMessage.getMessagePayload());
 		switch (command) {
 		case SECURITY_COMMANDS_SUPPORTED_REPORT:
-			/*
-			 * this is a list of CommandClasses that should be Encrypted. and it might contain new command classes that
-			 * were not present in the NodeInfoFrame so we have to run through, mark existing Command Classes as
-			 * SetSecured (so SendMsg in the Driver class will route the unecrypted messages to our SendMsg) and for New
-			 * Command Classes, create them, and of course, also do a SetSecured on them.
-			 * 
-			 * This means we must do a SecurityCmd_SupportedGet request ASAP so we dont have Command Classes created
-			 * after the Discovery Phase is completed!
-			 */
-			handleSupportedReport(serialMessage.getMessagePayload());
+			byte[] messagePayload = serialMessage.getMessagePayload();
+			debugHex("Security Classes", messagePayload, 2, messagePayload.length);
+			getNode().setSecuredClasses(messagePayload);
+			// We're done with all of our NodeStage#SECURITY_REPORT stuff, advance
+			getNode().advanceNodeStage(NodeStage.getNodeStage(NodeStage.SECURITY_REPORT.getStage() + 1));
 			return;
 
 		case SECURITY_SCHEME_REPORT:
@@ -353,9 +350,9 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 			return;
 
 		case SECURITY_NETWORK_KEY_VERIFY:
-			// if we can decrypt this packet, then we are assured that our SECURITY_NETWORK_KEY_SET is successful and
-			// thus should set the Flag referenced in SECURITY_SCHEME_REPORT
-			// now as for our SupportedGet
+			// Since we got here, it means we decrypted a packet using the key we sent in 
+			// the SECURITY_NETWORK_KEY_SET message and the new key is in use by both sides.
+			// Next step is to send SECURITY_COMMANDS_SUPPORTED_GET 
 			SerialMessage result = new SerialMessage(this.getNode().getNodeId(), SerialMessageClass.SendData,
 					SerialMessageType.Request, SerialMessageClass.SendData, SECURITY_MESSAGE_PRIORITY);
 			byte[] payload = { 
@@ -407,18 +404,19 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 			logger.warn(String.format("NODE %s: Unsupported Command 0x%02X for command class %s (0x%02X) for message %s.", 
 					this.getNode().getNodeId(), command, this.getCommandClass().getLabel(),
 					this.getCommandClass().getKey(), serialMessage));
-			new Exception().printStackTrace(); // TODO: remove
 		}
 	}
 
 	/**
 	 * Decrypts a security encapsulated message from the Z-Wave network
-	 * @param offset the offset at which to start processing data
-	 * 
+	 * @param offset the offset at which the command byte exists
 	 * @param endpoint
 	 * @param messagePayload
 	 */
 	public SerialMessage decryptMessage(byte[] data, int offset) {
+		if(!checkNetworkKeyLoaded()) { 
+			return null;
+		}
 		ByteArrayInputStream bais = new ByteArrayInputStream(data);
 		// check for minimum size here so we can ignore the return value of bais.read() below
 		int minimumSize = offset + ENCAPSULATED_HEADER_LENGTH + 1 + ENCAPSULATED_FOOTER_LENGTH;
@@ -428,11 +426,13 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 			return null;
 		}
 		try {
-			// advance past offset since those bytes were already processed
-			bais.read(new byte[offset]);
+			// advance to the command byte
+			bais.read(new byte[offset - 1]);
+			byte commandClass = (byte) bais.read();
 			byte[] initializationVector = new byte[IV_LENGTH];
 			// the next 8 bytes of packet are the nonce generated by the device for the IV
 			bais.read(initializationVector, 0, HALF_OF_IV);
+			debugHex("device nonce", initializationVector, 0, HALF_OF_IV);
 			int ciphertextSize = data.length - offset - ENCAPSULATED_HEADER_LENGTH - ENCAPSULATED_FOOTER_LENGTH;
 			// Next are the ciphertext bytes
 			byte[] ciphertextBytes = new byte[ciphertextSize];
@@ -464,7 +464,7 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 			debugHex("plaintextBytes", plaintextBytes);
 
 			byte driverNodeId = (byte) this.getController().getOwnNodeId();
-			byte[] mac = generateMACComplex(data, data.length, (byte) this.getNode().getNodeId(), driverNodeId,
+			byte[] mac = generateMAC(commandClass, ciphertextBytes, (byte) this.getNode().getNodeId(), driverNodeId, 
 					initializationVector);
 			if (!Arrays.equals(mac, macFromPacket)) {
 				logger.error("NODE {}: MAC Authentication of packet failed. dropping", this.getNode().getNodeId());
@@ -488,12 +488,11 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 			 * I havn't actually seen a Z-Wave Message thats too big to fit in a encrypted message yet, so we will look
 			 * at this if such a message actually exists!
 			 */
-			if (payloadQueue.size() > 0)
+			if (payloadQueue.size() > 0) {
 				requestNonce(); // handle the next one
-			if (!secured) {
-				secured = true;
 			}
-			SerialMessage decryptedMessage = new SerialMessage(plaintextBytes);
+			SerialMessage decryptedMessage = new SerialMessage();
+			decryptedMessage.setMessagePayload(plaintextBytes);
 			decryptedMessage.setWasEncapsulated(true);
 			return decryptedMessage;
 		} catch (Exception e) {
@@ -595,6 +594,9 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 	 *            the nonce from the device which is used as the 2nd half of the IV
 	 */
 	private void sendNextMessageWithNonce(byte deviceNonce[]) {
+		if(!checkNetworkKeyLoaded()) {
+			return;
+		}
 		if (requestNonceTimer.isExpired()) {
 			// The nonce was not received within the alloted time of us sending the nonce request. Send it again
 			logger.debug("NODE {}: nonce was not received within 10 seconds, resending reques.", this.getNode()
@@ -620,14 +622,15 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 		SerialMessage message = new SerialMessage(this.getNode().getNodeId(), SerialMessageClass.SendData,
 				SerialMessageType.Request, SerialMessageClass.SendData, SECURITY_MESSAGE_PRIORITY);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		baos.write(securityPayload.getLength() + 20); // msg->Append( payload->m_length + 20 );
-		baos.write(this.getCommandClass().getKey()); // msg->Append(GetCommandClassId());
-		// TODO: commented out in OZW code: msg->Append( (queueSize>1) ? SecurityCmd_MessageEncapNonceGet :
-		// SecurityCmd_MessageEncap );
+		baos.write(securityPayload.length + 20);
+		baos.write(this.getCommandClass().getKey());
 		byte commandClass = SECURITY_MESSAGE_ENCAP;
-		baos.write(commandClass); // msg->Append( SecurityCmd_MessageEncap );
-		// TODO: use SECURITY_MESSAGE_ENCAP_NONCE_GET when appropriate, add timer since OZW says it doesn't work
-		
+		if(payloadQueue.size() > 0 && USE_SECURITY_MESSAGE_ENCAP_NONCE_GET) {
+			logger.debug("NODE {}: using SECURITY_MESSAGE_ENCAP_NONCE_GET with queue size of {}", 
+					this.getNode().getNodeId(), payloadQueue.size());
+			commandClass = SECURITY_MESSAGE_ENCAP_NONCE_GET;
+		}
+		baos.write(commandClass);
 		// create the iv
 		byte[] initializationVector = new byte[16];
 		if (USE_SECURE_CRYPTO_PRACTICES) {
@@ -677,10 +680,10 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 				}
 			}
 			// at most, the payload will be 28 bytes + 1 byte for the sequence byte
-			byte[] plaintextMessageBytes = new byte[1 + securityPayload.getLength()];
+			byte[] plaintextMessageBytes = new byte[1 + securityPayload.length];
 			plaintextMessageBytes[0] = sequenceByte;
 			System.arraycopy(securityPayload.getMessageBytes(), 0, plaintextMessageBytes, 1,
-					securityPayload.getLength());
+					securityPayload.length);
 			// Append the message payload after encrypting it with AES-OFB (key is EncryptPassword,
 			// full IV (16 bytes - 8 Random and 8 NONCE) and payload
 			debugHex("Input frame fro encryption:", plaintextMessageBytes);
@@ -722,6 +725,15 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 		}
 	}
 
+	private boolean checkNetworkKeyLoaded() {
+		if(realNetworkKey == null || encryptKey == null || authKey == null) {
+			logger.error("NODE "+this.getNode()+": Trying to perform secure operation but Network key is NOT set due to: "
+					+keyException.getMessage(), keyException);
+			return false;
+		}
+		return true;
+	}
+
 	private void setupNetworkKey() {
 		boolean isAddingNode = this.getNode().getNodeStage() == NodeStage.DETAILS;
 		logger.info("NODE {}: addingNode={} stage={})", this.getNode(),	isAddingNode, this.getNode().getNodeStage());
@@ -750,7 +762,8 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 			authKey = new SecretKeySpec(cipher.doFinal(DERIVE_AUTH_KEY), AES);
 			debugHex("Auth Key", authKey.getEncoded());
 		} catch (GeneralSecurityException e) {
-			logger.error("NODE {}: Error building derived keys", e);
+			logger.error("NODE "+this.getNode().getNodeId()+": Error building derived keys", e);
+			keyException = e;
 		}
 	}
 
@@ -764,7 +777,7 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 	public void securityInit() {
 		// if we are adding this node, then send SECURITY_SCHEME_GET which
 		// will start the Network Key Exchange
-		boolean isAddingNode = true; // TODO: get this from wherever we get it from above
+		boolean isAddingNode = this.getNode().getNodeStage() == NodeStage.DETAILS;
 		if (isAddingNode) {
 			SerialMessage message = new SerialMessage(this.getNode().getNodeId(), SerialMessageClass.SendData,
 					SerialMessageType.Request, SerialMessageClass.SendData, SECURITY_MESSAGE_PRIORITY);
@@ -823,12 +836,12 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 	 */
 	byte[] generateMAC(byte commandClass, byte[] ciphertext, byte sendingNode, byte receivingNode, byte[] iv)
 			throws GeneralSecurityException {
-		// TODO: change all error to debug
 		debugHex("BAD ciphertext", ciphertext);
 		debugHex("BAD iv", iv);
 		// Build a buffer containing a 4-byte header and the encrypted message data, padded with zeros to a 16-byte
 		// boundary.
-		byte[] buffer = new byte[256]; // TODO: set this accurately
+		int bufferSize = ciphertext.length + 4; // +4 to account for the header
+		byte[] buffer = new byte[bufferSize];
 		byte[] tempAuth = new byte[16];
 
 		buffer[0] = commandClass;
@@ -836,7 +849,6 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 		buffer[2] = receivingNode;
 		buffer[3] = (byte) ciphertext.length;
 		System.arraycopy(ciphertext, 0, buffer, 4, ciphertext.length);
-		int bufferSize = ciphertext.length + 4; // +4 to account for the header above
 		debugHex("NetworkKey", networkKey.getEncoded(), 0, 16);
 		debugHex("Raw Auth (minus IV)", buffer, 0, bufferSize);
 		logger.debug("NODE {}: Raw Auth (Minus IV) Size:{} ({})", bufferSize, bufferSize + 16);
@@ -857,14 +869,10 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 			// if we hit a blocksize, then xor and encrypt
 			if (block == 16) {
 				for (int j = 0; j < 16; j++) {
-					debugHex("BAD prexor tmp", tempAuth);
-					debugHex("BAD prexor encpck", encpck);
 					// here we do our xor
 					tempAuth[j] = (byte) (encpck[j] ^ tempAuth[j]);
 					encpck[j] = 0;
 				}
-				debugHex("BAD postxor tmp", tempAuth);
-				debugHex("BAD postxor encpck", encpck);
 				// reset encpck for good measure
 				Arrays.fill(encpck, (byte) 0);
 				// reset our block counter back to 0
@@ -872,22 +880,15 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 
 				encryptCipher.init(Cipher.ENCRYPT_MODE, authKey); 
 				tempAuth = encryptCipher.doFinal(tempAuth); 
-				debugHex("BAD tmp2", tempAuth); // TODO: remove some of these debugs
 			}
 		}
-		debugHex("BAD afterxor tempAuth", tempAuth);	
-		debugHex("BAD afterxor encpck", encpck);	
-		logger.error("NODE {}: block:{} ", block); // TODO: debug
 
 		// any left over data that isn't a full block size
 		if (block > 0) {
 			for (int i = 0; i < 16; i++) {
 				// encpck from block to 16 is already guaranteed to be 0 so its safe to xor it with out tempAuth
-				debugHex("BAD prexor2 tmp", tempAuth);
-				debugHex("BAD prexor2 encpck", encpck);
 				tempAuth[i] = (byte) (encpck[i] ^ tempAuth[i]);
 			}
-
 			
 			encryptCipher.init(Cipher.ENCRYPT_MODE, authKey);
 			tempAuth = encryptCipher.doFinal(tempAuth);
@@ -905,9 +906,8 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 	 */
 	byte[] generateMACComplex(byte[] data, int length, byte sendingNode, byte receivingNode, byte[] iv)
 			throws GeneralSecurityException {
-		// TODO: change all error to debug
-		debugHex("BAD data", data);
-		debugHex("BAD iv", iv);
+		debugHex("data", data);
+		debugHex("iv", iv);
 		// Build a buffer containing a 4-byte header and the encrypted message data, padded with zeros to a 16-byte
 		// boundary.
 		byte[] buffer = new byte[256];
@@ -923,13 +923,11 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 
 		int bufferSize = copyLength + 4; // +4 to account for the header above
 		debugHex("Raw Auth (minus IV)", buffer, 0, bufferSize);
-		logger.debug("NODE {}: Raw Auth (Minus IV) Size:{} ({})", bufferSize, bufferSize + 16);
 
 		// Encrypt the IV with ECB
 		Cipher encryptCipher = Cipher.getInstance("AES/ECB/NoPadding");
 		encryptCipher.init(Cipher.ENCRYPT_MODE, authKey);
 		tempAuth = encryptCipher.doFinal(iv);
-		debugHex("BAD tmp1", tempAuth);
 		// our temporary holding
 		byte[] encpck = new byte[16];
 		int block = 0;
@@ -940,14 +938,11 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 			block++;
 			// if we hit a blocksize, then encrypt
 			if (block == 16) {
-				debugHex("BAD prexor tmp", tempAuth);
 				for (int j = 0; j < 16; j++) {
 					// here we do our xor
 					tempAuth[j] = (byte) (encpck[j] ^ tempAuth[j]);
 					encpck[j] = 0;
 				}
-				debugHex("BAD prexor tmp", tempAuth);
-				debugHex("BAD prexor encpck", encpck);
 				// reset encpck for good measure
 				Arrays.fill(encpck, (byte) 0);
 				// reset our block counter back to 0
@@ -958,20 +953,12 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 				debugHex("BAD tmp2", tempAuth);
 			}
 		}
-		debugHex("BAD afterxor tempAuth", tempAuth);	
-		debugHex("BAD afterxor encpck", encpck);	
-		logger.error("NODE {}: block:{} ", block); // TODO: debug
-
 		// any left over data that isn't a full block size
 		if (block > 0) {
 			for (int i = 0; i < 16; i++) {
 				// encpck from block to 16 is already guaranteed to be 0 so its safe to xor it with out tmpmac
-				debugHex("BAD prexor2 tmp", tempAuth);
-				debugHex("BAD prexor2 encpck", encpck);
 				tempAuth[i] = (byte) (encpck[i] ^ tempAuth[i]);
 			}
-
-			
 			encryptCipher.init(Cipher.ENCRYPT_MODE, authKey);
 			tempAuth = encryptCipher.doFinal(tempAuth);
 		}
@@ -981,7 +968,6 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 		System.arraycopy(tempAuth, 0, mac, 0, 8);
 		return mac;
 	}
-
 	
 	/**
 	 * {@inheritDoc}
@@ -989,43 +975,6 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 	@Override
 	public Collection<SerialMessage> initialize() {
 		return Collections.EMPTY_LIST;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public SerialMessage getValueMessage() {
-		logger.debug("NODE {}: Creating new message for application command TODO", this.getNode().getNodeId());
-		// TODO: what to do, OZW does nothing but return true;
-		return null;
-	}
-
-	/**
-	 * Gets a SerialMessage with the TODO command
-	 * 
-	 * @return the serial message, or null if the supported command is not supported.
-	 */
-	public SerialMessage getSupportedMessage() {
-		logger.debug("NODE {}: Creating new message for application command TODO", this.getNode().getNodeId());
-		// TODO: what to do, OZW does nothing but return true;
-		return null;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public SerialMessage setValueMessage(int value) {
-		// TODO: what to do, OZW doesn't do this
-		return null;
-	}
-
-	private void handleSupportedReport(byte[] messagePayload) {
-		debugHex("Security Classes", messagePayload, 2, messagePayload.length);
-		getNode().setSecuredClasses(messagePayload);
-		// We're done all of our NodeStage#SECURITY_REPORT stuff, advance
-		getNode().advanceNodeStage(NodeStage.getNodeStage(NodeStage.SECURITY_REPORT.getStage() + 1));
 	}
 
 	/**
@@ -1092,8 +1041,9 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 	}
 
 	/**
-	 * Utility method to dump a byte array as hex. Will only print the data if debug mode is debug logging is actually
-	 * enabled
+	 * Utility method to dump a byte array as hex. Will only print the data if debug 
+	 * mode is debug logging is actually enabled.  We don't use {@link SerialMessage#bb2hex(byte[])}
+	 * because we need our debug format to match that of OZW
 	 * 
 	 * @param description
 	 *            a human readable description of the data being logged
@@ -1103,15 +1053,14 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 	 *            where to start from; zero means log the full byte array
 	 */
 	private void debugHex(String description, byte[] bytes, int offset, int length) {
-		// TODO: use SerialMesage.bb2hex instead?
-		if (!logger.isErrorEnabled()) { // TODO: change to debug
+		if (!logger.isDebugEnabled()) {
 			return;
 		}
 		StringBuilder buf = new StringBuilder();
 		for (int i = offset; i < length; i++) {
 			buf.append(String.format("0x%02x, ", (bytes[i] & 0xff)));
 		}
-		logger.error("{}={}", description, buf.toString()); // TODO: change to debug
+		logger.debug("{}={}", description, buf.toString());
 	}
 
 	/**
@@ -1161,11 +1110,6 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 		public int getPart() {
 			return partNumber;
 		}
-
-		// TODO: remove, just let them use length of byte[]
-		public int getLength() {
-			return length;
-		}
 	}
 	
 	private static SecureRandom createNewSecureRandom() {
@@ -1181,6 +1125,9 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 		secureRandom.nextBoolean();
 		// Add some entropy of our own to the seed
 		secureRandom.setSeed(Runtime.getRuntime().freeMemory());
+		for(File root : File.listRoots()) {
+			secureRandom.setSeed(root.getUsableSpace());
+		}
 		return secureRandom;
 	}
 
@@ -1274,8 +1221,8 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements ZWav
 			while(iter.hasNext()) {
 				Nonce nonce = iter.next().getValue();
 				if(nonce.getTimer().isExpired()) {
-					logger.warn("NODE {}: Expiring nonce with id={}", 
-							ZWaveSecurityCommandClass.this.getNode().getNodeId(), nonce.getNonceId()); // TODO: hex
+					logger.warn(String.format("NODE %s: Expiring nonce with id=0x%02X",
+							ZWaveSecurityCommandClass.this.getNode().getNodeId(), nonce.getNonceId()));
 					iter.remove();
 				}
 			}
