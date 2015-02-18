@@ -371,7 +371,7 @@ public abstract class ZWaveCommandClass {
 		SENSOR_BINARY(0x30,"SENSOR_BINARY",ZWaveBinarySensorCommandClass.class),
 		SENSOR_MULTILEVEL(0x31,"SENSOR_MULTILEVEL",ZWaveMultiLevelSensorCommandClass.class),
 		METER(0x32,"METER",ZWaveMeterCommandClass.class),
-		COLOR(0x33,"COLOR",ZWaveColorCommandClass),
+		COLOR(0x33,"COLOR",ZWaveColorCommandClass.class),
 		ZIP_ADV_CLIENT(0x34,"ZIP_ADV_CLIENT",null),
 		METER_PULSE(0x35,"METER_PULSE",null),
 		METER_TBL_CONFIG(0x3C,"METER_TBL_CONFIG",null),
