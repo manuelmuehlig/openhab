@@ -80,10 +80,10 @@ public class ApplicationCommandMessageClass  extends ZWaveCommandProcessor {
 				// ZWaveSecurityCommandClass.handleApplicationCommandRequest since we wouldn't havehave lastMessageSent
 				// which is required to route the message
 				ZWaveSecurityCommandClass zwaveSecurityCommandClass = (ZWaveSecurityCommandClass)zwaveCommandClass;
-				SerialMessage decryptedMessage = zwaveSecurityCommandClass.decryptMessage(incomingMessage.getMessageBuffer(), 5);
+				SerialMessage decryptedMessage = zwaveSecurityCommandClass.decryptMessage(incomingMessage.getMessageBuffer(), 4);
 				if(ZWaveSecurityCommandClass.bytesAreEqual(ZWaveSecurityCommandClass.SECURITY_MESSAGE_ENCAP_NONCE_GET, commandByte)) {
 					// we received an encrypted packet from the device, and the device is also asking us to send a
-					// new NONCE to it, hence there must be multiple packets.
+					// new NONCE to it, hence there must be more data to be sent
 					// regardless of the success/failure of decryption, send a new NONCE
 					zwaveSecurityCommandClass.sendNonceReport();
 				}
