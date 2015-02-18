@@ -84,8 +84,8 @@ public class ZWaveColorCommandClass extends ZWaveCommandClass implements ZWaveCo
 		switch (command) {
 			case COLOR_CAPABILITY_REPORT:
 				logger.trace("NODE {}: Process Color Report", this.getNode().getNodeId());
-				
-				int supportedColors = serialMessage.getMessagePayloadByte(offset + 2);
+
+				int supportedColors = serialMessage.getMessagePayloadByte(offset + 1);
 				for (int i = 0; i < 8; ++i) {
 					// scale is supported
 					if ((supportedColors & (1 << i)) == (1 << i)) {
@@ -205,7 +205,7 @@ public class ZWaveColorCommandClass extends ZWaveCommandClass implements ZWaveCo
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Z-Wave ColorType enumeration.
 	 * @author Chris Jackson
