@@ -31,9 +31,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.openhab.binding.zwave.internal.protocol.SerialMessage.SerialMessageClass;
 import org.openhab.binding.zwave.internal.protocol.SerialMessage.SerialMessagePriority;
 import org.openhab.binding.zwave.internal.protocol.SerialMessage.SerialMessageType;
-import org.openhab.binding.zwave.internal.protocol.NodeStage;
-import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClass.CommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClass;
+import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClass.CommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClassDynamicState;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveMultiInstanceCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveSecurityCommandClass;
@@ -42,9 +41,9 @@ import org.openhab.binding.zwave.internal.protocol.event.ZWaveEvent;
 import org.openhab.binding.zwave.internal.protocol.event.ZWaveInclusionEvent;
 import org.openhab.binding.zwave.internal.protocol.event.ZWaveInitializationCompletedEvent;
 import org.openhab.binding.zwave.internal.protocol.event.ZWaveNetworkEvent;
+import org.openhab.binding.zwave.internal.protocol.event.ZWaveNetworkEvent.State;
 import org.openhab.binding.zwave.internal.protocol.event.ZWaveNodeStatusEvent;
 import org.openhab.binding.zwave.internal.protocol.event.ZWaveTransactionCompletedEvent;
-import org.openhab.binding.zwave.internal.protocol.event.ZWaveNetworkEvent.State;
 import org.openhab.binding.zwave.internal.protocol.initialization.ZWaveNodeSerializer;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.AddNodeMessageClass;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.AssignReturnRouteMessageClass;
@@ -52,22 +51,22 @@ import org.openhab.binding.zwave.internal.protocol.serialmessage.AssignSucReturn
 import org.openhab.binding.zwave.internal.protocol.serialmessage.DeleteReturnRouteMessageClass;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.EnableSucMessageClass;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.GetControllerCapabilitiesMessageClass;
+import org.openhab.binding.zwave.internal.protocol.serialmessage.GetRoutingInfoMessageClass;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.GetSucNodeIdMessageClass;
+import org.openhab.binding.zwave.internal.protocol.serialmessage.GetVersionMessageClass;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.IdentifyNodeMessageClass;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.IsFailedNodeMessageClass;
-import org.openhab.binding.zwave.internal.protocol.serialmessage.RemoveNodeMessageClass;
-import org.openhab.binding.zwave.internal.protocol.serialmessage.RequestNodeNeighborUpdateMessageClass;
+import org.openhab.binding.zwave.internal.protocol.serialmessage.MemoryGetIdMessageClass;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.RemoveFailedNodeMessageClass;
+import org.openhab.binding.zwave.internal.protocol.serialmessage.RemoveNodeMessageClass;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.RequestNodeInfoMessageClass;
-import org.openhab.binding.zwave.internal.protocol.serialmessage.GetRoutingInfoMessageClass;
+import org.openhab.binding.zwave.internal.protocol.serialmessage.RequestNodeNeighborUpdateMessageClass;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.SendDataMessageClass;
+import org.openhab.binding.zwave.internal.protocol.serialmessage.SerialApiGetCapabilitiesMessageClass;
+import org.openhab.binding.zwave.internal.protocol.serialmessage.SerialApiGetInitDataMessageClass;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.SerialApiSoftResetMessageClass;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.SetSucNodeMessageClass;
 import org.openhab.binding.zwave.internal.protocol.serialmessage.ZWaveCommandProcessor;
-import org.openhab.binding.zwave.internal.protocol.serialmessage.GetVersionMessageClass;
-import org.openhab.binding.zwave.internal.protocol.serialmessage.MemoryGetIdMessageClass;
-import org.openhab.binding.zwave.internal.protocol.serialmessage.SerialApiGetCapabilitiesMessageClass;
-import org.openhab.binding.zwave.internal.protocol.serialmessage.SerialApiGetInitDataMessageClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -464,10 +463,9 @@ public class ZWaveController {
 	 * @param serialMessage the serial message to enqueue.
 	 */
 	public void enqueue(SerialMessage serialMessage) {
-		// TODO: is this the right/optimal place in this method for this?
-		// Does this message need to be encapsulated (encrypted)?
 		ZWaveNode node = getNode(serialMessage.getMessageNode());
-		if(node.doesMessageRequireEncapsulation(serialMessage)) {
+		// Does this message need to be encapsulated (encrypted)?
+		if(node != null && node.doesMessageRequireEncapsulation(serialMessage)) {
 			ZWaveSecurityCommandClass securityCommandClass = (ZWaveSecurityCommandClass) node.getCommandClass(CommandClass.SECURITY);
 			securityCommandClass.queueMessageForEncapsulation(serialMessage);
 			// the above call will call enqueue again with the <b>encapsulated<b/> message,
