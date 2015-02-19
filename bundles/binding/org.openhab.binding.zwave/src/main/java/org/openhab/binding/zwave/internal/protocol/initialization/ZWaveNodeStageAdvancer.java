@@ -126,12 +126,13 @@ public class ZWaveNodeStageAdvancer {
 				// kicks off the Security initialization process so we can communicate
 				// securely with the Node from here on
 				ZWaveSecurityCommandClass securityCommandClass = (ZWaveSecurityCommandClass) this.node.getCommandClass(CommandClass.SECURITY);
-				securityCommandClass.securityInit();
-				this.node.setNodeStage(NodeStage.SECURITY_REPORT);
+				securityCommandClass.setupSecureMessagingWithNode();
 				break;
+			} else {
+				this.node.setNodeStage(NodeStage.SECURITY_REPORT);
+				logger.info("NODE {}: does not support SECURITY_REPORT, proceeding to manspec1 stage.",
+						this.node.getNodeId());
 			}
-			logger.warn("NODE {}: does not support SECURITY_REPORT, proceeding to manspec1 stage.",
-					this.node.getNodeId());
 		case SECURITY_REPORT:
 			// try and get the manufacturerSpecific command class.
 			ZWaveManufacturerSpecificCommandClass manufacturerSpecific = (ZWaveManufacturerSpecificCommandClass) this.node

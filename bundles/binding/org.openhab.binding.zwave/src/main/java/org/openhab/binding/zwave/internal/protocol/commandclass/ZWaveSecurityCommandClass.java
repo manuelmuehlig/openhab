@@ -307,6 +307,7 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements
 			debugHex("Security Classes", messagePayload, 2, messagePayload.length);
 			getNode().setSecuredClasses(messagePayload);
 			// We're done with all of our NodeStage#SECURITY_REPORT stuff, advance
+			getNode().setNodeStage(NodeStage.SECURITY_REPORT);
 			getNode().advanceNodeStage(NodeStage.getNodeStage(NodeStage.SECURITY_REPORT.getStage() + 1));
 			return;
 
@@ -771,12 +772,14 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements
 
 	/**
 	 * This starts the security registration process between us and the node so 
-	 * we can communicate securely from here forward.  Specifically, the 
-	 * following commands are exchanged:  
+	 * we can communicate securely from here forward.  This is and can only 
+	 * performed during device registration.
+	 * 
+	 * Specifically, the following commands are exchanged:  
 	 * 
 	 * {@value #EXPECTED_COMMAND_ORDER_LIST}
 	 */
-	public void securityInit() {
+	public synchronized void setupSecureMessagingWithNode() {
 		// if we are adding this node, then send SECURITY_SCHEME_GET which
 		// will start the Network Key Exchange
 		boolean isAddingNode = this.getNode().getNodeStage() == NodeStage.DETAILS;
