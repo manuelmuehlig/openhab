@@ -26,6 +26,7 @@ import org.openhab.core.events.EventPublisher;
 import org.openhab.core.items.Item;
 import org.openhab.core.library.items.ContactItem;
 import org.openhab.core.library.items.DimmerItem;
+import org.openhab.core.library.items.LockItem;
 import org.openhab.core.library.items.NumberItem;
 import org.openhab.core.library.items.RollershutterItem;
 import org.openhab.core.library.items.SwitchItem;
@@ -73,6 +74,7 @@ public class ZWaveConverterHandler {
 		converters.put(CommandClass.BASIC, new ZWaveBasicConverter(controller, eventPublisher));
 		converters.put(CommandClass.SCENE_ACTIVATION, new ZWaveSceneConverter(controller, eventPublisher));
 		converters.put(CommandClass.ALARM, new ZWaveAlarmConverter(controller, eventPublisher));
+		converters.put(CommandClass.DOOR_LOCK, new ZWaveDoorLockConverter(controller, eventPublisher));
 
 		infoConverter = new ZWaveInfoConverter(controller, eventPublisher);
 		
@@ -90,6 +92,7 @@ public class ZWaveConverterHandler {
 			CommandClass.THERMOSTAT_FAN_STATE});
 		preferredCommandClasses.put(ContactItem.class, new CommandClass[] { CommandClass.SENSOR_BINARY, CommandClass.SENSOR_ALARM, 
 			CommandClass.SWITCH_BINARY, CommandClass.BASIC });
+		preferredCommandClasses.put(LockItem.class, new CommandClass[] { CommandClass.DOOR_LOCK });
 	}
 
 	/**

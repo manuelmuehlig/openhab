@@ -377,7 +377,7 @@ public abstract class ZWaveCommandClass {
 		BASIC_WINDOW_COVERING(0x50,"BASIC_WINDOW_COVERING",null),
 		MTP_WINDOW_COVERING(0x51,"MTP_WINDOW_COVERING",null),
 		MULTI_INSTANCE(0x60,"MULTI_INSTANCE",ZWaveMultiInstanceCommandClass.class),
-		DOOR_LOCK(0x62,"DOOR_LOCK",null),
+		DOOR_LOCK(0x62,"DOOR_LOCK",ZWaveDoorLockCommandClass.class),
 		USER_CODE(0x63,"USER_CODE",null),
 		CONFIGURATION(0x70,"CONFIGURATION",ZWaveConfigurationCommandClass.class),
 		ALARM(0x71,"ALARM",ZWaveAlarmCommandClass.class),
