@@ -159,6 +159,7 @@ public class ZWaveActiveBinding extends AbstractActiveBinding<ZWaveBindingProvid
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void allBindingsChanged(BindingProvider provider) {
 		logger.trace("allBindingsChanged");		
 		super.allBindingsChanged(provider);
@@ -289,6 +290,10 @@ public class ZWaveActiveBinding extends AbstractActiveBinding<ZWaveBindingProvid
 		} catch (SerialInterfaceException ex) {
 			this.setProperlyConfigured(false);
 			throw new ConfigurationException("port", ex.getLocalizedMessage(), ex);
+		} catch (Throwable t) {
+			this.setProperlyConfigured(false);
+			logger.error("Critical error during ZWave init", t);
+			throw new ConfigurationException("unknown", t.getLocalizedMessage(), t);
 		}
 	}
 
