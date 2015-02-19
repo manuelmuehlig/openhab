@@ -22,6 +22,7 @@ import org.openhab.binding.zwave.internal.protocol.SerialInterfaceException;
 import org.openhab.binding.zwave.internal.protocol.ZWaveController;
 import org.openhab.binding.zwave.internal.protocol.ZWaveEventListener;
 import org.openhab.binding.zwave.internal.protocol.ZWaveNode;
+import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveSecurityCommandClass;
 import org.openhab.binding.zwave.internal.protocol.event.ZWaveCommandClassValueEvent;
 import org.openhab.binding.zwave.internal.protocol.event.ZWaveEvent;
 import org.openhab.binding.zwave.internal.protocol.event.ZWaveInitializationCompletedEvent;
@@ -153,6 +154,7 @@ public class ZWaveActiveBinding extends AbstractActiveBinding<ZWaveBindingProvid
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void allBindingsChanged(BindingProvider provider) {
 		logger.trace("allBindingsChanged");		
 		super.allBindingsChanged(provider);
@@ -305,6 +307,10 @@ public class ZWaveActiveBinding extends AbstractActiveBinding<ZWaveBindingProvid
 		} catch (SerialInterfaceException ex) {
 			this.setProperlyConfigured(false);
 			throw new ConfigurationException("port", ex.getLocalizedMessage(), ex);
+		} catch (Throwable t) {
+			this.setProperlyConfigured(false);
+			logger.error("Critical error during ZWave init", t);
+			throw new ConfigurationException("unknown", t.getLocalizedMessage(), t);
 		}
 	}
 
@@ -396,7 +402,11 @@ public class ZWaveActiveBinding extends AbstractActiveBinding<ZWaveBindingProvid
 				logger.error("Error parsing 'masterController'. This must be boolean.");
 			}
 		}
-		
+		if (StringUtils.isNotBlank((String) config.get("networkKey"))) {
+			String keyString = (String) config.get("networkKey");
+			// All errors will be caught and logged by 
+			ZWaveSecurityCommandClass.setRealNetworkKey(keyString);
+		}
 		// Now that we've read ALL the configuration, initialise the binding.
 		initialise();
 	}

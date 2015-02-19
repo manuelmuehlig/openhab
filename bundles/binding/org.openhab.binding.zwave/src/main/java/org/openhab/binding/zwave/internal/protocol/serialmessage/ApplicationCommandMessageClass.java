@@ -14,6 +14,7 @@ import org.openhab.binding.zwave.internal.protocol.ZWaveNode;
 import org.openhab.binding.zwave.internal.protocol.ZWaveNodeState;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClass.CommandClass;
+import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveSecurityCommandClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,7 +71,34 @@ public class ApplicationCommandMessageClass  extends ZWaveCommandProcessor {
 				node.addCommandClass(zwaveCommandClass);
 			}
 		}
-
+		
+		// Does the message need to be decrypted?  Yes if it's Security SECURITY_MESSAGE_ENCAP or SECURITY_MESSAGE_ENCAP_NONCE_GET
+		if(zwaveCommandClass instanceof ZWaveSecurityCommandClass) {
+			int commandByte = incomingMessage.getMessagePayloadByte(4);
+			if(ZWaveSecurityCommandClass.bytesAreEqual(ZWaveSecurityCommandClass.SECURITY_MESSAGE_ENCAP, commandByte) 
+				|| ZWaveSecurityCommandClass.bytesAreEqual(ZWaveSecurityCommandClass.SECURITY_MESSAGE_ENCAP_NONCE_GET, commandByte)) {
+				// Intercept encapsulated (encrypted) messages here and decrypt them.  We need to do this here instead of calling
+				// ZWaveSecurityCommandClass.handleApplicationCommandRequest since we wouldn't havehave lastMessageSent
+				// which is required to route the message
+				ZWaveSecurityCommandClass zwaveSecurityCommandClass = (ZWaveSecurityCommandClass)zwaveCommandClass;
+				SerialMessage decryptedMessage = zwaveSecurityCommandClass.decryptMessage(incomingMessage.getMessageBuffer(), 4);
+				if(ZWaveSecurityCommandClass.bytesAreEqual(ZWaveSecurityCommandClass.SECURITY_MESSAGE_ENCAP_NONCE_GET, commandByte)) {
+					// we received an encrypted packet from the device, and the device is also asking us to send a
+					// new NONCE to it, hence there must be more data to be sent
+					// regardless of the success/failure of decryption, send a new NONCE
+					zwaveSecurityCommandClass.sendNonceReport();
+				}
+				boolean result = false;
+				if(decryptedMessage == null) {
+					logger.error("NODE {}: Failed to decrypt message out of {} .", nodeId, incomingMessage);
+				} else {
+					// call handleRequest again, this time with the decrypted message
+					result = handleRequest(zController, lastSentMessage, decryptedMessage);
+				}
+				return result;
+			}
+		}
+		
 		// We got an unsupported command class, return.
 		if (zwaveCommandClass == null) {
 			logger.error(String.format("NODE %d: Unsupported command class %s (0x%02x)", nodeId, commandClass.getLabel(), commandClassCode));

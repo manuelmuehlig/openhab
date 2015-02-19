@@ -83,26 +83,25 @@ public class ZWaveConverterHandler {
 		converters.put(CommandClass.SCENE_ACTIVATION, new ZWaveSceneConverter(controller, eventPublisher));
 		converters.put(CommandClass.FIBARO_FGRM_222, new FibaroFGRM222Converter(controller, eventPublisher));
 		converters.put(CommandClass.ALARM, new ZWaveAlarmConverter(controller, eventPublisher));
+		converters.put(CommandClass.DOOR_LOCK, new ZWaveDoorLockConverter(controller, eventPublisher));
 
 		infoConverter = new ZWaveInfoConverter(controller, eventPublisher);
 
 		// add preferred command classes per Item class here
-		preferredCommandClasses.put(SwitchItem.class, new CommandClass[] { CommandClass.SWITCH_BINARY,
-				CommandClass.SWITCH_MULTILEVEL, CommandClass.METER, CommandClass.BASIC, CommandClass.SENSOR_BINARY,
-				CommandClass.SENSOR_ALARM });
-		preferredCommandClasses.put(DimmerItem.class, new CommandClass[] { CommandClass.SWITCH_MULTILEVEL,
-				CommandClass.SWITCH_BINARY, CommandClass.BASIC, CommandClass.SENSOR_MULTILEVEL,
-				CommandClass.SENSOR_BINARY, CommandClass.SENSOR_ALARM });
-		preferredCommandClasses.put(RollershutterItem.class, new CommandClass[] { CommandClass.SWITCH_MULTILEVEL,
-				CommandClass.SWITCH_BINARY, CommandClass.BASIC, CommandClass.SENSOR_MULTILEVEL,
-				CommandClass.SENSOR_BINARY, CommandClass.SENSOR_ALARM });
-		preferredCommandClasses.put(NumberItem.class, new CommandClass[] { CommandClass.SENSOR_MULTILEVEL,
-				CommandClass.METER, CommandClass.SWITCH_MULTILEVEL, CommandClass.BATTERY, CommandClass.BASIC,
-				CommandClass.SENSOR_BINARY, CommandClass.SENSOR_ALARM, CommandClass.SWITCH_BINARY,
-				CommandClass.THERMOSTAT_SETPOINT, CommandClass.THERMOSTAT_MODE, CommandClass.THERMOSTAT_FAN_MODE,
-				CommandClass.THERMOSTAT_OPERATING_STATE, CommandClass.THERMOSTAT_FAN_STATE });
-		preferredCommandClasses.put(ContactItem.class, new CommandClass[] { CommandClass.SENSOR_BINARY,
-				CommandClass.SENSOR_ALARM, CommandClass.SWITCH_BINARY, CommandClass.BASIC });
+		preferredCommandClasses.put(SwitchItem.class, new CommandClass[] { CommandClass.SWITCH_BINARY, CommandClass.SWITCH_MULTILEVEL, 
+			CommandClass.METER, CommandClass.BASIC, CommandClass.SENSOR_BINARY, CommandClass.SENSOR_ALARM });
+		preferredCommandClasses.put(DimmerItem.class, new CommandClass[] { CommandClass.SWITCH_MULTILEVEL, CommandClass.SWITCH_BINARY, 
+			CommandClass.BASIC, CommandClass.SENSOR_MULTILEVEL, CommandClass.SENSOR_BINARY, CommandClass.SENSOR_ALARM });
+		preferredCommandClasses.put(RollershutterItem.class, new CommandClass[] { CommandClass.SWITCH_MULTILEVEL, CommandClass.SWITCH_BINARY, 
+			CommandClass.BASIC, CommandClass.SENSOR_MULTILEVEL, CommandClass.SENSOR_BINARY, CommandClass.SENSOR_ALARM });
+		preferredCommandClasses.put(NumberItem.class, new CommandClass[] { CommandClass.SENSOR_MULTILEVEL, CommandClass.METER, 
+			CommandClass.SWITCH_MULTILEVEL, CommandClass.BATTERY, CommandClass.BASIC, CommandClass.SENSOR_BINARY, 
+			CommandClass.SENSOR_ALARM, CommandClass.SWITCH_BINARY, CommandClass.THERMOSTAT_SETPOINT, 
+			CommandClass.THERMOSTAT_MODE, CommandClass.THERMOSTAT_FAN_MODE, CommandClass.THERMOSTAT_OPERATING_STATE,
+			CommandClass.THERMOSTAT_FAN_STATE});
+		preferredCommandClasses.put(ContactItem.class, new CommandClass[] { CommandClass.SENSOR_BINARY, CommandClass.SENSOR_ALARM, 
+			CommandClass.SWITCH_BINARY, CommandClass.BASIC });
+		preferredCommandClasses.put(LockItem.class, new CommandClass[] { CommandClass.DOOR_LOCK });
 	}
 
 	/**
