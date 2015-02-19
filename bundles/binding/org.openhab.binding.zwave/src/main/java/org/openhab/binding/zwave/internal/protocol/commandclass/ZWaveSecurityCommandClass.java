@@ -488,6 +488,8 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements
 			 * I havn't actually seen a Z-Wave Message thats too big to fit in a encrypted message yet, so we will look
 			 * at this if such a message actually exists!
 			 */
+			// TODO: at least read the sequence byte and log an error if it's > 0 
+			// so we know if we got something that's not supported
 			if (payloadQueue.size() > 0) {
 				requestNonce(); // handle the next one
 			}
@@ -904,6 +906,7 @@ public class ZWaveSecurityCommandClass extends ZWaveCommandClass implements
 	 * Complex as in hard to understand what's going on
 	 * @deprecated use generateMAC instead
 	 */
+	@Deprecated
 	byte[] generateMACComplex(byte[] data, int length, byte sendingNode, byte receivingNode, byte[] iv)
 			throws GeneralSecurityException {
 		debugHex("data", data);
