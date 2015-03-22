@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Manufacturers>
 	<Manufacturer>
 		<Id>0000</Id>
@@ -1220,6 +1220,15 @@
 		</Product>
 		<Product>
 			<Reference>
+				<Type>0C02</Type>
+				<Id>1002</Id>
+			</Reference>
+			<Model>FGSD002</Model>
+			<Label lang="en">Smoke Detector</Label>
+			<ConfigFile>fibaro/fgsd002.xml</ConfigFile>
+		</Product>
+		<Product>
+			<Reference>
 				<Type>0600</Type>
 				<Id>1000</Id>
 			</Reference>
@@ -1356,6 +1365,15 @@
 			<Model>ZME_054313Z</Model>
 			<Label lang="en">Flush mountable switch</Label>
 			<ConfigFile>zwaveme/zme_054313z.xml</ConfigFile>
+		</Product>
+		<Product>
+			<Reference>
+				<Type>1000</Type>
+				<Id>0003</Id>
+			</Reference>
+			<Model>ZME_05459</Model>
+			<Label lang="en">Blinds controller</Label>
+			<ConfigFile>zwaveme/zme_blindscontroller.xml</ConfigFile>
 		</Product>
 		<Product>
 			<Reference>
@@ -1546,6 +1564,11 @@
 				<Type>0002</Type>
 				<Id>0002</Id>
 			</Reference>
+			<Model>PSM-02</Model>
+			<Label lang="en">Slim Multi-Sensor</Label>
+			<ConfigFile>philio/psm02.xml</ConfigFile>
+		</Product>
+		<Product>
 			<Reference>
 				<Type>0002</Type>
 				<Id>000C</Id>
@@ -1554,9 +1577,9 @@
 				<Type>0002</Type>
 				<Id>000D</Id>
 			</Reference>
-			<Model>PSM-02</Model>
+			<Model>PST-02</Model>
 			<Label lang="en">Slim Multi-Sensor</Label>
-			<ConfigFile>philio/psm02.xml</ConfigFile>
+			<ConfigFile>philio/pst02.xml</ConfigFile>
 		</Product>
 		<Product>
 			<Reference>
@@ -1999,4 +2022,35 @@
 			<ConfigFile>schlage/be468.xml</ConfigFile>
 		</Product>
 	</Manufacturer>
+    <Manufacturer>
+        <Id>0184</Id>
+        <Name>Dragon Tech Industrial, Ltd.</Name>
+        <Product>
+            <Reference>
+                <Type>4447</Type>
+                <Id>3031</Id>
+            </Reference>
+            <Model>PA-100</Model>
+            <Label lang="en">Plug-in On/Off Switch</Label>
+            <ConfigFile>dragontech/pa100.xml</ConfigFile>
+        </Product>
+        <Product>
+            <Reference>
+                <Type>4447</Type>
+                <Id>3033</Id>
+            </Reference>
+            <Model>WS-100</Model>
+            <Label lang="en">Wall On/Off Switch</Label>
+            <ConfigFile>dragontech/ws100.xml</ConfigFile>
+        </Product>
+        <Product>
+            <Reference>
+                <Type>4447</Type>
+                <Id>3034</Id>
+            </Reference>
+            <Model>WD-100</Model>
+            <Label lang="en">Wall Dimmer Switch</Label>
+            <ConfigFile>dragontech/wd100.xml</ConfigFile>
+        </Product>
+    </Manufacturer>
 </Manufacturers>
