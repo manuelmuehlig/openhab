@@ -29,6 +29,7 @@ public class ChartConfigBean {
 	public String title;
 	public String icon;
 	public Integer period;
+	public Boolean legend;
 
 	public List<ChartItemConfigBean> items;
 	public List<ChartAxisConfigBean> axis;
