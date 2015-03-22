@@ -91,8 +91,8 @@ public class ZWaveVersionCommandClass extends ZWaveCommandClass {
 						Integer.toString(serialMessage.getMessagePayloadByte(offset + 5));
 				
 				logger.debug(String.format("NODE %d: Library Type = 0x%02x", this.getNode().getNodeId(), libraryType.key));
-				logger.debug("NODE {}: Protocol Version = %.1f", this.getNode().getNodeId(), protocolVersion);
-				logger.debug("NODE {}: Application Version = %.1f", this.getNode().getNodeId(), applicationVersion);
+				logger.debug("NODE {}: Protocol Version = {}", this.getNode().getNodeId(), protocolVersion);
+				logger.debug("NODE {}: Application Version = {}", this.getNode().getNodeId(), applicationVersion);
 				break;
 			case VERSION_COMMAND_CLASS_REPORT:
 				logger.debug("NODE {}: Process Version Command Class Report", this.getNode().getNodeId());
