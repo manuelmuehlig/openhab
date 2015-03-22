@@ -10,10 +10,12 @@ package org.openhab.binding.zwave.internal.converter;
 
 import java.util.Map;
 
+import org.openhab.binding.zwave.internal.converter.command.IntegerCommandConverter;
+import org.openhab.binding.zwave.internal.converter.command.MultiLevelOnOffCommandConverter;
+import org.openhab.binding.zwave.internal.converter.command.MultiLevelPercentCommandConverter;
 import org.openhab.binding.zwave.internal.converter.command.ZWaveCommandConverter;
 import org.openhab.binding.zwave.internal.converter.state.IntegerDecimalTypeConverter;
 import org.openhab.binding.zwave.internal.converter.state.IntegerOnOffTypeConverter;
-import org.openhab.binding.zwave.internal.converter.state.IntegerOpenClosedTypeConverter;
 import org.openhab.binding.zwave.internal.converter.state.IntegerPercentTypeConverter;
 import org.openhab.binding.zwave.internal.converter.state.ZWaveStateConverter;
 import org.openhab.binding.zwave.internal.protocol.SerialMessage;
@@ -50,7 +52,11 @@ public class ZWaveColorConverter extends ZWaveCommandClassConverter<ZWaveColorCo
 	public ZWaveColorConverter(ZWaveController controller, EventPublisher eventPublisher) {
 		super(controller, eventPublisher);
 		
-		// State and commmand converters used by this converter. 
+		// State and commmand converters used by this converter.
+		this.addCommandConverter(new MultiLevelOnOffCommandConverter());
+		this.addCommandConverter(new MultiLevelPercentCommandConverter());
+		this.addCommandConverter(new IntegerCommandConverter());
+
 		this.addStateConverter(new IntegerDecimalTypeConverter());
 		this.addStateConverter(new IntegerPercentTypeConverter());
 		this.addStateConverter(new IntegerOnOffTypeConverter());
@@ -63,12 +69,12 @@ public class ZWaveColorConverter extends ZWaveCommandClassConverter<ZWaveColorCo
 	public SerialMessage executeRefresh(ZWaveNode node, 
 			ZWaveColorCommandClass commandClass, int endpointId, Map<String,String> arguments) {
 		logger.debug("NODE {}: Generating poll message for {}, endpoint {}", node.getNodeId(), commandClass.getCommandClass().getLabel(), endpointId);
-		String colorType = arguments.get("alarm_type");
+		String colorType = arguments.get("color_type");
 
 		if (colorType != null) {
-			return node.encapsulate(commandClass.getMessage(ZWaveColorType.getColorType(Integer.parseInt(colorType))), commandClass, endpointId);
+			return node.encapsulate(commandClass.getValueMessage(Integer.parseInt(colorType)), commandClass, endpointId);
 		} else {
-			return node.encapsulate(commandClass.getValueMessage(), commandClass, endpointId);
+			return node.encapsulate(commandClass.getValueMessage(0), commandClass, endpointId);
 		}
 	}
 
@@ -78,7 +84,7 @@ public class ZWaveColorConverter extends ZWaveCommandClassConverter<ZWaveColorCo
 	@Override
 	public void handleEvent(ZWaveCommandClassValueEvent event, Item item, Map<String,String> arguments) {
 		ZWaveStateConverter<?,?> converter = this.getStateConverter(item, event.getValue());
-		String colorType = arguments.get("alarm_type");
+		String colorType = arguments.get("color_type");
 		ZWaveColorValueEvent colorEvent = (ZWaveColorValueEvent)event;
 		
 		if (converter == null) {
@@ -87,9 +93,9 @@ public class ZWaveColorConverter extends ZWaveCommandClassConverter<ZWaveColorCo
 		}
 
 		// Don't trigger event if this item is bound to another alarm type
-//		if (colorType != null && ZWaveColorType.getColorType(Integer.parseInt(colorType)) != colorEvent..getColorType()) {
-//			return;
-//		}
+		if (colorType != null && ZWaveColorType.getColorType(Integer.parseInt(colorType)) != colorEvent.getColorType()) {
+			return;
+		}
 		
 		State state = converter.convertFromValueToState(event.getValue());
 		this.getEventPublisher().postUpdate(item.getName(), state);
@@ -107,6 +113,16 @@ public class ZWaveColorConverter extends ZWaveCommandClassConverter<ZWaveColorCo
 			logger.warn("NODE {}: No converter found for item = {}, endpoint = {}, ignoring command.", node.getNodeId(), item.getName(), endpointId);
 			return;
 		}
+		
+		String colorType = arguments.get("color_type");
+
+		SerialMessage serialMessage = commandClass.setValueMessage(Integer.parseInt(colorType), (Integer)converter.convertFromCommandToValue(item, command));
+		if (serialMessage == null) {
+			logger.warn("NODE {}: Generating message failed for command class = {}, endpoint = {}", node.getNodeId(), commandClass.getCommandClass().getLabel(), endpointId);
+			return;
+		}
+		
+		this.getController().sendData(serialMessage);
 	}
 
 	/**

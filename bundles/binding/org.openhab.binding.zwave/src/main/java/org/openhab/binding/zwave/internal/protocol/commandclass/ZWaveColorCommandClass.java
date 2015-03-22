@@ -79,7 +79,7 @@ public class ZWaveColorCommandClass extends ZWaveCommandClass implements ZWaveCo
 	@Override
 	public void handleApplicationCommandRequest(SerialMessage serialMessage,
 			int offset, int endpoint) {
-		logger.debug(String.format("NODE {}: Received Color Request", this.getNode().getNodeId()));
+		logger.debug("NODE {}: Received Color Request", this.getNode().getNodeId());
 		int command = serialMessage.getMessagePayloadByte(offset);
 		switch (command) {
 			case COLOR_CAPABILITY_REPORT:
@@ -92,7 +92,7 @@ public class ZWaveColorCommandClass extends ZWaveCommandClass implements ZWaveCo
 						ZWaveColorType color = ZWaveColorType.getColorType(i);
 
 						if (color == null) {
-							logger.warn("NODE {}: Invalid meter scale {}", this.getNode().getNodeId(), i);
+							logger.warn("NODE {}: Invalid color {}", this.getNode().getNodeId(), i);
 							continue;
 						}
 
@@ -126,28 +126,32 @@ public class ZWaveColorCommandClass extends ZWaveCommandClass implements ZWaveCo
 	 * @param endpoint the endpoint or instance number this message is meant for.
 	 */
 	protected void processColorReport(SerialMessage serialMessage, int offset, int endpoint) {
-//		int value = serialMessage.getMessagePayloadByte(offset + 1); 
-		logger.info("NODE {}: Color report *** UNSUPORTED*** {}", this.getNode().getNodeId(), SerialMessage.bb2hex(serialMessage.getMessagePayload()));
-//		ZWaveCommandClassValueEvent zEvent = new ZWaveCommandClassValueEvent(this.getNode().getNodeId(), endpoint, this.getCommandClass(), value);
-//		this.getController().notifyEventListeners(zEvent);
+		int color = serialMessage.getMessagePayloadByte(offset + 1);
+		int level = serialMessage.getMessagePayloadByte(offset + 2);
+		ZWaveColorType colorType = ZWaveColorType.getColorType(color);
+
+		logger.info("NODE {}: Color report {} {}", this.getNode().getNodeId(), colorType.toString(), level);
+		ZWaveCommandClassValueEvent zEvent = new ZWaveColorValueEvent(this.getNode().getNodeId(), 0, colorType, level);
+		this.getController().notifyEventListeners(zEvent);
 	}
 
 	/**
 	 * Gets a SerialMessage with the COLOR_GET command 
 	 * @return the serial message
 	 */
-	public SerialMessage getValueMessage() {
+	public SerialMessage getValueMessage(int color) {
 		if(isGetSupported == false) {
 			logger.debug("NODE {}: Node doesn't support get requests", this.getNode().getNodeId());
-			return null;
+//			return null;
 		}
 
-		logger.debug("NODE {}: Creating new message for application command COLOR_GET *** DEBUG", this.getNode().getNodeId());
+		logger.debug("NODE {}: Creating new message for application command COLOR_GET {}", this.getNode().getNodeId(), color);
 		SerialMessage result = new SerialMessage(this.getNode().getNodeId(), SerialMessageClass.SendData, SerialMessageType.Request, SerialMessageClass.ApplicationCommandHandler, SerialMessagePriority.Get);
     	byte[] newPayload = { 	(byte) this.getNode().getNodeId(), 
-    							2,
-								(byte) getCommandClass().getKey(), 
-								(byte) COLOR_GET };
+    							3,
+								(byte) getCommandClass().getKey(),
+								(byte) COLOR_GET,
+								(byte) color};
     	result.setMessagePayload(newPayload);
     	return result;		
 	}
@@ -157,7 +161,7 @@ public class ZWaveColorCommandClass extends ZWaveCommandClass implements ZWaveCo
 	 * @return the serial message
 	 */
 	public SerialMessage getCapabilityMessage() {
-		logger.debug("NODE {}: Creating new message for application command COLOR_CAPABILITY_GET *** DEBUG", this.getNode().getNodeId());
+		logger.debug("NODE {}: Creating new message for application command COLOR_CAPABILITY_GET", this.getNode().getNodeId());
 		SerialMessage result = new SerialMessage(this.getNode().getNodeId(), SerialMessageClass.SendData, SerialMessageType.Request, SerialMessageClass.ApplicationCommandHandler, SerialMessagePriority.Get);
     	byte[] newPayload = { 	(byte) this.getNode().getNodeId(), 
     							2,
@@ -185,10 +189,10 @@ public class ZWaveColorCommandClass extends ZWaveCommandClass implements ZWaveCo
 		logger.debug("NODE {}: Creating new message for application command COLOR_SET", this.getNode().getNodeId());
 		SerialMessage result = new SerialMessage(this.getNode().getNodeId(), SerialMessageClass.SendData, SerialMessageType.Request, SerialMessageClass.SendData, SerialMessagePriority.Set);
     	byte[] newPayload = { 	(byte) this.getNode().getNodeId(), 
-    							4, 
+    							4,
 								(byte) getCommandClass().getKey(), 
 								(byte) COLOR_SET,
-								(byte) channel,
+								(byte) 3,
 								(byte) level
 								};
     	result.setMessagePayload(newPayload);
@@ -199,8 +203,7 @@ public class ZWaveColorCommandClass extends ZWaveCommandClass implements ZWaveCo
 	public Collection<SerialMessage> initialize(boolean refresh) {
 		ArrayList<SerialMessage> result = new ArrayList<SerialMessage>();
 		// If we're already initialized, then don't do it again unless we're refreshing
-		if((refresh == true || initialiseDone == false) &&
-				this.getVersion() > 1) {
+		if(refresh == true || initialiseDone == false) {
 			result.add(this.getCapabilityMessage());
 		}
 		return result;
@@ -280,6 +283,7 @@ public class ZWaveColorCommandClass extends ZWaveCommandClass implements ZWaveCo
 	 * @since 1.7.0
 	 */
 	public class ZWaveColorValueEvent extends ZWaveCommandClassValueEvent {
+		ZWaveColorType colorType;
 
 		/**
 		 * Constructor. Creates a instance of the ZWaveColorValueEvent class.
@@ -288,17 +292,17 @@ public class ZWaveColorCommandClass extends ZWaveCommandClass implements ZWaveCo
 		 * @param colorType the color type that triggered the event;
 		 * @param value the value for the event.
 		 */
-		private ZWaveColorValueEvent(int nodeId, int endpoint, Object value) {
-			super(nodeId, endpoint, CommandClass.COLOR, value);
-//			this.colorType = colorType;
+		private ZWaveColorValueEvent(int nodeId, int endpoint, ZWaveColorType colorType, int level) {
+			super(nodeId, endpoint, CommandClass.COLOR, level);
+			this.colorType = colorType;
 		}
 
 		/**
 		 * Gets the color type for this color value event.
 		 */
-//		public ColorType getColorType() {
-//			return colorType;
-//		}
+		public ZWaveColorType getColorType() {
+			return colorType;
+		}
 	}
 }
 
