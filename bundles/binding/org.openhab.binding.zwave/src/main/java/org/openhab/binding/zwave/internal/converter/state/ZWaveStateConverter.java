@@ -9,7 +9,6 @@
 package org.openhab.binding.zwave.internal.converter.state;
 
 import java.lang.reflect.ParameterizedType;
-
 import org.openhab.core.types.State;
 
 /**
@@ -53,8 +52,9 @@ public abstract class ZWaveStateConverter<ZWAVE_TYPE, OPENHAB_TYPE extends State
 	@SuppressWarnings("unchecked")
 	public State convertFromValueToState(Object value) {
 		
-		if (value == null)
+		if (value == null) {
 			return null;
+		}
 		
 		return convert((ZWAVE_TYPE) value);
 	}
