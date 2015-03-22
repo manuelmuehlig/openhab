@@ -544,6 +544,8 @@ public class ZWaveNodeStageAdvancer implements ZWaveEventListener {
 								// TODO: This will only remove the root nodes and ignores endpoint
 								// TODO: Do we need to search into multi_instance?
 								node.removeCommandClass(CommandClass.getCommandClass(dbClass.Id));
+								logger.debug("NODE {}: Node advancer: UPDATE_DATABASE - removing {}",
+										node.getNodeId(), CommandClass.getCommandClass(dbClass.Id).getLabel());
 								continue;
 							}
 
@@ -554,6 +556,18 @@ public class ZWaveNodeStageAdvancer implements ZWaveEventListener {
 							// If we found the command class, then set its options
 							if(zwaveClass != null) {
 								zwaveClass.setOptions(dbClass);
+								continue;
+							}
+
+							// Command class isn't found! Do we want to add it?
+							// TODO: Does this need to account for multiple endpoints!?!
+							if(dbClass.add != null && dbClass.add == true) {
+								ZWaveCommandClass commandClass = ZWaveCommandClass.getInstance(dbClass.Id, node, controller);
+								if (commandClass != null) {
+									logger.debug("NODE {}: Node advancer: UPDATE_DATABASE - adding {}",
+											node.getNodeId(), CommandClass.getCommandClass(dbClass.Id).getLabel());
+									node.addCommandClass(commandClass);
+								}
 							}
 						}
 					}
@@ -660,15 +674,18 @@ public class ZWaveNodeStageAdvancer implements ZWaveEventListener {
 					break;
 				}
 
+				int value = 3600;
 				if (wakeupCommandClass.getInterval() == 0) {
-					logger.debug("NODE {}: Node advancer: SET_WAKEUP - Interval is currently 0. Skipping stage", node.getNodeId(), controller.getOwnNodeId());
-					break;
+					logger.debug("NODE {}: Node advancer: SET_WAKEUP - Interval is currently 0. Set to 3600", node.getNodeId());
+				}
+				else {
+					value = wakeupCommandClass.getInterval();
 				}
 
-				logger.debug("NODE {}: Node advancer: SET_WAKEUP - Set wakeup node to controller ({})", node.getNodeId(), controller.getOwnNodeId());
+				logger.debug("NODE {}: Node advancer: SET_WAKEUP - Set wakeup node to controller ({}), period {}", node.getNodeId(), controller.getOwnNodeId(), value);
 
 				// Set the wake-up interval, and request an update
-				addToQueue(wakeupCommandClass.setInterval(wakeupCommandClass.getInterval()));
+				addToQueue(wakeupCommandClass.setInterval(value));
 				addToQueue(wakeupCommandClass.getIntervalMessage());
 				break;
 
@@ -704,11 +721,13 @@ public class ZWaveNodeStageAdvancer implements ZWaveEventListener {
 					if(group.SetToController == true) {
 						// Check if we're already a member
 						if(associationCls.getGroupMembers(group.Index).contains(controller.getOwnNodeId())) {
-							logger.debug("NODE {}: Node advancer: SET_ASSOCIATION - ASSOCIATION already set for group {}", node.getNodeId(), group.Index);
+							logger.debug("NODE {}: Node advancer: SET_ASSOCIATION - ASSOCIATION set for group {}", node.getNodeId(), group.Index);
 						}
 						else {
 							logger.debug("NODE {}: Node advancer: SET_ASSOCIATION - Adding ASSOCIATION to group {}", node.getNodeId(), group.Index);
+							// Set the association, and request the update so we confirm if it's set 
 							addToQueue(associationCls.setAssociationMessage(group.Index, controller.getOwnNodeId()));
+							addToQueue(associationCls.getAssociationMessage(group.Index));
 						}
 					}
 				}
