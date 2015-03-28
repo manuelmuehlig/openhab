@@ -27,7 +27,6 @@ public class DashboardConfigBean {
 	public Integer id;
 	public String name;
 	public String icon;
-	public Integer columns;
 
-	public List<DashboardWidgetBean> axis;
+	public List<DashboardWidgetBean> widgets;
 }

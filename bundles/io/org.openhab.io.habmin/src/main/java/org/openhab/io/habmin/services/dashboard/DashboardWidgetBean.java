@@ -25,4 +25,7 @@ public class DashboardWidgetBean {
 	public Integer row;
 	public Integer sizeX;
 	public Integer sizeY;
+	public String type;
+	
+	public DashboardWidgetOptionsBean options;
 }

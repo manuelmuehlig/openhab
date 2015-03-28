@@ -15,6 +15,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
@@ -33,7 +35,6 @@ import javax.ws.rs.core.UriInfo;
 
 import org.openhab.io.habmin.HABminApplication;
 import org.openhab.io.habmin.internal.resources.MediaTypeHelper;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,23 +62,26 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
 @Path(DashboardResource.PATH)
 public class DashboardResource {
 
-	private static String CFG_FILE = "dashboard.xml";
+	private static String DASHBOARD_FILE = "dashboards.xml";
 
 	private static final Logger logger = LoggerFactory.getLogger(DashboardResource.class);
 
 	/** The URI path to this resource */
-	public static final String PATH = "dashboard";
+	public static final String PATH = "dashboards";
 
 	@Context
 	UriInfo uriInfo;
 
 	@GET
-	@Path("/dashboard")
-	@Produces({ MediaType.WILDCARD })
-	public Response httpGetDashboards(@Context HttpHeaders headers, @QueryParam("type") String type,
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response httpGetDashboards(@Context HttpHeaders headers,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
 		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
+		Object responseObject = getDashboardList();
+		return Response.ok(responseObject).build();
+		
+		/*
 		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
 		if (responseType != null) {
 			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
@@ -85,83 +89,58 @@ public class DashboardResource {
 			return Response.ok(responseObject, responseType).build();
 		} else {
 			return Response.notAcceptable(null).build();
-		}
+		}*/
 	}
 
 	@POST
-	@Path("/dashboard")
-	@Produces({ MediaType.WILDCARD })
-	public Response httpPostDashboards(@Context HttpHeaders headers, @QueryParam("type") String type,
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response httpPostDashboards(@Context HttpHeaders headers,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, DashboardConfigBean dashboard) {
 		logger.trace("Received HTTP POST request at '{}'.", uriInfo.getPath());
 
-		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
-		if (responseType != null) {
-			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
-					putDashboardBean(0, dashboard), callback) : putDashboardBean(0, dashboard);
-			return Response.ok(responseObject, responseType).build();
-		} else {
-			return Response.notAcceptable(null).build();
-		}
+		Object responseObject = putDashboardBean(0, dashboard);
+		return Response.ok(responseObject).build();
 	}
 
 	@PUT
-	@Path("/dashboard/{dashboardid: [a-zA-Z_0-9]*}")
-	@Produces({ MediaType.WILDCARD })
-	public Response httpPutDashboard(@Context HttpHeaders headers, @QueryParam("type") String type,
+	@Path("/{dashboardid: [a-zA-Z_0-9]*}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response httpPutDashboards(@Context HttpHeaders headers,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback,
 			@PathParam("dashboardid") Integer dashboardId, DashboardConfigBean dashboard) {
 		logger.trace("Received HTTP PUT request at '{}'.", uriInfo.getPath());
 
-		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
-		if (responseType != null) {
-			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
-					putDashboardBean(dashboardId, dashboard), callback) : putDashboardBean(dashboardId, dashboard);
-			return Response.ok(responseObject, responseType).build();
-		} else {
-			return Response.notAcceptable(null).build();
-		}
+		Object responseObject = putDashboardBean(dashboardId, dashboard);
+		return Response.ok(responseObject).build();
 	}
 
 	@DELETE
-	@Path("/dashboard/{dashboardid: [a-zA-Z_0-9]*}")
-	@Produces({ MediaType.WILDCARD })
-	public Response httpDeleteDashboard(@Context HttpHeaders headers, @QueryParam("type") String type,
+	@Path("/{dashboardid: [a-zA-Z_0-9]*}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response httpDeleteDashboards(@Context HttpHeaders headers, @QueryParam("type") String type,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, @PathParam("dashboardid") Integer dashboardId) {
 		logger.trace("Received HTTP DELETE request at '{}'.", uriInfo.getPath());
 
-		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
-		if (responseType != null) {
-			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
-					deleteDashboard(dashboardId), callback) : deleteDashboard(dashboardId);
-			return Response.ok(responseObject, responseType).build();
-		} else {
-			return Response.notAcceptable(null).build();
-		}
+		Object responseObject = deleteDashboard(dashboardId);
+		return Response.ok(responseObject).build();
 	}
 
 	@GET
-	@Path("/dashboard/{dashboardid: [a-zA-Z_0-9]*}")
-	@Produces({ MediaType.WILDCARD })
-	public Response httpGetDashboard(@Context HttpHeaders headers, @QueryParam("type") String type,
+	@Path("/{dashboardid: [a-zA-Z_0-9]*}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response httpGetDashboards(@Context HttpHeaders headers,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, @PathParam("dashboardid") Integer dashboardId) {
 		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
-		String responseType = MediaTypeHelper.getResponseMediaType(headers.getAcceptableMediaTypes(), type);
-		if (responseType != null) {
-			Object responseObject = responseType.equals(MediaTypeHelper.APPLICATION_X_JAVASCRIPT) ? new JSONWithPadding(
-					getDashboard(dashboardId), callback) : getDashboard(dashboardId);
-			return Response.ok(responseObject, responseType).build();
-		} else {
-			return Response.notAcceptable(null).build();
-		}
+		Object responseObject = getDashboard(dashboardId);
+		return Response.ok(responseObject).build();
 	}
 
-	private DashboardConfigBean putDashboardBean(Integer dashRef, DashboardConfigBean bean) {
-		if (dashRef == 0) {
+	private DashboardConfigBean putDashboardBean(Integer dashboardRef, DashboardConfigBean bean) {
+		if (dashboardRef == 0) {
 			bean.id = null;
 		} else {
-			bean.id = dashRef;
+			bean.id = dashboardRef;
 		}
 
 		// Load the existing list
@@ -169,20 +148,20 @@ public class DashboardResource {
 
 		int high = 0;
 
-		DashboardConfigBean foundDash = null;
+		DashboardConfigBean foundDashboard = null;
 		// Loop through the interface list
 		for (DashboardConfigBean i : list.entries) {
 			if (i.id > high)
 				high = i.id;
-			if (i.id.intValue() == dashRef) {
+			if (i.id.intValue() == dashboardRef) {
 				// If it was found in the list, remember it...
-				foundDash = i;
+				foundDashboard = i;
 			}
 		}
 
 		// If it was found in the list, remove it...
-		if (foundDash != null) {
-			list.entries.remove(foundDash);
+		if (foundDashboard != null) {
+			list.entries.remove(foundDashboard);
 		}
 
 		// Set defaults if this is a new dashboard
@@ -199,51 +178,64 @@ public class DashboardResource {
 
 	private DashboardListBean getDashboardList() {
 		DashboardListBean dashboards = loadDashboards();
-		DashboardListBean newList = new DashboardListBean();
+		DashboardListBean list = new DashboardListBean();
+//		List<DashboardConfigBean> list = new ArrayList<DashboardConfigBean>();
 
 		// We only want to return the id and name
 		for (DashboardConfigBean i : dashboards.entries) {
-			DashboardConfigBean newDash = new DashboardConfigBean();
-			newDash.id = i.id;
-			newDash.name = i.name;
-			newDash.icon = i.icon;
+			DashboardConfigBean newDashboard = new DashboardConfigBean();
+			newDashboard.id = i.id;
+			newDashboard.name = i.name;
+			newDashboard.icon = i.icon;
 
-			newList.entries.add(newDash);
+			list.entries.add(newDashboard);
 		}
 
-		return newList;
+		return list;
 	}
 
-	private DashboardConfigBean getDashboard(Integer dashRef) {
+	private DashboardConfigBean getDashboard(Integer dashboardRef) {
 		DashboardListBean dashboards = loadDashboards();
 
 		for (DashboardConfigBean i : dashboards.entries) {
-			if (i.id.intValue() == dashRef)
+			if (i.id.intValue() == dashboardRef)
 				return i;
 		}
 
 		return null;
 	}
 
-	private DashboardListBean deleteDashboard(Integer dashRef) {
+	private DashboardListBean deleteDashboard(Integer dashboardRef) {
 		DashboardListBean dashboards = loadDashboards();
 
-		DashboardConfigBean foundDash = null;
+		DashboardConfigBean foundDashboard = null;
 		for (DashboardConfigBean i : dashboards.entries) {
-			if (i.id.intValue() == dashRef) {
+			if (i.id.intValue() == dashboardRef) {
 				// If it was found in the list, remember it...
-				foundDash = i;
+				foundDashboard = i;
 				break;
 			}
 		}
 
 		// If it was found in the list, remove it...
-		if (foundDash != null)
-			dashboards.entries.remove(foundDash);
+		if (foundDashboard != null) {
+			dashboards.entries.remove(foundDashboard);
+		}
 
 		saveDashboards(dashboards);
 
 		return getDashboardList();
+	}
+	
+	private XStream getXStream() {
+		XStream xstream = new XStream(new StaxDriver());
+		xstream.alias("dashboards", DashboardListBean.class);
+		xstream.alias("dashboard", DashboardConfigBean.class);
+		xstream.alias("widgets", DashboardWidgetBean.class);
+		xstream.alias("options", DashboardWidgetOptionsBean.class);
+		xstream.processAnnotations(DashboardListBean.class);
+
+		return xstream;
 	}
 
 	private boolean saveDashboards(DashboardListBean dashboard) {
@@ -257,26 +249,21 @@ public class DashboardResource {
 		try {
 			long timerStart = System.currentTimeMillis();
 			
-			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(HABminApplication.HABMIN_DATA_DIR + CFG_FILE),"UTF-8"));
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(HABminApplication.HABMIN_DATA_DIR + DASHBOARD_FILE),"UTF-8"));
 
-			XStream xstream = new XStream(new StaxDriver());
-			xstream.alias("dashboards", DashboardListBean.class);
-			xstream.alias("dashboard", DashboardConfigBean.class);
-			xstream.alias("widget", DashboardWidgetBean.class);
-			xstream.processAnnotations(DashboardListBean.class);
-
+			XStream xstream = getXStream();
 			xstream.toXML(dashboard, out);
 
 			out.close();
 
 			long timerStop = System.currentTimeMillis();
-			logger.debug("DAshboard list saved in {}ms.", timerStop - timerStart);
+			logger.debug("Dashboard list saved in {}ms.", timerStop - timerStart);
 		} catch (FileNotFoundException e) {
-			logger.debug("Unable to open Dashboard list for SAVE - ", e);
+			logger.debug("Unable to open Dashboards list for SAVE - ", e);
 
 			return false;
 		} catch (IOException e) {
-			logger.debug("Unable to write Dashboard list for SAVE - ", e);
+			logger.debug("Unable to write Dashboards list for SAVE - ", e);
 
 			return false;
 		}
@@ -291,14 +278,9 @@ public class DashboardResource {
 		try {
 			long timerStart = System.currentTimeMillis();
 
-			fin = new FileInputStream(HABminApplication.HABMIN_DATA_DIR + CFG_FILE);
+			fin = new FileInputStream(HABminApplication.HABMIN_DATA_DIR + DASHBOARD_FILE);
 
-			XStream xstream = new XStream(new StaxDriver());
-			xstream.alias("dashboards", DashboardListBean.class);
-			xstream.alias("dashboard", DashboardConfigBean.class);
-			xstream.alias("widget", DashboardWidgetBean.class);
-			xstream.processAnnotations(DashboardListBean.class);
-
+			XStream xstream = getXStream();
 			dashboards = (DashboardListBean) xstream.fromXML(fin);
 
 			fin.close();
@@ -309,7 +291,6 @@ public class DashboardResource {
 		} catch (FileNotFoundException e) {
 			dashboards = new DashboardListBean();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
