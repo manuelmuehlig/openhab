@@ -38,7 +38,7 @@ public class ZWaveProductDatabase {
 	ZWaveDbRoot database = null;
 	Languages language = Languages.ENGLISH;
 
-	ZWaveDbManufacturer selManufacturer = null;
+	public ZWaveDbManufacturer selManufacturer = null;
 	ZWaveDbProduct selProduct = null;
 
 	ZWaveDbProductFile productFile = null;

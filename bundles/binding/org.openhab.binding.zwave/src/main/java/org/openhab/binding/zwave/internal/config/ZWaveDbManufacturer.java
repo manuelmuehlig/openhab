@@ -23,9 +23,10 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
  */
 public class ZWaveDbManufacturer {
 	@XStreamConverter(HexToIntegerConverter.class)
+	public
 	Integer Id;
 
-	String  Name;
+	public String  Name;
 
 	@XStreamImplicit
 	public List<ZWaveDbProduct> Product;
