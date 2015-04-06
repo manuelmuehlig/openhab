@@ -31,7 +31,7 @@ public class DashboardListBean {
 		entries.addAll(list);
 	}
 	
-	@XmlElement(name="entries")
+	@XmlElement(name="dashboard")
 	public final List<DashboardConfigBean> entries = new ArrayList<DashboardConfigBean>();
 	
 }
