@@ -88,7 +88,6 @@ public final class ZWaveActivator implements BundleActivator {
 				outstring += "<channels>";
 
 				outstring += "<channel id=\"switch0\" typeId=\"dimmer\">";
-				outstring += "";
 				outstring += "<properties>";
 				outstring += "<property name=\"endpoint\">0</property>";
 				outstring += "<property name=\"command_class\">SWITCH_MULTILEVEL</property>";
@@ -137,9 +136,12 @@ public final class ZWaveActivator implements BundleActivator {
 						}
 	
 						if(parameter.Item != null) {
+							outstring += "<options>";
+
 							for (ZWaveDbConfigurationListItem item : parameter.Item) {
-						//		record.addValue(Integer.toString(item.Value), database.getLabel(item.Label));
+								outstring += "<option value=\"" + item.Value + "\">" + database.getLabel(item.Label) + "</option>";
 							}
+							outstring += "<options>";
 						}
 	
 						outstring += "</parameter>";
