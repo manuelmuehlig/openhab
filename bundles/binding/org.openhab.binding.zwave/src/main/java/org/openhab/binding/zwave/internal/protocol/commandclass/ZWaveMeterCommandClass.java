@@ -315,8 +315,9 @@ public class ZWaveMeterCommandClass extends ZWaveCommandClass implements ZWaveGe
 	public SerialMessage getResetMessage() {
 		// ignore the reset if the version is less than one or meter is not
 		// resetable
-		if (this.getVersion() == 1 || !this.canReset)
+		if (this.getVersion() == 1 || !this.canReset) {
 			return null;
+		}
 
 		logger.debug("NODE {}: Creating new message for application command METER_RESET", this.getNode().getNodeId());
 		SerialMessage result = new SerialMessage(this.getNode().getNodeId(), SerialMessageClass.SendData,
