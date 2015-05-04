@@ -123,16 +123,18 @@ public final class ZWaveActivator implements BundleActivator {
 					outstring += "<config-description>";
 
 					if(configList != null) {
-						outstring += "<parameter-group name=\"configuration\" context=\"setup\">";
+						outstring += "<group name=\"configuration\">";
+						outstring += "<context>setup</context>";
 						outstring += "<label>Configuration Parameters</label>";
 						outstring += "<description></description>";
-						outstring += "</parameter-group>";
+						outstring += "</group>";
 					}
 					if(groupList != null) {
-						outstring += "<parameter-group name=\"association\" context=\"setup\">";
+						outstring += "<group name=\"association\">";
+						outstring += "<context>setup</context>";
 						outstring += "<label>Association Groups</label>";
 						outstring += "<description></description>";
-						outstring += "</parameter-group>";
+						outstring += "</group>";
 					}
 
 					// Loop through the parameters and add to the records...
@@ -151,9 +153,14 @@ public final class ZWaveActivator implements BundleActivator {
 							}
 							outstring += ">";
 							
-							outstring += "<group>configuration</group>";
+							outstring += "<groupName>configuration</groupName>";
 							outstring += "<label>" + database.getLabel(parameter.Label) + "</label>";
-							outstring += "<description><![CDATA[" + database.getLabel(parameter.Help)+ "]]></description>";
+							if(database.getLabel(parameter.Help)!=null && database.getLabel(parameter.Help).startsWith("<![CDATA[") == true) {
+								outstring += "<description>" + database.getLabel(parameter.Help)+ "</description>";
+							}
+							else {
+								outstring += "<description><![CDATA[" + database.getLabel(parameter.Help)+ "]]></description>";
+							}
 							
 							if(parameter.Default != null) {
 								outstring += "<default>" + parameter.Default + "</default>";
@@ -179,10 +186,10 @@ public final class ZWaveActivator implements BundleActivator {
 							cfgCnt++;
 							outstring += "<parameter name=\"group_" + group.Index+"\" type=\"integer\"";
 							if(group.Maximum > 1) {
-								outstring += " multiple=\"" + group.Maximum + "\"";
+								outstring += " multiple=\"true\" multipleLimit=\"" + group.Maximum + "\"";
 							}
 							outstring += ">";
-							outstring += "<group>association</group>";
+							outstring += "<groupName>association</groupName>";
 							outstring += "<label>" + database.getLabel(group.Label) + "</label>";
 							if(database.getLabel(group.Help) != null) {
 								outstring += "<description><![CDATA[" + database.getLabel(group.Help) + "]]></description>";
