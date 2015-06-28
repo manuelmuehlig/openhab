@@ -213,31 +213,31 @@ public final class ZWaveActivator implements BundleActivator {
 						if(dbClass.add==null&&dbClass.isGetSupported==null&&dbClass.meterCanReset==null&&dbClass.remove==null&&dbClass.meterScale==null&&dbClass.meterType==null) {
 							continue;
 						}
-						outstring += "<property-group>";
-						outstring += "<property name=\"command_class\">" + CommandClass.getCommandClass(dbClass.Id) + "</property>";
+						outstring += "<property name=\"command_class:" + CommandClass.getCommandClass(dbClass.Id);
 						if(dbClass.endpoint != null) {
-							outstring += "<property name=\"endpoint\">" + dbClass.endpoint + "</property>";
+							outstring += dbClass.endpoint + ":";
 						}
 						// If we want to remove the class, then remove it!
 						if(dbClass.remove != null && dbClass.remove == true) {
-							outstring += "<property name=\"command\">REMOVE</property>";
+							outstring += "REMOVE";
 						}
 						if(dbClass.add != null && dbClass.add == true) {
-							outstring += "<property name=\"command\">ADD</property>";
+							outstring += "ADD";
 						}
 
 						if(dbClass.isGetSupported != null && dbClass.isGetSupported == false) {
-							outstring += "<property name=\"get_supported\">false</property>";
+							outstring += "SUPPORT_GET=false";
 						}
 
 						if(dbClass.meterCanReset != null && dbClass.meterCanReset == true) {
-							outstring += "<property name=\"meter_canreset\">true</property>";
+							outstring += "METER_CAN_RESET";
 						}
+						
 						if(dbClass.meterType != null) {
-							outstring += "<property name=\"meter_canreset\">" + dbClass.meterType + "</property>";
+							outstring += "METER_TYPE=" + dbClass.meterType;
 						}
 						if(dbClass.meterScale != null) {
-							outstring += "<property name=\"meter_canreset\">" + dbClass.meterScale + "</property>";
+							outstring += "METER_SCALE=" + dbClass.meterScale;
 						}
 						
 						outstring += "</property-group>";
@@ -246,6 +246,7 @@ public final class ZWaveActivator implements BundleActivator {
 				
 				
 				outstring += "</thing-type>";
+				
 				outstring += "<channel-type id=\"dimmer\">";
 				outstring += "<item-type>Dimmer</item-type>";
 				outstring += "<label>Dimmer</label>";
