@@ -139,9 +139,11 @@ public final class ZWaveActivator implements BundleActivator {
 
 				outstring += "</channels>";	
 				
-				
+				if(product.Model.equals("FGD211")) {
+					logger.debug("");
+				}
 				if(database.FindProduct(manufacturer.Id, product.Reference.get(0).Type, product.Reference.get(0).Id, vmin.toString()) == false) {
-					logger.debug("Product not found");
+					logger.debug("Product not found for {}", product.Model);
 				}
 				
 				// 
