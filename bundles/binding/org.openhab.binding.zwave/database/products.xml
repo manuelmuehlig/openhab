@@ -519,6 +519,15 @@
 			<Model>12724</Model>
 			<Label lang="en">Lighting Control Dimmer Switch</Label>
 		</Product>
+		<Product>
+			<Reference>
+				<Type>4952</Type>
+				<Id>3032</Id>
+			</Reference>
+			<Model>ZW4005</Model>
+			<Label lang="en">On/Off Relay Switch</Label>
+			<ConfigFile>ge/ZW4005.xml</ConfigFile>
+		</Product>
 	</Manufacturer>
 	<Manufacturer>
 		<Id>0064</Id>
@@ -1181,6 +1190,15 @@
 		<Name>Fibaro System</Name>
 		<Product>
 			<Reference>
+				<Type>0402</Type>
+				<Id>1002</Id>
+			</Reference>
+			<Model>FGS212</Model>
+			<Label lang="en">Relay Switch 1x2.5kW</Label>
+			<ConfigFile>fibaro/fgs212.xml</ConfigFile>
+		</Product>
+		<Product>
+			<Reference>
 				<Type>0800</Type>
 				<Id>1001</Id>
 			</Reference>
@@ -1667,6 +1685,15 @@
 		</Product>
 		<Product>
 			<Reference>
+				<Type>0121</Type>
+				<Id>0133</Id>
+			</Reference>
+			<Model>TZ68</Model>
+			<Label lang="en">In Wall Micro Switch</Label>
+			<ConfigFile>tkb/tz78.xml</ConfigFile>
+		</Product>
+		<Product>	
+			<Reference>
 				<Type>0002</Type>
 				<Id>0002</Id>
 			</Reference>
@@ -2045,6 +2072,15 @@
 			<Model>ZXT-120</Model>
 			<Label lang="en">Remotec ZXT-120 AC IR Remote</Label>
 			<ConfigFile>remotec/zxt120.xml</ConfigFile>
+		</Product>
+		<Product>
+			<Reference>
+				<Type>200</Type>
+				<Id>8031</Id>
+			</Reference>
+			<Model>ZTS-110</Model>
+			<Label lang="en">Remotec ZTS-110 Z Wave Thermostat</Label>
+			<ConfigFile>remotec/zts110.xml</ConfigFile>
 		</Product>
 	</Manufacturer>
 	<Manufacturer>
