@@ -32,14 +32,14 @@ public class ZWaveDbProduct {
 	public List<ZWaveDbLabel> Label;
 
 	@XStreamImplicit
-	private List<ZWaveDbConfigFile> ConfigFile;
+	public List<ZWaveDbConfigFile> ConfigFile;
 
 	@XStreamConverter(value=ToAttributedValueConverter.class, strings={"Filename", "VersionMin", "VersionMax"})
-	private class ZWaveDbConfigFile {
-		String VersionMin;
-		String VersionMax;
+ public class ZWaveDbConfigFile {
+		public String VersionMin;
+		public String VersionMax;
 		
-		String Filename;
+		public String Filename;
 	}
 
 	public String getConfigFile(String version) {

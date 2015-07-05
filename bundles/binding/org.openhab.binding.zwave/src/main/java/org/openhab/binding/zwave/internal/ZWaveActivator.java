@@ -20,6 +20,8 @@ import org.openhab.binding.zwave.internal.config.ZWaveDbConfigurationListItem;
 import org.openhab.binding.zwave.internal.config.ZWaveDbConfigurationParameter;
 import org.openhab.binding.zwave.internal.config.ZWaveDbManufacturer;
 import org.openhab.binding.zwave.internal.config.ZWaveDbProduct;
+import org.openhab.binding.zwave.internal.config.ZWaveDbProduct.ZWaveDbConfigFile;
+import org.openhab.binding.zwave.internal.config.ZWaveDbProductReference;
 import org.openhab.binding.zwave.internal.config.ZWaveProductDatabase;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClass.CommandClass;
@@ -57,13 +59,14 @@ public final class ZWaveActivator implements BundleActivator {
 		
 		
 		
-		ZWaveProductDatabase database = new ZWaveProductDatabase();
+		ZWaveProductDatabase mdatabase = new ZWaveProductDatabase();
 
 		int maxCfg = 0;
 		// Loop over the manufacturers
-		for (ZWaveDbManufacturer manufacturer : database.GetManufacturers()) {
+		for (ZWaveDbManufacturer manufacturer : mdatabase.GetManufacturers()) {
+			ZWaveProductDatabase database = new ZWaveProductDatabase();
 			if (database.FindManufacturer(manufacturer.Id) == false) {
-				break;
+				continue;
 			}
 			
 			if(manufacturer.Id == 0x10f) {
@@ -74,6 +77,11 @@ public final class ZWaveActivator implements BundleActivator {
 
 			// Loop over the products
 			for (ZWaveDbProduct product : database.GetProducts()) {
+				
+				if(product.ConfigFile == null)
+					continue;
+				
+				for(ZWaveDbConfigFile cfg : product.ConfigFile) {
 
 				int cfgCnt = 0;
 				
@@ -86,10 +94,16 @@ public final class ZWaveActivator implements BundleActivator {
 				outstring += "xmlns:thing=\"http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0\"" ;
 				outstring += "xsi:schemaLocation=\"http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0\">";
 
+				Version vmin = Version.emptyVersion;
+				if(cfg.VersionMin != null) {
+					vmin = new Version(cfg.VersionMin);
+				}
+				Version vmax =  Version.emptyVersion;
+				if(cfg.VersionMax != null) {
+					vmax = new Version(cfg.VersionMax);
+				}
 				
-				
-				
-				String id = manufacturer.Name + "_" + product.Model + "_00_000"; 
+				String id = manufacturer.Name + "_" + product.Model + "_" + String.format("%02d", vmin.getMajor())  + "_" + String.format("%03d", vmin.getMinor()) ; 
 				outstring += "<thing-type id=\"" + id.replaceAll("\\s+","").toLowerCase() + "\">";
 				outstring += "<label>" + database.getLabel(product.Label) + "</label>";
 				outstring += "<description><![CDATA[ ]]></description>";
@@ -97,7 +111,20 @@ public final class ZWaveActivator implements BundleActivator {
 				outstring += "<properties>";
 				outstring += "<property name=\"vendor\">" + manufacturer.Name + "</property>";
 				outstring += "<property name=\"model\">" + product.Model + "</property>";
-				outstring += "<property name=\"version\">" + "" + "</property>";
+				outstring += "<property name=\"versionMin\">" + vmin.getMajor() + "." + vmin.getMinor() + "</property>";
+				outstring += "<property name=\"versionMax\">" + vmax.getMajor() + "." + vmax.getMinor() + "</property>";
+				outstring += "<property name=\"manufacturerId\">" + String.format("%04X", manufacturer.Id).toUpperCase() + "</property>";
+				outstring += "<property name=\"manufacturerRef\">[";
+				boolean first = true;
+				for(ZWaveDbProductReference ref : product.Reference) {
+					if(first == false) {
+						outstring += ",";
+					}
+					outstring += String.format("%04X", ref.Type).toUpperCase() + ":" + String.format("%04X",ref.Id).toUpperCase();
+					first = false;
+				}
+				
+				outstring += "]</property>";
 				outstring += "</properties>";
 
 				outstring += "<channels>";
@@ -113,7 +140,9 @@ public final class ZWaveActivator implements BundleActivator {
 				outstring += "</channels>";	
 				
 				
-				database.FindProduct(manufacturer.Id, product.Reference.get(0).Type, product.Reference.get(0).Id, 255.99);
+				if(database.FindProduct(manufacturer.Id, product.Reference.get(0).Type, product.Reference.get(0).Id, vmin.toString()) == false) {
+					logger.debug("Product not found");
+				}
 				
 				// 
 				List<ZWaveDbConfigurationParameter> configList = database.getProductConfigParameters();
@@ -262,7 +291,7 @@ public final class ZWaveActivator implements BundleActivator {
 				outstring += "</thing:thing-descriptions>";
 
 				if(outstring.isEmpty() == false) {
-					String name = manufacturer.Name.toLowerCase()+"_"+product.Model.toLowerCase() + ".xml";
+					String name = manufacturer.Name.toLowerCase()+"_"+product.Model.toLowerCase() + "_" + String.format("%02d", vmin.getMajor())  + "_" + String.format("%03d", vmin.getMinor()) +".xml";
 					name = "aa-zwave/" + name.toLowerCase().replaceAll("[^a-z0-9.-]", "_");
 					final File folder = new File(name);
 					try {
@@ -274,7 +303,7 @@ public final class ZWaveActivator implements BundleActivator {
 						logger.error("Error writing habmin rule file :", e);
 					}
 				}
-
+				}
 			}
 		}
 
