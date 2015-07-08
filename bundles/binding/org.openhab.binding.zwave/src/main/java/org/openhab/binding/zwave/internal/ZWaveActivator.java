@@ -111,10 +111,15 @@ public final class ZWaveActivator implements BundleActivator {
 				outstring += "<properties>";
 				outstring += "<property name=\"vendor\">" + manufacturer.Name + "</property>";
 				outstring += "<property name=\"model\">" + product.Model + "</property>";
-				outstring += "<property name=\"versionMin\">" + vmin.getMajor() + "." + vmin.getMinor() + "</property>";
-				outstring += "<property name=\"versionMax\">" + vmax.getMajor() + "." + vmax.getMinor() + "</property>";
 				outstring += "<property name=\"manufacturerId\">" + String.format("%04X", manufacturer.Id).toUpperCase() + "</property>";
 				outstring += "<property name=\"manufacturerRef\">[";
+				if(!vmin.equals(Version.emptyVersion)) {
+					outstring += "<property name=\"versionMin\">" + vmin.getMajor() + "." + vmin.getMinor() + "</property>";
+				}
+				if(!vmax.equals(Version.emptyVersion)) {
+					outstring += "<property name=\"versionMax\">" + vmax.getMajor() + "." + vmax.getMinor() + "</property>";
+				}
+
 				boolean first = true;
 				for(ZWaveDbProductReference ref : product.Reference) {
 					if(first == false) {
