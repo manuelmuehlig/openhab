@@ -84,7 +84,7 @@ public final class ZWaveActivator implements BundleActivator {
 				for(ZWaveDbConfigFile cfg : product.ConfigFile) {
 
 				int cfgCnt = 0;
-				
+						
 				String outstring = "";
 				
 				
@@ -103,23 +103,40 @@ public final class ZWaveActivator implements BundleActivator {
 					vmax = new Version(cfg.VersionMax);
 				}
 				
+				// 
+				List<ZWaveDbConfigurationParameter> configList = database.getProductConfigParameters();
+				List<ZWaveDbAssociationGroup> groupList = database.getProductAssociationGroups();
+
+				if(product.Model.equals("FGD211")) {
+					logger.debug("");
+				}
+				if(database.FindProduct(manufacturer.Id, product.Reference.get(0).Type, product.Reference.get(0).Id, vmin.toString()) == false) {
+					logger.debug("Product not found for {}", product.Model);
+				}
+						
 				String id = manufacturer.Name + "_" + product.Model + "_" + String.format("%02d", vmin.getMajor())  + "_" + String.format("%03d", vmin.getMinor()) ; 
 				outstring += "<thing-type id=\"" + id.replaceAll("\\s+","").toLowerCase() + "\">";
-				outstring += "<label>" + database.getLabel(product.Label) + "</label>";
-				outstring += "<description><![CDATA[ ]]></description>";
+				outstring += "<label>" + manufacturer.Name + " " + product.Model + "</label>";
+				outstring += "<description><![CDATA[" + database.getLabel(product.Label) + "]]></description>";
 
+				outstring += "<channels>";
+
+				outstring += "<channel id=\"switch0\" typeId=\"dimmer\">";
+				outstring += "<properties>";
+				outstring += "<property name=\"endpoint\">0</property>";
+				outstring += "<property name=\"command_class\">SWITCH_MULTILEVEL</property>";
+				outstring += "<property name=\"set_to_basic\">true</property>";
+				outstring += "</properties>";
+				outstring += "</channel>";
+
+				outstring += "</channels>";	
+				
+				
 				outstring += "<properties>";
 				outstring += "<property name=\"vendor\">" + manufacturer.Name + "</property>";
 				outstring += "<property name=\"model\">" + product.Model + "</property>";
 				outstring += "<property name=\"manufacturerId\">" + String.format("%04X", manufacturer.Id).toUpperCase() + "</property>";
-				outstring += "<property name=\"manufacturerRef\">[";
-				if(!vmin.equals(Version.emptyVersion)) {
-					outstring += "<property name=\"versionMin\">" + vmin.getMajor() + "." + vmin.getMinor() + "</property>";
-				}
-				if(!vmax.equals(Version.emptyVersion)) {
-					outstring += "<property name=\"versionMax\">" + vmax.getMajor() + "." + vmax.getMinor() + "</property>";
-				}
-
+				outstring += "<property name=\"manufacturerRef\">";
 				boolean first = true;
 				for(ZWaveDbProductReference ref : product.Reference) {
 					if(first == false) {
@@ -129,48 +146,100 @@ public final class ZWaveActivator implements BundleActivator {
 					first = false;
 				}
 				
-				outstring += "]</property>";
+				outstring += "</property>";
+
+				if(!vmin.equals(Version.emptyVersion)) {
+					outstring += "<property name=\"versionMin\">" + vmin.getMajor() + "." + vmin.getMinor() + "</property>";
+				}
+				if(!vmax.equals(Version.emptyVersion)) {
+					outstring += "<property name=\"versionMax\">" + vmax.getMajor() + "." + vmax.getMinor() + "</property>";
+				}
+				
+				if (groupList != null) {
+					// Loop through the associations and add to the
+					// records...
+					boolean defaultAssoc = false;
+					for (ZWaveDbAssociationGroup group : groupList) {
+						if(group.SetToController == true) {
+							defaultAssoc = true;
+							break;
+						}
+					}
+					
+					if(defaultAssoc == true) {
+						first = true;
+						outstring += "<property name=\"defaultAssociationGroups\">";
+						for (ZWaveDbAssociationGroup group : groupList) {
+							if(group.SetToController == true) {
+								if(first == false) {
+									outstring += ",";
+								}
+								outstring += group.Index;
+								first = false;
+							}
+						}
+						outstring += "</property>";						
+					}
+				}
+				
+				List<ZWaveDbCommandClass> classList = database.getProductCommandClasses();
+				if (classList != null) {
+					// Loop through the command classes
+					for (ZWaveDbCommandClass dbClass : classList) {
+						if(dbClass.add==null&&dbClass.isGetSupported==null&&dbClass.meterCanReset==null&&dbClass.remove==null&&dbClass.meterScale==null&&dbClass.meterType==null) {
+							continue;
+						}
+						outstring += "<property name=\"command_class:" + CommandClass.getCommandClass(dbClass.Id) + ":";
+						if(dbClass.endpoint != null) {
+							outstring += dbClass.endpoint + ":";
+						}
+						// If we want to remove the class, then remove it!
+						if(dbClass.remove != null && dbClass.remove == true) {
+							outstring += "REMOVE";
+						}
+						if(dbClass.add != null && dbClass.add == true) {
+							outstring += "ADD";
+						}
+
+						if(dbClass.isGetSupported != null && dbClass.isGetSupported == false) {
+							outstring += "NO_GET";
+						}
+
+						if(dbClass.meterCanReset != null && dbClass.meterCanReset == true) {
+							outstring += "METER_CAN_RESET";
+						}
+						
+						if(dbClass.meterType != null) {
+							outstring += "METER_TYPE=" + dbClass.meterType;
+						}
+						if(dbClass.meterScale != null) {
+							outstring += "METER_SCALE=" + dbClass.meterScale;
+						}
+						
+						outstring += "</property-group>";
+					}
+				}
+				
+
 				outstring += "</properties>";
 
-				outstring += "<channels>";
-
-				outstring += "<channel id=\"switch0\" typeId=\"dimmer\">";
-//				outstring += "<properties>";
-				outstring += "<property name=\"endpoint\">0</property>";
-				outstring += "<property name=\"command_class\">SWITCH_MULTILEVEL</property>";
-				outstring += "<property name=\"set_to_basic\">true</property>";
-//				outstring += "</properties>";
-				outstring += "</channel>";
-
-				outstring += "</channels>";	
-				
-				if(product.Model.equals("FGD211")) {
-					logger.debug("");
-				}
-				if(database.FindProduct(manufacturer.Id, product.Reference.get(0).Type, product.Reference.get(0).Id, vmin.toString()) == false) {
-					logger.debug("Product not found for {}", product.Model);
-				}
-				
-				// 
-				List<ZWaveDbConfigurationParameter> configList = database.getProductConfigParameters();
-				List<ZWaveDbAssociationGroup> groupList = database.getProductAssociationGroups();
 
 				if(configList != null || groupList != null) {
 					outstring += "<config-description>";
 
 					if(configList != null) {
-						outstring += "<group name=\"configuration\">";
+						outstring += "<parameter-group name=\"configuration\">";
 						outstring += "<context>setup</context>";
 						outstring += "<label>Configuration Parameters</label>";
 						outstring += "<description></description>";
-						outstring += "</group>";
+						outstring += "</parameter-group>";
 					}
 					if(groupList != null) {
-						outstring += "<group name=\"association\">";
-						outstring += "<context>setup</context>";
+						outstring += "<parameter-group name=\"association\">";
+						outstring += "<context>link</context>";
 						outstring += "<label>Association Groups</label>";
 						outstring += "<description></description>";
-						outstring += "</group>";
+						outstring += "</parameter-group>";
 					}
 
 					// Loop through the parameters and add to the records...
@@ -187,10 +256,9 @@ public final class ZWaveActivator implements BundleActivator {
 							if(parameter.ReadOnly != null) {
 								outstring += " readOnly=\"true\"";
 							}
-							outstring += ">";
+							outstring += " groupName=\"configuration\">";
 							
-							outstring += "<groupName>configuration</groupName>";
-							outstring += "<label>" + database.getLabel(parameter.Label) + "</label>";
+							outstring += "<label>" + parameter.Index + ": " + database.getLabel(parameter.Label) + "</label>";
 							if(database.getLabel(parameter.Help)!=null && database.getLabel(parameter.Help).startsWith("<![CDATA[") == true) {
 								outstring += "<description>" + database.getLabel(parameter.Help)+ "</description>";
 							}
@@ -222,62 +290,21 @@ public final class ZWaveActivator implements BundleActivator {
 							cfgCnt++;
 							outstring += "<parameter name=\"group_" + group.Index+"\" type=\"integer\"";
 							if(group.Maximum > 1) {
-								outstring += " multiple=\"true\" multipleLimit=\"" + group.Maximum + "\"";
+								outstring += " multiple=\"true\"";
 							}
-							outstring += ">";
-							outstring += "<groupName>association</groupName>";
+							outstring += " groupName=\"association\">";
 							outstring += "<label>" + database.getLabel(group.Label) + "</label>";
 							if(database.getLabel(group.Help) != null) {
 								outstring += "<description><![CDATA[" + database.getLabel(group.Help) + "]]></description>";
+							}
+							if(group.Maximum > 1) {
+								outstring += "<multipleLimit>" + group.Maximum + "</multipleLimit>";								
 							}
 							outstring += "</parameter>";
 						}
 					}
 					
 					outstring += "</config-description>";
-				}
-				
-				List<ZWaveDbCommandClass> classList = database.getProductCommandClasses();
-				if (classList != null) {
-					// First, loop through looking for the wakeup class
-					for (ZWaveDbCommandClass dbClass : classList) {
-						// needed or not?????
-					}
-
-					// Loop through the command classes
-					for (ZWaveDbCommandClass dbClass : classList) {
-						if(dbClass.add==null&&dbClass.isGetSupported==null&&dbClass.meterCanReset==null&&dbClass.remove==null&&dbClass.meterScale==null&&dbClass.meterType==null) {
-							continue;
-						}
-						outstring += "<property name=\"command_class:" + CommandClass.getCommandClass(dbClass.Id);
-						if(dbClass.endpoint != null) {
-							outstring += dbClass.endpoint + ":";
-						}
-						// If we want to remove the class, then remove it!
-						if(dbClass.remove != null && dbClass.remove == true) {
-							outstring += "REMOVE";
-						}
-						if(dbClass.add != null && dbClass.add == true) {
-							outstring += "ADD";
-						}
-
-						if(dbClass.isGetSupported != null && dbClass.isGetSupported == false) {
-							outstring += "SUPPORT_GET=false";
-						}
-
-						if(dbClass.meterCanReset != null && dbClass.meterCanReset == true) {
-							outstring += "METER_CAN_RESET";
-						}
-						
-						if(dbClass.meterType != null) {
-							outstring += "METER_TYPE=" + dbClass.meterType;
-						}
-						if(dbClass.meterScale != null) {
-							outstring += "METER_SCALE=" + dbClass.meterScale;
-						}
-						
-						outstring += "</property-group>";
-					}
 				}
 				
 				
