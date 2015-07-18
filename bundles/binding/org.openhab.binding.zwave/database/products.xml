@@ -670,6 +670,27 @@
 		<Name>Aeon Labs</Name>
 		<Product>
 			<Reference>
+				<Type>0003</Type>
+				<Id>0060</Id>
+			</Reference>
+			<Reference>
+                <Type>0103</Type>
+                <Id>0060</Id>
+            </Reference>
+            <Reference>
+                <Type>0203</Type>
+                <Id>0060</Id>
+            </Reference>
+            <Reference>
+                <Type>1D03</Type>
+                <Id>0060</Id>
+            </Reference>
+			<Model>ZW096</Model>
+			<Label lang="en">Smart Switch 6</Label>
+			<ConfigFile>aeon/zw096.xml</ConfigFile>
+		</Product>	
+		<Product>
+			<Reference>
 				<Type>0002</Type>
 				<Id>0059</Id>
 			</Reference>
@@ -713,6 +734,10 @@
 			<ConfigFile>aeon/zss2.xml</ConfigFile>
 		</Product>
 		<Product>
+			<Reference>
+				<Type>0001</Type>
+				<Id>005a</Id>
+			</Reference>
 			<Reference>
 				<Type>0101</Type>
 				<Id>005a</Id>
@@ -778,6 +803,15 @@
 			<Label lang="en">4 in One MultiSensor (G5)</Label>
 			<ConfigFile>aeon/4in1ms_g5.xml</ConfigFile>
 		</Product>
+        <Product>
+            <Reference>
+                <Type>0102</Type>
+                <Id>0064</Id>
+            </Reference>
+            <Model>ZW100-A</Model>
+            <Label lang="en">MultiSensor 6</Label>
+            <ConfigFile>aeon/zw100-a.xml</ConfigFile>
+        </Product>
 		<Product>
 			<Reference>
 				<Type>0006</Type>
@@ -967,6 +1001,15 @@
 			<Model>ZW080-A17</Model>
 			<Label lang="en">Siren</Label>
 			<ConfigFile>aeon/siren.xml</ConfigFile>
+		</Product>
+		<Product>
+			<Reference>
+				<Type>0003</Type>
+				<Id>0062</Id>
+			</Reference>
+			<Model>ZW098-C55</Model>
+			<Label lang="en">LED Bulb</Label>
+			<ConfigFile>aeon/zw098.xml</ConfigFile>
 		</Product>
 	</Manufacturer>
 	<Manufacturer>
@@ -1183,6 +1226,24 @@
 			</Reference>
 			<Model>ZU1401</Model>
 			<Label lang="en">USB Controller</Label>
+		</Product>
+		<Product>
+			<Reference>
+				<Type>2016</Type>
+				<Id>01616</Id>
+			</Reference>
+			<Model>ZL7431</Model>
+			<Label lang="en">In Wall Relay Switch</Label>
+			<ConfigFile>vision/zl7431.xml</ConfigFile>
+		</Product>
+		<Product>
+			<Reference>
+				<Type>2005</Type>
+				<Id>0508</Id>
+			</Reference>
+			<Model>ZM1601v5</Model>
+			<Label lang="en">Battery Operated Siren</Label>
+			<ConfigFile>vision/zm1601v5.xml</ConfigFile>
 		</Product>
 	</Manufacturer>
 	<Manufacturer>
@@ -2122,6 +2183,24 @@
 			<Label lang="en">Flush on/off thermostat</Label>
 			<ConfigFile>qubino/zmnhia.xml</ConfigFile>
 		</Product>
+		<Product>
+			<Reference>
+				<Type>5</Type>
+				<Id>3</Id>
+			</Reference>
+			<Model>ZMNHLA</Model>
+			<Label lang="en">Flush PWM thermostat</Label>
+			<ConfigFile>qubino/zmnhla.xml</ConfigFile>
+		</Product>
+	<Product>
+			<Reference>
+				<Type>3</Type>
+				<Id>2</Id>
+			</Reference>
+			<Model>ZMNHCD</Model>
+			<Label lang="en">Flush Shutter</Label>
+			<ConfigFile>qubino/zmnhcd.xml</ConfigFile>
+		</Product>
 	</Manufacturer>
 	<Manufacturer>
 		<Id>97</Id>
@@ -2269,6 +2348,15 @@
 			<Label lang="en">Wall Plug Dimmer</Label>
 			<ConfigFile>popp/123580.xml</ConfigFile>
 		</Product>
+		<Product>
+			<Reference>
+				<Type>0001</Type>
+				<Id>0001</Id>
+			</Reference>
+			<Model>POPE005206</Model>
+			<Label lang="en">Z Weather</Label>
+			<ConfigFile>popp/zweather.xml</ConfigFile>
+		</Product>
 	</Manufacturer>
 	<Manufacturer>
 		<Id>0129</Id>
@@ -2411,6 +2499,19 @@
 			<Model>TZEMT400BB32MAA</Model>
 			<Label lang="en">Trane Z-Wave Programmable Thermostat</Label>
 			<ConfigFile>trane/tzemt400bb32maa.xml</ConfigFile>
+		</Product>
+	</Manufacturer>
+	<Manufacturer>
+		<Id>0149</Id>
+		<Name>WiDOM</Name>
+		<Product>
+			<Reference>
+				<Type>1214</Type>
+				<Id>0304</Id>
+			</Reference>
+			<Model>WPS104</Model>
+			<Label lang="en">Energy Driven Switch</Label>
+			<ConfigFile>widom/wps104.xml</ConfigFile>
 		</Product>
 	</Manufacturer>
 </Manufacturers>
