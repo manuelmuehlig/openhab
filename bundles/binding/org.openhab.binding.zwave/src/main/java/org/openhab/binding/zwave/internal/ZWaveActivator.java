@@ -326,7 +326,7 @@ public final class ZWaveActivator implements BundleActivator {
 
 				if(outstring.isEmpty() == false) {
 					String name = manufacturer.Name.toLowerCase()+"_"+product.Model.toLowerCase() + "_" + String.format("%02d", vmin.getMajor())  + "_" + String.format("%03d", vmin.getMinor()) +".xml";
-					name = "aa-zwave/" + name.toLowerCase().replaceAll("[^a-z0-9.-]", "_");
+					name = "esh-zwave-things/" + name.toLowerCase().replaceAll("[^a-z0-9.-]", "_");
 					final File folder = new File(name);
 					try {
 						BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(name), "UTF-8"));
