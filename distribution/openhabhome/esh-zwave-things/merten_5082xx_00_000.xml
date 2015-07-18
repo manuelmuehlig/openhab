@@ -1,1 +1,104 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="merten_5082xx_00_000"><label>Merten 5082xx</label><description><![CDATA[Battery Powered Wall Controller MOVE]]></description><channels><channel id="switch0" typeId="dimmer"><properties><property name="endpoint">0</property><property name="command_class">SWITCH_MULTILEVEL</property><property name="set_to_basic">true</property></properties></channel></channels><properties><property name="vendor">Merten</property><property name="model">5082xx</property><property name="manufacturerId">007A</property><property name="manufacturerRef">0002:0001</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label><description></description></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label><description></description></parameter-group><parameter name="config_0" type="integer" min="0" max="127" groupName="configuration"><label>0: Switching/dimming/shutters</label><description><![CDATA[]]></description><default>0</default></parameter><parameter name="config_4" type="integer" min="0" max="127" groupName="configuration"><label>4: Switching single-surface</label><description><![CDATA[]]></description><default>0</default></parameter><parameter name="config_44" type="integer" min="0" max="127" groupName="configuration"><label>44: Doorbell function</label><description><![CDATA[]]></description><default>0</default></parameter><parameter name="config_52" type="integer" min="0" max="127" groupName="configuration"><label>52: LOWER shutter as long as button is pressed</label><description><![CDATA[]]></description><default>0</default></parameter><parameter name="config_54" type="integer" min="0" max="127" groupName="configuration"><label>54: Move shutter single-surface</label><description><![CDATA[Direction of movement changes after each switching process]]></description><default>0</default></parameter><parameter name="config_55" type="integer" min="0" max="127" groupName="configuration"><label>55: RAISE shutter as long as button is pressed</label><description><![CDATA[]]></description><default>0</default></parameter><parameter name="group_1" type="integer" multiple="true" groupName="association"><label>Red Cables</label><multipleLimit>12</multipleLimit></parameter><parameter name="group_2" type="integer" multiple="true" groupName="association"><label>Green Cables</label><multipleLimit>12</multipleLimit></parameter><parameter name="group_3" type="integer" multiple="true" groupName="association"><label>Brown Cables</label><multipleLimit>12</multipleLimit></parameter><parameter name="group_4" type="integer" multiple="true" groupName="association"><label>Blue Cables</label><multipleLimit>12</multipleLimit></parameter></config-description></thing-type><channel-type id="dimmer"><item-type>Dimmer</item-type><label>Dimmer</label><description>Set the light level</description><category>Light</category></channel-type></thing:thing-descriptions>
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="merten_5082xx_00_000">
+		<label>Merten 5082xx</label>
+		<description><![CDATA[Battery Powered Wall Controller MOVE]]></description>
+		<channels>
+			<channel id="switch0" typeId="dimmer">
+				<properties>
+					<property name="endpoint">0</property>
+					<property name="command_class">SWITCH_MULTILEVEL</property>
+					<property name="set_to_basic">true</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">Merten</property>
+			<property name="model">5082xx</property>
+			<property name="manufacturerId">007A</property>
+			<property name="manufacturerRef">0002:0001</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+				<description></description>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+				<description></description>
+			</parameter-group>
+			<parameter name="config_0" type="integer" min="0" max="127"
+				groupName="configuration">
+				<label>0: Switching/dimming/shutters</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_4" type="integer" min="0" max="127"
+				groupName="configuration">
+				<label>4: Switching single-surface</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_44" type="integer" min="0" max="127"
+				groupName="configuration">
+				<label>44: Doorbell function</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_52" type="integer" min="0" max="127"
+				groupName="configuration">
+				<label>52: LOWER shutter as long as button is pressed</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_54" type="integer" min="0" max="127"
+				groupName="configuration">
+				<label>54: Move shutter single-surface</label>
+				<description><![CDATA[Direction of movement changes after each switching process]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_55" type="integer" min="0" max="127"
+				groupName="configuration">
+				<label>55: RAISE shutter as long as button is pressed</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>0</default>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Red Cables</label>
+				<multipleLimit>12</multipleLimit>
+			</parameter>
+			<parameter name="group_2" type="integer" multiple="true"
+				groupName="association">
+				<label>Green Cables</label>
+				<multipleLimit>12</multipleLimit>
+			</parameter>
+			<parameter name="group_3" type="integer" multiple="true"
+				groupName="association">
+				<label>Brown Cables</label>
+				<multipleLimit>12</multipleLimit>
+			</parameter>
+			<parameter name="group_4" type="integer" multiple="true"
+				groupName="association">
+				<label>Blue Cables</label>
+				<multipleLimit>12</multipleLimit>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<channel-type id="dimmer">
+		<item-type>Dimmer</item-type>
+		<label>Dimmer</label>
+		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+</thing:thing-descriptions>

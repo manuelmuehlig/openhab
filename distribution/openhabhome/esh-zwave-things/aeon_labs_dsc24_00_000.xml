@@ -1,1 +1,175 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="aeonlabs_dsc24_00_000"><label>Aeon Labs DSC24</label><description><![CDATA[Smart Energy Switch v2]]></description><channels><channel id="switch0" typeId="dimmer"><properties><property name="endpoint">0</property><property name="command_class">SWITCH_MULTILEVEL</property><property name="set_to_basic">true</property></properties></channel></channels><properties><property name="vendor">Aeon Labs</property><property name="model">DSC24</property><property name="manufacturerId">0086</property><property name="manufacturerRef">0003:0018</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label><description></description></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label><description></description></parameter-group><parameter name="config_1" type="integer" groupName="configuration"><label>1: Multilevel Sensor Report Content</label><description><![CDATA[null]]></description><default>0</default><options><option value="0">Power</option><option value="1">Voltage</option></options></parameter><parameter name="config_2" type="integer" groupName="configuration"><label>2: Make SES blink</label><description><![CDATA[null]]></description><default>0</default></parameter><parameter name="config_80" type="integer" groupName="configuration"><label>80: Automatic Notifications</label><description><![CDATA[Enables automatic notifications to associated devices whenever there is a state change]]></description><default>0</default><options><option value="0">Nothing</option><option value="1">Hail</option><option value="2">Basic CC Report</option></options></parameter><parameter name="config_90" type="integer" groupName="configuration"><label>90: Enable/disable Parameter 91 and 92</label><description><![CDATA[Enables/disables parameter 91 and 92 below]]></description><default>0</default><options><option value="1">Enable</option><option value="0">Disable</option></options></parameter><parameter name="config_91" type="integer" groupName="configuration"><label>91: Minimum change in wattage</label><description><![CDATA[The value here represents minimum change in wattage (in terms of wattage) for a REPORT to be sent.]]></description><default>50</default></parameter><parameter name="config_92" type="integer" groupName="configuration"><label>92: Minimum change in wattage %</label><description><![CDATA[The value here represents minimum change in wattage percent (in terms of percentage) for a REPORT to be sent.]]></description><default>10</default></parameter><parameter name="config_100" type="integer" groupName="configuration"><label>100: Set 100 to 103 to default</label><description><![CDATA[]]></description><default>0</default><options><option value="0">Reset</option></options></parameter><parameter name="config_101" type="integer" groupName="configuration"><label>101: Group 1 report</label><description><![CDATA[]]></description><default>8</default><options><option value="2">Multisensor Report</option><option value="4">Meter Report (Watts)</option><option value="8">Meter Report (kWh)</option></options></parameter><parameter name="config_102" type="integer" groupName="configuration"><label>102: Group 2 report</label><description><![CDATA[]]></description><default>0</default><options><option value="2">Multisensor Report</option><option value="4">Meter Report (Watts)</option><option value="8">Meter Report (kWh)</option></options></parameter><parameter name="config_103" type="integer" groupName="configuration"><label>103: Group 3 report</label><description><![CDATA[]]></description><default>0</default><options><option value="2">Multisensor Report</option><option value="4">Meter Report (Watts)</option><option value="8">Meter Report (kWh)</option></options></parameter><parameter name="config_110" type="integer" groupName="configuration"><label>110: Set 111 to 113 to default</label><description><![CDATA[]]></description><default>0</default><options><option value="0">Reset</option></options></parameter><parameter name="config_111" type="integer" min="0" max="65535" groupName="configuration"><label>111: Interval Group 1</label><description><![CDATA[The time interval (in seconds) for sending report to Group 1]]></description><default>600</default></parameter><parameter name="config_112" type="integer" min="0" max="65535" groupName="configuration"><label>112: Interval Group 2</label><description><![CDATA[The time interval (in seconds) for sending report to Group 2]]></description><default>600</default></parameter><parameter name="config_113" type="integer" min="0" max="65535" groupName="configuration"><label>113: Interval Group 3</label><description><![CDATA[The time interval (in seconds) for sending report to Group 3]]></description><default>600</default></parameter><parameter name="config_254" type="integer" groupName="configuration"><label>254: Device Tag</label><description><![CDATA[]]></description><default>0</default></parameter><parameter name="config_255" type="integer" groupName="configuration"><label>255: Device Reset</label><description><![CDATA[]]></description><default>0</default><options><option value="0">Reset</option></options></parameter><parameter name="group_1" type="integer" multiple="true" groupName="association"><label>Status Reports</label><multipleLimit>5</multipleLimit></parameter></config-description></thing-type><channel-type id="dimmer"><item-type>Dimmer</item-type><label>Dimmer</label><description>Set the light level</description><category>Light</category></channel-type></thing:thing-descriptions>
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="aeonlabs_dsc24_00_000">
+		<label>Aeon Labs DSC24</label>
+		<description><![CDATA[Smart Energy Switch v2]]></description>
+		<channels>
+			<channel id="switch0" typeId="dimmer">
+				<properties>
+					<property name="endpoint">0</property>
+					<property name="command_class">SWITCH_MULTILEVEL</property>
+					<property name="set_to_basic">true</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">Aeon Labs</property>
+			<property name="model">DSC24</property>
+			<property name="manufacturerId">0086</property>
+			<property name="manufacturerRef">0003:0018</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+				<description></description>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+				<description></description>
+			</parameter-group>
+			<parameter name="config_1" type="integer" groupName="configuration">
+				<label>1: Multilevel Sensor Report Content</label>
+				<description><![CDATA[null]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Power</option>
+					<option value="1">Voltage</option>
+				</options>
+			</parameter>
+			<parameter name="config_2" type="integer" groupName="configuration">
+				<label>2: Make SES blink</label>
+				<description><![CDATA[null]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_80" type="integer" groupName="configuration">
+				<label>80: Automatic Notifications</label>
+				<description><![CDATA[Enables automatic notifications to associated devices whenever there is a state change]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Nothing</option>
+					<option value="1">Hail</option>
+					<option value="2">Basic CC Report</option>
+				</options>
+			</parameter>
+			<parameter name="config_90" type="integer" groupName="configuration">
+				<label>90: Enable/disable Parameter 91 and 92</label>
+				<description><![CDATA[Enables/disables parameter 91 and 92 below]]></description>
+				<default>0</default>
+				<options>
+					<option value="1">Enable</option>
+					<option value="0">Disable</option>
+				</options>
+			</parameter>
+			<parameter name="config_91" type="integer" groupName="configuration">
+				<label>91: Minimum change in wattage</label>
+				<description><![CDATA[The value here represents minimum change in wattage (in terms of wattage) for a REPORT to be sent.]]></description>
+				<default>50</default>
+			</parameter>
+			<parameter name="config_92" type="integer" groupName="configuration">
+				<label>92: Minimum change in wattage %</label>
+				<description><![CDATA[The value here represents minimum change in wattage percent (in terms of percentage) for a REPORT to be sent.]]></description>
+				<default>10</default>
+			</parameter>
+			<parameter name="config_100" type="integer" groupName="configuration">
+				<label>100: Set 100 to 103 to default</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>0</default>
+				<options>
+					<option value="0">Reset</option>
+				</options>
+			</parameter>
+			<parameter name="config_101" type="integer" groupName="configuration">
+				<label>101: Group 1 report</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>8</default>
+				<options>
+					<option value="2">Multisensor Report</option>
+					<option value="4">Meter Report (Watts)</option>
+					<option value="8">Meter Report (kWh)</option>
+				</options>
+			</parameter>
+			<parameter name="config_102" type="integer" groupName="configuration">
+				<label>102: Group 2 report</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>0</default>
+				<options>
+					<option value="2">Multisensor Report</option>
+					<option value="4">Meter Report (Watts)</option>
+					<option value="8">Meter Report (kWh)</option>
+				</options>
+			</parameter>
+			<parameter name="config_103" type="integer" groupName="configuration">
+				<label>103: Group 3 report</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>0</default>
+				<options>
+					<option value="2">Multisensor Report</option>
+					<option value="4">Meter Report (Watts)</option>
+					<option value="8">Meter Report (kWh)</option>
+				</options>
+			</parameter>
+			<parameter name="config_110" type="integer" groupName="configuration">
+				<label>110: Set 111 to 113 to default</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>0</default>
+				<options>
+					<option value="0">Reset</option>
+				</options>
+			</parameter>
+			<parameter name="config_111" type="integer" min="0" max="65535"
+				groupName="configuration">
+				<label>111: Interval Group 1</label>
+				<description><![CDATA[The time interval (in seconds) for sending report to Group 1]]></description>
+				<default>600</default>
+			</parameter>
+			<parameter name="config_112" type="integer" min="0" max="65535"
+				groupName="configuration">
+				<label>112: Interval Group 2</label>
+				<description><![CDATA[The time interval (in seconds) for sending report to Group 2]]></description>
+				<default>600</default>
+			</parameter>
+			<parameter name="config_113" type="integer" min="0" max="65535"
+				groupName="configuration">
+				<label>113: Interval Group 3</label>
+				<description><![CDATA[The time interval (in seconds) for sending report to Group 3]]></description>
+				<default>600</default>
+			</parameter>
+			<parameter name="config_254" type="integer" groupName="configuration">
+				<label>254: Device Tag</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_255" type="integer" groupName="configuration">
+				<label>255: Device Reset</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>0</default>
+				<options>
+					<option value="0">Reset</option>
+				</options>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Status Reports</label>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<channel-type id="dimmer">
+		<item-type>Dimmer</item-type>
+		<label>Dimmer</label>
+		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+</thing:thing-descriptions>

@@ -1,1 +1,91 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="everspring_ad131_00_000"><label>Everspring AD131</label><description><![CDATA[Dimmer Plugin]]></description><channels><channel id="switch0" typeId="dimmer"><properties><property name="endpoint">0</property><property name="command_class">SWITCH_MULTILEVEL</property><property name="set_to_basic">true</property></properties></channel></channels><properties><property name="vendor">Everspring</property><property name="model">AD131</property><property name="manufacturerId">0060</property><property name="manufacturerRef">0003:0001</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label><description></description></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label><description></description></parameter-group><parameter name="config_1" type="integer" min="0" max="99" groupName="configuration"><label>1: Basic Set Level</label><description><![CDATA[Value to be sent with a BASIC SET command]]></description><default>99</default></parameter><parameter name="config_2" type="integer" groupName="configuration"><label>2: Sensor Detecting Function</label><description><![CDATA[null]]></description><default>1</default><options><option value="1">Group 1 Enabled / Group 2 Enabled</option><option value="2">Group 1 Enabled / Group 2 Disabled</option><option value="3">Group 1 Disabled / Group 2 Disabled</option></options></parameter><parameter name="config_3" type="integer" min="1" max="10" groupName="configuration"><label>3: Sensitivity Level</label><description><![CDATA[null]]></description><default>6</default></parameter><parameter name="config_4" type="integer" min="5" max="3600" groupName="configuration"><label>4: Re-trigger Interval Setting</label><description><![CDATA[null]]></description><default>180</default></parameter><parameter name="config_5" type="integer" min="1" max="100" groupName="configuration"><label>5: LUX Level</label><description><![CDATA[Value for what LUX level will arm the detection sensor]]></description><default>10</default></parameter><parameter name="config_6" type="integer" min="5" max="3600" groupName="configuration"><label>6: On-Off Duration</label><description><![CDATA[null]]></description><default>15</default></parameter><parameter name="group_1" type="integer" groupName="association"><label>Target for reports</label></parameter><parameter name="group_2" type="integer" multiple="true" groupName="association"><label>Target nodes who receive BASIC_SET command</label><multipleLimit>5</multipleLimit></parameter></config-description></thing-type><channel-type id="dimmer"><item-type>Dimmer</item-type><label>Dimmer</label><description>Set the light level</description><category>Light</category></channel-type></thing:thing-descriptions>
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="everspring_ad131_00_000">
+		<label>Everspring AD131</label>
+		<description><![CDATA[Dimmer Plugin]]></description>
+		<channels>
+			<channel id="switch0" typeId="dimmer">
+				<properties>
+					<property name="endpoint">0</property>
+					<property name="command_class">SWITCH_MULTILEVEL</property>
+					<property name="set_to_basic">true</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">Everspring</property>
+			<property name="model">AD131</property>
+			<property name="manufacturerId">0060</property>
+			<property name="manufacturerRef">0003:0001</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+				<description></description>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+				<description></description>
+			</parameter-group>
+			<parameter name="config_1" type="integer" min="0" max="99"
+				groupName="configuration">
+				<label>1: Basic Set Level</label>
+				<description><![CDATA[Value to be sent with a BASIC SET command]]></description>
+				<default>99</default>
+			</parameter>
+			<parameter name="config_2" type="integer" groupName="configuration">
+				<label>2: Sensor Detecting Function</label>
+				<description><![CDATA[null]]></description>
+				<default>1</default>
+				<options>
+					<option value="1">Group 1 Enabled / Group 2 Enabled</option>
+					<option value="2">Group 1 Enabled / Group 2 Disabled</option>
+					<option value="3">Group 1 Disabled / Group 2 Disabled</option>
+				</options>
+			</parameter>
+			<parameter name="config_3" type="integer" min="1" max="10"
+				groupName="configuration">
+				<label>3: Sensitivity Level</label>
+				<description><![CDATA[null]]></description>
+				<default>6</default>
+			</parameter>
+			<parameter name="config_4" type="integer" min="5" max="3600"
+				groupName="configuration">
+				<label>4: Re-trigger Interval Setting</label>
+				<description><![CDATA[null]]></description>
+				<default>180</default>
+			</parameter>
+			<parameter name="config_5" type="integer" min="1" max="100"
+				groupName="configuration">
+				<label>5: LUX Level</label>
+				<description><![CDATA[Value for what LUX level will arm the detection sensor]]></description>
+				<default>10</default>
+			</parameter>
+			<parameter name="config_6" type="integer" min="5" max="3600"
+				groupName="configuration">
+				<label>6: On-Off Duration</label>
+				<description><![CDATA[null]]></description>
+				<default>15</default>
+			</parameter>
+			<parameter name="group_1" type="integer" groupName="association">
+				<label>Target for reports</label>
+			</parameter>
+			<parameter name="group_2" type="integer" multiple="true"
+				groupName="association">
+				<label>Target nodes who receive BASIC_SET command</label>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<channel-type id="dimmer">
+		<item-type>Dimmer</item-type>
+		<label>Dimmer</label>
+		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+</thing:thing-descriptions>

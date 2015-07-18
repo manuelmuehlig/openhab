@@ -1,4 +1,83 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="wintop_easyplug_00_000"><label>Wintop EasyPlug</label><description><![CDATA[Wall Plug]]></description><channels><channel id="switch0" typeId="dimmer"><properties><property name="endpoint">0</property><property name="command_class">SWITCH_MULTILEVEL</property><property name="set_to_basic">true</property></properties></channel></channels><properties><property name="vendor">Wintop</property><property name="model">EasyPlug</property><property name="manufacturerId">0097</property><property name="manufacturerRef">6943:4501</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label><description></description></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label><description></description></parameter-group><parameter name="config_1" type="integer" min="1" max="255" groupName="configuration"><label>1: Set to Default</label><description><![CDATA[Set all configuration values to default values (factory settings).]]></description><default>-1</default></parameter><parameter name="config_2" type="integer" min="1" max="255" groupName="configuration"><label>2: Feedback time</label><description><![CDATA[To configure the time the beep is automatically turned off in seconds.<BR/>
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="wintop_easyplug_00_000">
+		<label>Wintop EasyPlug</label>
+		<description><![CDATA[Wall Plug]]></description>
+		<channels>
+			<channel id="switch0" typeId="dimmer">
+				<properties>
+					<property name="endpoint">0</property>
+					<property name="command_class">SWITCH_MULTILEVEL</property>
+					<property name="set_to_basic">true</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">Wintop</property>
+			<property name="model">EasyPlug</property>
+			<property name="manufacturerId">0097</property>
+			<property name="manufacturerRef">6943:4501</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+				<description></description>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+				<description></description>
+			</parameter-group>
+			<parameter name="config_1" type="integer" min="1" max="255"
+				groupName="configuration">
+				<label>1: Set to Default</label>
+				<description><![CDATA[Set all configuration values to default values (factory settings).]]></description>
+				<default>-1</default>
+			</parameter>
+			<parameter name="config_2" type="integer" min="1" max="255"
+				groupName="configuration">
+				<label>2: Feedback time</label>
+				<description><![CDATA[To configure the time the beep is automatically turned off in seconds.<BR/>
 						0	   ->  	disabled<BR/>
-						255	   ->  	endless]]></description><default>15</default></parameter><parameter name="config_3" type="integer" min="0" max="255" groupName="configuration"><label>3: Feedback timeout</label><description><![CDATA[To configure the timeout to wait for a WAKEUP_NO_MORE_INFORMATION before the error beep is automatically sound. The error beeps are fixed 8 beeps shortly after each other.<BR/>
-						0	   ->  	disabled]]></description><default>0</default></parameter><parameter name="config_4" type="integer" min="1" max="255" groupName="configuration"><label>4: Feedback beeps per Second</label><description><![CDATA[To configure the number of beeps per second. Every beep is fixed about 10ms.]]></description><default>2</default></parameter><parameter name="config_5" type="integer" min="1" max="255" groupName="configuration"><label>5: Operating mode</label><description><![CDATA[To configure the operating mode. If any mode other then 3, that value will be reported after a get but will be handled in SW as mode 1.]]></description><default>1</default></parameter><parameter name="group_1" type="integer" multiple="true" groupName="association"><label>Group1</label><description><![CDATA[]]></description><multipleLimit>5</multipleLimit></parameter></config-description></thing-type><channel-type id="dimmer"><item-type>Dimmer</item-type><label>Dimmer</label><description>Set the light level</description><category>Light</category></channel-type></thing:thing-descriptions>
+						255	   ->  	endless]]></description>
+				<default>15</default>
+			</parameter>
+			<parameter name="config_3" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>3: Feedback timeout</label>
+				<description><![CDATA[To configure the timeout to wait for a WAKEUP_NO_MORE_INFORMATION before the error beep is automatically sound. The error beeps are fixed 8 beeps shortly after each other.<BR/>
+						0	   ->  	disabled]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_4" type="integer" min="1" max="255"
+				groupName="configuration">
+				<label>4: Feedback beeps per Second</label>
+				<description><![CDATA[To configure the number of beeps per second. Every beep is fixed about 10ms.]]></description>
+				<default>2</default>
+			</parameter>
+			<parameter name="config_5" type="integer" min="1" max="255"
+				groupName="configuration">
+				<label>5: Operating mode</label>
+				<description><![CDATA[To configure the operating mode. If any mode other then 3, that value will be reported after a get but will be handled in SW as mode 1.]]></description>
+				<default>1</default>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Group1</label>
+				<description><![CDATA[]]>
+				</description>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<channel-type id="dimmer">
+		<item-type>Dimmer</item-type>
+		<label>Dimmer</label>
+		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+</thing:thing-descriptions>

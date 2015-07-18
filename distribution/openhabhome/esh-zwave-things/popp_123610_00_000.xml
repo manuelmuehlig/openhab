@@ -1,8 +1,91 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="popp_123610_00_000"><label>POPP 123610</label><description><![CDATA[Wall Plug Switch]]></description><channels><channel id="switch0" typeId="dimmer"><properties><property name="endpoint">0</property><property name="command_class">SWITCH_MULTILEVEL</property><property name="set_to_basic">true</property></properties></channel></channels><properties><property name="vendor">POPP</property><property name="model">123610</property><property name="manufacturerId">0154</property><property name="manufacturerRef">1100:0001</property><property name="defaultAssociationGroups">1</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label><description></description></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label><description></description></parameter-group><parameter name="config_1" type="integer" groupName="configuration"><label>1: Watt Meter Report Period</label><description><![CDATA[If the setting is configured for 1hour (set value
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="popp_123610_00_000">
+		<label>POPP 123610</label>
+		<description><![CDATA[Wall Plug Switch]]></description>
+		<channels>
+			<channel id="switch0" typeId="dimmer">
+				<properties>
+					<property name="endpoint">0</property>
+					<property name="command_class">SWITCH_MULTILEVEL</property>
+					<property name="set_to_basic">true</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">POPP</property>
+			<property name="model">123610</property>
+			<property name="manufacturerId">0154</property>
+			<property name="manufacturerRef">1100:0001</property>
+			<property name="defaultAssociationGroups">1</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+				<description></description>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+				<description></description>
+			</parameter-group>
+			<parameter name="config_1" type="integer" groupName="configuration">
+				<label>1: Watt Meter Report Period</label>
+				<description><![CDATA[If the setting is configured for 1hour (set value
 				=720), the device will report its instant power consumption every 1
-				hour to Z-Wave Controller. (in seconds)]]></description><default>720</default></parameter><parameter name="config_2" type="integer" groupName="configuration"><label>2: KWH Meter Report Period</label><description><![CDATA[if the setting is configured for 1hour (set value
+				hour to Z-Wave Controller. (in seconds)]]></description>
+				<default>720</default>
+			</parameter>
+			<parameter name="config_2" type="integer" groupName="configuration">
+				<label>2: KWH Meter Report Period</label>
+				<description><![CDATA[if the setting is configured for 1hour (set value
 				=6), the device will report its Accumulated Power Consumption (KW/h)
-				every hour (in seconds)]]></description><default>6</default></parameter><parameter name="config_4" type="integer" groupName="configuration"><label>4: Threshold of KWh for Load caution </label><description><![CDATA[This is a warning when the KWh of load over the
+				every hour (in seconds)]]></description>
+				<default>6</default>
+			</parameter>
+			<parameter name="config_4" type="integer" groupName="configuration">
+				<label>4: Threshold of KWh for Load caution </label>
+				<description><![CDATA[This is a warning when the KWh of load over the
 				preset threshold value, if the Accumulated Power Consumption exceeds
 				the setting value the device will send a warning alarm command to
-				the controller.]]></description><default>10000</default></parameter><parameter name="config_5" type="integer" groupName="configuration"><label>5: Ignore start level</label><description><![CDATA[]]></description><default>1</default><options><option value="0">null</option><option value="1">Last Switch State (Default)</option><option value="2">Switch On</option></options></parameter><parameter name="config_11" type="integer" groupName="configuration"><label>11: Ignore start level</label><description><![CDATA[null]]></description><default>1</default><options><option value="0">Disabled</option><option value="1">Enabled (Default)</option></options></parameter><parameter name="group_1" type="integer" multiple="true" groupName="association"><label>Switch State</label><multipleLimit>5</multipleLimit></parameter></config-description></thing-type><channel-type id="dimmer"><item-type>Dimmer</item-type><label>Dimmer</label><description>Set the light level</description><category>Light</category></channel-type></thing:thing-descriptions>
+				the controller.]]></description>
+				<default>10000</default>
+			</parameter>
+			<parameter name="config_5" type="integer" groupName="configuration">
+				<label>5: Ignore start level</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>1</default>
+				<options>
+					<option value="0">null</option>
+					<option value="1">Last Switch State (Default)</option>
+					<option value="2">Switch On</option>
+				</options>
+			</parameter>
+			<parameter name="config_11" type="integer" groupName="configuration">
+				<label>11: Ignore start level</label>
+				<description><![CDATA[null]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">Disabled</option>
+					<option value="1">Enabled (Default)</option>
+				</options>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Switch State</label>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<channel-type id="dimmer">
+		<item-type>Dimmer</item-type>
+		<label>Dimmer</label>
+		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+</thing:thing-descriptions>

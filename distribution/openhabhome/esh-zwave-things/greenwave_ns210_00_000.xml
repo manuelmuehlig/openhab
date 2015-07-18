@@ -1,1 +1,65 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="greenwave_ns210_00_000"><label>GreenWave NS210</label><description><![CDATA[Smart PowerNode]]></description><channels><channel id="switch0" typeId="dimmer"><properties><property name="endpoint">0</property><property name="command_class">SWITCH_MULTILEVEL</property><property name="set_to_basic">true</property></properties></channel></channels><properties><property name="vendor">GreenWave</property><property name="model">NS210</property><property name="manufacturerId">0099</property><property name="manufacturerRef">0002:0002</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label><description></description></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label><description></description></parameter-group><parameter name="config_1" type="integer" groupName="configuration"><label>1: No communication light</label><description><![CDATA[After how many minutes the GreenWave device should start flashing if the controller didn't communicate with this device]]></description><default>2</default></parameter><parameter name="config_2" type="integer" groupName="configuration"><label>2: Room color</label><description><![CDATA[The room color (Corner wheel color) on the GreenWave device]]></description><default>0</default><options><option value="128">Black</option><option value="129">Green</option><option value="130">Dark Blue</option><option value="131">Red</option><option value="132">Yellow</option><option value="133">Purple</option><option value="134">Orange</option><option value="135">Light Blue</option><option value="136">Pink</option><option value="137">Locked</option></options></parameter></config-description></thing-type><channel-type id="dimmer"><item-type>Dimmer</item-type><label>Dimmer</label><description>Set the light level</description><category>Light</category></channel-type></thing:thing-descriptions>
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="greenwave_ns210_00_000">
+		<label>GreenWave NS210</label>
+		<description><![CDATA[Smart PowerNode]]></description>
+		<channels>
+			<channel id="switch0" typeId="dimmer">
+				<properties>
+					<property name="endpoint">0</property>
+					<property name="command_class">SWITCH_MULTILEVEL</property>
+					<property name="set_to_basic">true</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">GreenWave</property>
+			<property name="model">NS210</property>
+			<property name="manufacturerId">0099</property>
+			<property name="manufacturerRef">0002:0002</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+				<description></description>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+				<description></description>
+			</parameter-group>
+			<parameter name="config_1" type="integer" groupName="configuration">
+				<label>1: No communication light</label>
+				<description><![CDATA[After how many minutes the GreenWave device should start flashing if the controller didn't communicate with this device]]></description>
+				<default>2</default>
+			</parameter>
+			<parameter name="config_2" type="integer" groupName="configuration">
+				<label>2: Room color</label>
+				<description><![CDATA[The room color (Corner wheel color) on the GreenWave device]]></description>
+				<default>0</default>
+				<options>
+					<option value="128">Black</option>
+					<option value="129">Green</option>
+					<option value="130">Dark Blue</option>
+					<option value="131">Red</option>
+					<option value="132">Yellow</option>
+					<option value="133">Purple</option>
+					<option value="134">Orange</option>
+					<option value="135">Light Blue</option>
+					<option value="136">Pink</option>
+					<option value="137">Locked</option>
+				</options>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<channel-type id="dimmer">
+		<item-type>Dimmer</item-type>
+		<label>Dimmer</label>
+		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+</thing:thing-descriptions>

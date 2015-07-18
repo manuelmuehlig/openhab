@@ -1,1 +1,68 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="aeonlabs_mses_00_000"><label>Aeon Labs MSES</label><description><![CDATA[Micro Smart Switch]]></description><channels><channel id="switch0" typeId="dimmer"><properties><property name="endpoint">0</property><property name="command_class">SWITCH_MULTILEVEL</property><property name="set_to_basic">true</property></properties></channel></channels><properties><property name="vendor">Aeon Labs</property><property name="model">MSES</property><property name="manufacturerId">0086</property><property name="manufacturerRef">0003:0011</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label><description></description></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label><description></description></parameter-group><parameter name="config_80" type="integer" groupName="configuration"><label>80: Notification on Status Change</label><description><![CDATA[Parameter to Enable to send notification to associated devices (Group 1) when the state of Micro Dimmer's load changed]]></description><default>0</default><options><option value="0">Deactivate</option><option value="1">Hail CC Sent</option><option value="2">Basic CC Report Sent</option></options></parameter><parameter name="config_120" type="integer" groupName="configuration"><label>120: Turn External Button Mode</label><description><![CDATA[Parameter to set External button type]]></description><default>255</default><options><option value="0">Momentary Button Mode</option><option value="1">2 State Switch Mode</option><option value="2">3 Way Switch Mode</option></options></parameter><parameter name="group_1" type="integer" multiple="true" groupName="association"><label>Target for automatic reports</label><multipleLimit>5</multipleLimit></parameter></config-description></thing-type><channel-type id="dimmer"><item-type>Dimmer</item-type><label>Dimmer</label><description>Set the light level</description><category>Light</category></channel-type></thing:thing-descriptions>
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="aeonlabs_mses_00_000">
+		<label>Aeon Labs MSES</label>
+		<description><![CDATA[Micro Smart Switch]]></description>
+		<channels>
+			<channel id="switch0" typeId="dimmer">
+				<properties>
+					<property name="endpoint">0</property>
+					<property name="command_class">SWITCH_MULTILEVEL</property>
+					<property name="set_to_basic">true</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">Aeon Labs</property>
+			<property name="model">MSES</property>
+			<property name="manufacturerId">0086</property>
+			<property name="manufacturerRef">0003:0011</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+				<description></description>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+				<description></description>
+			</parameter-group>
+			<parameter name="config_80" type="integer" groupName="configuration">
+				<label>80: Notification on Status Change</label>
+				<description><![CDATA[Parameter to Enable to send notification to associated devices (Group 1) when the state of Micro Dimmer's load changed]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Deactivate</option>
+					<option value="1">Hail CC Sent</option>
+					<option value="2">Basic CC Report Sent</option>
+				</options>
+			</parameter>
+			<parameter name="config_120" type="integer" groupName="configuration">
+				<label>120: Turn External Button Mode</label>
+				<description><![CDATA[Parameter to set External button type]]></description>
+				<default>255</default>
+				<options>
+					<option value="0">Momentary Button Mode</option>
+					<option value="1">2 State Switch Mode</option>
+					<option value="2">3 Way Switch Mode</option>
+				</options>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Target for automatic reports</label>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<channel-type id="dimmer">
+		<item-type>Dimmer</item-type>
+		<label>Dimmer</label>
+		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+</thing:thing-descriptions>

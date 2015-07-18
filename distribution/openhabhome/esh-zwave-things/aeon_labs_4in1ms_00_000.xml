@@ -1,7 +1,135 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="aeonlabs_4in1ms_00_000"><label>Aeon Labs 4in1MS</label><description><![CDATA[4 in One MultiSensor (G5)]]></description><channels><channel id="switch0" typeId="dimmer"><properties><property name="endpoint">0</property><property name="command_class">SWITCH_MULTILEVEL</property><property name="set_to_basic">true</property></properties></channel></channels><properties><property name="vendor">Aeon Labs</property><property name="model">4in1MS</property><property name="manufacturerId">0086</property><property name="manufacturerRef">0002:004A,0102:004A</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label><description></description></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label><description></description></parameter-group><parameter name="config_1" type="integer" groupName="configuration"><label>1: Sensor report type on Get without endpoint</label><description><![CDATA[null]]></description><default>0</default><options><option value="0">Temperature, humidity and luminance</option><option value="1">Temperature</option><option value="2">Luminance</option><option value="3">Humidity</option></options></parameter><parameter name="config_2" type="integer" groupName="configuration"><label>2: Wake up for 10 minutes when batteries are inserted</label><description><![CDATA[null]]></description><default>0</default><options><option value="0">No</option><option value="1">Yes</option></options></parameter><parameter name="config_3" type="integer" min="1" max="15300" groupName="configuration"><label>3: On time</label><description><![CDATA[How long should the device associated to multi sensor keep state On before sending it Off command (if the value is bigger than 255, the value would be rounded to next integer in minutes)]]></description><default>240</default></parameter><parameter name="config_4" type="integer" groupName="configuration"><label>4: Motion sensor</label><description><![CDATA[null]]></description><default>1</default><options><option value="0">Disabled</option><option value="1">Enabled</option></options></parameter><parameter name="config_5" type="integer" groupName="configuration"><label>5: Command to send when movement</label><description><![CDATA[null]]></description><default>1</default><options><option value="1">Basic Set</option><option value="2">Sensor Binary Report</option></options></parameter><parameter name="config_101" type="integer" groupName="configuration"><label>101: Which reports need to send automatically in timing intervals for group 1</label><description><![CDATA[The value is a combination number made up of the sum of the values for the individual sensors and battery.
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="aeonlabs_4in1ms_00_000">
+		<label>Aeon Labs 4in1MS</label>
+		<description><![CDATA[4 in One MultiSensor (G5)]]></description>
+		<channels>
+			<channel id="switch0" typeId="dimmer">
+				<properties>
+					<property name="endpoint">0</property>
+					<property name="command_class">SWITCH_MULTILEVEL</property>
+					<property name="set_to_basic">true</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">Aeon Labs</property>
+			<property name="model">4in1MS</property>
+			<property name="manufacturerId">0086</property>
+			<property name="manufacturerRef">0002:004A,0102:004A</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+				<description></description>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+				<description></description>
+			</parameter-group>
+			<parameter name="config_1" type="integer" groupName="configuration">
+				<label>1: Sensor report type on Get without endpoint</label>
+				<description><![CDATA[null]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Temperature, humidity and luminance</option>
+					<option value="1">Temperature</option>
+					<option value="2">Luminance</option>
+					<option value="3">Humidity</option>
+				</options>
+			</parameter>
+			<parameter name="config_2" type="integer" groupName="configuration">
+				<label>2: Wake up for 10 minutes when batteries are inserted</label>
+				<description><![CDATA[null]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</options>
+			</parameter>
+			<parameter name="config_3" type="integer" min="1" max="15300"
+				groupName="configuration">
+				<label>3: On time</label>
+				<description><![CDATA[How long should the device associated to multi sensor keep state On before sending it Off command (if the value is bigger than 255, the value would be rounded to next integer in minutes)]]></description>
+				<default>240</default>
+			</parameter>
+			<parameter name="config_4" type="integer" groupName="configuration">
+				<label>4: Motion sensor</label>
+				<description><![CDATA[null]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">Disabled</option>
+					<option value="1">Enabled</option>
+				</options>
+			</parameter>
+			<parameter name="config_5" type="integer" groupName="configuration">
+				<label>5: Command to send when movement</label>
+				<description><![CDATA[null]]></description>
+				<default>1</default>
+				<options>
+					<option value="1">Basic Set</option>
+					<option value="2">Sensor Binary Report</option>
+				</options>
+			</parameter>
+			<parameter name="config_101" type="integer" groupName="configuration">
+				<label>101: Which reports need to send automatically in timing
+					intervals for group 1</label>
+				<description><![CDATA[The value is a combination number made up of the sum of the values for the individual sensors and battery.
 							The sensors have the values: Temperature=32, Humidity=64, Lightlevel=128, Battery=1.
-							Therefore if you want all sensors and the battery sending regular reports, set the parameter to 225 (32 + 64 + 128 + 1).]]></description><default>0</default></parameter><parameter name="config_102" type="integer" groupName="configuration"><label>102: Which reports need to send automatically in timing intervals for group 2</label><description><![CDATA[The value is a combination number made up of the sum of the values for the individual sensors and battery.
+							Therefore if you want all sensors and the battery sending regular reports, set the parameter to 225 (32 + 64 + 128 + 1).]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_102" type="integer" groupName="configuration">
+				<label>102: Which reports need to send automatically in timing
+					intervals for group 2</label>
+				<description><![CDATA[The value is a combination number made up of the sum of the values for the individual sensors and battery.
 							The sensors have the values: Temperature=32, Humidity=64, Lightlevel=128, Battery=1.
-							Therefore if you want all sensors and the battery sending regular reports, set the parameter to 225 (32 + 64 + 128 + 1).]]></description><default>0</default></parameter><parameter name="config_103" type="integer" groupName="configuration"><label>103: Which reports need to send automatically in timing intervals for group 3</label><description><![CDATA[The value is a combination number made up of the sum of the values for the individual sensors and battery.
+							Therefore if you want all sensors and the battery sending regular reports, set the parameter to 225 (32 + 64 + 128 + 1).]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_103" type="integer" groupName="configuration">
+				<label>103: Which reports need to send automatically in timing
+					intervals for group 3</label>
+				<description><![CDATA[The value is a combination number made up of the sum of the values for the individual sensors and battery.
 							The sensors have the values: Temperature=32, Humidity=64, Lightlevel=128, Battery=1.
-							Therefore if you want all sensors and the battery sending regular reports, set the parameter to 225 (32 + 64 + 128 + 1).]]></description><default>0</default></parameter><parameter name="config_111" type="integer" min="1" max="2678400" groupName="configuration"><label>111: Interval to send out reports of group 1</label><description><![CDATA[null]]></description><default>720</default></parameter><parameter name="config_112" type="integer" min="1" max="2678400" groupName="configuration"><label>112: Interval to send out reports of group 2</label><description><![CDATA[null]]></description><default>720</default></parameter><parameter name="config_113" type="integer" min="1" max="2678400" groupName="configuration"><label>113: Interval to send out reports of group 3</label><description><![CDATA[null]]></description><default>720</default></parameter><parameter name="group_1" type="integer" multiple="true" groupName="association"><label>Devices to be switched on when motion detected and off after on time</label><multipleLimit>5</multipleLimit></parameter></config-description></thing-type><channel-type id="dimmer"><item-type>Dimmer</item-type><label>Dimmer</label><description>Set the light level</description><category>Light</category></channel-type></thing:thing-descriptions>
+							Therefore if you want all sensors and the battery sending regular reports, set the parameter to 225 (32 + 64 + 128 + 1).]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_111" type="integer" min="1" max="2678400"
+				groupName="configuration">
+				<label>111: Interval to send out reports of group 1</label>
+				<description><![CDATA[null]]></description>
+				<default>720</default>
+			</parameter>
+			<parameter name="config_112" type="integer" min="1" max="2678400"
+				groupName="configuration">
+				<label>112: Interval to send out reports of group 2</label>
+				<description><![CDATA[null]]></description>
+				<default>720</default>
+			</parameter>
+			<parameter name="config_113" type="integer" min="1" max="2678400"
+				groupName="configuration">
+				<label>113: Interval to send out reports of group 3</label>
+				<description><![CDATA[null]]></description>
+				<default>720</default>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Devices to be switched on when motion detected and off after
+					on time</label>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<channel-type id="dimmer">
+		<item-type>Dimmer</item-type>
+		<label>Dimmer</label>
+		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+</thing:thing-descriptions>

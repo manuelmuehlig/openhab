@@ -1,1 +1,92 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="aeonlabs_dsa38_00_000"><label>Aeon Labs DSA38</label><description><![CDATA[1 button keyfob]]></description><channels><channel id="switch0" typeId="dimmer"><properties><property name="endpoint">0</property><property name="command_class">SWITCH_MULTILEVEL</property><property name="set_to_basic">true</property></properties></channel></channels><properties><property name="vendor">Aeon Labs</property><property name="model">DSA38</property><property name="manufacturerId">0086</property><property name="manufacturerRef">0001:0026</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label><description></description></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label><description></description></parameter-group><parameter name="config_250" type="integer" groupName="configuration"><label>250: Use Mode setting</label><description><![CDATA[Defines the Use Mode setting of the fob]]></description><default>0</default><options><option value="0">Group Mode</option><option value="1">Scene Mode</option></options></parameter><parameter name="group_1" type="integer" multiple="true" groupName="association"><label>Scene 1</label><multipleLimit>5</multipleLimit></parameter><parameter name="group_2" type="integer" multiple="true" groupName="association"><label>Scene 2</label><multipleLimit>5</multipleLimit></parameter><parameter name="group_3" type="integer" multiple="true" groupName="association"><label>Scene 3</label><multipleLimit>5</multipleLimit></parameter><parameter name="group_4" type="integer" multiple="true" groupName="association"><label>Scene 4</label><multipleLimit>5</multipleLimit></parameter><parameter name="group_5" type="integer" multiple="true" groupName="association"><label>Scene 5</label><multipleLimit>5</multipleLimit></parameter><parameter name="group_6" type="integer" multiple="true" groupName="association"><label>Scene 6</label><multipleLimit>5</multipleLimit></parameter><parameter name="group_7" type="integer" multiple="true" groupName="association"><label>Scene 7</label><multipleLimit>5</multipleLimit></parameter><parameter name="group_8" type="integer" multiple="true" groupName="association"><label>Scene 8</label><multipleLimit>5</multipleLimit></parameter></config-description></thing-type><channel-type id="dimmer"><item-type>Dimmer</item-type><label>Dimmer</label><description>Set the light level</description><category>Light</category></channel-type></thing:thing-descriptions>
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="aeonlabs_dsa38_00_000">
+		<label>Aeon Labs DSA38</label>
+		<description><![CDATA[1 button keyfob]]></description>
+		<channels>
+			<channel id="switch0" typeId="dimmer">
+				<properties>
+					<property name="endpoint">0</property>
+					<property name="command_class">SWITCH_MULTILEVEL</property>
+					<property name="set_to_basic">true</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">Aeon Labs</property>
+			<property name="model">DSA38</property>
+			<property name="manufacturerId">0086</property>
+			<property name="manufacturerRef">0001:0026</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+				<description></description>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+				<description></description>
+			</parameter-group>
+			<parameter name="config_250" type="integer" groupName="configuration">
+				<label>250: Use Mode setting</label>
+				<description><![CDATA[Defines the Use Mode setting of the fob]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Group Mode</option>
+					<option value="1">Scene Mode</option>
+				</options>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Scene 1</label>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+			<parameter name="group_2" type="integer" multiple="true"
+				groupName="association">
+				<label>Scene 2</label>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+			<parameter name="group_3" type="integer" multiple="true"
+				groupName="association">
+				<label>Scene 3</label>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+			<parameter name="group_4" type="integer" multiple="true"
+				groupName="association">
+				<label>Scene 4</label>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+			<parameter name="group_5" type="integer" multiple="true"
+				groupName="association">
+				<label>Scene 5</label>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+			<parameter name="group_6" type="integer" multiple="true"
+				groupName="association">
+				<label>Scene 6</label>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+			<parameter name="group_7" type="integer" multiple="true"
+				groupName="association">
+				<label>Scene 7</label>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+			<parameter name="group_8" type="integer" multiple="true"
+				groupName="association">
+				<label>Scene 8</label>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<channel-type id="dimmer">
+		<item-type>Dimmer</item-type>
+		<label>Dimmer</label>
+		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+</thing:thing-descriptions>

@@ -1,1 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="leviton_dzs15-1lz_00_000"><label>Leviton DZS15-1LZ</label><description><![CDATA[Scene Capable Push On/Off]]></description><channels><channel id="switch0" typeId="dimmer"><properties><property name="endpoint">0</property><property name="command_class">SWITCH_MULTILEVEL</property><property name="set_to_basic">true</property></properties></channel></channels><properties><property name="vendor">Leviton</property><property name="model">DZS15-1LZ</property><property name="manufacturerId">001D</property><property name="manufacturerRef">1C02:0334</property></properties><config-description><parameter-group name="association"><context>link</context><label>Association Groups</label><description></description></parameter-group><parameter name="group_1" type="integer" multiple="true" groupName="association"><label>Group 1</label><multipleLimit>232</multipleLimit></parameter></config-description></thing-type><channel-type id="dimmer"><item-type>Dimmer</item-type><label>Dimmer</label><description>Set the light level</description><category>Light</category></channel-type></thing:thing-descriptions>
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="leviton_dzs15-1lz_00_000">
+		<label>Leviton DZS15-1LZ</label>
+		<description><![CDATA[Scene Capable Push On/Off]]></description>
+		<channels>
+			<channel id="switch0" typeId="dimmer">
+				<properties>
+					<property name="endpoint">0</property>
+					<property name="command_class">SWITCH_MULTILEVEL</property>
+					<property name="set_to_basic">true</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">Leviton</property>
+			<property name="model">DZS15-1LZ</property>
+			<property name="manufacturerId">001D</property>
+			<property name="manufacturerRef">1C02:0334</property>
+		</properties>
+		<config-description>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+				<description></description>
+			</parameter-group>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Group 1</label>
+				<multipleLimit>232</multipleLimit>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<channel-type id="dimmer">
+		<item-type>Dimmer</item-type>
+		<label>Dimmer</label>
+		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+</thing:thing-descriptions>

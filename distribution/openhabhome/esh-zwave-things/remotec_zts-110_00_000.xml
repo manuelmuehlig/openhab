@@ -1,1 +1,100 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="remotec_zts-110_00_000"><label>Remotec ZTS-110</label><description><![CDATA[Remotec ZTS-110 Z Wave Thermostat]]></description><channels><channel id="switch0" typeId="dimmer"><properties><property name="endpoint">0</property><property name="command_class">SWITCH_MULTILEVEL</property><property name="set_to_basic">true</property></properties></channel></channels><properties><property name="vendor">Remotec</property><property name="model">ZTS-110</property><property name="manufacturerId">5254</property><property name="manufacturerRef">0200:8031</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label><description></description></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label><description></description></parameter-group><parameter name="config_25" type="integer" min="0" max="22" groupName="configuration"><label>25: Indicate a location for IR code learning and start learning</label><description><![CDATA[null]]></description><default>1</default></parameter><parameter name="config_26" type="integer" min="0" max="4" groupName="configuration"><label>26: (Read Only) Learning status register</label><description><![CDATA[null]]></description><default>0</default></parameter><parameter name="config_27" type="integer" min="0" max="512" groupName="configuration"><label>27: IR code number for built-in code library</label><description><![CDATA[null]]></description><default>0</default></parameter><parameter name="config_28" type="integer" groupName="configuration"><label>28: External IR Emitter power level</label><description><![CDATA[null]]></description><default>-1</default><options><option value="0">Normal power mode</option><option value="-1">High power mode</option></options></parameter><parameter name="config_32" type="integer" groupName="configuration"><label>32: Surround IR control</label><description><![CDATA[null]]></description><default>-1</default><options><option value="0">Disable Surround IR Emitters</option><option value="-1">Enable Surround IR Emitters</option></options></parameter><parameter name="config_33" type="integer" groupName="configuration"><label>33: AC function Swing control</label><description><![CDATA[null]]></description><default>1</default><options><option value="0">Swing Off</option><option value="1">Swing Auto</option></options></parameter><parameter name="config_35" type="integer" groupName="configuration"><label>35: (Read Only) Learn location status. Bitmask.</label><description><![CDATA[null]]></description><default>0</default></parameter><parameter name="config_37" type="integer" min="0" max="255" groupName="configuration"><label>37: Sensor temperature compensation</label><description><![CDATA[null]]></description><default>0</default></parameter></config-description></thing-type><channel-type id="dimmer"><item-type>Dimmer</item-type><label>Dimmer</label><description>Set the light level</description><category>Light</category></channel-type></thing:thing-descriptions>
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="remotec_zts-110_00_000">
+		<label>Remotec ZTS-110</label>
+		<description><![CDATA[Remotec ZTS-110 Z Wave Thermostat]]></description>
+		<channels>
+			<channel id="switch0" typeId="dimmer">
+				<properties>
+					<property name="endpoint">0</property>
+					<property name="command_class">SWITCH_MULTILEVEL</property>
+					<property name="set_to_basic">true</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">Remotec</property>
+			<property name="model">ZTS-110</property>
+			<property name="manufacturerId">5254</property>
+			<property name="manufacturerRef">0200:8031</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+				<description></description>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+				<description></description>
+			</parameter-group>
+			<parameter name="config_25" type="integer" min="0" max="22"
+				groupName="configuration">
+				<label>25: Indicate a location for IR code learning and start
+					learning</label>
+				<description><![CDATA[null]]></description>
+				<default>1</default>
+			</parameter>
+			<parameter name="config_26" type="integer" min="0" max="4"
+				groupName="configuration">
+				<label>26: (Read Only) Learning status register</label>
+				<description><![CDATA[null]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_27" type="integer" min="0" max="512"
+				groupName="configuration">
+				<label>27: IR code number for built-in code library</label>
+				<description><![CDATA[null]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_28" type="integer" groupName="configuration">
+				<label>28: External IR Emitter power level</label>
+				<description><![CDATA[null]]></description>
+				<default>-1</default>
+				<options>
+					<option value="0">Normal power mode</option>
+					<option value="-1">High power mode</option>
+				</options>
+			</parameter>
+			<parameter name="config_32" type="integer" groupName="configuration">
+				<label>32: Surround IR control</label>
+				<description><![CDATA[null]]></description>
+				<default>-1</default>
+				<options>
+					<option value="0">Disable Surround IR Emitters</option>
+					<option value="-1">Enable Surround IR Emitters</option>
+				</options>
+			</parameter>
+			<parameter name="config_33" type="integer" groupName="configuration">
+				<label>33: AC function Swing control</label>
+				<description><![CDATA[null]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">Swing Off</option>
+					<option value="1">Swing Auto</option>
+				</options>
+			</parameter>
+			<parameter name="config_35" type="integer" groupName="configuration">
+				<label>35: (Read Only) Learn location status. Bitmask.</label>
+				<description><![CDATA[null]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_37" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>37: Sensor temperature compensation</label>
+				<description><![CDATA[null]]></description>
+				<default>0</default>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<channel-type id="dimmer">
+		<item-type>Dimmer</item-type>
+		<label>Dimmer</label>
+		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+</thing:thing-descriptions>

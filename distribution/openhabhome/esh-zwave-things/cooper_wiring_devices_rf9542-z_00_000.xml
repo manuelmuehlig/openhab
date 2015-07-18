@@ -1,1 +1,118 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="cooperwiringdevices_rf9542-z_00_000"><label>Cooper Wiring Devices RF9542-Z</label><description><![CDATA[Dimmer Accessory Switch]]></description><channels><channel id="switch0" typeId="dimmer"><properties><property name="endpoint">0</property><property name="command_class">SWITCH_MULTILEVEL</property><property name="set_to_basic">true</property></properties></channel></channels><properties><property name="vendor">Cooper Wiring Devices</property><property name="model">RF9542-Z</property><property name="manufacturerId">001A</property><property name="manufacturerRef">4441:0000</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label><description></description></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label><description></description></parameter-group><parameter name="config_1" type="integer" min="0" max="255" groupName="configuration"><label>1: Delayed OFF time</label><description><![CDATA[The amount of time in seconds the switch will delay when trigger the delayed off feature]]></description><default>0</default></parameter><parameter name="config_2" type="integer" min="0" max="255" groupName="configuration"><label>2: Panic ON time</label><description><![CDATA[The amount of time in seconds the switch will turn on for when panic mode is triggered]]></description><default>0</default></parameter><parameter name="config_3" type="integer" min="0" max="255" groupName="configuration"><label>3: Panic OFF time</label><description><![CDATA[The amount of time in seconds the switch will turn off for when panic mode is triggered]]></description><default>0</default></parameter><parameter name="config_4" type="integer" min="0" max="255" groupName="configuration"><label>4: Basic Set Value</label><description><![CDATA[Setting this to anything other than 0 will cause the value to be transmitted to devices in the association group when the switch is triggered. A setting other than 0 will likely result in undesired operation]]></description><default>0</default></parameter><parameter name="config_5" type="integer" groupName="configuration"><label>5: Power Up State</label><description><![CDATA[Power Up State of the switch]]></description><default>1</default><options><option value="1">OFF</option><option value="2">ON</option><option value="3">Last State</option></options></parameter><parameter name="config_6" type="integer" groupName="configuration"><label>6: Panic mode enable</label><description><![CDATA[Enables this switch to participate in panic mode]]></description><default>1</default><options><option value="1">OFF</option><option value="2">ON</option></options></parameter><parameter name="config_7" type="integer" min="0" max="255" groupName="configuration"><label>7: Dimmer Ramp Time</label><description><![CDATA[The amount of time in seconds the switch will take to reach the desired dim level]]></description><default>0</default></parameter><parameter name="config_8" type="integer" groupName="configuration"><label>8: Kickstart / Rapid Start</label><description><![CDATA[Ensures that LED / CFL bulbs turn on when the preset dim level is low.  Enabling this feature may cause the lights brightness to momentarily be bright when the switch is turned on before reducing in brightness to desired level]]></description><default>1</default><options><option value="1">OFF</option><option value="2">ON</option></options></parameter><parameter name="config_11" type="integer" min="4" max="99" groupName="configuration"><label>11: Minimum Dimmer Level</label><description><![CDATA[The minimum dim level the switch will allow]]></description><default>4</default></parameter><parameter name="config_12" type="integer" min="4" max="99" groupName="configuration"><label>12: Maximum Dimmer Level</label><description><![CDATA[The maximum dim level the switch will allow]]></description><default>99</default></parameter><parameter name="group_1" type="integer" multiple="true" groupName="association"><label>Group 1</label><multipleLimit>5</multipleLimit></parameter></config-description></thing-type><channel-type id="dimmer"><item-type>Dimmer</item-type><label>Dimmer</label><description>Set the light level</description><category>Light</category></channel-type></thing:thing-descriptions>
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="cooperwiringdevices_rf9542-z_00_000">
+		<label>Cooper Wiring Devices RF9542-Z</label>
+		<description><![CDATA[Dimmer Accessory Switch]]></description>
+		<channels>
+			<channel id="switch0" typeId="dimmer">
+				<properties>
+					<property name="endpoint">0</property>
+					<property name="command_class">SWITCH_MULTILEVEL</property>
+					<property name="set_to_basic">true</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">Cooper Wiring Devices</property>
+			<property name="model">RF9542-Z</property>
+			<property name="manufacturerId">001A</property>
+			<property name="manufacturerRef">4441:0000</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+				<description></description>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+				<description></description>
+			</parameter-group>
+			<parameter name="config_1" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>1: Delayed OFF time</label>
+				<description><![CDATA[The amount of time in seconds the switch will delay when trigger the delayed off feature]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_2" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>2: Panic ON time</label>
+				<description><![CDATA[The amount of time in seconds the switch will turn on for when panic mode is triggered]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_3" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>3: Panic OFF time</label>
+				<description><![CDATA[The amount of time in seconds the switch will turn off for when panic mode is triggered]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_4" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>4: Basic Set Value</label>
+				<description><![CDATA[Setting this to anything other than 0 will cause the value to be transmitted to devices in the association group when the switch is triggered. A setting other than 0 will likely result in undesired operation]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_5" type="integer" groupName="configuration">
+				<label>5: Power Up State</label>
+				<description><![CDATA[Power Up State of the switch]]></description>
+				<default>1</default>
+				<options>
+					<option value="1">OFF</option>
+					<option value="2">ON</option>
+					<option value="3">Last State</option>
+				</options>
+			</parameter>
+			<parameter name="config_6" type="integer" groupName="configuration">
+				<label>6: Panic mode enable</label>
+				<description><![CDATA[Enables this switch to participate in panic mode]]></description>
+				<default>1</default>
+				<options>
+					<option value="1">OFF</option>
+					<option value="2">ON</option>
+				</options>
+			</parameter>
+			<parameter name="config_7" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>7: Dimmer Ramp Time</label>
+				<description><![CDATA[The amount of time in seconds the switch will take to reach the desired dim level]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_8" type="integer" groupName="configuration">
+				<label>8: Kickstart / Rapid Start</label>
+				<description><![CDATA[Ensures that LED / CFL bulbs turn on when the preset dim level is low.  Enabling this feature may cause the lights brightness to momentarily be bright when the switch is turned on before reducing in brightness to desired level]]></description>
+				<default>1</default>
+				<options>
+					<option value="1">OFF</option>
+					<option value="2">ON</option>
+				</options>
+			</parameter>
+			<parameter name="config_11" type="integer" min="4" max="99"
+				groupName="configuration">
+				<label>11: Minimum Dimmer Level</label>
+				<description><![CDATA[The minimum dim level the switch will allow]]></description>
+				<default>4</default>
+			</parameter>
+			<parameter name="config_12" type="integer" min="4" max="99"
+				groupName="configuration">
+				<label>12: Maximum Dimmer Level</label>
+				<description><![CDATA[The maximum dim level the switch will allow]]></description>
+				<default>99</default>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Group 1</label>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<channel-type id="dimmer">
+		<item-type>Dimmer</item-type>
+		<label>Dimmer</label>
+		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+</thing:thing-descriptions>

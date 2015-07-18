@@ -1,1 +1,111 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="evolve_lrm-as_00_000"><label>Evolve LRM-AS</label><description><![CDATA[Wall Mounted Dimmer]]></description><channels><channel id="switch0" typeId="dimmer"><properties><property name="endpoint">0</property><property name="command_class">SWITCH_MULTILEVEL</property><property name="set_to_basic">true</property></properties></channel></channels><properties><property name="vendor">Evolve</property><property name="model">LRM-AS</property><property name="manufacturerId">0113</property><property name="manufacturerRef">4457:3034</property><property name="defaultAssociationGroups">1</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label><description></description></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label><description></description></parameter-group><parameter name="config_1" type="integer" groupName="configuration"><label>1: Ignore Start Level (Transmitting)</label><description><![CDATA[Dimmers controlled by this switch will start dimming from their current level.]]></description><default>1</default><options><option value="0">No</option><option value="1">Yes</option></options></parameter><parameter name="config_3" type="integer" groupName="configuration"><label>3: Night Light</label><description><![CDATA[In night-light mode the LED on the switch will turn ON when the switch is turned OFF.]]></description><default>1</default><options><option value="0">No</option><option value="1">Yes</option></options></parameter><parameter name="config_4" type="integer" groupName="configuration"><label>4: Invert Switch</label><description><![CDATA[Change the top of the switch to OFF and the bottom of the switch to ON.]]></description><default>0</default><options><option value="0">No</option><option value="1">Yes</option></options></parameter><parameter name="config_5" type="integer" groupName="configuration"><label>5: Ignore Start-Level (Receiving)</label><description><![CDATA[The dimmer will start dimming from its current level.]]></description><default>1</default><options><option value="0">No</option><option value="1">Yes</option></options></parameter><parameter name="config_19" type="integer" groupName="configuration"><label>19: Transmission Indication</label><description><![CDATA[Flicker LED while transmitting.]]></description><default>2</default><options><option value="0">No Flicker</option><option value="1">Flicker Whole Transmission</option><option value="2">Flicker 1 Second</option></options></parameter><parameter name="config_20" type="integer" min="1" max="255" groupName="configuration"><label>20: Polling Interval</label><description><![CDATA[How often, in minutes, to poll to keep synchronized with group.]]></description><default>2</default></parameter><parameter name="config_21" type="integer" groupName="configuration"><label>21: Poll First Node</label><description><![CDATA[Poll only the first node in Group 1.]]></description><default>0</default><options><option value="0">No</option><option value="1">Yes</option></options></parameter><parameter name="group_1" type="integer" multiple="true" groupName="association"><label>Group 1</label><description><![CDATA[Nodes in this group are turned ON/OFF by tapping the paddle or dimmed/brightened by holding the paddle. The LED will indicate the status of this group.]]></description><multipleLimit>5</multipleLimit></parameter></config-description></thing-type><channel-type id="dimmer"><item-type>Dimmer</item-type><label>Dimmer</label><description>Set the light level</description><category>Light</category></channel-type></thing:thing-descriptions>
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="evolve_lrm-as_00_000">
+		<label>Evolve LRM-AS</label>
+		<description><![CDATA[Wall Mounted Dimmer]]></description>
+		<channels>
+			<channel id="switch0" typeId="dimmer">
+				<properties>
+					<property name="endpoint">0</property>
+					<property name="command_class">SWITCH_MULTILEVEL</property>
+					<property name="set_to_basic">true</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">Evolve</property>
+			<property name="model">LRM-AS</property>
+			<property name="manufacturerId">0113</property>
+			<property name="manufacturerRef">4457:3034</property>
+			<property name="defaultAssociationGroups">1</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+				<description></description>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+				<description></description>
+			</parameter-group>
+			<parameter name="config_1" type="integer" groupName="configuration">
+				<label>1: Ignore Start Level (Transmitting)</label>
+				<description><![CDATA[Dimmers controlled by this switch will start dimming from their current level.]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</options>
+			</parameter>
+			<parameter name="config_3" type="integer" groupName="configuration">
+				<label>3: Night Light</label>
+				<description><![CDATA[In night-light mode the LED on the switch will turn ON when the switch is turned OFF.]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</options>
+			</parameter>
+			<parameter name="config_4" type="integer" groupName="configuration">
+				<label>4: Invert Switch</label>
+				<description><![CDATA[Change the top of the switch to OFF and the bottom of the switch to ON.]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</options>
+			</parameter>
+			<parameter name="config_5" type="integer" groupName="configuration">
+				<label>5: Ignore Start-Level (Receiving)</label>
+				<description><![CDATA[The dimmer will start dimming from its current level.]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</options>
+			</parameter>
+			<parameter name="config_19" type="integer" groupName="configuration">
+				<label>19: Transmission Indication</label>
+				<description><![CDATA[Flicker LED while transmitting.]]></description>
+				<default>2</default>
+				<options>
+					<option value="0">No Flicker</option>
+					<option value="1">Flicker Whole Transmission</option>
+					<option value="2">Flicker 1 Second</option>
+				</options>
+			</parameter>
+			<parameter name="config_20" type="integer" min="1" max="255"
+				groupName="configuration">
+				<label>20: Polling Interval</label>
+				<description><![CDATA[How often, in minutes, to poll to keep synchronized with group.]]></description>
+				<default>2</default>
+			</parameter>
+			<parameter name="config_21" type="integer" groupName="configuration">
+				<label>21: Poll First Node</label>
+				<description><![CDATA[Poll only the first node in Group 1.]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</options>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Group 1</label>
+				<description><![CDATA[Nodes in this group are turned ON/OFF by tapping the paddle or dimmed/brightened by holding the paddle. The LED will indicate the status of this group.]]></description>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<channel-type id="dimmer">
+		<item-type>Dimmer</item-type>
+		<label>Dimmer</label>
+		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+</thing:thing-descriptions>

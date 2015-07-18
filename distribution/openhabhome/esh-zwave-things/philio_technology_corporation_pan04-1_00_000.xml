@@ -1,14 +1,132 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="philiotechnologycorporation_pan04-1_00_000"><label>Philio Technology Corporation PAN04-1</label><description><![CDATA[In Wall Dual Relay(1 Way) Switch Module 2x 1.5kW
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="philiotechnologycorporation_pan04-1_00_000">
+		<label>Philio Technology Corporation PAN04-1</label>
+		<description><![CDATA[In Wall Dual Relay(1 Way) Switch Module 2x 1.5kW
 				with power meter
-			]]></description><channels><channel id="switch0" typeId="dimmer"><properties><property name="endpoint">0</property><property name="command_class">SWITCH_MULTILEVEL</property><property name="set_to_basic">true</property></properties></channel></channels><properties><property name="vendor">Philio Technology Corporation</property><property name="model">PAN04-1</property><property name="manufacturerId">013C</property><property name="manufacturerRef">0001:0003</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label><description></description></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label><description></description></parameter-group><parameter name="config_2" type="integer" min="-1" max="100" groupName="configuration"><label>2: Basic Set Level</label><description><![CDATA[-1	   ->  	0xFF(-1) turns on the light.
-1 - 100	   ->  	For dimmers 1 to 100 means the light strength]]></description><default>-1</default></parameter><parameter name="config_3" type="integer" min="0" max="99" groupName="configuration"><label>3: PIR Sensitivity</label><description><![CDATA[parameter to set the Sensitivity for the PIR (Passiv Infrared Sensor)
+			]]></description>
+		<channels>
+			<channel id="switch0" typeId="dimmer">
+				<properties>
+					<property name="endpoint">0</property>
+					<property name="command_class">SWITCH_MULTILEVEL</property>
+					<property name="set_to_basic">true</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">Philio Technology Corporation</property>
+			<property name="model">PAN04-1</property>
+			<property name="manufacturerId">013C</property>
+			<property name="manufacturerRef">0001:0003</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+				<description></description>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+				<description></description>
+			</parameter-group>
+			<parameter name="config_2" type="integer" min="-1" max="100"
+				groupName="configuration">
+				<label>2: Basic Set Level</label>
+				<description><![CDATA[-1	   ->  	0xFF(-1) turns on the light.
+1 - 100	   ->  	For dimmers 1 to 100 means the light strength]]></description>
+				<default>-1</default>
+			</parameter>
+			<parameter name="config_3" type="integer" min="0" max="99"
+				groupName="configuration">
+				<label>3: PIR Sensitivity</label>
+				<description><![CDATA[parameter to set the Sensitivity for the PIR (Passiv Infrared Sensor)
 			0	   ->  	0 means disable the PIR motion;
-1 - 99	   ->  	1 means the lowest sensitivity, 99 means the highest sensitivity]]></description><default>70</default></parameter><parameter name="config_4" type="integer" min="0" max="100" groupName="configuration"><label>4: Light Threshold</label><description><![CDATA[Setting the illumination threshold to turn on the light. When the event triggered and the environment illumination lower then the threshold, the device will turn on the light
+1 - 99	   ->  	1 means the lowest sensitivity, 99 means the highest sensitivity]]></description>
+				<default>70</default>
+			</parameter>
+			<parameter name="config_4" type="integer" min="0" max="100"
+				groupName="configuration">
+				<label>4: Light Threshold</label>
+				<description><![CDATA[Setting the illumination threshold to turn on the light. When the event triggered and the environment illumination lower then the threshold, the device will turn on the light
 0	   ->  	0 means turn off illumination detected function And never turn on the light.
-1 - 100	   ->  	1 means darkest. 99 means brightest. 100 means turn off illumination detected function. And always turn on the light]]></description><default>100</default></parameter><parameter name="config_5" type="integer" min="0" max="127" groupName="configuration"><label>5: Operation Mode</label><description><![CDATA[Bit 0: 1 means security mode; 0 means home automation mode. Bit 1: 1 means enable test mode; 0 means disable test mode. Notice: Bit0 and Bit1 will effect when the DIP Switch setting to program mode. If Bit1 is enabled, the Bit0 is useless. Bit 2: Disable the door/window function. Bit 3: Setting the temperature scale. 0: Fahrenheit, 1:Celsius Bit 4: Disable illumination report after event triggered. Bit 5: Disable temperature report after event triggered]]></description><default>0</default></parameter><parameter name="config_6" type="integer" min="0" max="127" groupName="configuration"><label>6: Multi-Sensor Function Switch</label><description><![CDATA[Bit 0: Disable magnetic integrate illumination. Bit 1: Disable PIR integrate Illumination. Bit 2: Disable magnetic integrate PIR (Default is Disable) Bit 3: When Bit2 is 0 (Enable), the device is install in the same room with the light? 0: In the same room(Default), 1: In the different room. Bit 4: Disable delay 5 seconds to turn off the light, when door/window closed. Bit 5: Disable auto turn off the light, after door/window opened to turn on the light. Notice: If bit2 is zero, this setting is useless. Bit 6:Enable temperature monitoring. When this bit enable, the temperature changed 3 degree Fahrenheit, it will report. And also the temperature over 140 degree Fahrenheit, it will report every 64 seconds.]]></description><default>4</default></parameter><parameter name="config_8" type="integer" min="3" max="127" groupName="configuration"><label>8: PIR Re-Detect Interval Time</label><description><![CDATA[In the security mode, after the PIR motion detected, setting the re-detect time
-			3 8 sec - 127 8 sec	   ->  	8 seconds per tick, and minimum time is 24 seconds, default tick is 3 (24 seconds).]]></description><default>3</default></parameter><parameter name="config_9" type="integer" min="4" max="127" groupName="configuration"><label>9: Turn Off Light Time</label><description><![CDATA[After turn on the light, setting the delay time to turn off the light when the PIR motion is not detected
-			4 8 sec - 127 8 sec	   ->  	8 seconds per tick, and minimum time is 32 seconds, default tick is 4 (32 seconds)]]></description><default>4</default></parameter><parameter name="config_10" type="integer" min="1" max="127" groupName="configuration"><label>10: Auto Report Battery Time</label><description><![CDATA[interval time for auto report the battery level
-			1 30 min - 127 30 min	   ->  	30 minutes per tick and minimum time is 30 minutes, default tick is 12 (6 hours)]]></description><default>12</default></parameter><parameter name="config_11" type="integer" min="1" max="127" groupName="configuration"><label>11: Auto Report Door/Window State Time</label><description><![CDATA[interval time for auto report the door/window state
-			1 30 min - 127 30 min	   ->  	30 minutes per tick and minimum time is 30 minutes, default tick is 12 (6 hours)]]></description><default>12</default></parameter><parameter name="config_12" type="integer" min="1" max="127" groupName="configuration"><label>12: Auto Report Illumination Time</label><description><![CDATA[interval time for auto report the illumination state
-			1 30 min - 127 30 min	   ->  	30 minutes per tick and minimum time is 30 minutes, default tick is 12 (6 hours)]]></description><default>12</default></parameter><parameter name="config_13" type="integer" min="1" max="127" groupName="configuration"><label>13: Auto Report Temperature Time</label><description><![CDATA[Interval time for auto report the temperature state
-			1 30 min - 127 30 min	   ->  	30 minutes per tick and minimum time is 30 minutes, default tick is 12 (6 hours)]]></description><default>12</default></parameter><parameter name="group_1" type="integer" multiple="true" groupName="association"><label>Reports</label><multipleLimit>7</multipleLimit></parameter><parameter name="group_2" type="integer" multiple="true" groupName="association"><label>Light Control</label><multipleLimit>7</multipleLimit></parameter></config-description></thing-type><channel-type id="dimmer"><item-type>Dimmer</item-type><label>Dimmer</label><description>Set the light level</description><category>Light</category></channel-type></thing:thing-descriptions>
+1 - 100	   ->  	1 means darkest. 99 means brightest. 100 means turn off illumination detected function. And always turn on the light]]></description>
+				<default>100</default>
+			</parameter>
+			<parameter name="config_5" type="integer" min="0" max="127"
+				groupName="configuration">
+				<label>5: Operation Mode</label>
+				<description><![CDATA[Bit 0: 1 means security mode; 0 means home automation mode. Bit 1: 1 means enable test mode; 0 means disable test mode. Notice: Bit0 and Bit1 will effect when the DIP Switch setting to program mode. If Bit1 is enabled, the Bit0 is useless. Bit 2: Disable the door/window function. Bit 3: Setting the temperature scale. 0: Fahrenheit, 1:Celsius Bit 4: Disable illumination report after event triggered. Bit 5: Disable temperature report after event triggered]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_6" type="integer" min="0" max="127"
+				groupName="configuration">
+				<label>6: Multi-Sensor Function Switch</label>
+				<description><![CDATA[Bit 0: Disable magnetic integrate illumination. Bit 1: Disable PIR integrate Illumination. Bit 2: Disable magnetic integrate PIR (Default is Disable) Bit 3: When Bit2 is 0 (Enable), the device is install in the same room with the light? 0: In the same room(Default), 1: In the different room. Bit 4: Disable delay 5 seconds to turn off the light, when door/window closed. Bit 5: Disable auto turn off the light, after door/window opened to turn on the light. Notice: If bit2 is zero, this setting is useless. Bit 6:Enable temperature monitoring. When this bit enable, the temperature changed 3 degree Fahrenheit, it will report. And also the temperature over 140 degree Fahrenheit, it will report every 64 seconds.]]></description>
+				<default>4</default>
+			</parameter>
+			<parameter name="config_8" type="integer" min="3" max="127"
+				groupName="configuration">
+				<label>8: PIR Re-Detect Interval Time</label>
+				<description><![CDATA[In the security mode, after the PIR motion detected, setting the re-detect time
+			3 8 sec - 127 8 sec	   ->  	8 seconds per tick, and minimum time is 24 seconds, default tick is 3 (24 seconds).]]></description>
+				<default>3</default>
+			</parameter>
+			<parameter name="config_9" type="integer" min="4" max="127"
+				groupName="configuration">
+				<label>9: Turn Off Light Time</label>
+				<description><![CDATA[After turn on the light, setting the delay time to turn off the light when the PIR motion is not detected
+			4 8 sec - 127 8 sec	   ->  	8 seconds per tick, and minimum time is 32 seconds, default tick is 4 (32 seconds)]]></description>
+				<default>4</default>
+			</parameter>
+			<parameter name="config_10" type="integer" min="1" max="127"
+				groupName="configuration">
+				<label>10: Auto Report Battery Time</label>
+				<description><![CDATA[interval time for auto report the battery level
+			1 30 min - 127 30 min	   ->  	30 minutes per tick and minimum time is 30 minutes, default tick is 12 (6 hours)]]></description>
+				<default>12</default>
+			</parameter>
+			<parameter name="config_11" type="integer" min="1" max="127"
+				groupName="configuration">
+				<label>11: Auto Report Door/Window State Time</label>
+				<description><![CDATA[interval time for auto report the door/window state
+			1 30 min - 127 30 min	   ->  	30 minutes per tick and minimum time is 30 minutes, default tick is 12 (6 hours)]]></description>
+				<default>12</default>
+			</parameter>
+			<parameter name="config_12" type="integer" min="1" max="127"
+				groupName="configuration">
+				<label>12: Auto Report Illumination Time</label>
+				<description><![CDATA[interval time for auto report the illumination state
+			1 30 min - 127 30 min	   ->  	30 minutes per tick and minimum time is 30 minutes, default tick is 12 (6 hours)]]></description>
+				<default>12</default>
+			</parameter>
+			<parameter name="config_13" type="integer" min="1" max="127"
+				groupName="configuration">
+				<label>13: Auto Report Temperature Time</label>
+				<description><![CDATA[Interval time for auto report the temperature state
+			1 30 min - 127 30 min	   ->  	30 minutes per tick and minimum time is 30 minutes, default tick is 12 (6 hours)]]></description>
+				<default>12</default>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Reports</label>
+				<multipleLimit>7</multipleLimit>
+			</parameter>
+			<parameter name="group_2" type="integer" multiple="true"
+				groupName="association">
+				<label>Light Control</label>
+				<multipleLimit>7</multipleLimit>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<channel-type id="dimmer">
+		<item-type>Dimmer</item-type>
+		<label>Dimmer</label>
+		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+</thing:thing-descriptions>

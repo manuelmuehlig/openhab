@@ -1,7 +1,182 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="fortrezz_ssa1/ssa2_00_000"><label>FortrezZ SSA1/SSA2</label><description><![CDATA[Siren and Strobe Alarm]]></description><channels><channel id="switch0" typeId="dimmer"><properties><property name="endpoint">0</property><property name="command_class">SWITCH_MULTILEVEL</property><property name="set_to_basic">true</property></properties></channel></channels><properties><property name="vendor">FortrezZ</property><property name="model">SSA1/SSA2</property><property name="manufacturerId">0084</property><property name="manufacturerRef">0313:0108,0313:010B</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label><description></description></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label><description></description></parameter-group><parameter name="config_1" type="integer" groupName="configuration"><label>1: Not_Used_1</label><description><![CDATA[null]]></description><default>0</default><options><option value="0">Null</option></options></parameter><parameter name="config_2" type="integer" groupName="configuration"><label>2: Clear_Pulse_Meter_Counts</label><description><![CDATA[null]]></description><default>0</default><options><option value="0">Actual value doesn't matter. Count gets reset
-					whenever this command is received</option></options></parameter><parameter name="config_3" type="integer" groupName="configuration"><label>3: Trigger_Mapping</label><description><![CDATA[null]]></description><default>0</default><options><option value="0">Disabled</option><option value="1">SIG1 triggered/untriggered sets or clears Relay1
-				</option></options></parameter><parameter name="config_4" type="integer" min="0" max="255" groupName="configuration"><label>4: Lower_Threshold_High</label><description><![CDATA[null]]></description><default>187</default><options><option value="187">Default (0xBB)</option></options></parameter><parameter name="config_5" type="integer" min="0" max="255" groupName="configuration"><label>5: Lower_Threshold_Low</label><description><![CDATA[null]]></description><default>171</default><options><option value="171">Default (0xAB)</option></options></parameter><parameter name="config_6" type="integer" min="0" max="255" groupName="configuration"><label>6: Upper_Threshold_High</label><description><![CDATA[null]]></description><default>255</default><options><option value="255">Default (0xFF)</option></options></parameter><parameter name="config_7" type="integer" min="0" max="255" groupName="configuration"><label>7: Upper_Threshold_Low</label><description><![CDATA[null]]></description><default>254</default><options><option value="254">Default (0xFE)</option></options></parameter><parameter name="config_8" type="integer" groupName="configuration"><label>8: Trigger_Level_And_Input_Threshold</label><description><![CDATA[null]]></description><default>3</default><options><option value="0">TriggerLevel ANALOG and Triggered when input falls
-					OUTSIDE of thresholds</option><option value="1">TriggerLevel ANALOG and Triggered when input falls
-					BETWEEN thresholds</option><option value="2">TriggerLevel DIGITAL and Triggered when input
-					falls OUTSIDE of thresholds</option><option value="3">TriggerLevel DIGITAL and Triggered when input
-					falls BETWEEN thresholds (Default)</option></options></parameter><parameter name="config_9" type="integer" min="0" max="255" groupName="configuration"><label>9: Multilevel_AutoReport_Interval</label><description><![CDATA[null]]></description><default>3</default><options><option value="0">Disable Automatic Reports</option><option value="3">Enable Reports every 30 seconds (Default)</option></options></parameter><parameter name="config_10" type="integer" groupName="configuration"><label>10: Not_Used_2</label><description><![CDATA[null]]></description><default>0</default><options><option value="0">Null</option></options></parameter><parameter name="config_11" type="integer" min="0" max="255" groupName="configuration"><label>11: Momentary_Relay1_Duration</label><description><![CDATA[null]]></description><default>0</default><options><option value="0">Disabled (Default)</option><option value="5">500 milliseconds</option></options></parameter><parameter name="group_1" type="integer" multiple="true" groupName="association"><label>Binary input Set Group</label><description><![CDATA[When the input is triggered or untriggered, the MIMOlite will automatically send a Basic Set command to turn on or off the device(s) associated with this group]]></description><multipleLimit>2</multipleLimit></parameter><parameter name="group_2" type="integer" multiple="true" groupName="association"><label>MultiLevel Sensor report</label><description><![CDATA[The MIMOlite will periodically send a MultiLevel Sensor report indicating the input’s analog voltage level.]]></description><multipleLimit>2</multipleLimit></parameter><parameter name="group_3" type="integer" multiple="true" groupName="association"><label>Power Alarm</label><description><![CDATA[If a power dropout occurs, the MIMOlite will send an Alarm Command Class report (if there is enough available residual power)]]></description><multipleLimit>2</multipleLimit></parameter><parameter name="group_4" type="integer" multiple="true" groupName="association"><label>Binary Sensor report</label><description><![CDATA[When the input is triggered or untriggered, the MIMOlite will automatically send a Binary Sensor report to this group’s associated device(s).]]></description><multipleLimit>2</multipleLimit></parameter><parameter name="group_5" type="integer" multiple="true" groupName="association"><label>Pulse Meter Sensor report</label><description><![CDATA[Pulse meter counts will be sent to this group’s associated device(s). This will be sent periodically at the same intervals as Association Group 2, MLS Report except that if the pulse meter count is unchanged the report will not be sent.]]]></description><multipleLimit>2</multipleLimit></parameter></config-description></thing-type><channel-type id="dimmer"><item-type>Dimmer</item-type><label>Dimmer</label><description>Set the light level</description><category>Light</category></channel-type></thing:thing-descriptions>
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="fortrezz_ssa1/ssa2_00_000">
+		<label>FortrezZ SSA1/SSA2</label>
+		<description><![CDATA[Siren and Strobe Alarm]]></description>
+		<channels>
+			<channel id="switch0" typeId="dimmer">
+				<properties>
+					<property name="endpoint">0</property>
+					<property name="command_class">SWITCH_MULTILEVEL</property>
+					<property name="set_to_basic">true</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">FortrezZ</property>
+			<property name="model">SSA1/SSA2</property>
+			<property name="manufacturerId">0084</property>
+			<property name="manufacturerRef">0313:0108,0313:010B</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+				<description></description>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+				<description></description>
+			</parameter-group>
+			<parameter name="config_1" type="integer" groupName="configuration">
+				<label>1: Not_Used_1</label>
+				<description><![CDATA[null]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Null</option>
+				</options>
+			</parameter>
+			<parameter name="config_2" type="integer" groupName="configuration">
+				<label>2: Clear_Pulse_Meter_Counts</label>
+				<description><![CDATA[null]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Actual value doesn't matter. Count gets reset
+						whenever this command is received</option>
+				</options>
+			</parameter>
+			<parameter name="config_3" type="integer" groupName="configuration">
+				<label>3: Trigger_Mapping</label>
+				<description><![CDATA[null]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Disabled</option>
+					<option value="1">SIG1 triggered/untriggered sets or clears
+						Relay1
+					</option>
+				</options>
+			</parameter>
+			<parameter name="config_4" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>4: Lower_Threshold_High</label>
+				<description><![CDATA[null]]></description>
+				<default>187</default>
+				<options>
+					<option value="187">Default (0xBB)</option>
+				</options>
+			</parameter>
+			<parameter name="config_5" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>5: Lower_Threshold_Low</label>
+				<description><![CDATA[null]]></description>
+				<default>171</default>
+				<options>
+					<option value="171">Default (0xAB)</option>
+				</options>
+			</parameter>
+			<parameter name="config_6" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>6: Upper_Threshold_High</label>
+				<description><![CDATA[null]]></description>
+				<default>255</default>
+				<options>
+					<option value="255">Default (0xFF)</option>
+				</options>
+			</parameter>
+			<parameter name="config_7" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>7: Upper_Threshold_Low</label>
+				<description><![CDATA[null]]></description>
+				<default>254</default>
+				<options>
+					<option value="254">Default (0xFE)</option>
+				</options>
+			</parameter>
+			<parameter name="config_8" type="integer" groupName="configuration">
+				<label>8: Trigger_Level_And_Input_Threshold</label>
+				<description><![CDATA[null]]></description>
+				<default>3</default>
+				<options>
+					<option value="0">TriggerLevel ANALOG and Triggered when input
+						falls
+						OUTSIDE of thresholds</option>
+					<option value="1">TriggerLevel ANALOG and Triggered when input
+						falls
+						BETWEEN thresholds</option>
+					<option value="2">TriggerLevel DIGITAL and Triggered when input
+						falls OUTSIDE of thresholds</option>
+					<option value="3">TriggerLevel DIGITAL and Triggered when input
+						falls BETWEEN thresholds (Default)</option>
+				</options>
+			</parameter>
+			<parameter name="config_9" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>9: Multilevel_AutoReport_Interval</label>
+				<description><![CDATA[null]]></description>
+				<default>3</default>
+				<options>
+					<option value="0">Disable Automatic Reports</option>
+					<option value="3">Enable Reports every 30 seconds (Default)</option>
+				</options>
+			</parameter>
+			<parameter name="config_10" type="integer" groupName="configuration">
+				<label>10: Not_Used_2</label>
+				<description><![CDATA[null]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Null</option>
+				</options>
+			</parameter>
+			<parameter name="config_11" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>11: Momentary_Relay1_Duration</label>
+				<description><![CDATA[null]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Disabled (Default)</option>
+					<option value="5">500 milliseconds</option>
+				</options>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Binary input Set Group</label>
+				<description><![CDATA[When the input is triggered or untriggered, the MIMOlite will automatically send a Basic Set command to turn on or off the device(s) associated with this group]]></description>
+				<multipleLimit>2</multipleLimit>
+			</parameter>
+			<parameter name="group_2" type="integer" multiple="true"
+				groupName="association">
+				<label>MultiLevel Sensor report</label>
+				<description><![CDATA[The MIMOlite will periodically send a MultiLevel Sensor report indicating the input’s analog voltage level.]]></description>
+				<multipleLimit>2</multipleLimit>
+			</parameter>
+			<parameter name="group_3" type="integer" multiple="true"
+				groupName="association">
+				<label>Power Alarm</label>
+				<description><![CDATA[If a power dropout occurs, the MIMOlite will send an Alarm Command Class report (if there is enough available residual power)]]></description>
+				<multipleLimit>2</multipleLimit>
+			</parameter>
+			<parameter name="group_4" type="integer" multiple="true"
+				groupName="association">
+				<label>Binary Sensor report</label>
+				<description><![CDATA[When the input is triggered or untriggered, the MIMOlite will automatically send a Binary Sensor report to this group’s associated device(s).]]></description>
+				<multipleLimit>2</multipleLimit>
+			</parameter>
+			<parameter name="group_5" type="integer" multiple="true"
+				groupName="association">
+				<label>Pulse Meter Sensor report</label>
+				<description><![CDATA[Pulse meter counts will be sent to this group’s associated device(s). This will be sent periodically at the same intervals as Association Group 2, MLS Report except that if the pulse meter count is unchanged the report will not be sent.]]]></description>
+				<multipleLimit>2</multipleLimit>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<channel-type id="dimmer">
+		<item-type>Dimmer</item-type>
+		<label>Dimmer</label>
+		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+</thing:thing-descriptions>

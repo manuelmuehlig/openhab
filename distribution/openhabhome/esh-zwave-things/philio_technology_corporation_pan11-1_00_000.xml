@@ -1,3 +1,74 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="philiotechnologycorporation_pan11-1_00_000"><label>Philio Technology Corporation PAN11-1</label><description><![CDATA[Smart Energy Plug In Switch]]></description><channels><channel id="switch0" typeId="dimmer"><properties><property name="endpoint">0</property><property name="command_class">SWITCH_MULTILEVEL</property><property name="set_to_basic">true</property></properties></channel></channels><properties><property name="vendor">Philio Technology Corporation</property><property name="model">PAN11-1</property><property name="manufacturerId">013C</property><property name="manufacturerRef">0001:0001</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label><description></description></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label><description></description></parameter-group><parameter name="config_1" type="integer" groupName="configuration"><label>1: Selected endpoint</label><description><![CDATA[If Controller not using Multi_Channel command class
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="philiotechnologycorporation_pan11-1_00_000">
+		<label>Philio Technology Corporation PAN11-1</label>
+		<description><![CDATA[Smart Energy Plug In Switch]]></description>
+		<channels>
+			<channel id="switch0" typeId="dimmer">
+				<properties>
+					<property name="endpoint">0</property>
+					<property name="command_class">SWITCH_MULTILEVEL</property>
+					<property name="set_to_basic">true</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">Philio Technology Corporation</property>
+			<property name="model">PAN11-1</property>
+			<property name="manufacturerId">013C</property>
+			<property name="manufacturerRef">0001:0001</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+				<description></description>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+				<description></description>
+			</parameter-group>
+			<parameter name="config_1" type="integer" groupName="configuration">
+				<label>1: Selected endpoint</label>
+				<description><![CDATA[If Controller not using Multi_Channel command class
 							to access the endpoint of PAN06, you may configure
-							the endpoint value to react the Basic Command Class]]></description><default>1</default><options><option value="1">Relay 1 + 2</option><option value="2">Relay 1</option><option value="3">Relay 2</option></options></parameter><parameter name="config_2" type="integer" groupName="configuration"><label>2: Switch mode</label><description><![CDATA[Change the external switch mode]]></description><default>1</default><options><option value="1">Edge mode</option><option value="2">Pulse mode</option><option value="3">Edge-Toggle mode</option></options></parameter><parameter name="group_1" type="integer" groupName="association"><label>Relay 1 + 2</label></parameter><parameter name="group_2" type="integer" groupName="association"><label>Relay 1</label></parameter><parameter name="group_3" type="integer" groupName="association"><label>Relay 2</label></parameter></config-description></thing-type><channel-type id="dimmer"><item-type>Dimmer</item-type><label>Dimmer</label><description>Set the light level</description><category>Light</category></channel-type></thing:thing-descriptions>
+							the endpoint value to react the Basic Command Class]]></description>
+				<default>1</default>
+				<options>
+					<option value="1">Relay 1 + 2</option>
+					<option value="2">Relay 1</option>
+					<option value="3">Relay 2</option>
+				</options>
+			</parameter>
+			<parameter name="config_2" type="integer" groupName="configuration">
+				<label>2: Switch mode</label>
+				<description><![CDATA[Change the external switch mode]]></description>
+				<default>1</default>
+				<options>
+					<option value="1">Edge mode</option>
+					<option value="2">Pulse mode</option>
+					<option value="3">Edge-Toggle mode</option>
+				</options>
+			</parameter>
+			<parameter name="group_1" type="integer" groupName="association">
+				<label>Relay 1 + 2</label>
+			</parameter>
+			<parameter name="group_2" type="integer" groupName="association">
+				<label>Relay 1</label>
+			</parameter>
+			<parameter name="group_3" type="integer" groupName="association">
+				<label>Relay 2</label>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<channel-type id="dimmer">
+		<item-type>Dimmer</item-type>
+		<label>Dimmer</label>
+		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+</thing:thing-descriptions>

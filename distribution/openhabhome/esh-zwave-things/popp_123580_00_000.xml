@@ -1,1 +1,85 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="popp_123580_00_000"><label>POPP 123580</label><description><![CDATA[Wall Plug Dimmer]]></description><channels><channel id="switch0" typeId="dimmer"><properties><property name="endpoint">0</property><property name="command_class">SWITCH_MULTILEVEL</property><property name="set_to_basic">true</property></properties></channel></channels><properties><property name="vendor">POPP</property><property name="model">123580</property><property name="manufacturerId">0154</property><property name="manufacturerRef">1100:0002</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label><description></description></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label><description></description></parameter-group><parameter name="config_1" type="integer" groupName="configuration"><label>1: Set LED indication mode</label><description><![CDATA[]]></description><default>1</default><options><option value="0">Disabled</option><option value="1">On when switch on</option><option value="2">On when switch off</option><option value="3">Operated by command</option></options></parameter><parameter name="config_2" type="integer" groupName="configuration"><label>2: Automatic switch off time</label><description><![CDATA[If not zero, automatically switch off after a user defined time (in seconds)]]></description><default>0</default></parameter><parameter name="config_3" type="integer" groupName="configuration"><label>3: RF Off command</label><description><![CDATA[Defines how to interpret RF Off command. Can be used in conjunction with Auto Off function: Ignore - to switch on the light by motion detectors and switch it off after some amount of time: in case of multiple motion detectors each would try to switch the light off that would break logics; Switch on - to switch on the light on both On and Off paddle press on the remote and switch it off after some amount of time. Button off click will still work (if button operations are not disabled).]]></description><default>0</default><options><option value="0">Switch OFF</option><option value="1">Ignore</option><option value="2">Switch ON</option><option value="3">Switch on if load is off else switch off</option></options></parameter><parameter name="config_5" type="integer" groupName="configuration"><label>5: Restore switch state after power cycle</label><description><![CDATA[Defines if the switch should restore switch state to the last state prior to device power off (power cycle).]]></description><default>1</default><options><option value="0">No - turn OFF</option><option value="1">Yes</option></options></parameter><parameter name="group_1" type="integer" multiple="true" groupName="association"><label>Switch State</label><multipleLimit>5</multipleLimit></parameter></config-description></thing-type><channel-type id="dimmer"><item-type>Dimmer</item-type><label>Dimmer</label><description>Set the light level</description><category>Light</category></channel-type></thing:thing-descriptions>
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="popp_123580_00_000">
+		<label>POPP 123580</label>
+		<description><![CDATA[Wall Plug Dimmer]]></description>
+		<channels>
+			<channel id="switch0" typeId="dimmer">
+				<properties>
+					<property name="endpoint">0</property>
+					<property name="command_class">SWITCH_MULTILEVEL</property>
+					<property name="set_to_basic">true</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">POPP</property>
+			<property name="model">123580</property>
+			<property name="manufacturerId">0154</property>
+			<property name="manufacturerRef">1100:0002</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+				<description></description>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+				<description></description>
+			</parameter-group>
+			<parameter name="config_1" type="integer" groupName="configuration">
+				<label>1: Set LED indication mode</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>1</default>
+				<options>
+					<option value="0">Disabled</option>
+					<option value="1">On when switch on</option>
+					<option value="2">On when switch off</option>
+					<option value="3">Operated by command</option>
+				</options>
+			</parameter>
+			<parameter name="config_2" type="integer" groupName="configuration">
+				<label>2: Automatic switch off time</label>
+				<description><![CDATA[If not zero, automatically switch off after a user defined time (in seconds)]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_3" type="integer" groupName="configuration">
+				<label>3: RF Off command</label>
+				<description><![CDATA[Defines how to interpret RF Off command. Can be used in conjunction with Auto Off function: Ignore - to switch on the light by motion detectors and switch it off after some amount of time: in case of multiple motion detectors each would try to switch the light off that would break logics; Switch on - to switch on the light on both On and Off paddle press on the remote and switch it off after some amount of time. Button off click will still work (if button operations are not disabled).]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Switch OFF</option>
+					<option value="1">Ignore</option>
+					<option value="2">Switch ON</option>
+					<option value="3">Switch on if load is off else switch off</option>
+				</options>
+			</parameter>
+			<parameter name="config_5" type="integer" groupName="configuration">
+				<label>5: Restore switch state after power cycle</label>
+				<description><![CDATA[Defines if the switch should restore switch state to the last state prior to device power off (power cycle).]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">No - turn OFF</option>
+					<option value="1">Yes</option>
+				</options>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Switch State</label>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<channel-type id="dimmer">
+		<item-type>Dimmer</item-type>
+		<label>Dimmer</label>
+		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+</thing:thing-descriptions>
