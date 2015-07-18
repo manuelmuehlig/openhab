@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="qubino_zmnhcd_00_000">
+		<label>Qubino ZMNHCD</label>
+		<description><![CDATA[Flush Shutter]]></description>
+		<channels>
+			<channel id="switch0" typeId="dimmer">
+				<properties>
+					<property name="endpoint">0</property>
+					<property name="command_class">SWITCH_MULTILEVEL</property>
+					<property name="set_to_basic">true</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">Qubino</property>
+			<property name="model">ZMNHCD</property>
+			<property name="manufacturerId">0159</property>
+			<property name="manufacturerRef">0003:0002</property>
+			<property name="commandClass:ASSOCIATION:0:default">6</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+				<description></description>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+				<description></description>
+			</parameter-group>
+			<parameter name="config_1" type="integer" groupName="configuration">
+				<label>1: Input 1 switch type</label>
+				<description><![CDATA[Input 1 switch type]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">mono-stable switch type (push button)</option>
+					<option value="1">bi-stable switch type</option>
+				</options>
+			</parameter>
+			<parameter name="config_2" type="integer" groupName="configuration">
+				<label>2: Input 2 switch type</label>
+				<description><![CDATA[Input 2 switch type]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">mono-stable switch type (push button)</option>
+					<option value="1">bi-stable switch type</option>
+				</options>
+			</parameter>
+			<parameter name="config_3" type="integer" groupName="configuration">
+				<label>3: Input 3 switch type</label>
+				<description><![CDATA[Input 3 switch type]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">mono-stable switch type (push button)</option>
+					<option value="1">bi-stable switch type</option>
+				</options>
+			</parameter>
+			<parameter name="config_4" type="integer" groupName="configuration">
+				<label>4: Input 1 contact type</label>
+				<description><![CDATA[Input 1 contact type]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">NO (normally open) input type</option>
+					<option value="1"> NC (normally close) input type</option>
+				</options>
+			</parameter>
+			<parameter name="config_5" type="integer" groupName="configuration">
+				<label>5: Input 2 contact type</label>
+				<description><![CDATA[Input 2 contact type]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">NO (normally open) input type</option>
+					<option value="1"> NC (normally close) input type</option>
+				</options>
+			</parameter>
+			<parameter name="config_6" type="integer" groupName="configuration">
+				<label>6: Input 3 contact type</label>
+				<description><![CDATA[Input 3 contact type]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">NO (normally open) input type</option>
+					<option value="1"> NC (normally close) input type</option>
+				</options>
+			</parameter>
+			<parameter name="config_10" type="integer" groupName="configuration">
+				<label>10: Activate / deactivate functions ALL ON/ALL OFF
+				</label>
+				<description><![CDATA[Flush PWM thermostat module responds to commands ALL
+				ON /
+				ALL OFF that may be sent by the main controller or by
+				other
+				controller belonging to the system.
+			]]></description>
+				<default>255</default>
+				<options>
+					<option value="255">ALL ON active, ALL OFF active</option>
+					<option value="0">ALL ON is not active ALL OFF is not active</option>
+					<option value="1">ALL ON is not active ALL OFF active</option>
+					<option value="2">ALL ON active ALL OFF is not active</option>
+				</options>
+			</parameter>
+			<parameter name="config_11" type="integer" min="1" max="65535"
+				groupName="configuration">
+				<label>11: I1 Functionality Selection</label>
+				<description><![CDATA[Default Value = 1. 65535 – Input I1 does not
+				influence
+				on the heat/cool process. 1 - Input I1 changes the mode of
+				the thermostat between OFF and AUTO.
+				In this case function on flood sensor (if connected) is disabled.
+				2 -
+				input I1 influences on cooling and heating valves according to
+				status of flood sensor. In
+				this case function of OFF and AUTO selection by I1 is disabled.
+			]]></description>
+				<default>1</default>
+			</parameter>
+			<parameter name="config_12" type="integer" min="1" max="2"
+				groupName="configuration">
+				<label>12: I2 Functionality Selection</label>
+				<description><![CDATA[Default = 65535, 65535 - I2 does not influence on the
+				heat/cool process, From
+				From 0 to 990 - Temperature set point from
+				0.0 C to 99.0 C. When I2 is pressed, the temperature
+				set point is
+				automatically set to value defined here. In this case function of
+				condense sensor
+				is disabled. From 1001 to 1150 - Temperature set point from -0.1 C to
+				-15.0 C. When I2 is pressed,
+				temperature set point is automatically
+				set to value defined here. In this case function of condense
+				sensor
+				is disabled. 2000 - I2 influences on the cooling valve according to
+				status of condense
+				sensor. In this case function of set point
+				selection with I2 is disabled.
+			]]></description>
+				<default>65535</default>
+			</parameter>
+			<parameter name="config_13" type="integer" min="1" max="65535"
+				groupName="configuration">
+				<label>13: I3 Functionality Selection</label>
+				<description><![CDATA[Default Value = 65535. 65535 – Input I3 does not
+				influence
+				on the heat/cool process. 1 - Input I3 changes the mode of
+				the thermostat between OFF and AUTO.
+				In this case function on window sensor is disabled.
+				2 - input I3
+				influences on cooling and heating valves according to status of
+				window sensor. In
+				this case function of HEAT and COOL selection by I3 is disabled.
+			]]></description>
+				<default>65535</default>
+			</parameter>
+			<parameter name="config_40" type="integer" min="0" max="100"
+				groupName="configuration">
+				<label>40: Power reporting in Watts on power change</label>
+				<description><![CDATA[Default Value = 0. 0 – Reporting Disabled
+				1 - 100 = 1% - 100% Reporting enabled. Power report is sent (pushed)
+				only when actual power
+				in Watts in real time changes for more than
+				set percentage comparing to previous actual power
+				in Watts, step is
+				1%. NOTE: If power changed is less than 1W, the report is not sent
+				(pushed)
+				independent of percentage set.
+			]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_42" type="integer" min="0" max="32767"
+				groupName="configuration">
+				<label>42: Power reporting in Watts by timer interval</label>
+				<description><![CDATA[Default Value = 300. 0 – Reporting Disabled
+				1 - 32767 = 1 second - 32767 seconds Reporting enabled. Power report
+				is sent with time interval
+				set by entered value.
+			]]></description>
+				<default>300</default>
+			</parameter>
+			<parameter name="config_45" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>45: Antifreeze</label>
+				<description><![CDATA[Set value at which temperature the device will be
+				turned on even if the termpearture
+				was manually set to off. Parameter can be set from 0 to 255 where 0 to
+				127 means from 0.0 C to 12.7 C
+				and from 128 to 254 means from -0.1 C to -12.6 C Default = 0. 255 =
+				Disabled NOTE:Antifreeze is
+				activated only in heating mode.
+			]]></description>
+				<default>50</default>
+			</parameter>
+			<parameter name="config_50" type="integer" min="2" max="100"
+				groupName="configuration">
+				<label>50: PWM Maximum Value</label>
+				<description><![CDATA[2 - 100 = 2% - 100%, step is 1% Max PWM set by
+				entered value. Default = 100.
+				The Maximum level may not be lower than the minimum level.
+			]]></description>
+				<default>100</default>
+			</parameter>
+			<parameter name="config_51" type="integer" min="0" max="99"
+				groupName="configuration">
+				<label>51: PWM Minimum Value</label>
+				<description><![CDATA[1 - 99 = 1% - 99%, step is 1% Minimum PWM set by
+				entered value. Default = 0.
+				The Minimum level may exceed the maximum level.
+			]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_52" type="integer" min="1" max="127"
+				groupName="configuration">
+				<label>52: PWM Cycle Duration</label>
+				<description><![CDATA[1 - 127 = 1-127 seconds, step is 1s PWM Cycle
+				Duration set by entered value. Default = 10.
+				NOTE:PWM Cycle duration defines the summary of all ON plus OFF time periods.
+				For example if Output is set
+				to 70% with PWM cycle duration of 20s, output will be on for 14s then
+				OFF 6s, again 14s ON, etc..
+			]]></description>
+				<default>10</default>
+			</parameter>
+			<parameter name="config_53" type="integer" groupName="configuration">
+				<label>53: PID Value Inside Deadband</label>
+				<description><![CDATA[When value is set to ZERO PID inside deadband is
+				forced to zero. LAST VALUE means
+				PID remains on same level as was before entering into deadband.
+			]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">PID value equals ZERO</option>
+					<option value="1">PID value set to LAST VALUE</option>
+				</options>
+			</parameter>
+			<parameter name="config_54" type="integer" min="0" max="127"
+				groupName="configuration">
+				<label>54: PID Deadband</label>
+				<description><![CDATA[0 - 127 = 0.0C - 12.7C step is 0.1 C This parameter
+				defines the zone where PID is
+				not active. If the temperature difference between actual and setpoint
+				is bigger than PID deadband,
+				then the PID will start to regulate the system, otherwise the PID is
+				zero or fixed.
+			]]></description>
+				<default>5</default>
+			</parameter>
+			<parameter name="config_55" type="integer" min="0" max="127"
+				groupName="configuration">
+				<label>55: Integral Sampling Time</label>
+				<description><![CDATA[0 - 127 = 0s -127s step is 1s Parameter defines the
+				time between samples. On each
+				sample the controller captures difference between SP-act.
+			]]></description>
+				<default>5</default>
+			</parameter>
+			<parameter name="config_56" type="integer" min="0" max="1000"
+				groupName="configuration">
+				<label>56: P Parameter</label>
+				<description><![CDATA[0 - 1000 P value step is 1. Default = 100
+			]]></description>
+				<default>100</default>
+			</parameter>
+			<parameter name="config_57" type="integer" min="0" max="1000"
+				groupName="configuration">
+				<label>57: I Parameter</label>
+				<description><![CDATA[0 - 1000 - 0s I value step is 1. Default = 1
+			]]></description>
+				<default>1</default>
+			</parameter>
+			<parameter name="config_58" type="integer" min="0" max="1000"
+				groupName="configuration">
+				<label>58: D Parameter</label>
+				<description><![CDATA[0 - 1000 - 0s D value step is 1. Default = 1
+			]]></description>
+				<default>1</default>
+			</parameter>
+			<parameter name="config_59" type="integer" groupName="configuration">
+				<label>59: Thermostat Mode</label>
+				<description><![CDATA[null]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Heat Mode</option>
+					<option value="1">Cool Mode</option>
+				</options>
+			</parameter>
+			<parameter name="config_60" type="integer" min="1" max="1000"
+				groupName="configuration">
+				<label>60: Too low temperature limit</label>
+				<description><![CDATA[1 - 1000 = 0.1 C - 100.0 C step is 0.1 C Too low
+				temperature limit is set by entered
+				value. In case measured temperature is below set value, module sends
+				BasicSet value. Default = 50
+			]]></description>
+				<default>50</default>
+			</parameter>
+			<parameter name="config_61" type="integer" min="1" max="1000"
+				groupName="configuration">
+				<label>61: Too high temperature limit</label>
+				<description><![CDATA[1 - 1000 = 0.1 C - 100.0 C step is 0.1 C Too high
+				temperature limit is set by entered
+				value. In case measured temperature is higher than set value, module sends
+				BasicSet value. Default = 700
+			]]></description>
+				<default>700</default>
+			</parameter>
+			<parameter name="config_63" type="integer" groupName="configuration">
+				<label>63: Output Switch Selection</label>
+				<description><![CDATA[null]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">When system is turned off the output is 0V
+						(NC)
+					</option>
+					<option value="1">When system is turned off the output is 230V
+						(NO)
+					</option>
+				</options>
+			</parameter>
+			<parameter name="config_70" type="integer" min="0" max="32000"
+				groupName="configuration">
+				<label>70: Input 1 Status on delay</label>
+				<description><![CDATA[1 - 32000 seconds. If the value of the parameter is
+				different to 0, means that the
+				influence of this input to heating or cooling will react after inserted time.
+				Parameter 11 must be
+				set to 2!
+			]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_71" type="integer" min="0" max="32000"
+				groupName="configuration">
+				<label>71: Input 1 Status off delay</label>
+				<description><![CDATA[1 - 32000 seconds. If the value of the parameter is
+				different to 0, means that the
+				influence of this input to heating or cooling will react after inserted time.
+				Parameter 11 must be
+				set to 2!
+			]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_72" type="integer" min="0" max="32000"
+				groupName="configuration">
+				<label>72: Input 2 Status on delay</label>
+				<description><![CDATA[1 - 32000 seconds. If the value of the parameter is
+				different to 0, means that the
+				influence of this input to heating or cooling will react after inserted time.
+				Parameter 12 must be
+				set to 2000!
+			]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_73" type="integer" min="0" max="32000"
+				groupName="configuration">
+				<label>73: Input 2 Status off delay</label>
+				<description><![CDATA[1 - 32000 seconds. If the value of the parameter is
+				different to 0, means that the
+				influence of this input to heating or cooling will react after inserted time.
+				Parameter 12 must be
+				set to 2000!
+			]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_74" type="integer" min="0" max="32000"
+				groupName="configuration">
+				<label>74: Input 3 Status on delay</label>
+				<description><![CDATA[1 - 32000 seconds. If the value of the parameter is
+				different to 0, means that the
+				influence of this input to heating or cooling will react after inserted time.
+				Parameter 13 must be
+				set to 2!
+			]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_75" type="integer" min="0" max="32000"
+				groupName="configuration">
+				<label>75: Input 3 Status off delay</label>
+				<description><![CDATA[1 - 32000 seconds. If the value of the parameter is
+				different to 0, means that the
+				influence of this input to heating or cooling will react after inserted time.
+				Parameter 13 must be
+				set to 2!
+			]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>On/Off Triggered by Q State</label>
+				<description><![CDATA[basic on/off (triggered at change of the output
+				Q state and reflecting its state)up to 16 nodes.
+			]]></description>
+				<multipleLimit>16</multipleLimit>
+			</parameter>
+			<parameter name="group_2" type="integer" multiple="true"
+				groupName="association">
+				<label>On/Off Triggered by I2</label>
+				<description><![CDATA[ basic on/off (triggered at change of the input I2
+				state and reflecting its state)up to 16 nodes.
+			]]></description>
+				<multipleLimit>16</multipleLimit>
+			</parameter>
+			<parameter name="group_3" type="integer" multiple="true"
+				groupName="association">
+				<label>On/Off Triggered by I3</label>
+				<description><![CDATA[ basic on/off (triggered at change of the input I3
+				state and reflecting its state)up to 16 nodes.
+			]]></description>
+				<multipleLimit>16</multipleLimit>
+			</parameter>
+			<parameter name="group_4" type="integer" multiple="true"
+				groupName="association">
+				<label>On/Off Triggerd by High Temp</label>
+				<description><![CDATA[basic on/off (triggered by Too high temperature
+				limit, it sends FF )
+				to up to 16 nodes.
+			]]></description>
+				<multipleLimit>16</multipleLimit>
+			</parameter>
+			<parameter name="group_5" type="integer" multiple="true"
+				groupName="association">
+				<label>On/Off Trigger by Low Temp</label>
+				<description><![CDATA[basic on/off (triggered by Too low temperature
+				limit, it sends FF )
+				to up to 16 nodes.
+			]]></description>
+				<multipleLimit>16</multipleLimit>
+			</parameter>
+			<parameter name="group_6" type="integer" groupName="association">
+				<label>Controller Updates</label>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<channel-type id="dimmer">
+		<item-type>Dimmer</item-type>
+		<label>Dimmer</label>
+		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+</thing:thing-descriptions>

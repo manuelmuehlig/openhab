@@ -20,7 +20,7 @@
 			<property name="model">FGR221</property>
 			<property name="manufacturerId">010F</property>
 			<property name="manufacturerRef">0300:100A,0300:0106,0300:0104,0300:0107</property>
-			<property name="defaultAssociationGroups">5</property>
+			<property name="commandClass:ASSOCIATION:0:default">5</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">

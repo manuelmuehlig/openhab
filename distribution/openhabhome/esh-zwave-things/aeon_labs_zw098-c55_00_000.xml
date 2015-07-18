@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="aeonlabs_zw098-c55_00_000">
+		<label>Aeon Labs ZW098-C55</label>
+		<description><![CDATA[LED Bulb]]></description>
+		<channels>
+			<channel id="switch0" typeId="dimmer">
+				<properties>
+					<property name="endpoint">0</property>
+					<property name="command_class">SWITCH_MULTILEVEL</property>
+					<property name="set_to_basic">true</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">Aeon Labs</property>
+			<property name="model">ZW098-C55</property>
+			<property name="manufacturerId">0086</property>
+			<property name="manufacturerRef">0003:0062</property>
+			<property name="commandClass:ASSOCIATION:0:default">1</property>
+			<property name="command_class:METER:5:ADD</property-group><property name="
+				command_class:METER:6:ADD
+			</property-group>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+				<description></description>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+				<description></description>
+			</parameter-group>
+			<parameter name="config_37" type="integer" min="0" max="65535"
+				groupName="configuration">
+				<label>37: Siren Sound</label>
+				<description><![CDATA[1,The value1 (low byte) is used to select the Siren sound</br>
+			Value1=0,do not change the current Siren sound.</br>
+			Value1=1,Siren sound1 is selected.</br>
+			Value1=2,Siren sound2 is selected.</br>
+			Value1=3,Siren sound3 is selected.</br>
+			Value1=4,Siren sound4 is selected.</br>
+			Value1=5,Siren sound5 is selected.</br>
+			Other values will be ignored.</br>
+			2,The value 2(high byte)is used to adjust the volume:</br>
+			Value2=0,do not change the current volume.</br>
+			Value2=1,set the volume to 88dB.</br>
+			Value2=2,set the volume to 100dB.</br>
+			Value2=3,set the volume to 105dB.</br>
+			Othervalueswillbeignored.
+			]]></description>
+				<default>1</default>
+			</parameter>
+			<parameter name="config_80" type="integer" min="0" max="60000"
+				groupName="configuration">
+				<label>80: Enable Notifications</label>
+				<description><![CDATA[Enable to send notifications to associated devices (Group1) when the state of Siren changed (0=nothing,1=hailCC,2=basic CC report).]]></description>
+				<default>25</default>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Group 1</label>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<channel-type id="dimmer">
+		<item-type>Dimmer</item-type>
+		<label>Dimmer</label>
+		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+</thing:thing-descriptions>

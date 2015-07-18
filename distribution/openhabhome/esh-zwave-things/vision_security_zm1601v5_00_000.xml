@@ -3,9 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
 	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
-	<thing-type id="linear_fs20z_00_000">
-		<label>Linear FS20Z</label>
-		<description><![CDATA[Isolated Contact Fixture Module]]></description>
+	<thing-type id="visionsecurity_zm1601v5_00_000">
+		<label>Vision Security ZM1601v5</label>
+		<description><![CDATA[Battery Operated Siren]]></description>
 		<channels>
 			<channel id="switch0" typeId="dimmer">
 				<properties>
@@ -16,10 +16,10 @@
 			</channel>
 		</channels>
 		<properties>
-			<property name="vendor">Linear</property>
-			<property name="model">FS20Z</property>
-			<property name="manufacturerId">014F</property>
-			<property name="manufacturerRef">5246:3133</property>
+			<property name="vendor">Vision Security</property>
+			<property name="model">ZM1601v5</property>
+			<property name="manufacturerId">0109</property>
+			<property name="manufacturerRef">2005:0508</property>
 			<property name="commandClass:ASSOCIATION:0:default">1</property>
 		</properties>
 		<config-description>
@@ -33,9 +33,23 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
+			<parameter name="config_1" type="integer" groupName="configuration">
+				<label>1: null</label>
+				<description><![CDATA[null]]></description>
+				<default>1</default>
+				<options>
+					<option value="1">Set to 1 for a Single Wall Switch without
+						Indicator Light or for Two
+						Wall Switches
+					</option>
+					<option value="2">Set to 2 for a Single Wall Switch with
+						Indicator
+						Light</option>
+				</options>
+			</parameter>
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
-				<label>Controller Updates</label>
+				<label>Update Controller</label>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 		</config-description>

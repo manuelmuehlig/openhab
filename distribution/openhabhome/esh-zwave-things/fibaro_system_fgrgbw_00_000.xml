@@ -20,7 +20,7 @@
 			<property name="model">FGRGBW</property>
 			<property name="manufacturerId">010F</property>
 			<property name="manufacturerRef">0900:1000,0900:2000,0900:4000</property>
-			<property name="defaultAssociationGroups">3</property>
+			<property name="commandClass:ASSOCIATION:0:default">3</property>
 			<property
 				name="command_class:SWITCH_MULTILEVEL:1:NO_GET</property-group><property name="
 				command_class:SWITCH_MULTILEVEL:2:NO_GET

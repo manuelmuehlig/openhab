@@ -20,7 +20,7 @@
 			<property name="model">FGS211</property>
 			<property name="manufacturerId">010F</property>
 			<property name="manufacturerRef">0400:0102,0400:0104,0400:0105,0400:0106,0400:0107,0400:0108,0400:0109,0400:100A</property>
-			<property name="defaultAssociationGroups">3</property>
+			<property name="commandClass:ASSOCIATION:0:default">3</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">
@@ -194,6 +194,11 @@
 				<label>39: ALARM FLASHING alarm time</label>
 				<description><![CDATA[Amount of time (ms) the device keeps on flashing after receipt of Alarm Frame]]></description>
 				<default>600</default>
+			</parameter>
+			<parameter name="config_40" type="integer" groupName="configuration">
+				<label>40: Updating the dimming level without switch.</label>
+				<description><![CDATA[Available settings: from 1 to 99. Parameter’s value changes depending on the dimming level.]]></description>
+				<default>99</default>
 			</parameter>
 			<parameter name="config_41" type="integer" groupName="configuration">
 				<label>41: Scene activation functionality</label>

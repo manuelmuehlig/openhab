@@ -3,9 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
 	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
-	<thing-type id="linear_fs20z_00_000">
-		<label>Linear FS20Z</label>
-		<description><![CDATA[Isolated Contact Fixture Module]]></description>
+	<thing-type id="aeonlabs_zw096_00_000">
+		<label>Aeon Labs ZW096</label>
+		<description><![CDATA[Smart Switch 6]]></description>
 		<channels>
 			<channel id="switch0" typeId="dimmer">
 				<properties>
@@ -16,11 +16,13 @@
 			</channel>
 		</channels>
 		<properties>
-			<property name="vendor">Linear</property>
-			<property name="model">FS20Z</property>
-			<property name="manufacturerId">014F</property>
-			<property name="manufacturerRef">5246:3133</property>
-			<property name="commandClass:ASSOCIATION:0:default">1</property>
+			<property name="vendor">Aeon Labs</property>
+			<property name="model">ZW096</property>
+			<property name="manufacturerId">0086</property>
+			<property name="manufacturerRef">0003:0060,0103:0060,0203:0060,1D03:0060</property>
+			<property name="command_class:METER:5:ADD</property-group><property name="
+				command_class:METER:6:ADD
+			</property-group>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">
@@ -28,16 +30,6 @@
 				<label>Configuration Parameters</label>
 				<description></description>
 			</parameter-group>
-			<parameter-group name="association">
-				<context>link</context>
-				<label>Association Groups</label>
-				<description></description>
-			</parameter-group>
-			<parameter name="group_1" type="integer" multiple="true"
-				groupName="association">
-				<label>Controller Updates</label>
-				<multipleLimit>5</multipleLimit>
-			</parameter>
 		</config-description>
 	</thing-type>
 	<channel-type id="dimmer">

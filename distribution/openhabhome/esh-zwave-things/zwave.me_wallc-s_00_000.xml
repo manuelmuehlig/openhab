@@ -20,7 +20,7 @@
 			<property name="model">WALLC-S</property>
 			<property name="manufacturerId">0115</property>
 			<property name="manufacturerRef">0100:0101</property>
-			<property name="defaultAssociationGroups">3</property>
+			<property name="commandClass:ASSOCIATION:0:default">3</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">

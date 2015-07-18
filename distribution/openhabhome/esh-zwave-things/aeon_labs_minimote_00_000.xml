@@ -20,7 +20,7 @@
 			<property name="model">Minimote</property>
 			<property name="manufacturerId">0086</property>
 			<property name="manufacturerRef">0006:0002,0001:0003</property>
-			<property name="defaultAssociationGroups">1</property>
+			<property name="commandClass:ASSOCIATION:0:default">1</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">
@@ -33,87 +33,251 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_1" type="integer" groupName="configuration">
-				<label>1: Sensor report type on Get without endpoint</label>
-				<description><![CDATA[null]]></description>
-				<default>0</default>
-				<options>
-					<option value="0">Temperature, humidity and luminance</option>
-					<option value="1">Temperature</option>
-					<option value="2">Luminance</option>
-					<option value="3">Humidity</option>
-				</options>
-			</parameter>
 			<parameter name="config_2" type="integer" groupName="configuration">
-				<label>2: Wake up for 10 minutes when batteries are inserted</label>
-				<description><![CDATA[null]]></description>
+				<label>2: Stay Awake in Battery Mode
+				</label>
+				<description><![CDATA[Stay awake for 10 minutes when re-powering the
+				MultiSensor (battery mode)
+			]]></description>
 				<default>0</default>
 				<options>
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+					<option value="0">Disable</option>
+					<option value="1">Enable</option>
 				</options>
 			</parameter>
 			<parameter name="config_3" type="integer" min="1" max="15300"
 				groupName="configuration">
-				<label>3: On time</label>
-				<description><![CDATA[How long should the device associated to multi sensor keep state On before sending it Off command (if the value is bigger than 255, the value would be rounded to next integer in minutes)]]></description>
+				<label>3: Motion Sensor Timeout</label>
+				<description><![CDATA[How long should the device associated to MultiSensor
+				keep state On before sending it Off command (if the value is bigger
+				than 255, the value would be rounded to next integer in minutes,
+				else seconds)
+			]]></description>
 				<default>240</default>
 			</parameter>
 			<parameter name="config_4" type="integer" groupName="configuration">
-				<label>4: Motion sensor</label>
+				<label>4: Motion sensor
+				</label>
 				<description><![CDATA[null]]></description>
 				<default>1</default>
 				<options>
-					<option value="0">Disabled</option>
-					<option value="1">Enabled</option>
+					<option value="0">Disable</option>
+					<option value="1">Enable</option>
+				</options>
+			</parameter>
+			<parameter name="config_5" type="integer" groupName="configuration">
+				<label>5: Motion Sensor Triggered Command</label>
+				<description><![CDATA[null]]></description>
+				<default>1</default>
+				<options>
+					<option value="1">Send Basic Set CC</option>
+					<option value="2">Send Sensor Binary Report CC</option>
+				</options>
+			</parameter>
+			<parameter name="config_6" type="integer" min="0" max="127"
+				groupName="configuration">
+				<label>6: PIR Sensitivity</label>
+				<description><![CDATA[The range of PIR Sensitivity is 0 to 127 (127 max
+				sensitivity)
+			]]></description>
+				<default>127</default>
+			</parameter>
+			<parameter name="config_39" type="integer" min="10" max="50"
+				groupName="configuration">
+				<label>39: Low Battery Report</label>
+				<description><![CDATA[Low Battery report if bellow this value. The range of
+				low battery value is 10% to 50%]]></description>
+				<default>20</default>
+			</parameter>
+			<parameter name="config_40" type="integer" groupName="configuration">
+				<label>40: Selective Reporting</label>
+				<description><![CDATA[Send reports only when measurements reach a certain
+				threshold or percentage. Set in parameters 41-44
+			]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Disable</option>
+					<option value="1">Enable</option>
+				</options>
+			</parameter>
+			<parameter name="config_41" type="integer" min="0" max="65535"
+				groupName="configuration">
+				<label>41: Temperature Threshold</label>
+				<description><![CDATA[Threshold change in temperature to induce an
+				automatic report. When the unit is Celsius, threshold=Value. When
+				the unit is Fahrenheit, threshold=Value*1.8. The accuracy is 0.1.
+				The high byte is the part of integer, the low byte is the fractional
+				part
+			]]></description>
+				<default>256</default>
+			</parameter>
+			<parameter name="config_42" type="integer" min="0" max="100"
+				groupName="configuration">
+				<label>42: Humidity Threshold</label>
+				<description><![CDATA[Threshold change in humidity to induce an automatic
+				report
+			]]></description>
+				<default>5</default>
+			</parameter>
+			<parameter name="config_43" type="integer" min="0" max="1000"
+				groupName="configuration">
+				<label>43: Luminance Threshold</label>
+				<description><![CDATA[Threshold change in luminance to induce an automatic
+				report
+			]]></description>
+				<default>100</default>
+			</parameter>
+			<parameter name="config_44" type="integer" min="0" max="100"
+				groupName="configuration">
+				<label>44: Battery Threshold</label>
+				<description><![CDATA[Threshold change in battery level to induce an
+				automatic report
+			]]></description>
+				<default>5</default>
+			</parameter>
+			<parameter name="config_45" type="integer" min="0" max="11"
+				groupName="configuration">
+				<label>45: Ultraviolet Threshold</label>
+				<description><![CDATA[Threshold change in ultraviolet to induce an
+				automatic report
+			]]></description>
+				<default>2</default>
+			</parameter>
+			<parameter name="config_46" type="integer" groupName="configuration">
+				<label>46: Send Alarm Report if low
+					temperature
+				</label>
+				<description><![CDATA[Send an alarm report if temperature is less than
+				-15 degrees C
+			]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Disable
+					</option>
+					<option value="1">Enable
+					</option>
 				</options>
 			</parameter>
 			<parameter name="config_101" type="integer" groupName="configuration">
-				<label>101: Which reports need to send automatically in timing
-					intervals for group 1</label>
-				<description><![CDATA[The value is a combination number made up of the sum of the values for the individual sensors and battery.
-							The sensors have the values: Temperature=32, Humidity=64, Lightlevel=128, Battery=1.
-							Therefore if you want all sensors and the battery sending regular reports, set the parameter to 225 (32 + 64 + 128 + 1).]]></description>
-				<default>0</default>
+				<label>101: Group 1 Periodic Reports
+				</label>
+				<description><![CDATA[The value is a combination number made up of the sum
+				of the values for the individual sensors and battery. The sensors
+				have the values: Battery=1, Ultraviolet=16, Temperature=32,
+				Humidity=64, Light=128 Therefore if you want all sensors and the
+				battery sending regular reports, set the parameter to 241 (1 + 16 +
+				32 + 64 + 128).
+			]]></description>
+				<default>241</default>
 			</parameter>
 			<parameter name="config_102" type="integer" groupName="configuration">
-				<label>102: Which reports need to send automatically in timing
-					intervals for group 2</label>
-				<description><![CDATA[The value is a combination number made up of the sum of the values for the individual sensors and battery.
-							The sensors have the values: Temperature=32, Humidity=64, Lightlevel=128, Battery=1.
-							Therefore if you want all sensors and the battery sending regular reports, set the parameter to 225 (32 + 64 + 128 + 1).]]></description>
+				<label>102: Group 2 Periodic Reports
+				</label>
+				<description><![CDATA[The value is a combination number made up of the sum
+				of the values for the individual sensors and battery. The sensors
+				have the values: Battery=1, Ultraviolet=16, Temperature=32,
+				Humidity=64, Light=128 Therefore if you want all sensors and the
+				battery sending regular reports, set the parameter to 241 (1 + 16 +
+				32 + 64 + 128).
+			]]></description>
 				<default>0</default>
 			</parameter>
 			<parameter name="config_103" type="integer" groupName="configuration">
-				<label>103: Which reports need to send automatically in timing
-					intervals for group 3</label>
-				<description><![CDATA[The value is a combination number made up of the sum of the values for the individual sensors and battery.
-							The sensors have the values: Temperature=32, Humidity=64, Lightlevel=128, Battery=1.
-							Therefore if you want all sensors and the battery sending regular reports, set the parameter to 225 (32 + 64 + 128 + 1).]]></description>
+				<label>103: Group 3 Periodic Reports
+				</label>
+				<description><![CDATA[The value is a combination number made up of the sum
+				of the values for the individual sensors and battery. The sensors
+				have the values: Battery=1, Ultraviolet=16, Temperature=32,
+				Humidity=64, Light=128 Therefore if you want all sensors and the
+				battery sending regular reports, set the parameter to 241 (1 + 16 +
+				32 + 64 + 128).
+			]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_111" type="integer" min="1" max="2678400"
+			<parameter name="config_111" type="integer" min="5" max="2678400"
 				groupName="configuration">
-				<label>111: Interval to send out reports of group 1</label>
+				<label>111: Group 1 Report Interval</label>
 				<description><![CDATA[null]]></description>
-				<default>720</default>
+				<default>3600</default>
 			</parameter>
-			<parameter name="config_112" type="integer" min="1" max="2678400"
+			<parameter name="config_112" type="integer" min="5" max="2678400"
 				groupName="configuration">
-				<label>112: Interval to send out reports of group 2</label>
+				<label>112: Group 2 Report Interval</label>
 				<description><![CDATA[null]]></description>
-				<default>720</default>
+				<default>3600</default>
 			</parameter>
-			<parameter name="config_113" type="integer" min="1" max="2678400"
+			<parameter name="config_113" type="integer" min="5" max="2678400"
 				groupName="configuration">
-				<label>113: Interval to send out reports of group 3</label>
+				<label>113: Group 3 Report Interval</label>
 				<description><![CDATA[null]]></description>
-				<default>720</default>
+				<default>3600</default>
+			</parameter>
+			<parameter name="config_201" type="integer" min="-32768"
+				max="32767" groupName="configuration">
+				<label>201: Temperature Calibration</label>
+				<description><![CDATA[The range of calibration value is -32768 to 32767
+			]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_202" type="integer" min="-32768"
+				max="32767" groupName="configuration">
+				<label>202: Humidity Sensor Calibration</label>
+				<description><![CDATA[The range of calibration value is -32768 to 32767
+			]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_203" type="integer" min="-32768"
+				max="32767" groupName="configuration">
+				<label>203: Luminance Sensor Calibration</label>
+				<description><![CDATA[The range of calibration value is -32768 to 32767
+			]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_204" type="integer" min="-11" max="11"
+				groupName="configuration">
+				<label>204: Ultraviolet Sensor Calibration</label>
+				<description><![CDATA[The range of calibration value is -11 to 11]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_252" type="integer" groupName="configuration">
+				<label>252: Lock Configuration Parameters
+				</label>
+				<description><![CDATA[null]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">Disable</option>
+					<option value="1">Enable</option>
+				</options>
+			</parameter>
+			<parameter name="config_255" type="integer" groupName="configuration">
+				<label>255: Reset to default factory settings</label>
+				<description><![CDATA[null]]></description>
+				<options>
+					<option value="1">Resets all configuration parameters to default
+						settings</option>
+					<option value="1431655765">Reset to default factory settings and be
+						excluded
+						from the Z-wave network</option>
+				</options>
 			</parameter>
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
-				<label>Devices to be switched on when motion detected and off after
-					on time</label>
+				<label>Group 1</label>
+				<description><![CDATA[Group 1 is assigned to the Lifeline association group
+				and every device has 5 nodes to associate. The Motion sensor,
+				Humidity sensor, thermometer, light sensor and Ultraviolet sensor
+				reports will be sent to the associated nodes in Group 1
+			]]></description>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+			<parameter name="group_2" type="integer" multiple="true"
+				groupName="association">
+				<label>Group 2</label>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+			<parameter name="group_3" type="integer" multiple="true"
+				groupName="association">
+				<label>Group 3</label>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 		</config-description>

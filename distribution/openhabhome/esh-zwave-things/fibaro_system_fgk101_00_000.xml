@@ -20,7 +20,7 @@
 			<property name="model">FGK101</property>
 			<property name="manufacturerId">010F</property>
 			<property name="manufacturerRef">0700:1000,0700:3000</property>
-			<property name="defaultAssociationGroups">3</property>
+			<property name="commandClass:ASSOCIATION:0:default">3</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">

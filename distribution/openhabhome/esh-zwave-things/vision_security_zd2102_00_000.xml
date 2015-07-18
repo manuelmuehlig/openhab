@@ -20,7 +20,7 @@
 			<property name="model">ZD2102</property>
 			<property name="manufacturerId">0109</property>
 			<property name="manufacturerRef">2001:0102,2001:0105</property>
-			<property name="defaultAssociationGroups">1</property>
+			<property name="commandClass:ASSOCIATION:0:default">1</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">

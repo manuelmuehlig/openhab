@@ -20,7 +20,7 @@
 			<property name="model">ZMNHBA</property>
 			<property name="manufacturerId">0159</property>
 			<property name="manufacturerRef">0002:0001</property>
-			<property name="defaultAssociationGroups">4</property>
+			<property name="commandClass:ASSOCIATION:0:default">4</property>
 			<property
 				name="command_class:SENSOR_MULTILEVEL:NO_GET</property-group><property name="
 				command_class:METER:1:METER_CAN_RESETMETER_TYPE=ELECTRICMETER_SCALE=E_W,E_KWh

@@ -20,7 +20,7 @@
 			<property name="model">WS-100</property>
 			<property name="manufacturerId">0184</property>
 			<property name="manufacturerRef">4447:3033</property>
-			<property name="defaultAssociationGroups">1</property>
+			<property name="commandClass:ASSOCIATION:0:default">1</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">

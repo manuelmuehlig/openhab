@@ -168,7 +168,7 @@ public final class ZWaveActivator implements BundleActivator {
 					
 					if(defaultAssoc == true) {
 						first = true;
-						outstring += "<property name=\"defaultAssociationGroups\">";
+						outstring += "<property name=\"commandClass:ASSOCIATION:0:default\">";
 						for (ZWaveDbAssociationGroup group : groupList) {
 							if(group.SetToController == true) {
 								if(first == false) {

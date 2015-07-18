@@ -20,7 +20,7 @@
 			<property name="model">ZW080-A17</property>
 			<property name="manufacturerId">0086</property>
 			<property name="manufacturerRef">0104:0050</property>
-			<property name="defaultAssociationGroups">1</property>
+			<property name="commandClass:ASSOCIATION:0:default">1</property>
 			<property name="command_class:METER:5:ADD</property-group><property name="
 				command_class:METER:6:ADD
 			</property-group>

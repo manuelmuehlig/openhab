@@ -20,7 +20,7 @@
 			<property name="model">DoorSensor</property>
 			<property name="manufacturerId">0086</property>
 			<property name="manufacturerRef">0002:0004,0002:001D</property>
-			<property name="defaultAssociationGroups">1,2</property>
+			<property name="commandClass:ASSOCIATION:0:default">1,2</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">

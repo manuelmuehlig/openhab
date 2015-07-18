@@ -20,7 +20,7 @@
 			<property name="model">WD500Z-1</property>
 			<property name="manufacturerId">014F</property>
 			<property name="manufacturerRef">4457:3034</property>
-			<property name="defaultAssociationGroups">1</property>
+			<property name="commandClass:ASSOCIATION:0:default">1</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="qubino_zmnhla_00_000">
+		<label>Qubino ZMNHLA</label>
+		<description><![CDATA[Flush PWM thermostat]]></description>
+		<channels>
+			<channel id="switch0" typeId="dimmer">
+				<properties>
+					<property name="endpoint">0</property>
+					<property name="command_class">SWITCH_MULTILEVEL</property>
+					<property name="set_to_basic">true</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">Qubino</property>
+			<property name="model">ZMNHLA</property>
+			<property name="manufacturerId">0159</property>
+			<property name="manufacturerRef">0005:0003</property>
+			<property name="commandClass:ASSOCIATION:0:default">5,6</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+				<description></description>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+				<description></description>
+			</parameter-group>
+			<parameter name="config_1" type="integer" groupName="configuration">
+				<label>1: Input 1 switch type</label>
+				<description><![CDATA[Input 1 switch type]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">mono-stable switch type (push button)</option>
+					<option value="1">bi-stable switch type</option>
+				</options>
+			</parameter>
+			<parameter name="config_2" type="integer" groupName="configuration">
+				<label>2: Input 2 switch type</label>
+				<description><![CDATA[Input 2 switch type]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">mono-stable switch type (push button)</option>
+					<option value="1">bi-stable switch type</option>
+				</options>
+			</parameter>
+			<parameter name="config_3" type="integer" groupName="configuration">
+				<label>3: Input 3 switch type</label>
+				<description><![CDATA[Input 3 switch type]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">mono-stable switch type (push button)</option>
+					<option value="1">bi-stable switch type</option>
+				</options>
+			</parameter>
+			<parameter name="config_4" type="integer" groupName="configuration">
+				<label>4: Input 2 contact type</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>0</default>
+				<options>
+					<option value="0">NO (normally open) input type</option>
+					<option value="1">NC (normally close) input type</option>
+				</options>
+			</parameter>
+			<parameter name="config_5" type="integer" groupName="configuration">
+				<label>5: Input 3 contact type</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>0</default>
+				<options>
+					<option value="0">NO (normally open) input type</option>
+					<option value="1">NC (normally close) input type</option>
+				</options>
+			</parameter>
+			<parameter name="config_10" type="integer" groupName="configuration">
+				<label>10: Activate / deactivate functions ALL ON/ALL OFF</label>
+				<description><![CDATA[Module responds to commands ALL ON / ALL OFF 
+				that may be sent by the main controller or by other controller belonging to the system.]]></description>
+				<default>255</default>
+				<options>
+					<option value="255">ALL ON active, ALL OFF active</option>
+					<option value="0">ALL ON is not active ALL OFF is not active</option>
+					<option value="1">ALL ON is not active ALL OFF active</option>
+					<option value="2">ALL ON active ALL OFF is not active</option>
+				</options>
+			</parameter>
+			<parameter name="config_11" type="integer" groupName="configuration">
+				<label>11: Set point set by I2</label>
+				<description><![CDATA[65535 – input I2 does not influence on the set point<BR/>
+			From 0 to 990 set point from 0.0 °C to 99.0 °C<BR/>
+			From 1001 to 1150 – set point from -0.1 °C to -15.0 °C]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_12" type="integer" groupName="configuration">
+				<label>12: Set point set by I3</label>
+				<description><![CDATA[65535 – input I3 does not influence on the set point<BR/>
+			From 0 to 990 set point from 0.0 °C to 99.0 °C<BR/>
+			From 1001 to 1150 – set point from -0.1 °C to -15.0 °C]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_30" type="integer" groupName="configuration">
+				<label>30: Saving the state of the relay after a power failure</label>
+				<description><![CDATA[Saving the state of the relay after a power failure]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Module saves its state before power failure
+						(it returns to the last position saved before a power failure)</option>
+					<option value="1">Module does not save the state after a power
+						failure, it returns to "off" position.</option>
+				</options>
+			</parameter>
+			<parameter name="config_40" type="integer" groupName="configuration">
+				<label>40: Power reporting in Watts on power change for Q1</label>
+				<description><![CDATA[Power report is sent (pushed) only when actual power in Watts in real time changed for more than 
+				set percentage comparing to previous actual power in Watts, step is 1%.<br/>
+				<ul><li>0 = Reporting Disabled</li>
+				<li>1–100 = 1% - 100% Reporting enabled</li></ul>
+				NOTE: if power changed is less than 1W, the report is not sent (pushed), regardless of percentage set.]]></description>
+				<default>1</default>
+			</parameter>
+			<parameter name="config_42" type="integer" groupName="configuration">
+				<label>42: Power reporting in Watts by time interval for Q1</label>
+				<description><![CDATA[default value is 300 (power report in Watts is sent each 300s)<br/>
+				<ul><li>0 = Reporting Disabled</li>
+				<li>1–65535 = 1 second – 65535 seconds. Reporting enabled. 
+				Power report is sent with time interval set by entered value.</li></ul>]]></description>
+				<default>300</default>
+			</parameter>
+			<parameter name="config_43" type="integer" groupName="configuration">
+				<label>43: Hysteresis On</label>
+				<description><![CDATA[This parameter defines temperature min difference between real measured temperature and set-point temperature to turn device on. Parameter can be set from 0 to 255 where 0 to 127 means from 0.0 °C to 12.7 °C and from 128 to 255 means from - 0.1 °C to -12.7 °C.]]></description>
+				<default>132</default>
+			</parameter>
+			<parameter name="config_44" type="integer" groupName="configuration">
+				<label>44: Hysteresis Off</label>
+				<description><![CDATA[This parameter defines temperature min difference between real measured temperature and set-point temperature to turn device on. Parameter can be set from 0 to 255 where 0 to 127 means from 0.0 °C to 12.7 °C and from 128 to 255 means from - 0.1 °C to -12.7 °C.]]></description>
+				<default>5</default>
+			</parameter>
+			<parameter name="config_45" type="integer" groupName="configuration">
+				<label>45: Antifreeze</label>
+				<description><![CDATA[Set value means at which temperature the device will be turned on even if the thermostat was manually set to off. Parameter can be set from 0 to 255 where 0 to 127 means from 0.0 °C to 12.7 °C and from 128 to 254 means from - 0.1 °C to -12.6 °C. 255 is disabled.]]></description>
+				<default>5</default>
+			</parameter>
+			<parameter name="config_60" type="integer" groupName="configuration">
+				<label>60: Too low temperature limit</label>
+				<description><![CDATA[1 - 1000 = 0.1°C – 100.0°C, step is 0.1°C. Too low temperature limit is set by entered value. In case is set value out of this range, module is changing set value automatically to default value.]]></description>
+				<default>50</default>
+			</parameter>
+			<parameter name="config_61" type="integer" groupName="configuration">
+				<label>61: Too high temperature limit</label>
+				<description><![CDATA[1 - 1000 = 0.1°C – 100.0°C, step is 0.1°C. Too low temperature limit is set by entered value. In case is set value out of this range, module is changing set value automatically to default value.]]></description>
+				<default>700</default>
+			</parameter>
+			<parameter name="config_63" type="integer" groupName="configuration">
+				<label>63: Switch selection</label>
+				<description><![CDATA[Set value means the type of the device that is connected to the relay output. The device type can be normally open (NO) or normally close (NC).
+Available configuration parameters (data type is 1 Byte DEC):
+• default value 0
+• 0 - When system is turned off the output is 0 V.
+• 1 - When system is turned off the output is 230 V.]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Basic on/off Q1</label>
+				<description><![CDATA[Triggered at change of the output Q1 state and reflecting its state]]></description>
+				<multipleLimit>16</multipleLimit>
+			</parameter>
+			<parameter name="group_2" type="integer" multiple="true"
+				groupName="association">
+				<label>Basic on/off I2</label>
+				<description><![CDATA[Triggered at change of the output I2 state and reflecting its state]]></description>
+				<multipleLimit>16</multipleLimit>
+			</parameter>
+			<parameter name="group_3" type="integer" multiple="true"
+				groupName="association">
+				<label>Basic on/off I3</label>
+				<description><![CDATA[Triggered at change of the output I3 state and reflecting its state]]></description>
+				<multipleLimit>16</multipleLimit>
+			</parameter>
+			<parameter name="group_4" type="integer" multiple="true"
+				groupName="association">
+				<label>High Temperature</label>
+				<description><![CDATA[]]>
+				</description>
+				<multipleLimit>16</multipleLimit>
+			</parameter>
+			<parameter name="group_5" type="integer" multiple="true"
+				groupName="association">
+				<label>Low Temperature</label>
+				<description><![CDATA[]]>
+				</description>
+				<multipleLimit>16</multipleLimit>
+			</parameter>
+			<parameter name="group_6" type="integer" groupName="association">
+				<label>Default Reporting Group</label>
+				<description><![CDATA[Reporting for controller]]></description>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<channel-type id="dimmer">
+		<item-type>Dimmer</item-type>
+		<label>Dimmer</label>
+		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+</thing:thing-descriptions>

@@ -20,7 +20,7 @@
 			<property name="model">FGRM222</property>
 			<property name="manufacturerId">010F</property>
 			<property name="manufacturerRef">0301:1001</property>
-			<property name="defaultAssociationGroups">3</property>
+			<property name="commandClass:ASSOCIATION:0:default">3</property>
 			<property
 				name="command_class:MANUFACTURER_PROPRIETARY:ADD</property-group></properties><config-description><parameter-group name="
 				configuration ">

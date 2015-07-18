@@ -20,7 +20,7 @@
 			<property name="model">123610</property>
 			<property name="manufacturerId">0154</property>
 			<property name="manufacturerRef">1100:0001</property>
-			<property name="defaultAssociationGroups">1</property>
+			<property name="commandClass:ASSOCIATION:0:default">1</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">

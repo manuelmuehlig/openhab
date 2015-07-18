@@ -20,7 +20,7 @@
 			<property name="model">SCSC17</property>
 			<property name="manufacturerId">0059</property>
 			<property name="manufacturerRef">0004:0001</property>
-			<property name="defaultAssociationGroups">1,2,3,4,5</property>
+			<property name="commandClass:ASSOCIATION:0:default">1,2,3,4,5</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">

@@ -20,7 +20,7 @@
 			<property name="model">ZMNHDA</property>
 			<property name="manufacturerId">0159</property>
 			<property name="manufacturerRef">0001:0001</property>
-			<property name="defaultAssociationGroups">3</property>
+			<property name="commandClass:ASSOCIATION:0:default">3</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">

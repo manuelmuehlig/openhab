@@ -3,9 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
 	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
-	<thing-type id="linear_fs20z_00_000">
-		<label>Linear FS20Z</label>
-		<description><![CDATA[Isolated Contact Fixture Module]]></description>
+	<thing-type id="visionsecurity_zl7431_00_000">
+		<label>Vision Security ZL7431</label>
+		<description><![CDATA[In Wall Relay Switch]]></description>
 		<channels>
 			<channel id="switch0" typeId="dimmer">
 				<properties>
@@ -16,11 +16,10 @@
 			</channel>
 		</channels>
 		<properties>
-			<property name="vendor">Linear</property>
-			<property name="model">FS20Z</property>
-			<property name="manufacturerId">014F</property>
-			<property name="manufacturerRef">5246:3133</property>
-			<property name="commandClass:ASSOCIATION:0:default">1</property>
+			<property name="vendor">Vision Security</property>
+			<property name="model">ZL7431</property>
+			<property name="manufacturerId">0109</property>
+			<property name="manufacturerRef">2016:1616</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">
@@ -33,10 +32,26 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="group_1" type="integer" multiple="true"
-				groupName="association">
-				<label>Controller Updates</label>
-				<multipleLimit>5</multipleLimit>
+			<parameter name="config_0" type="integer" groupName="configuration">
+				<label>0: Siren Strobe Mode</label>
+				<description><![CDATA[Defines the reaction of the siren]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Strobe and Siren</option>
+					<option value="1">Siren</option>
+					<option value="2">Strobe</option>
+				</options>
+			</parameter>
+			<parameter name="config_1" type="integer" groupName="configuration">
+				<label>1: Alarm auto stop</label>
+				<description><![CDATA[Defines the auto time out of the alarm indication]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">30 seconds</option>
+					<option value="1">60 seconds</option>
+					<option value="2">120 seconds</option>
+					<option value="3">Continuous</option>
+				</options>
 			</parameter>
 		</config-description>
 	</thing-type>

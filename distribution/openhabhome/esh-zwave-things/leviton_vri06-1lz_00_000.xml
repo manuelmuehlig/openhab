@@ -20,7 +20,7 @@
 			<property name="model">VRI06-1LZ</property>
 			<property name="manufacturerId">001D</property>
 			<property name="manufacturerRef">0401:0209,0401:0334</property>
-			<property name="defaultAssociationGroups">1</property>
+			<property name="commandClass:ASSOCIATION:0:default">1</property>
 		</properties>
 		<config-description>
 			<parameter-group name="association">
