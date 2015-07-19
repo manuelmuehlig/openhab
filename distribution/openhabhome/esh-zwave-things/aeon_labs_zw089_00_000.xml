@@ -7,11 +7,16 @@
 		<label>Aeon Labs ZW089</label>
 		<description><![CDATA[Door/Window Sensor]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -33,7 +38,7 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_3" type="integer" groupName="configuration">
+			<parameter name="config_3_1" type="integer" groupName="configuration">
 				<label>3: Current overload protection enable</label>
 				<description><![CDATA[Current Overload Protection. Load will be closed when the 
                 Current overrun (US: 15.5A, other country: 16.2A) and the 
@@ -45,7 +50,7 @@
 					<option value="1">enabled</option>
 				</options>
 			</parameter>
-			<parameter name="config_20" type="integer" groupName="configuration">
+			<parameter name="config_20_1" type="integer" groupName="configuration">
 				<label>20: Output load after re-power</label>
 				<description><![CDATA[Configure the output load status after re‐power on 
                 (0=last status, 1=always on, 2=always off) 
@@ -57,7 +62,7 @@
 					<option value="2">always off</option>
 				</options>
 			</parameter>
-			<parameter name="config_80" type="integer" groupName="configuration">
+			<parameter name="config_80_1" type="integer" groupName="configuration">
 				<label>80: Enable send to associated devices</label>
 				<description><![CDATA[Enable to send notifications to associated devices (Group 1) 
                 when the state of Micro Switch’s load changed (0=nothing, 
@@ -70,7 +75,7 @@
 					<option value="2">basic CC report</option>
 				</options>
 			</parameter>
-			<parameter name="config_81" type="integer" groupName="configuration">
+			<parameter name="config_81_1" type="integer" groupName="configuration">
 				<label>81: Configure LED</label>
 				<description><![CDATA[Configure the state of red LED:  
                 0= The LED will follow the status (on/off) of its load (Energy mode). 
@@ -87,7 +92,7 @@
 					<option value="2">Night light mode</option>
 				</options>
 			</parameter>
-			<parameter name="config_82" type="integer" min="0" max="23592359"
+			<parameter name="config_82_4" type="integer" min="0" max="23592359"
 				groupName="configuration">
 				<label>82: Time of Nightlight mode</label>
 				<description><![CDATA[Set the time of night light mode 
@@ -98,7 +103,7 @@
             ]]></description>
 				<default>18000730</default>
 			</parameter>
-			<parameter name="config_83" type="integer" min="0" max="16777215"
+			<parameter name="config_83_3" type="integer" min="0" max="16777215"
 				groupName="configuration">
 				<label>83: RGB value when it is in Night light mode</label>
 				<description><![CDATA[Configure the RGB value when it is in Night light mode. 
@@ -108,7 +113,7 @@
             ]]></description>
 				<default>14524637</default>
 			</parameter>
-			<parameter name="config_84" type="integer" min="0" max="6513507"
+			<parameter name="config_84_3" type="integer" min="0" max="6513507"
 				groupName="configuration">
 				<label>84: LED brightness in Energy Mode</label>
 				<description><![CDATA[Configure the brightness level of RGB LED (0%‐100%) when 
@@ -119,7 +124,7 @@
             ]]></description>
 				<default>3289650</default>
 			</parameter>
-			<parameter name="config_90" type="integer" groupName="configuration">
+			<parameter name="config_90_1" type="integer" groupName="configuration">
 				<label>90: Enable items 91 and 92</label>
 				<description><![CDATA[Enables/disables parameter 91 and 92 below (1=enabled, 
                 0=disabled). 
@@ -130,7 +135,7 @@
 					<option value="1">enabled</option>
 				</options>
 			</parameter>
-			<parameter name="config_91" type="integer" min="0" max="60000"
+			<parameter name="config_91_2" type="integer" min="0" max="60000"
 				groupName="configuration">
 				<label>91: Wattage Threshold</label>
 				<description><![CDATA[The value here represents minimum change in wattage (in 
@@ -139,7 +144,7 @@
             ]]></description>
 				<default>25</default>
 			</parameter>
-			<parameter name="config_92" type="integer" min="0" max="100"
+			<parameter name="config_92_1" type="integer" min="0" max="100"
 				groupName="configuration">
 				<label>92: Wattage Percent Change</label>
 				<description><![CDATA[The value here represents minimum change in wattage 
@@ -148,14 +153,14 @@
             ]]></description>
 				<default>5</default>
 			</parameter>
-			<parameter name="config_100" type="integer" min="0" max="1"
+			<parameter name="config_100_1" type="integer" min="0" max="1"
 				groupName="configuration">
 				<label>100: Set 101‐103 to default. </label>
 				<description><![CDATA[Set 101‐103 to default. 
             ]]></description>
 				<default>NA</default>
 			</parameter>
-			<parameter name="config_252" type="integer" groupName="configuration">
+			<parameter name="config_252_1" type="integer" groupName="configuration">
 				<label>252: Configuration Locked</label>
 				<description><![CDATA[Enable/disable Configuration Locked (0 =disable, 1 = enable). 
             ]]></description>
@@ -168,11 +173,13 @@
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
 				<label>Lifeline</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Retransmit</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 		</config-description>
@@ -181,6 +188,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

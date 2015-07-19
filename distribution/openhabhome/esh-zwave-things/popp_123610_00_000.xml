@@ -7,11 +7,16 @@
 		<label>POPP 123610</label>
 		<description><![CDATA[Wall Plug Switch]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -33,21 +38,21 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_1" type="integer" groupName="configuration">
+			<parameter name="config_1_2" type="integer" groupName="configuration">
 				<label>1: Watt Meter Report Period</label>
 				<description><![CDATA[If the setting is configured for 1hour (set value
 				=720), the device will report its instant power consumption every 1
 				hour to Z-Wave Controller. (in seconds)]]></description>
 				<default>720</default>
 			</parameter>
-			<parameter name="config_2" type="integer" groupName="configuration">
+			<parameter name="config_2_2" type="integer" groupName="configuration">
 				<label>2: KWH Meter Report Period</label>
 				<description><![CDATA[if the setting is configured for 1hour (set value
 				=6), the device will report its Accumulated Power Consumption (KW/h)
 				every hour (in seconds)]]></description>
 				<default>6</default>
 			</parameter>
-			<parameter name="config_4" type="integer" groupName="configuration">
+			<parameter name="config_4_2" type="integer" groupName="configuration">
 				<label>4: Threshold of KWh for Load caution </label>
 				<description><![CDATA[This is a warning when the KWh of load over the
 				preset threshold value, if the Accumulated Power Consumption exceeds
@@ -55,7 +60,7 @@
 				the controller.]]></description>
 				<default>10000</default>
 			</parameter>
-			<parameter name="config_5" type="integer" groupName="configuration">
+			<parameter name="config_5_1" type="integer" groupName="configuration">
 				<label>5: Ignore start level</label>
 				<description><![CDATA[]]>
 				</description>
@@ -66,9 +71,9 @@
 					<option value="2">Switch On</option>
 				</options>
 			</parameter>
-			<parameter name="config_11" type="integer" groupName="configuration">
+			<parameter name="config_11_1" type="integer" groupName="configuration">
 				<label>11: Ignore start level</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>1</default>
 				<options>
 					<option value="0">Disabled</option>
@@ -78,6 +83,7 @@
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
 				<label>Switch State</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 		</config-description>
@@ -86,6 +92,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

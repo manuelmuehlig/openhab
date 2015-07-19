@@ -7,11 +7,16 @@
 		<label>Fibaro System FGRGBW</label>
 		<description><![CDATA[Fibaro RGBW Controller]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -22,15 +27,15 @@
 			<property name="manufacturerRef">0900:1000,0900:2000,0900:4000</property>
 			<property name="commandClass:ASSOCIATION:0:default">3</property>
 			<property
-				name="command_class:SWITCH_MULTILEVEL:1:NO_GET</property-group><property name="
-				command_class:SWITCH_MULTILEVEL:2:NO_GET
+				name="commandClass:SWITCH_MULTILEVEL:1:NO_GET</property-group><property name="
+				commandClass:SWITCH_MULTILEVEL:2:NO_GET
 			</property-group>
 				<property
-					name="command_class:SWITCH_MULTILEVEL:3:NO_GET</property-group><property name="
-					command_class:SWITCH_MULTILEVEL:4:NO_GET
+					name="commandClass:SWITCH_MULTILEVEL:3:NO_GET</property-group><property name="
+					commandClass:SWITCH_MULTILEVEL:4:NO_GET
 				</property-group>
 					<property
-						name="command_class:SWITCH_MULTILEVEL:5:NO_GET</property-group></properties><config-description><parameter-group name="
+						name="commandClass:SWITCH_MULTILEVEL:5:NO_GET</property-group></properties><config-description><parameter-group name="
 						configuration ">
 						<context>setup</context>
 						<label>Configuration Parameters</label>
@@ -41,7 +46,7 @@
 							<label>Association Groups</label>
 							<description></description>
 						</parameter-group>
-						<parameter name="config_1" type="integer" groupName="configuration">
+						<parameter name="config_1_1" type="integer" groupName="configuration">
 							<label>1: Always on function</label>
 							<description><![CDATA[Once activated, Wall Plug will keep a connected device constantly ON, will stop reacting to alarm frames and B-button push.<BR/>
 "Always on" function turns the Plug into a power and energy meter. Also, connected device will not be turned off upon receiving an alarm frame from another Z-Wave device (parameter 35 will be ignored).<BR/>
@@ -54,7 +59,7 @@ Default setting: INACTIVE
 								<option value="1">Inactive</option>
 							</options>
 						</parameter>
-						<parameter name="config_16" type="integer" groupName="configuration">
+						<parameter name="config_16_1" type="integer" groupName="configuration">
 							<label>16: Remember device status after power failure</label>
 							<description><![CDATA[Define how will the Plug react after the power supply is back on.<BR/>
 Default setting: 1<BR/>
@@ -67,8 +72,8 @@ Available settings:<BR/>
 								<option value="1">Remember state before power failure</option>
 							</options>
 						</parameter>
-						<parameter name="config_34" type="integer" min="0" max="63"
-							groupName="configuration">
+						<parameter name="config_34_1" type="integer" min="0"
+							max="63" groupName="configuration">
 							<label>34: Reaction to alarms</label>
 							<description><![CDATA[Define Z-Wave network alarms to which the Wall Plug will respond.<BR/>
 Default setting: 63<BR/>
@@ -83,7 +88,7 @@ Available settings: 0 - 63.<BR/>
 Set value may be a sum of available values, e.g. set value = 5 means the Plug will respond to general alarm (1) and CO alarm (4).]]></description>
 							<default>63</default>
 						</parameter>
-						<parameter name="config_35" type="integer" groupName="configuration">
+						<parameter name="config_35_1" type="integer" groupName="configuration">
 							<label>35: Response to alarms</label>
 							<description><![CDATA[Parameter defines how the Wall Plug will respond to alarms (device's status change).<BR/>
 Available settings:<BR/>
@@ -101,15 +106,15 @@ If "always on" function is active (parameter 1), this parameter's settings are i
 								<option value="3">Cycle ON/OFF</option>
 							</options>
 						</parameter>
-						<parameter name="config_39" type="integer" min="1" max="65535"
-							groupName="configuration">
+						<parameter name="config_39_1" type="integer" min="1"
+							max="65535" groupName="configuration">
 							<label>39: Alarm duration</label>
 							<description><![CDATA[Wall Plug's alarm mode duration. If a device sending an alarm frame through the Z-Wave network sets alarm duration as well, this parameter's settings are ignored.<BR/>
 Default setting: 600 (seconds).<BR/>Available settings: 1 - 65535 (seconds)]]></description>
 							<default>600</default>
 						</parameter>
-						<parameter name="config_40" type="integer" min="1" max="100"
-							groupName="configuration">
+						<parameter name="config_40_1" type="integer" min="1"
+							max="100" groupName="configuration">
 							<label>40: Immediate power report</label>
 							<description><![CDATA[Parameter defines by how much power load must change, in percents, to be reported to the main controller, with the highest priority in the Z-Wave network. By default, Fibaro Wall Plug immediately sends power report if the power load changes by 80%.<BR/>
 			Default setting: 80 (%)<BR/>
@@ -118,16 +123,16 @@ Value of 100 (%) means the reports are turned off.<BR/>
 <B>NOTE:</B>In extreme cases, reports may be sent every second if rapid and significant power load changes occur. Frequent reporting may overload the Z-Wave network so these parameter's settings should reflect significant changes in power load only.]]></description>
 							<default>80</default>
 						</parameter>
-						<parameter name="config_42" type="integer" min="1" max="100"
-							groupName="configuration">
+						<parameter name="config_42_1" type="integer" min="1"
+							max="100" groupName="configuration">
 							<label>42: Standard power load report</label>
 							<description><![CDATA[Parameter defines by how much power load must change, in percents, to be reported to the main controller. By default, Fibaro Wall Plug sends power report if the power load changes by 15%. By default such changes in power load may be reported up to 5 times per 30 seconds. Wall Plug sends 5 reports during time period specified in paramater 43. Default setting: 15 (%)<BR/>
 Available settings: 1 - 100 (%)<BR/>
 Value of 100 (%) means the reports are turned off.]]></description>
 							<default>15</default>
 						</parameter>
-						<parameter name="config_43" type="integer" min="1" max="255"
-							groupName="configuration">
+						<parameter name="config_43_1" type="integer" min="1"
+							max="255" groupName="configuration">
 							<label>43: Power reporting frequency</label>
 							<description><![CDATA[This parameter defines how frequently standard power reports (parameter 42) will be sent. By default Wall Plug sends up to 5 reports each 30 seconds, provided the power load changes by 15%.<BR/>
 			Default seting: 30 (s)<BR/>
@@ -135,8 +140,8 @@ Available settings: 1 - 254 (s)<BR/>
 Value of 255 - Reports will be sent only as a result of parameter 47 settings or in case of polling.]]></description>
 							<default>30</default>
 						</parameter>
-						<parameter name="config_45" type="integer" min="1" max="255"
-							groupName="configuration">
+						<parameter name="config_45_1" type="integer" min="1"
+							max="255" groupName="configuration">
 							<label>45: Reporting Changes in energy consumed by controlled
 								devices</label>
 							<description><![CDATA[Defines the required change in power to generate an unsolicited power report.<BR/>
@@ -145,8 +150,8 @@ Available settings: 1 - 254 (0,01kWh - 2,54kWh).<BR/>
 Value of 255 - changes in consumed energy will not be reported. Reports will be sent only in case of polling.]]></description>
 							<default>1</default>
 						</parameter>
-						<parameter name="config_47" type="integer" min="1" max="65534"
-							groupName="configuration">
+						<parameter name="config_47_1" type="integer" min="1"
+							max="65534" groupName="configuration">
 							<label>47: Time Period between reports on power and energy
 								consumption</label>
 							<description><![CDATA[Parameter defines time period between reports sent when changes in power load have not been recorded. By default, if power load changes have not been recorded, reports are sent every hour. Default setting: 3 600 (s)<BR/>
@@ -155,7 +160,7 @@ Value of 65535 - no periodic reports.<BR/>
 Reports will be sent only in case of power load / energy consumption changes (parameters 40, 42, 43,45) or in case of polling.]]></description>
 							<default>3600</default>
 						</parameter>
-						<parameter name="config_49" type="integer" groupName="configuration">
+						<parameter name="config_49_1" type="integer" groupName="configuration">
 							<label>49: Metering energy consumed by the Wall Plug itself.</label>
 							<description><![CDATA[This parameter determines whether energy metering should include the amount of energy consumed by the Wall Plug itself.<BR/>
 Results are being added to energy consumed by controlled device.<BR/>
@@ -166,7 +171,7 @@ Default setting: INACTIVE]]></description>
 								<option value="1">Activated</option>
 							</options>
 						</parameter>
-						<parameter name="config_50" type="integer" groupName="configuration">
+						<parameter name="config_50_2" type="integer" groupName="configuration">
 							<label>50: DOWN value</label>
 							<description><![CDATA[Lower power threshold, used in parameter 52.<BR/>
 Default setting: 300 (30 W)<BR/>
@@ -174,7 +179,7 @@ Available settings: 0 - 25 000 (0,0W - 2 500W)<BR/>
 DOWN value cannot be higher than a value specified in parameter 51.]]></description>
 							<default>300</default>
 						</parameter>
-						<parameter name="config_51" type="integer" groupName="configuration">
+						<parameter name="config_51_2" type="integer" groupName="configuration">
 							<label>51: UP value</label>
 							<description><![CDATA[Upper power threshold, used in parameter 52.<BR/>
 Default setting: 500 (50 W)<BR/>
@@ -182,7 +187,7 @@ Available settings: 0 - 25 000 (0,0W - 2 500W)<BR/>
 UP value cannot be lower than a value specified in parameter 510]]></description>
 							<default>500</default>
 						</parameter>
-						<parameter name="config_52" type="integer" groupName="configuration">
+						<parameter name="config_52_1" type="integer" groupName="configuration">
 							<label>52: Action in case defined power values exceeded</label>
 							<description><![CDATA[
 Parameter defines the way 2nd association group devices are controlled, depending on the current power load.<BR/>
@@ -208,14 +213,14 @@ Available settings:<BR/>
 									off when power above UP</option>
 							</options>
 						</parameter>
-						<parameter name="config_60" type="integer" groupName="configuration">
+						<parameter name="config_60_2" type="integer" groupName="configuration">
 							<label>60: Power load to make red ring flash violet</label>
 							<description><![CDATA[Function is active only when parameter 61 is set to 0 or 1.<BR/>
 Default setting: 25 000 (2 500W)<BR/>
 Available settings: 1 000 - 32 000 (100W - 3200W).]]></description>
 							<default>25000</default>
 						</parameter>
-						<parameter name="config_61" type="integer" groupName="configuration">
+						<parameter name="config_61_1" type="integer" groupName="configuration">
 							<label>61: LED color when device is on</label>
 							<description><![CDATA[  ]]></description>
 							<default>1</default>
@@ -234,7 +239,7 @@ Available settings: 1 000 - 32 000 (100W - 3200W).]]></description>
 								<option value="9">NO illumination</option>
 							</options>
 						</parameter>
-						<parameter name="config_62" type="integer" groupName="configuration">
+						<parameter name="config_62_1" type="integer" groupName="configuration">
 							<label>62: LED color when device is off</label>
 							<description><![CDATA[  ]]></description>
 							<default>8</default>
@@ -251,7 +256,7 @@ Available settings: 1 000 - 32 000 (100W - 3200W).]]></description>
 								<option value="8">NO illumination</option>
 							</options>
 						</parameter>
-						<parameter name="config_63" type="integer" groupName="configuration">
+						<parameter name="config_63_1" type="integer" groupName="configuration">
 							<label>63: LED color when Z Wave alarm</label>
 							<description><![CDATA[  ]]></description>
 							<default>1</default>
@@ -268,7 +273,7 @@ Available settings: 1 000 - 32 000 (100W - 3200W).]]></description>
 								<option value="9">NO illumination</option>
 							</options>
 						</parameter>
-						<parameter name="config_70" type="integer" groupName="configuration">
+						<parameter name="config_70_2" type="integer" groupName="configuration">
 							<label>70: Overload safety switch</label>
 							<description><![CDATA[This function allows for turning off the controlled device in case of exceeding the defined power. Controlled device will be turned off even if "always on" function is active (parameter 1).<BR/>
 Controlled device can be turned back on via B-button or sending a control frame.<BR/>
@@ -281,15 +286,18 @@ Value higher than 32 000 (3 200W) turns the overload safety switch off, i.e. thi
 						<parameter name="group_1" type="integer" multiple="true"
 							groupName="association">
 							<label>Group 1</label>
+							<description><![CDATA[***Add description here***]]></description>
 							<multipleLimit>16</multipleLimit>
 						</parameter>
 						<parameter name="group_2" type="integer" multiple="true"
 							groupName="association">
 							<label>Group 2</label>
+							<description><![CDATA[***Add description here***]]></description>
 							<multipleLimit>16</multipleLimit>
 						</parameter>
 						<parameter name="group_3" type="integer" groupName="association">
 							<label>Controller Updates</label>
+							<description><![CDATA[***Add description here***]]></description>
 						</parameter>
 					</config-description>
 	</thing-type>
@@ -297,6 +305,12 @@ Value higher than 32 000 (3 200W) turns the overload safety switch off, i.e. thi
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

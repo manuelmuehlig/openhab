@@ -7,11 +7,16 @@
 		<label>Wintop WTRFID</label>
 		<description><![CDATA[Mini Keypad RFID/Z-Wave]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -32,7 +37,7 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_1" type="integer" groupName="configuration">
+			<parameter name="config_1_1" type="integer" groupName="configuration">
 				<label>1: Reset to factory default</label>
 				<description><![CDATA[Delete configuration but keeps inclusion]]></description>
 				<default>0</default>
@@ -41,7 +46,7 @@
 					<option value="1">Execute reset</option>
 				</options>
 			</parameter>
-			<parameter name="config_2" type="integer" groupName="configuration">
+			<parameter name="config_2_1" type="integer" groupName="configuration">
 				<label>2: Command sent on external dry contact</label>
 				<description><![CDATA[Configure what te external contact sends when trigger]]></description>
 				<default>0</default>
@@ -50,7 +55,7 @@
 					<option value="1">Basic On or Basic Off</option>
 				</options>
 			</parameter>
-			<parameter name="config_5" type="integer" groupName="configuration">
+			<parameter name="config_5_1" type="integer" groupName="configuration">
 				<label>5: Operating Mode</label>
 				<description><![CDATA[Defines if the sensor is in normal wakeup mode or always on (drains battery fast)]]></description>
 				<default>1</default>
@@ -59,7 +64,7 @@
 					<option value="3">Always awake</option>
 				</options>
 			</parameter>
-			<parameter name="config_6" type="integer" min="1" max="15300"
+			<parameter name="config_6_2" type="integer" min="1" max="15300"
 				groupName="configuration">
 				<label>6: Temperature Offset</label>
 				<description><![CDATA[Can be used to calibrate the temperature sensors function. Calibrated as factory default.]]></description>
@@ -83,6 +88,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

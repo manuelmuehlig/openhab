@@ -7,11 +7,16 @@
 		<label>Linear PD300Z-2</label>
 		<description><![CDATA[Plug-in Wall Dimmer]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -32,7 +37,7 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_1" type="integer" groupName="configuration">
+			<parameter name="config_1_1" type="integer" groupName="configuration">
 				<label>1: Dim Start Level</label>
 				<description><![CDATA[A dimmer receiving this command will start dimming
 				from that start level if this bit is set to 0. If the bit is set to
@@ -44,7 +49,7 @@
 					<option value="1">Ignore Start Level</option>
 				</options>
 			</parameter>
-			<parameter name="config_3" type="integer" groupName="configuration">
+			<parameter name="config_3_1" type="integer" groupName="configuration">
 				<label>3: LED Indication</label>
 				<description><![CDATA[The WD500Z-1 will flicker its LED when it is
 				transmitting to any of its groups. This can be changed if desired.
@@ -55,7 +60,7 @@
 					<option value="1">1</option>
 				</options>
 			</parameter>
-			<parameter name="config_4" type="integer" groupName="configuration">
+			<parameter name="config_4_1" type="integer" groupName="configuration">
 				<label>4: Invert Switch</label>
 				<description><![CDATA[To change the top of the switch to OFF and the bottom
 				to ON change parameter to 1.]]></description>
@@ -65,7 +70,7 @@
 					<option value="1">Bottom-ON, Top-OFF</option>
 				</options>
 			</parameter>
-			<parameter name="config_14" type="integer" groupName="configuration">
+			<parameter name="config_14_1" type="integer" groupName="configuration">
 				<label>14: Enable Shade Control Group 2</label>
 				<description><![CDATA[The switch can control shade control devices if this
 				parameter is set to 1]]></description>
@@ -75,7 +80,7 @@
 					<option value="1">Enable</option>
 				</options>
 			</parameter>
-			<parameter name="config_15" type="integer" groupName="configuration">
+			<parameter name="config_15_1" type="integer" groupName="configuration">
 				<label>15: Enable Shade Control Group 3</label>
 				<description><![CDATA[The switch can control shade control devices if this
 				parameter is set to 1.]]></description>
@@ -85,7 +90,7 @@
 					<option value="1">Enable</option>
 				</options>
 			</parameter>
-			<parameter name="config_19" type="integer" groupName="configuration">
+			<parameter name="config_19_1" type="integer" groupName="configuration">
 				<label>19: LED Transmission Indication</label>
 				<description><![CDATA[The WD500Z-1 will flicker its LED when it is
 				transmitting to any of its groups. Parameter set to 0 = not flicker
@@ -101,6 +106,7 @@
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
 				<label>UNKNOWN!!!</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
@@ -125,6 +131,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

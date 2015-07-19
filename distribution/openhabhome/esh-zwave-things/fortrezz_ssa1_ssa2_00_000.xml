@@ -7,11 +7,16 @@
 		<label>FortrezZ SSA1/SSA2</label>
 		<description><![CDATA[Siren and Strobe Alarm]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -32,26 +37,26 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_1" type="integer" groupName="configuration">
+			<parameter name="config_1_1" type="integer" groupName="configuration">
 				<label>1: Not_Used_1</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>0</default>
 				<options>
 					<option value="0">Null</option>
 				</options>
 			</parameter>
-			<parameter name="config_2" type="integer" groupName="configuration">
+			<parameter name="config_2_1" type="integer" groupName="configuration">
 				<label>2: Clear_Pulse_Meter_Counts</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>0</default>
 				<options>
 					<option value="0">Actual value doesn't matter. Count gets reset
 						whenever this command is received</option>
 				</options>
 			</parameter>
-			<parameter name="config_3" type="integer" groupName="configuration">
+			<parameter name="config_3_1" type="integer" groupName="configuration">
 				<label>3: Trigger_Mapping</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>0</default>
 				<options>
 					<option value="0">Disabled</option>
@@ -60,45 +65,45 @@
 					</option>
 				</options>
 			</parameter>
-			<parameter name="config_4" type="integer" min="0" max="255"
+			<parameter name="config_4_1" type="integer" min="0" max="255"
 				groupName="configuration">
 				<label>4: Lower_Threshold_High</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>187</default>
 				<options>
 					<option value="187">Default (0xBB)</option>
 				</options>
 			</parameter>
-			<parameter name="config_5" type="integer" min="0" max="255"
+			<parameter name="config_5_1" type="integer" min="0" max="255"
 				groupName="configuration">
 				<label>5: Lower_Threshold_Low</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>171</default>
 				<options>
 					<option value="171">Default (0xAB)</option>
 				</options>
 			</parameter>
-			<parameter name="config_6" type="integer" min="0" max="255"
+			<parameter name="config_6_1" type="integer" min="0" max="255"
 				groupName="configuration">
 				<label>6: Upper_Threshold_High</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>255</default>
 				<options>
 					<option value="255">Default (0xFF)</option>
 				</options>
 			</parameter>
-			<parameter name="config_7" type="integer" min="0" max="255"
+			<parameter name="config_7_1" type="integer" min="0" max="255"
 				groupName="configuration">
 				<label>7: Upper_Threshold_Low</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>254</default>
 				<options>
 					<option value="254">Default (0xFE)</option>
 				</options>
 			</parameter>
-			<parameter name="config_8" type="integer" groupName="configuration">
+			<parameter name="config_8_1" type="integer" groupName="configuration">
 				<label>8: Trigger_Level_And_Input_Threshold</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>3</default>
 				<options>
 					<option value="0">TriggerLevel ANALOG and Triggered when input
@@ -113,28 +118,28 @@
 						falls BETWEEN thresholds (Default)</option>
 				</options>
 			</parameter>
-			<parameter name="config_9" type="integer" min="0" max="255"
+			<parameter name="config_9_1" type="integer" min="0" max="255"
 				groupName="configuration">
 				<label>9: Multilevel_AutoReport_Interval</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>3</default>
 				<options>
 					<option value="0">Disable Automatic Reports</option>
 					<option value="3">Enable Reports every 30 seconds (Default)</option>
 				</options>
 			</parameter>
-			<parameter name="config_10" type="integer" groupName="configuration">
+			<parameter name="config_10_1" type="integer" groupName="configuration">
 				<label>10: Not_Used_2</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>0</default>
 				<options>
 					<option value="0">Null</option>
 				</options>
 			</parameter>
-			<parameter name="config_11" type="integer" min="0" max="255"
+			<parameter name="config_11_1" type="integer" min="0" max="255"
 				groupName="configuration">
 				<label>11: Momentary_Relay1_Duration</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>0</default>
 				<options>
 					<option value="0">Disabled (Default)</option>
@@ -177,6 +182,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

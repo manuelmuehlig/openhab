@@ -7,11 +7,16 @@
 		<label>Qubino ZMNHCD</label>
 		<description><![CDATA[Flush Shutter]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -33,7 +38,7 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_1" type="integer" groupName="configuration">
+			<parameter name="config_1_1" type="integer" groupName="configuration">
 				<label>1: Input 1 switch type</label>
 				<description><![CDATA[Input 1 switch type]]></description>
 				<default>1</default>
@@ -42,7 +47,7 @@
 					<option value="1">bi-stable switch type</option>
 				</options>
 			</parameter>
-			<parameter name="config_2" type="integer" groupName="configuration">
+			<parameter name="config_2_1" type="integer" groupName="configuration">
 				<label>2: Input 2 switch type</label>
 				<description><![CDATA[Input 2 switch type]]></description>
 				<default>1</default>
@@ -51,7 +56,7 @@
 					<option value="1">bi-stable switch type</option>
 				</options>
 			</parameter>
-			<parameter name="config_3" type="integer" groupName="configuration">
+			<parameter name="config_3_1" type="integer" groupName="configuration">
 				<label>3: Input 3 switch type</label>
 				<description><![CDATA[Input 3 switch type]]></description>
 				<default>1</default>
@@ -60,7 +65,7 @@
 					<option value="1">bi-stable switch type</option>
 				</options>
 			</parameter>
-			<parameter name="config_4" type="integer" groupName="configuration">
+			<parameter name="config_4_1" type="integer" groupName="configuration">
 				<label>4: Input 1 contact type</label>
 				<description><![CDATA[Input 1 contact type]]></description>
 				<default>0</default>
@@ -69,7 +74,7 @@
 					<option value="1"> NC (normally close) input type</option>
 				</options>
 			</parameter>
-			<parameter name="config_5" type="integer" groupName="configuration">
+			<parameter name="config_5_1" type="integer" groupName="configuration">
 				<label>5: Input 2 contact type</label>
 				<description><![CDATA[Input 2 contact type]]></description>
 				<default>0</default>
@@ -78,7 +83,7 @@
 					<option value="1"> NC (normally close) input type</option>
 				</options>
 			</parameter>
-			<parameter name="config_6" type="integer" groupName="configuration">
+			<parameter name="config_6_1" type="integer" groupName="configuration">
 				<label>6: Input 3 contact type</label>
 				<description><![CDATA[Input 3 contact type]]></description>
 				<default>0</default>
@@ -87,7 +92,7 @@
 					<option value="1"> NC (normally close) input type</option>
 				</options>
 			</parameter>
-			<parameter name="config_10" type="integer" groupName="configuration">
+			<parameter name="config_10_1" type="integer" groupName="configuration">
 				<label>10: Activate / deactivate functions ALL ON/ALL OFF
 				</label>
 				<description><![CDATA[Flush PWM thermostat module responds to commands ALL
@@ -104,7 +109,7 @@
 					<option value="2">ALL ON active ALL OFF is not active</option>
 				</options>
 			</parameter>
-			<parameter name="config_11" type="integer" min="1" max="65535"
+			<parameter name="config_11_2" type="integer" min="1" max="65535"
 				groupName="configuration">
 				<label>11: I1 Functionality Selection</label>
 				<description><![CDATA[Default Value = 1. 65535 – Input I1 does not
@@ -119,7 +124,7 @@
 			]]></description>
 				<default>1</default>
 			</parameter>
-			<parameter name="config_12" type="integer" min="1" max="2"
+			<parameter name="config_12_2" type="integer" min="1" max="2"
 				groupName="configuration">
 				<label>12: I2 Functionality Selection</label>
 				<description><![CDATA[Default = 65535, 65535 - I2 does not influence on the
@@ -141,7 +146,7 @@
 			]]></description>
 				<default>65535</default>
 			</parameter>
-			<parameter name="config_13" type="integer" min="1" max="65535"
+			<parameter name="config_13_2" type="integer" min="1" max="65535"
 				groupName="configuration">
 				<label>13: I3 Functionality Selection</label>
 				<description><![CDATA[Default Value = 65535. 65535 – Input I3 does not
@@ -156,7 +161,7 @@
 			]]></description>
 				<default>65535</default>
 			</parameter>
-			<parameter name="config_40" type="integer" min="0" max="100"
+			<parameter name="config_40_1" type="integer" min="0" max="100"
 				groupName="configuration">
 				<label>40: Power reporting in Watts on power change</label>
 				<description><![CDATA[Default Value = 0. 0 – Reporting Disabled
@@ -171,7 +176,7 @@
 			]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_42" type="integer" min="0" max="32767"
+			<parameter name="config_42_2" type="integer" min="0" max="32767"
 				groupName="configuration">
 				<label>42: Power reporting in Watts by timer interval</label>
 				<description><![CDATA[Default Value = 300. 0 – Reporting Disabled
@@ -181,7 +186,7 @@
 			]]></description>
 				<default>300</default>
 			</parameter>
-			<parameter name="config_45" type="integer" min="0" max="255"
+			<parameter name="config_45_1" type="integer" min="0" max="255"
 				groupName="configuration">
 				<label>45: Antifreeze</label>
 				<description><![CDATA[Set value at which temperature the device will be
@@ -194,7 +199,7 @@
 			]]></description>
 				<default>50</default>
 			</parameter>
-			<parameter name="config_50" type="integer" min="2" max="100"
+			<parameter name="config_50_1" type="integer" min="2" max="100"
 				groupName="configuration">
 				<label>50: PWM Maximum Value</label>
 				<description><![CDATA[2 - 100 = 2% - 100%, step is 1% Max PWM set by
@@ -203,7 +208,7 @@
 			]]></description>
 				<default>100</default>
 			</parameter>
-			<parameter name="config_51" type="integer" min="0" max="99"
+			<parameter name="config_51_1" type="integer" min="0" max="99"
 				groupName="configuration">
 				<label>51: PWM Minimum Value</label>
 				<description><![CDATA[1 - 99 = 1% - 99%, step is 1% Minimum PWM set by
@@ -212,7 +217,7 @@
 			]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_52" type="integer" min="1" max="127"
+			<parameter name="config_52_1" type="integer" min="1" max="127"
 				groupName="configuration">
 				<label>52: PWM Cycle Duration</label>
 				<description><![CDATA[1 - 127 = 1-127 seconds, step is 1s PWM Cycle
@@ -224,7 +229,7 @@
 			]]></description>
 				<default>10</default>
 			</parameter>
-			<parameter name="config_53" type="integer" groupName="configuration">
+			<parameter name="config_53_1" type="integer" groupName="configuration">
 				<label>53: PID Value Inside Deadband</label>
 				<description><![CDATA[When value is set to ZERO PID inside deadband is
 				forced to zero. LAST VALUE means
@@ -236,7 +241,7 @@
 					<option value="1">PID value set to LAST VALUE</option>
 				</options>
 			</parameter>
-			<parameter name="config_54" type="integer" min="0" max="127"
+			<parameter name="config_54_1" type="integer" min="0" max="127"
 				groupName="configuration">
 				<label>54: PID Deadband</label>
 				<description><![CDATA[0 - 127 = 0.0C - 12.7C step is 0.1 C This parameter
@@ -248,7 +253,7 @@
 			]]></description>
 				<default>5</default>
 			</parameter>
-			<parameter name="config_55" type="integer" min="0" max="127"
+			<parameter name="config_55_1" type="integer" min="0" max="127"
 				groupName="configuration">
 				<label>55: Integral Sampling Time</label>
 				<description><![CDATA[0 - 127 = 0s -127s step is 1s Parameter defines the
@@ -257,37 +262,37 @@
 			]]></description>
 				<default>5</default>
 			</parameter>
-			<parameter name="config_56" type="integer" min="0" max="1000"
+			<parameter name="config_56_2" type="integer" min="0" max="1000"
 				groupName="configuration">
 				<label>56: P Parameter</label>
 				<description><![CDATA[0 - 1000 P value step is 1. Default = 100
 			]]></description>
 				<default>100</default>
 			</parameter>
-			<parameter name="config_57" type="integer" min="0" max="1000"
+			<parameter name="config_57_2" type="integer" min="0" max="1000"
 				groupName="configuration">
 				<label>57: I Parameter</label>
 				<description><![CDATA[0 - 1000 - 0s I value step is 1. Default = 1
 			]]></description>
 				<default>1</default>
 			</parameter>
-			<parameter name="config_58" type="integer" min="0" max="1000"
+			<parameter name="config_58_2" type="integer" min="0" max="1000"
 				groupName="configuration">
 				<label>58: D Parameter</label>
 				<description><![CDATA[0 - 1000 - 0s D value step is 1. Default = 1
 			]]></description>
 				<default>1</default>
 			</parameter>
-			<parameter name="config_59" type="integer" groupName="configuration">
+			<parameter name="config_59_1" type="integer" groupName="configuration">
 				<label>59: Thermostat Mode</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>0</default>
 				<options>
 					<option value="0">Heat Mode</option>
 					<option value="1">Cool Mode</option>
 				</options>
 			</parameter>
-			<parameter name="config_60" type="integer" min="1" max="1000"
+			<parameter name="config_60_2" type="integer" min="1" max="1000"
 				groupName="configuration">
 				<label>60: Too low temperature limit</label>
 				<description><![CDATA[1 - 1000 = 0.1 C - 100.0 C step is 0.1 C Too low
@@ -297,7 +302,7 @@
 			]]></description>
 				<default>50</default>
 			</parameter>
-			<parameter name="config_61" type="integer" min="1" max="1000"
+			<parameter name="config_61_2" type="integer" min="1" max="1000"
 				groupName="configuration">
 				<label>61: Too high temperature limit</label>
 				<description><![CDATA[1 - 1000 = 0.1 C - 100.0 C step is 0.1 C Too high
@@ -307,9 +312,9 @@
 			]]></description>
 				<default>700</default>
 			</parameter>
-			<parameter name="config_63" type="integer" groupName="configuration">
+			<parameter name="config_63_1" type="integer" groupName="configuration">
 				<label>63: Output Switch Selection</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>0</default>
 				<options>
 					<option value="0">When system is turned off the output is 0V
@@ -320,7 +325,7 @@
 					</option>
 				</options>
 			</parameter>
-			<parameter name="config_70" type="integer" min="0" max="32000"
+			<parameter name="config_70_2" type="integer" min="0" max="32000"
 				groupName="configuration">
 				<label>70: Input 1 Status on delay</label>
 				<description><![CDATA[1 - 32000 seconds. If the value of the parameter is
@@ -331,7 +336,7 @@
 			]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_71" type="integer" min="0" max="32000"
+			<parameter name="config_71_2" type="integer" min="0" max="32000"
 				groupName="configuration">
 				<label>71: Input 1 Status off delay</label>
 				<description><![CDATA[1 - 32000 seconds. If the value of the parameter is
@@ -342,7 +347,7 @@
 			]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_72" type="integer" min="0" max="32000"
+			<parameter name="config_72_2" type="integer" min="0" max="32000"
 				groupName="configuration">
 				<label>72: Input 2 Status on delay</label>
 				<description><![CDATA[1 - 32000 seconds. If the value of the parameter is
@@ -353,7 +358,7 @@
 			]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_73" type="integer" min="0" max="32000"
+			<parameter name="config_73_2" type="integer" min="0" max="32000"
 				groupName="configuration">
 				<label>73: Input 2 Status off delay</label>
 				<description><![CDATA[1 - 32000 seconds. If the value of the parameter is
@@ -364,7 +369,7 @@
 			]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_74" type="integer" min="0" max="32000"
+			<parameter name="config_74_2" type="integer" min="0" max="32000"
 				groupName="configuration">
 				<label>74: Input 3 Status on delay</label>
 				<description><![CDATA[1 - 32000 seconds. If the value of the parameter is
@@ -375,7 +380,7 @@
 			]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_75" type="integer" min="0" max="32000"
+			<parameter name="config_75_2" type="integer" min="0" max="32000"
 				groupName="configuration">
 				<label>75: Input 3 Status off delay</label>
 				<description><![CDATA[1 - 32000 seconds. If the value of the parameter is
@@ -430,6 +435,7 @@
 			</parameter>
 			<parameter name="group_6" type="integer" groupName="association">
 				<label>Controller Updates</label>
+				<description><![CDATA[***Add description here***]]></description>
 			</parameter>
 		</config-description>
 	</thing-type>
@@ -437,6 +443,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

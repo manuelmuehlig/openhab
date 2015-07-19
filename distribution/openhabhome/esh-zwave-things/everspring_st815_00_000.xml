@@ -7,11 +7,16 @@
 		<label>Everspring ST815</label>
 		<description><![CDATA[Illumination Sensor]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -33,51 +38,51 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_1" type="integer" min="0" max="99"
+			<parameter name="config_1_1" type="integer" min="0" max="99"
 				groupName="configuration">
 				<label>1: Basic Set Level</label>
 				<description><![CDATA[Set basic set value to be on or off.<BR/>0=Disable<BR/>1-99=Use Value]]></description>
 				<default>99</default>
 			</parameter>
-			<parameter name="config_2" type="integer" min="-20" max="99"
+			<parameter name="config_2_1" type="integer" min="-20" max="99"
 				groupName="configuration">
 				<label>2: Temperature Trigger ON value</label>
 				<description><![CDATA[Temperature level when a ON command is sent out. Set to 99 to disable.]]></description>
 				<default>99</default>
 			</parameter>
-			<parameter name="config_3" type="integer" min="-20" max="99"
+			<parameter name="config_3_1" type="integer" min="-20" max="99"
 				groupName="configuration">
 				<label>3: Temperature Trigger OFF value</label>
 				<description><![CDATA[Temperature level when a OFF command is sent out. Set to 99 to disable.]]></description>
 				<default>99</default>
 			</parameter>
-			<parameter name="config_4" type="integer" min="20" max="99"
+			<parameter name="config_4_1" type="integer" min="20" max="99"
 				groupName="configuration">
 				<label>4: Humidity Trigger ON value</label>
 				<description><![CDATA[Humidity level when a ON command is sent out. Set to 99 to disable.<BR/>Interval in seconds.]]></description>
 				<default>99</default>
 			</parameter>
-			<parameter name="config_5" type="integer" min="20" max="99"
+			<parameter name="config_5_1" type="integer" min="20" max="99"
 				groupName="configuration">
 				<label>5: Humidity Trigger OFF value</label>
 				<description><![CDATA[Humidity level when a OFF command is sent out. Set to 99 to disable.<BR/>Interval in seconds.]]></description>
 				<default>99</default>
 			</parameter>
-			<parameter name="config_6" type="integer" min="0" max="1439"
+			<parameter name="config_6_2" type="integer" min="0" max="1439"
 				groupName="configuration">
 				<label>6: Auto report time</label>
 				<description><![CDATA[Sets the time interval when a sensor report is sent.<BR/>0 = Disable<BR/>
 1 min - 1439 min = Auto report periodically]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_7" type="integer" min="0" max="70"
+			<parameter name="config_7_1" type="integer" min="0" max="70"
 				groupName="configuration">
 				<label>7: Auto report temperature</label>
 				<description><![CDATA[Sets the temperature change causing a sensor report.<BR/>0 = Disable<BR/>
 1 - 70 = Auto report on temperature change]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_8" type="integer" min="0" max="70"
+			<parameter name="config_8_1" type="integer" min="0" max="70"
 				groupName="configuration">
 				<label>8: Auto report humidity</label>
 				<description><![CDATA[Sets the humidity change causing a sensor report.<BR/>0 = Disable<BR/>
@@ -86,10 +91,12 @@
 			</parameter>
 			<parameter name="group_1" type="integer" groupName="association">
 				<label>Reports</label>
+				<description><![CDATA[***Add description here***]]></description>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Control</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>3</multipleLimit>
 			</parameter>
 		</config-description>
@@ -98,6 +105,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

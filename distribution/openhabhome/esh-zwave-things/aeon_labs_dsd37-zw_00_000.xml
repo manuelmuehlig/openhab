@@ -7,11 +7,16 @@
 		<label>Aeon Labs DSD37-ZW</label>
 		<description><![CDATA[Range Extender]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -32,7 +37,7 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_3" type="integer" groupName="configuration">
+			<parameter name="config_3_1" type="integer" groupName="configuration">
 				<label>3: Current Overload Protection</label>
 				<description><![CDATA[Load will be closed when current more that 39.5A and time more 5 seconds]]></description>
 				<default>0</default>
@@ -41,7 +46,7 @@
 					<option value="1">Activate</option>
 				</options>
 			</parameter>
-			<parameter name="config_20" type="integer" groupName="configuration">
+			<parameter name="config_20_1" type="integer" groupName="configuration">
 				<label>20: Output Load Status</label>
 				<description><![CDATA[Configure the output load status after re‐power on.]]></description>
 				<default>0</default>
@@ -51,7 +56,7 @@
 					<option value="2">Always OFF</option>
 				</options>
 			</parameter>
-			<parameter name="config_80" type="integer" groupName="configuration">
+			<parameter name="config_80_1" type="integer" groupName="configuration">
 				<label>80: Notification on Status Change</label>
 				<description><![CDATA[Parameter to Enable to send notification to associated devices (Group 1) when the state of Micro Smart Switch's load changed]]></description>
 				<default>0</default>
@@ -61,7 +66,7 @@
 					<option value="2">Basic CC Report Sent</option>
 				</options>
 			</parameter>
-			<parameter name="config_90" type="integer" groupName="configuration">
+			<parameter name="config_90_1" type="integer" groupName="configuration">
 				<label>90: Automated sending of a Report triggered by minimal change
 					of value.</label>
 				<description><![CDATA[Parameter to Enable/Disable automated sending of a Report triggered by minimal change of value.]]></description>
@@ -71,17 +76,17 @@
 					<option value="1">Activate</option>
 				</options>
 			</parameter>
-			<parameter name="config_91" type="integer" groupName="configuration">
+			<parameter name="config_91_2" type="integer" groupName="configuration">
 				<label>91: Minimum Change to send Report (Watt)</label>
 				<description><![CDATA[The value represents the minimum change in Wattage for a Report to be sent.]]></description>
 				<default>25</default>
 			</parameter>
-			<parameter name="config_92" type="integer" groupName="configuration">
+			<parameter name="config_92_1" type="integer" groupName="configuration">
 				<label>92: Minimum Change to send Report (%)</label>
 				<description><![CDATA[The value represents the minimum change in Watage Percent for a report to be sent.]]></description>
 				<default>5</default>
 			</parameter>
-			<parameter name="config_101" type="integer" groupName="configuration">
+			<parameter name="config_101_4" type="integer" groupName="configuration">
 				<label>101: Which reports need to send automatically in timing
 					intervals for group 1</label>
 				<description><![CDATA[The value is a combination number made up of the sum of the values for the individual parameters.
@@ -89,7 +94,7 @@
                                                         Therefore if you want all parameters sending regular reports, set the parameter to 15 (8 + 4 + 2 + 1).]]></description>
 				<default>4</default>
 			</parameter>
-			<parameter name="config_102" type="integer" groupName="configuration">
+			<parameter name="config_102_4" type="integer" groupName="configuration">
 				<label>102: Which reports need to send automatically in timing
 					intervals for group 2</label>
 				<description><![CDATA[The value is a combination number made up of the sum of the values for the individual parameters.
@@ -97,7 +102,7 @@
                                                         Therefore if you want all parameters sending regular reports, set the parameter to 15 (8 + 4 + 2 + 1).]]></description>
 				<default>8</default>
 			</parameter>
-			<parameter name="config_103" type="integer" groupName="configuration">
+			<parameter name="config_103_4" type="integer" groupName="configuration">
 				<label>103: Which reports need to send automatically in timing
 					intervals for group 3</label>
 				<description><![CDATA[The value is a combination number made up of the sum of the values for the individual parameters.
@@ -105,25 +110,25 @@
                                                         Therefore if you want all parameters sending regular reports, set the parameter to 15 (8 + 4 + 2 + 1).]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_111" type="integer" min="1" max="2678400"
+			<parameter name="config_111_4" type="integer" min="1" max="2678400"
 				groupName="configuration">
 				<label>111: Interval to send out reports of group 1</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>3</default>
 			</parameter>
-			<parameter name="config_112" type="integer" min="1" max="2678400"
+			<parameter name="config_112_4" type="integer" min="1" max="2678400"
 				groupName="configuration">
 				<label>112: Interval to send out reports of group 2</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>600</default>
 			</parameter>
-			<parameter name="config_113" type="integer" min="1" max="2678400"
+			<parameter name="config_113_4" type="integer" min="1" max="2678400"
 				groupName="configuration">
 				<label>113: Interval to send out reports of group 3</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>600</default>
 			</parameter>
-			<parameter name="config_120" type="integer" groupName="configuration">
+			<parameter name="config_120_1" type="integer" groupName="configuration">
 				<label>120: Turn External Button Mode</label>
 				<description><![CDATA[Parameter to set External button type]]></description>
 				<default>255</default>
@@ -136,11 +141,13 @@
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
 				<label>Group 1</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Group 2</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 		</config-description>
@@ -149,6 +156,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

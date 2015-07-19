@@ -7,11 +7,16 @@
 		<label>Aeon Labs ZW098-C55</label>
 		<description><![CDATA[LED Bulb]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -21,8 +26,8 @@
 			<property name="manufacturerId">0086</property>
 			<property name="manufacturerRef">0003:0062</property>
 			<property name="commandClass:ASSOCIATION:0:default">1</property>
-			<property name="command_class:METER:5:ADD</property-group><property name="
-				command_class:METER:6:ADD
+			<property name="commandClass:METER:5:ADD</property-group><property name="
+				commandClass:METER:6:ADD
 			</property-group>
 		</properties>
 		<config-description>
@@ -36,7 +41,7 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_37" type="integer" min="0" max="65535"
+			<parameter name="config_37_2" type="integer" min="0" max="65535"
 				groupName="configuration">
 				<label>37: Siren Sound</label>
 				<description><![CDATA[1,The value1 (low byte) is used to select the Siren sound</br>
@@ -56,7 +61,7 @@
 			]]></description>
 				<default>1</default>
 			</parameter>
-			<parameter name="config_80" type="integer" min="0" max="60000"
+			<parameter name="config_80_1" type="integer" min="0" max="60000"
 				groupName="configuration">
 				<label>80: Enable Notifications</label>
 				<description><![CDATA[Enable to send notifications to associated devices (Group1) when the state of Siren changed (0=nothing,1=hailCC,2=basic CC report).]]></description>
@@ -65,6 +70,7 @@
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
 				<label>Group 1</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 		</config-description>
@@ -73,6 +79,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

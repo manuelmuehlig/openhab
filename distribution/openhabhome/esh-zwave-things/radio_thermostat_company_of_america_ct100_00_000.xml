@@ -7,11 +7,16 @@
 		<label>Radio Thermostat Company of America CT100</label>
 		<description><![CDATA[Z-Wave Thermostat]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -32,7 +37,7 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_1" type="integer" groupName="configuration">
+			<parameter name="config_1_1" type="integer" groupName="configuration">
 				<label>1: Temperature Reporting Threshold</label>
 				<description><![CDATA[The Temperature Reporting Threshold Configuration Set Command sets the reporting threshold for changes in the ambient temperature as detected by the thermostat.]]></description>
 				<default>0</default>
@@ -44,7 +49,7 @@
 					<option value="4">2.0 �F</option>
 				</options>
 			</parameter>
-			<parameter name="config_3" type="integer" groupName="configuration">
+			<parameter name="config_3_1" type="integer" groupName="configuration">
 				<label>3: Utility Lock Enable/Disable</label>
 				<description><![CDATA[The Utility Lock Configuration Set command enables or disables the utility lock. If the utility lock is enabled, the setpoint cannot be modified directly via the thermostat screen.]]></description>
 				<default>0</default>
@@ -53,7 +58,7 @@
 					<option value="1">Utility lock enable</option>
 				</options>
 			</parameter>
-			<parameter name="config_5" type="integer" groupName="configuration">
+			<parameter name="config_5_1" type="integer" groupName="configuration">
 				<label>5: Humidity Reporting Threshold</label>
 				<description><![CDATA[The Humidity Threshold Configuration Set Command sets the reporting threshold for changes in the relative humidity as detected by the thermostat.]]></description>
 				<default>0</default>
@@ -64,7 +69,7 @@
 					<option value="3">10%RH</option>
 				</options>
 			</parameter>
-			<parameter name="config_6" type="integer" groupName="configuration">
+			<parameter name="config_6_1" type="integer" groupName="configuration">
 				<label>6: Auxiliary/Emergency</label>
 				<description><![CDATA[The Auxiliary/Emergency configuration command enables or disables auxiliary / emergency heating in the thermostat. Auxiliary / emergency heating is only available if the thermostat is configured in heat pump mode and with at least one stage of auxiliary heating. This command enables auxiliary / emergency heating when the thermostat is in Auto mode. The Thermostat Set Mode command with mode Auxiliary/Emergency Heat will enable emergency heating but only if the thermostat is in Heat mode. This command should only be used on thermsotats that support Auxiliary/Emergency Heat thermostat mode.]]></description>
 				<default>0</default>
@@ -73,7 +78,7 @@
 					<option value="1">Auxiliary/Emergency heat enable</option>
 				</options>
 			</parameter>
-			<parameter name="config_7" type="integer" groupName="configuration">
+			<parameter name="config_7_1" type="integer" groupName="configuration">
 				<label>7: Thermostat Swing Temperature</label>
 				<description><![CDATA[The Thermostat Swing Temperature configuration command sets swing temperature on the thermostat. The swing temperature is applied to the setpoint to determine when the thermostat will turn on the HVAC system. If the thermostat is heating, the swing temperature is subtracted from the heat setpoint. If the thermostat is cooling, the swing temperature is added to the cool setpoint.]]></description>
 				<default>1</default>
@@ -83,7 +88,7 @@
 					<option value="8">4F</option>
 				</options>
 			</parameter>
-			<parameter name="config_8" type="integer" groupName="configuration">
+			<parameter name="config_8_1" type="integer" groupName="configuration">
 				<label>8: Thermostat Diff Temperature</label>
 				<description><![CDATA[The Thermostat Differential Temperature configuration command sets the differential temperature for multi-stage HVAC systems. The differential temperature delta defines when the thermostat will turn on additional stages. There are two differential temperatures, one for multistage cool systems and one for multistage heat systems. If the thermostat is not configured for multistage HVAC systems then these parameters have no effect.]]></description>
 				<default>4</default>
@@ -105,6 +110,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

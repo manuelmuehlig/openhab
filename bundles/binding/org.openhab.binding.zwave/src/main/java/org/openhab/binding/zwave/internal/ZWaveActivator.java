@@ -121,11 +121,17 @@ public final class ZWaveActivator implements BundleActivator {
 
 				outstring += "<channels>";
 
-				outstring += "<channel id=\"switch0\" typeId=\"dimmer\">";
+				outstring += "<channel id=\"dimmer-1\" typeId=\"dimmer\">";
 				outstring += "<properties>";
 				outstring += "<property name=\"endpoint\">0</property>";
-				outstring += "<property name=\"command_class\">SWITCH_MULTILEVEL</property>";
-				outstring += "<property name=\"set_to_basic\">true</property>";
+				outstring += "<property name=\"commandClass\">SWITCH_MULTILEVEL,BASIC</property>";
+				outstring += "</properties>";
+				outstring += "</channel>";
+
+				outstring += "<channel id=\"switch-1\" typeId=\"switch\">";
+				outstring += "<properties>";
+				outstring += "<property name=\"endpoint\">1</property>";
+				outstring += "<property name=\"commandClass\">SWITCH_BINARY,BASIC</property>";
 				outstring += "</properties>";
 				outstring += "</channel>";
 
@@ -189,7 +195,7 @@ public final class ZWaveActivator implements BundleActivator {
 						if(dbClass.add==null&&dbClass.isGetSupported==null&&dbClass.meterCanReset==null&&dbClass.remove==null&&dbClass.meterScale==null&&dbClass.meterType==null) {
 							continue;
 						}
-						outstring += "<property name=\"command_class:" + CommandClass.getCommandClass(dbClass.Id) + ":";
+						outstring += "<property name=\"commandClass:" + CommandClass.getCommandClass(dbClass.Id) + ":";
 						if(dbClass.endpoint != null) {
 							outstring += dbClass.endpoint + ":";
 						}
@@ -244,9 +250,30 @@ public final class ZWaveActivator implements BundleActivator {
 
 					// Loop through the parameters and add to the records...
 					if(configList != null) {
+						// Check for write only parms
+						boolean writeOnly = false;
+						for (ZWaveDbConfigurationParameter parameter : configList) {
+							if(parameter.WriteOnly != null && parameter.WriteOnly == true) {
+								writeOnly = true;
+							}
+						}
+						
+						if(writeOnly) {
+							outstring += "<parameter-group name=\"tools\">";
+							outstring += "<context>menu</context>";
+							outstring += "<label>Tools</label>";
+							outstring += "</parameter-group>";
+						}
+						
 						for (ZWaveDbConfigurationParameter parameter : configList) {
 							cfgCnt++;
-							outstring += "<parameter name=\"config_" + parameter.Index+"\" type=\"integer\"";
+							
+							// Ignore write only
+							if(parameter.WriteOnly != null && parameter.WriteOnly == true) {
+								continue;
+							}
+							
+							outstring += "<parameter name=\"config_" + parameter.Index+ "_" + parameter.Size + "\" type=\"integer\"";
 							if(parameter.Minimum != null) {
 								outstring += " min=\"" + parameter.Minimum + "\"";
 							}
@@ -257,6 +284,42 @@ public final class ZWaveActivator implements BundleActivator {
 								outstring += " readOnly=\"true\"";
 							}
 							outstring += " groupName=\"configuration\">";
+							
+							outstring += "<label>" + parameter.Index + ": " + database.getLabel(parameter.Label) + "</label>";
+							if(database.getLabel(parameter.Help)!=null && database.getLabel(parameter.Help).startsWith("<![CDATA[") == true) {
+								outstring += "<description>" + database.getLabel(parameter.Help)+ "</description>";
+							}
+							else if(database.getLabel(parameter.Help) != null){
+								outstring += "<description><![CDATA[" + database.getLabel(parameter.Help)+ "]]></description>";
+							}
+							else {
+								outstring += "<description><![CDATA[***Add description here***]]></description>";
+							}
+							
+							if(parameter.Default != null) {
+								outstring += "<default>" + parameter.Default + "</default>";
+							}
+		
+							if(parameter.Item != null) {
+								outstring += "<options>";
+	
+								for (ZWaveDbConfigurationListItem item : parameter.Item) {
+									outstring += "<option value=\"" + item.Value + "\">" + database.getLabel(item.Label) + "</option>";
+								}
+								outstring += "</options>";
+							}
+		
+							outstring += "</parameter>";
+						}
+
+						// Handle write only parameters as tools
+						for (ZWaveDbConfigurationParameter parameter : configList) {
+							if(parameter.WriteOnly == null || parameter.WriteOnly == false) {
+								continue;
+							}
+							
+							outstring += "<parameter name=\"config_" + parameter.Index+ "_" + parameter.Size + "_wo\" type=\"integer\"";
+							outstring += " groupName=\"tools\">";
 							
 							outstring += "<label>" + parameter.Index + ": " + database.getLabel(parameter.Label) + "</label>";
 							if(database.getLabel(parameter.Help)!=null && database.getLabel(parameter.Help).startsWith("<![CDATA[") == true) {
@@ -295,7 +358,15 @@ public final class ZWaveActivator implements BundleActivator {
 							outstring += " groupName=\"association\">";
 							outstring += "<label>" + database.getLabel(group.Label) + "</label>";
 							if(database.getLabel(group.Help) != null) {
-								outstring += "<description><![CDATA[" + database.getLabel(group.Help) + "]]></description>";
+								if(database.getLabel(group.Help).startsWith("<![CDATA")) {
+									outstring += "<description>" + database.getLabel(group.Help) + "</description>";
+								}
+								else {
+									outstring += "<description><![CDATA[" + database.getLabel(group.Help) + "]]></description>";
+								}
+							}
+							else {
+								outstring += "<description><![CDATA[***Add description here***]]></description>";
 							}
 							if(group.Maximum > 1) {
 								outstring += "<multipleLimit>" + group.Maximum + "</multipleLimit>";								
@@ -314,6 +385,13 @@ public final class ZWaveActivator implements BundleActivator {
 				outstring += "<item-type>Dimmer</item-type>";
 				outstring += "<label>Dimmer</label>";
 				outstring += "<description>Set the light level</description>";
+				outstring += "<category>Light</category>";
+				outstring += "</channel-type>";
+
+				outstring += "<channel-type id=\"switch\">";
+				outstring += "<item-type>Switch</item-type>";
+				outstring += "<label>Switch</label>";
+				outstring += "<description>Switch the light on and off</description>";
 				outstring += "<category>Light</category>";
 				outstring += "</channel-type>";
 

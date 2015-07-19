@@ -7,11 +7,16 @@
 		<label>POPP 123580</label>
 		<description><![CDATA[Wall Plug Dimmer]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -32,7 +37,7 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_1" type="integer" groupName="configuration">
+			<parameter name="config_1_1" type="integer" groupName="configuration">
 				<label>1: Set LED indication mode</label>
 				<description><![CDATA[]]>
 				</description>
@@ -44,12 +49,12 @@
 					<option value="3">Operated by command</option>
 				</options>
 			</parameter>
-			<parameter name="config_2" type="integer" groupName="configuration">
+			<parameter name="config_2_2" type="integer" groupName="configuration">
 				<label>2: Automatic switch off time</label>
 				<description><![CDATA[If not zero, automatically switch off after a user defined time (in seconds)]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_3" type="integer" groupName="configuration">
+			<parameter name="config_3_1" type="integer" groupName="configuration">
 				<label>3: RF Off command</label>
 				<description><![CDATA[Defines how to interpret RF Off command. Can be used in conjunction with Auto Off function: Ignore - to switch on the light by motion detectors and switch it off after some amount of time: in case of multiple motion detectors each would try to switch the light off that would break logics; Switch on - to switch on the light on both On and Off paddle press on the remote and switch it off after some amount of time. Button off click will still work (if button operations are not disabled).]]></description>
 				<default>0</default>
@@ -60,7 +65,7 @@
 					<option value="3">Switch on if load is off else switch off</option>
 				</options>
 			</parameter>
-			<parameter name="config_5" type="integer" groupName="configuration">
+			<parameter name="config_5_1" type="integer" groupName="configuration">
 				<label>5: Restore switch state after power cycle</label>
 				<description><![CDATA[Defines if the switch should restore switch state to the last state prior to device power off (power cycle).]]></description>
 				<default>1</default>
@@ -72,6 +77,7 @@
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
 				<label>Switch State</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 		</config-description>
@@ -80,6 +86,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

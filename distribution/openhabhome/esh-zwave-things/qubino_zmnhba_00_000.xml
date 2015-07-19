@@ -7,11 +7,16 @@
 		<label>Qubino ZMNHBA</label>
 		<description><![CDATA[Flush 2 relays]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -22,11 +27,11 @@
 			<property name="manufacturerRef">0002:0001</property>
 			<property name="commandClass:ASSOCIATION:0:default">4</property>
 			<property
-				name="command_class:SENSOR_MULTILEVEL:NO_GET</property-group><property name="
-				command_class:METER:1:METER_CAN_RESETMETER_TYPE=ELECTRICMETER_SCALE=E_W,E_KWh
+				name="commandClass:SENSOR_MULTILEVEL:NO_GET</property-group><property name="
+				commandClass:METER:1:METER_CAN_RESETMETER_TYPE=ELECTRICMETER_SCALE=E_W,E_KWh
 			</property-group>
 				<property
-					name="command_class:METER:2:METER_CAN_RESETMETER_TYPE=ELECTRICMETER_SCALE=E_W,E_KWh</property-group></properties><config-description><parameter-group name="
+					name="commandClass:METER:2:METER_CAN_RESETMETER_TYPE=ELECTRICMETER_SCALE=E_W,E_KWh</property-group></properties><config-description><parameter-group name="
 					configuration ">
 					<context>setup</context>
 					<label>Configuration Parameters</label>
@@ -37,7 +42,7 @@
 						<label>Association Groups</label>
 						<description></description>
 					</parameter-group>
-					<parameter name="config_1" type="integer" groupName="configuration">
+					<parameter name="config_1_1" type="integer" groupName="configuration">
 						<label>1: Input 1 switch type</label>
 						<description><![CDATA[Input 1 switch type]]></description>
 						<default>1</default>
@@ -46,7 +51,7 @@
 							<option value="1">bi-stable switch type</option>
 						</options>
 					</parameter>
-					<parameter name="config_2" type="integer" groupName="configuration">
+					<parameter name="config_2_1" type="integer" groupName="configuration">
 						<label>2: Input 2 contact type</label>
 						<description><![CDATA[Input 2 contact type]]></description>
 						<default>0</default>
@@ -55,7 +60,7 @@
 							<option value="1"> NC (normaly close) input type</option>
 						</options>
 					</parameter>
-					<parameter name="config_3" type="integer" groupName="configuration">
+					<parameter name="config_3_1" type="integer" groupName="configuration">
 						<label>3: Input 3 contact type</label>
 						<description><![CDATA[Input 3 contact type]]></description>
 						<default>0</default>
@@ -64,7 +69,7 @@
 							<option value="1"> NC (normaly close) input type</option>
 						</options>
 					</parameter>
-					<parameter name="config_10" type="integer" groupName="configuration">
+					<parameter name="config_10_1" type="integer" groupName="configuration">
 						<label>10: Activate / deactivate functions ALL ON/ALL OFF</label>
 						<description><![CDATA[Flush 1 relay module responds to commands ALL ON / 
 ALL OFF that may be sent by the main controller or by 
@@ -77,14 +82,14 @@ other controller belonging to the system.]]></description>
 							<option value="2">ALL ON active ALL OFF is not active</option>
 						</options>
 					</parameter>
-					<parameter name="config_11" type="integer" groupName="configuration">
+					<parameter name="config_11_2" type="integer" groupName="configuration">
 						<label>11: Automatic turning off relay after set time</label>
 						<description><![CDATA[0 - Auto OFF disabled 
 1 – 65535 = 0,01second – 655,35 seconds
 Auto OFF enabled with define time, step is 10mseconds]]></description>
 						<default>0</default>
 					</parameter>
-					<parameter name="config_30" type="integer" groupName="configuration">
+					<parameter name="config_30_1" type="integer" groupName="configuration">
 						<label>30: Saving the state of the relay after a power failure</label>
 						<description><![CDATA[Saving the state of the relay after a power failure]]></description>
 						<default>0</default>
@@ -97,7 +102,7 @@ Auto OFF enabled with define time, step is 10mseconds]]></description>
 							</option>
 						</options>
 					</parameter>
-					<parameter name="config_40" type="integer" groupName="configuration">
+					<parameter name="config_40_1" type="integer" groupName="configuration">
 						<label>40: Power reporting in Watts on power change</label>
 						<description><![CDATA[0 – Reporting Disabled
 1 – 100 = 1% - 100% Reporting enabled
@@ -109,7 +114,7 @@ NOTE: if power changed is less than 1W, the report is
 not send (pushed), independent of percentage set. ]]></description>
 						<default>3</default>
 					</parameter>
-					<parameter name="config_42" type="integer" groupName="configuration">
+					<parameter name="config_42_2" type="integer" groupName="configuration">
 						<label>42: Power reporting in Watts on power change</label>
 						<description><![CDATA[default value 300 (power report in Watts is 
 send each 300s)
@@ -123,22 +128,26 @@ interval set by entered value. ]]></description>
 						groupName="association">
 						<label>basic on/off (triggered at change of the output
 							Q state and reflecting its state)</label>
+						<description><![CDATA[***Add description here***]]></description>
 						<multipleLimit>4</multipleLimit>
 					</parameter>
 					<parameter name="group_2" type="integer" multiple="true"
 						groupName="association">
 						<label> basic on/off (triggered at change of the input I2
 							state and reflecting its state)</label>
+						<description><![CDATA[***Add description here***]]></description>
 						<multipleLimit>4</multipleLimit>
 					</parameter>
 					<parameter name="group_3" type="integer" multiple="true"
 						groupName="association">
 						<label> basic on/off (triggered at change of the input I3
 							state and reflecting its state)</label>
+						<description><![CDATA[***Add description here***]]></description>
 						<multipleLimit>4</multipleLimit>
 					</parameter>
 					<parameter name="group_4" type="integer" groupName="association">
 						<label>Controller Updates</label>
+						<description><![CDATA[***Add description here***]]></description>
 					</parameter>
 				</config-description>
 	</thing-type>
@@ -146,6 +155,12 @@ interval set by entered value. ]]></description>
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

@@ -7,11 +7,16 @@
 		<label>Fibaro System FGBS001</label>
 		<description><![CDATA[Universal Binary Sensor]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -33,7 +38,7 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_1" type="integer" groupName="configuration">
+			<parameter name="config_1_2" type="integer" groupName="configuration">
 				<label>1: IN1 Alarm Cancellation Delay</label>
 				<description><![CDATA[Additional delay
 				after an alarm from input IN1 has ceased. The parameter allows you
@@ -42,7 +47,7 @@
 			]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_2" type="integer" groupName="configuration">
+			<parameter name="config_2_1" type="integer" groupName="configuration">
 				<label>2: Status change signalled by LED</label>
 				<description><![CDATA[]]>
 				</description>
@@ -52,7 +57,7 @@
 					<option value="1">LED turned On</option>
 				</options>
 			</parameter>
-			<parameter name="config_3" type="integer" groupName="configuration">
+			<parameter name="config_3_1" type="integer" groupName="configuration">
 				<label>3: Type of input no. 1</label>
 				<description><![CDATA[Type of input no. 1, what the input 1 will report if
 				no contact is made
@@ -65,7 +70,7 @@
 					<option value="3">Bistable</option>
 				</options>
 			</parameter>
-			<parameter name="config_5" type="integer" groupName="configuration">
+			<parameter name="config_5_1" type="integer" groupName="configuration">
 				<label>5: Type of transmitted control frame for association
 					group 1
 				</label>
@@ -85,7 +90,7 @@
 					<option value="-1">BASIC_SET</option>
 				</options>
 			</parameter>
-			<parameter name="config_7" type="integer" min="1" max="255"
+			<parameter name="config_7_1" type="integer" min="1" max="255"
 				groupName="configuration">
 				<label>7: Forced Level of Dimming group 1</label>
 				<description><![CDATA[Value of the parameter specifying the forced level of
@@ -107,7 +112,7 @@
 				]]></description>
 				<default>255</default>
 			</parameter>
-			<parameter name="config_9" type="integer" groupName="configuration">
+			<parameter name="config_9_1" type="integer" groupName="configuration">
 				<label>9: Deactivate transmission of frame cancelling alarm
 				</label>
 				<description><![CDATA[Deactivating transmission of the frame cancelling the
@@ -125,7 +130,7 @@
 					<option value="2">Group 2 sent, Group 1 not sent.</option>
 				</options>
 			</parameter>
-			<parameter name="config_12" type="integer" groupName="configuration">
+			<parameter name="config_12_1" type="integer" groupName="configuration">
 				<label>12: Insensitiveness to temperature changes.</label>
 				<description><![CDATA[This is the maximum acceptable difference between the last reported temperature and the current temperature taken from the sensor. If the temperatures differ by the set value or more, then a report with the current temperature value is sent to the device assigned to association group no. 3. Intervals between taking readings from sensors are specified by parameter no. 10.
                           Possible parameter settings: 0 - 255 [0oC to 16oC] [0 oF - 28.8oF]<BR/>
@@ -139,7 +144,7 @@
 			]]></description>
 				<default>8</default>
 			</parameter>
-			<parameter name="config_13" type="integer" groupName="configuration">
+			<parameter name="config_13_1" type="integer" groupName="configuration">
 				<label>13: Transmitting the alarm or control frame broadcast
 					mode
 				</label>
@@ -165,7 +170,7 @@
 					<option value="3">INI and IN2 broadcast mode active</option>
 				</options>
 			</parameter>
-			<parameter name="config_14" type="integer" groupName="configuration">
+			<parameter name="config_14_1" type="integer" groupName="configuration">
 				<label>14: Scene activation</label>
 				<description><![CDATA[Enable/Disable scene functionality. The device offers
 				the possibility of sending commands compatible with Command class
@@ -181,15 +186,18 @@
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
 				<label>Input IN1</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>TMP Button</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 			<parameter name="group_3" type="integer" groupName="association">
 				<label>Condition</label>
+				<description><![CDATA[***Add description here***]]></description>
 			</parameter>
 		</config-description>
 	</thing-type>
@@ -197,6 +205,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

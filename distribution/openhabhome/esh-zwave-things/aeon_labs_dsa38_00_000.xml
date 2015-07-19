@@ -7,11 +7,16 @@
 		<label>Aeon Labs DSA38</label>
 		<description><![CDATA[1 button keyfob]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -32,7 +37,7 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_250" type="integer" groupName="configuration">
+			<parameter name="config_250_1" type="integer" groupName="configuration">
 				<label>250: Use Mode setting</label>
 				<description><![CDATA[Defines the Use Mode setting of the fob]]></description>
 				<default>0</default>
@@ -44,41 +49,49 @@
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
 				<label>Scene 1</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Scene 2</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 			<parameter name="group_3" type="integer" multiple="true"
 				groupName="association">
 				<label>Scene 3</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 			<parameter name="group_4" type="integer" multiple="true"
 				groupName="association">
 				<label>Scene 4</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 			<parameter name="group_5" type="integer" multiple="true"
 				groupName="association">
 				<label>Scene 5</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 			<parameter name="group_6" type="integer" multiple="true"
 				groupName="association">
 				<label>Scene 6</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 			<parameter name="group_7" type="integer" multiple="true"
 				groupName="association">
 				<label>Scene 7</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 			<parameter name="group_8" type="integer" multiple="true"
 				groupName="association">
 				<label>Scene 8</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 		</config-description>
@@ -87,6 +100,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

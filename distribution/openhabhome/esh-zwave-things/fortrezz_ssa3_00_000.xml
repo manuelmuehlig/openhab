@@ -7,11 +7,16 @@
 		<label>FortrezZ SSA3</label>
 		<description><![CDATA[Siren and Strobe Alarm]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -32,7 +37,7 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_1" type="integer" groupName="configuration">
+			<parameter name="config_1_1" type="integer" groupName="configuration">
 				<label>1: Delay before accept of Basic Set Off</label>
 				<description><![CDATA[Delay, from the time the siren-strobe turns on, before the Basic Set Off command is accepted. This could be used, for example, to avoid the situation where an associated window/door sensor turns the SSA1 alarm on and then immediately off when the window/door is opened and then quickly closed.
 			-128 seconds - -1 seconds	  ->  	Interpreted as unsigned integer for negative values sent in set command.]]></description>
@@ -44,6 +49,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

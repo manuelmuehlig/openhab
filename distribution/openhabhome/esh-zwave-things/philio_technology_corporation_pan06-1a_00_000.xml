@@ -8,11 +8,16 @@
 		<description><![CDATA[In Wall Dual Relay(1 Way) Switch Module 2x 1.5kW
 			]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -33,7 +38,7 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_1" type="integer" groupName="configuration">
+			<parameter name="config_1_1" type="integer" groupName="configuration">
 				<label>1: Selected endpoint</label>
 				<description><![CDATA[If Controller not using Multi_Channel command class
 							to access the endpoint of PAN06, you may configure
@@ -45,7 +50,7 @@
 					<option value="3">Relay 2</option>
 				</options>
 			</parameter>
-			<parameter name="config_2" type="integer" groupName="configuration">
+			<parameter name="config_2_1" type="integer" groupName="configuration">
 				<label>2: Switch mode</label>
 				<description><![CDATA[Change the external switch mode]]></description>
 				<default>1</default>
@@ -57,12 +62,15 @@
 			</parameter>
 			<parameter name="group_1" type="integer" groupName="association">
 				<label>Relay 1 + 2</label>
+				<description><![CDATA[***Add description here***]]></description>
 			</parameter>
 			<parameter name="group_2" type="integer" groupName="association">
 				<label>Relay 1</label>
+				<description><![CDATA[***Add description here***]]></description>
 			</parameter>
 			<parameter name="group_3" type="integer" groupName="association">
 				<label>Relay 2</label>
+				<description><![CDATA[***Add description here***]]></description>
 			</parameter>
 		</config-description>
 	</thing-type>
@@ -70,6 +78,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

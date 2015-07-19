@@ -7,11 +7,16 @@
 		<label>Aeon Labs HEM-G2</label>
 		<description><![CDATA[Home Energy Meter G2]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -32,14 +37,14 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_1" type="integer" min="0" max="32000"
+			<parameter name="config_1_2" type="integer" min="0" max="32000"
 				groupName="configuration">
 				<label>1: Voltage to calculate power</label>
 				<description><![CDATA[]]>
 				</description>
 				<default>240</default>
 			</parameter>
-			<parameter name="config_3" type="integer" min="0" max="16"
+			<parameter name="config_3_1" type="integer" min="0" max="16"
 				groupName="configuration">
 				<label>3: Selective Reporting</label>
 				<description><![CDATA[Enable selective reporting only when power change reaches
@@ -51,55 +56,55 @@ Bit 2:Clamp 2,
 Bit 3:Clamp 3)]]></description>
 				<default>1</default>
 			</parameter>
-			<parameter name="config_4" type="integer" min="0" max="60000"
+			<parameter name="config_4_2" type="integer" min="0" max="60000"
 				groupName="configuration">
 				<label>4: Current Threshold - Whole HEM</label>
 				<description><![CDATA[Threshold change in wattage to induce a automatic report (Whole HEM). (Valid values 0-60000)]]></description>
 				<default>50</default>
 			</parameter>
-			<parameter name="config_5" type="integer" min="0" max="60000"
+			<parameter name="config_5_2" type="integer" min="0" max="60000"
 				groupName="configuration">
 				<label>5: Current Threshold - Clamp 1</label>
 				<description><![CDATA[Threshold change in wattage to induce a automatic report (Clamp 1). (Valid values 0-60000)]]></description>
 				<default>50</default>
 			</parameter>
-			<parameter name="config_6" type="integer" min="0" max="60000"
+			<parameter name="config_6_2" type="integer" min="0" max="60000"
 				groupName="configuration">
 				<label>6: Current Threshold - Clamp 2</label>
 				<description><![CDATA[Threshold change in wattage to induce a automatic report (Clamp 2). (Valid values 0-60000)]]></description>
 				<default>50</default>
 			</parameter>
-			<parameter name="config_7" type="integer" min="0" max="60000"
+			<parameter name="config_7_2" type="integer" min="0" max="60000"
 				groupName="configuration">
 				<label>7: Current Threshold - Clamp 3</label>
 				<description><![CDATA[Threshold change in wattage to induce a automatic report (Clamp 3). (Valid values 0-60000)]]></description>
 				<default>50</default>
 			</parameter>
-			<parameter name="config_8" type="integer" min="0" max="100"
+			<parameter name="config_8_1" type="integer" min="0" max="100"
 				groupName="configuration">
 				<label>8: Percent Change - Whole HEM</label>
 				<description><![CDATA[Percentage change in wattage to induce a automatic report (Whole HEM). (Valid values 0-100)]]></description>
 				<default>50</default>
 			</parameter>
-			<parameter name="config_9" type="integer" min="0" max="100"
+			<parameter name="config_9_1" type="integer" min="0" max="100"
 				groupName="configuration">
 				<label>9: Percent Change - Clamp 1</label>
 				<description><![CDATA[Percentage change in wattage to induce a automatic report (Clamp 1). (Valid values 0-100)]]></description>
 				<default>50</default>
 			</parameter>
-			<parameter name="config_10" type="integer" min="0" max="100"
+			<parameter name="config_10_1" type="integer" min="0" max="100"
 				groupName="configuration">
 				<label>10: Percent Change - Clamp 2</label>
 				<description><![CDATA[Percentage change in wattage to induce a automatic report (Clamp 2). (Valid values 0-100)]]></description>
 				<default>50</default>
 			</parameter>
-			<parameter name="config_11" type="integer" min="0" max="100"
+			<parameter name="config_11_1" type="integer" min="0" max="100"
 				groupName="configuration">
 				<label>11: Percent Change - Clamp 3</label>
 				<description><![CDATA[Percentage change in wattage to induce a automatic report (Clamp 3). (Valid values 0-100)]]></description>
 				<default>50</default>
 			</parameter>
-			<parameter name="config_101" type="integer" groupName="configuration">
+			<parameter name="config_101_4" type="integer" groupName="configuration">
 				<label>101: Which reports need to send automatically for group 1</label>
 				<description><![CDATA[1	  ->  	Battery Report
 2	  ->  	MultiSensor Report for the whole device
@@ -113,7 +118,7 @@ Bit 3:Clamp 3)]]></description>
 8192	  ->  	Meter Report for kWh for clamp 3]]></description>
 				<default>8</default>
 			</parameter>
-			<parameter name="config_102" type="integer" groupName="configuration">
+			<parameter name="config_102_4" type="integer" groupName="configuration">
 				<label>102: Which reports need to send automatically for group 2</label>
 				<description><![CDATA[1	  ->  	Battery Report
 2	  ->  	MultiSensor Report for the whole device
@@ -127,7 +132,7 @@ Bit 3:Clamp 3)]]></description>
 8192	  ->  	Meter Report for kWh for clamp 3]]></description>
 				<default>8</default>
 			</parameter>
-			<parameter name="config_103" type="integer" groupName="configuration">
+			<parameter name="config_103_4" type="integer" groupName="configuration">
 				<label>103: Which reports need to send automatically for group 3</label>
 				<description><![CDATA[1	  ->  	Battery Report
 2	  ->  	MultiSensor Report for the whole device
@@ -141,37 +146,40 @@ Bit 3:Clamp 3)]]></description>
 8192	  ->  	Meter Report for kWh for clamp 3]]></description>
 				<default>8</default>
 			</parameter>
-			<parameter name="config_111" type="integer" min="1" max="2678400"
+			<parameter name="config_111_4" type="integer" min="1" max="2678400"
 				groupName="configuration">
 				<label>111: Interval to send out reports of group 1</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>720</default>
 			</parameter>
-			<parameter name="config_112" type="integer" min="1" max="2678400"
+			<parameter name="config_112_4" type="integer" min="1" max="2678400"
 				groupName="configuration">
 				<label>112: Interval to send out reports of group 2</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>720</default>
 			</parameter>
-			<parameter name="config_113" type="integer" min="1" max="2678400"
+			<parameter name="config_113_4" type="integer" min="1" max="2678400"
 				groupName="configuration">
 				<label>113: Interval to send out reports of group 3</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>720</default>
 			</parameter>
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
 				<label>Group 1</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Group 2</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 			<parameter name="group_3" type="integer" multiple="true"
 				groupName="association">
 				<label>Group 3</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 		</config-description>
@@ -180,6 +188,12 @@ Bit 3:Clamp 3)]]></description>
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

@@ -7,11 +7,16 @@
 		<label>Aeon Labs ZW096</label>
 		<description><![CDATA[Smart Switch 6]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -20,8 +25,8 @@
 			<property name="model">ZW096</property>
 			<property name="manufacturerId">0086</property>
 			<property name="manufacturerRef">0003:0060,0103:0060,0203:0060,1D03:0060</property>
-			<property name="command_class:METER:5:ADD</property-group><property name="
-				command_class:METER:6:ADD
+			<property name="commandClass:METER:5:ADD</property-group><property name="
+				commandClass:METER:6:ADD
 			</property-group>
 		</properties>
 		<config-description>
@@ -36,6 +41,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

@@ -7,11 +7,16 @@
 		<label>Philio Technology Corporation PST-02A</label>
 		<description><![CDATA[Slim Multi-Sensor]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -33,7 +38,7 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_2" type="integer" min="-1" max="100"
+			<parameter name="config_2_1" type="integer" min="-1" max="100"
 				groupName="configuration">
 				<label>2: Basic Set Level</label>
 				<description><![CDATA[Setting the BASIC command value to turn on the light.<br/>
@@ -42,7 +47,7 @@
 				<li>1 - 100 = For dimmers 1 to 100 means the light strength.</li></ul>]]></description>
 				<default>-1</default>
 			</parameter>
-			<parameter name="config_3" type="integer" min="0" max="99"
+			<parameter name="config_3_1" type="integer" min="0" max="99"
 				groupName="configuration">
 				<label>3: PIR Sensitivity</label>
 				<description><![CDATA[Parameter to set the sensitivity for the PIR (Passiv Infrared Sensor).<br/>
@@ -51,7 +56,7 @@
 				High sensitivity means detection over a longer distance, but if there is more noise signal in the environment, it may lead to false triggers.]]></description>
 				<default>70</default>
 			</parameter>
-			<parameter name="config_4" type="integer" min="0" max="100"
+			<parameter name="config_4_1" type="integer" min="0" max="100"
 				groupName="configuration">
 				<label>4: Light Threshold</label>
 				<description><![CDATA[Setting the illumination threshold to turn on the light. When the event triggers and the environment illumination is lower than the threshold, the device will turn on the light.<br/>
@@ -60,7 +65,7 @@
 				<li>100 = Turn off illumination detected function and always turn on the light.</li></ul>]]></description>
 				<default>100</default>
 			</parameter>
-			<parameter name="config_5" type="integer" min="0" max="127"
+			<parameter name="config_5_1" type="integer" min="0" max="127"
 				groupName="configuration">
 				<label>5: Operation Mode</label>
 				<description><![CDATA[Parameter to set the Operation Mode.<br/>
@@ -74,7 +79,7 @@
 				<li>Bit 7: Disable the back key release into test mode. 1: Disable, 0: Enable</li></ul>]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_6" type="integer" min="0" max="127"
+			<parameter name="config_6_1" type="integer" min="0" max="127"
 				groupName="configuration">
 				<label>6: Multi-Sensor Function Switch</label>
 				<description><![CDATA[Parameter to set the sensor functions.<br/>
@@ -88,7 +93,7 @@
 				<li>Bit 7: Reserved.</li></ul>]]></description>
 				<default>4</default>
 			</parameter>
-			<parameter name="config_7" type="integer" min="0" max="127"
+			<parameter name="config_7_1" type="integer" min="0" max="127"
 				groupName="configuration">
 				<label>7: Customer Function</label>
 				<description><![CDATA[Parameter to set the Customer Function.<br/>
@@ -102,14 +107,14 @@
 				<li>Bit 7: Reserved.</li></ul>]]></description>
 				<default>4</default>
 			</parameter>
-			<parameter name="config_8" type="integer" min="1" max="127"
+			<parameter name="config_8_1" type="integer" min="1" max="127"
 				groupName="configuration">
 				<label>8: PIR Re-Detect Interval Time</label>
 				<description><![CDATA[In the normal mode, after the PIR motion detected, setting the re-detect time. 8 seconds per tick, default is 3 (24 seconds).<br/>
 				<ul><li>1 - 127 = Number of ticks. 8 seconds per tick, default value is 3 (24 seconds).</li></ul>]]></description>
 				<default>3</default>
 			</parameter>
-			<parameter name="config_9" type="integer" min="0" max="127"
+			<parameter name="config_9_1" type="integer" min="0" max="127"
 				groupName="configuration">
 				<label>9: Turn Off Light Time</label>
 				<description><![CDATA[After turn on the light, setting the delay time to turn off the light when the PIR motion is not detected.<br/>
@@ -117,7 +122,7 @@
 				<li>1 - 127 = Number of ticks. 8 seconds per tick, default value is 4 (32 seconds).</li></ul>]]></description>
 				<default>4</default>
 			</parameter>
-			<parameter name="config_10" type="integer" min="0" max="127"
+			<parameter name="config_10_1" type="integer" min="0" max="127"
 				groupName="configuration">
 				<label>10: Auto Report Battery Time</label>
 				<description><![CDATA[The interval time for auto reporting the battery level.<br/>
@@ -125,7 +130,7 @@
 				<li>1-127 = Number of ticks. The default value is 12. The tick time can be set by configuration No. 20.</li></ul>]]></description>
 				<default>12</default>
 			</parameter>
-			<parameter name="config_11" type="integer" min="0" max="127"
+			<parameter name="config_11_1" type="integer" min="0" max="127"
 				groupName="configuration">
 				<label>11: Auto Report Door/Window State Time</label>
 				<description><![CDATA[The interval time for auto reporting the door/window state.<br/>
@@ -133,7 +138,7 @@
 				<li>1-127 = Number of ticks. The default value is 12. The tick time can be set by configuration No. 20.</li></ul>]]></description>
 				<default>12</default>
 			</parameter>
-			<parameter name="config_12" type="integer" min="1" max="127"
+			<parameter name="config_12_1" type="integer" min="1" max="127"
 				groupName="configuration">
 				<label>12: Auto Report Illumination Time</label>
 				<description><![CDATA[The Interval time for auto reporting the illumination state.<br/>
@@ -141,7 +146,7 @@
 				<li>1-127 = Number of ticks. The default value is 12. The tick time can be set by configuration No. 20.</li></ul>]]></description>
 				<default>12</default>
 			</parameter>
-			<parameter name="config_13" type="integer" min="1" max="127"
+			<parameter name="config_13_1" type="integer" min="1" max="127"
 				groupName="configuration">
 				<label>13: Auto Report Temperature Time</label>
 				<description><![CDATA[The interval time for auto reporting the temperature state.<br/>
@@ -149,7 +154,7 @@
 				<li>1-127 = Number of ticks. The default value is 12. The tick time can be set by configuration No. 20.</li></ul>]]></description>
 				<default>12</default>
 			</parameter>
-			<parameter name="config_20" type="integer" min="0" max="255"
+			<parameter name="config_20_1" type="integer" min="0" max="255"
 				groupName="configuration">
 				<label>20: Auto Report Tick Interval</label>
 				<description><![CDATA[The interval time for each auto report tick. Setting this configuration will effect configuration No.10, No.11, No.12 and No.13.<br/>
@@ -157,7 +162,7 @@
 				<li>1-255 = Interval time for each tick. Default is 30.</li></ul>]]></description>
 				<default>30</default>
 			</parameter>
-			<parameter name="config_21" type="integer" min="0" max="127"
+			<parameter name="config_21_1" type="integer" min="0" max="127"
 				groupName="configuration">
 				<label>21: Temperature Differential Report</label>
 				<description><![CDATA[The temperature differential to report. The unit is Fahrenheit. When enabled, the device will measure the temperature every minute and when the temperature is over 140 degree Fahrenheit, it will continuesly report. Enabling this functionality will cause some issue. Please check the “Temperature Report” section of the Multisensor manual.<br/>
@@ -165,7 +170,7 @@
 				<li>1-127 = Degrees Fahrenheit.</li></ul>]]></description>
 				<default>1</default>
 			</parameter>
-			<parameter name="config_22" type="integer" min="0" max="99"
+			<parameter name="config_22_1" type="integer" min="0" max="99"
 				groupName="configuration">
 				<label>22: Illumination Differential Report</label>
 				<description><![CDATA[The illumination differential to report. The unit is percentage. When enabled, the device will measure every minute. Enabling this functionality will cause some issue. Please check the “Illumination Report” section of the Multisensor manual.<br/>
@@ -176,11 +181,13 @@
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
 				<label>Reports</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>8</multipleLimit>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Light Control</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>8</multipleLimit>
 			</parameter>
 		</config-description>
@@ -189,6 +196,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

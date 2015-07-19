@@ -7,11 +7,16 @@
 		<label>Qubino ZMNHIA</label>
 		<description><![CDATA[Flush on/off thermostat]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -32,7 +37,7 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_1" type="integer" groupName="configuration">
+			<parameter name="config_1_1" type="integer" groupName="configuration">
 				<label>1: null</label>
 				<description><![CDATA[Switch type (input I1)]]></description>
 				<default>0</default>
@@ -41,7 +46,7 @@
 					<option value="1">bi-stable (toggle) switch</option>
 				</options>
 			</parameter>
-			<parameter name="config_2" type="integer" groupName="configuration">
+			<parameter name="config_2_1" type="integer" groupName="configuration">
 				<label>2: Input 2 contact type</label>
 				<description><![CDATA[Input 2 contact type]]></description>
 				<default>0</default>
@@ -50,7 +55,7 @@
 					<option value="1">NC (normally close) input type</option>
 				</options>
 			</parameter>
-			<parameter name="config_3" type="integer" groupName="configuration">
+			<parameter name="config_3_1" type="integer" groupName="configuration">
 				<label>3: Input 3 contact type</label>
 				<description><![CDATA[Input 3 contact type]]></description>
 				<default>0</default>
@@ -59,7 +64,7 @@
 					<option value="1">NC (normally close) input type</option>
 				</options>
 			</parameter>
-			<parameter name="config_10" type="integer" groupName="configuration">
+			<parameter name="config_10_1" type="integer" groupName="configuration">
 				<label>10: Activate / deactivate functions ALL ON/ALL OFF</label>
 				<description><![CDATA[Flush 1 relay module responds to commands ALL ON / ALL OFF 
 				that may be sent by the main controller or by other controller belonging to the system.]]></description>
@@ -71,7 +76,7 @@
 					<option value="2">ALL ON active ALL OFF is not active</option>
 				</options>
 			</parameter>
-			<parameter name="config_30" type="integer" groupName="configuration">
+			<parameter name="config_30_1" type="integer" groupName="configuration">
 				<label>30: Saving the state of the device after a power failure</label>
 				<description><![CDATA[Saving the state of the device after a power failure]]></description>
 				<default>0</default>
@@ -83,7 +88,7 @@
 						after a power failure, it returns to "off" position</option>
 				</options>
 			</parameter>
-			<parameter name="config_40" type="integer" groupName="configuration">
+			<parameter name="config_40_1" type="integer" groupName="configuration">
 				<label>40: Power reporting in Watts on power change for Q1</label>
 				<description><![CDATA[Set value means percentage, set value from 0-100 = 0%-100%.
 				Power report is sent (pushed) only when actual power in Watts in real time changed for more than set
@@ -93,7 +98,7 @@
 				NOTE: if power changed is less than 1W, the report is not sent (pushed), regardless of percentage set.]]></description>
 				<default>5</default>
 			</parameter>
-			<parameter name="config_42" type="integer" groupName="configuration">
+			<parameter name="config_42_2" type="integer" groupName="configuration">
 				<label>42: Power reporting in Watts by time interval</label>
 				<description><![CDATA[Set value means time interval (0 – 65535) in seconds, when power report is sent. 
 				Default value is 300 (power report in Watts is sent each 300s)<br/>
@@ -102,7 +107,7 @@
 				Power report is sent with time interval set by entered value.</li></ul>]]></description>
 				<default>300</default>
 			</parameter>
-			<parameter name="config_60" type="integer" groupName="configuration">
+			<parameter name="config_60_1" type="integer" groupName="configuration">
 				<label>60: Minimum dimming value</label>
 				<description><![CDATA[Range is 1% – 98%, step is 1%.<br/>
 				Default value is 1 (Minimum dimming value is 1%)<br/>
@@ -110,7 +115,7 @@
 				1% min. dimming value is defined by Z-Wave multilevel device class.]]></description>
 				<default>1</default>
 			</parameter>
-			<parameter name="config_61" type="integer" groupName="configuration">
+			<parameter name="config_61_1" type="integer" groupName="configuration">
 				<label>61: Maximum dimming value</label>
 				<description><![CDATA[Range is 2% – 99%, step is 1%.<br/>
 				Default value 99 (Maximum dimming value is 99 %)<br/>
@@ -118,7 +123,7 @@
 				99% max. dimming value is defined by Z-Wave multilevel device class.]]></description>
 				<default>99</default>
 			</parameter>
-			<parameter name="config_65" type="integer" groupName="configuration">
+			<parameter name="config_65_1" type="integer" groupName="configuration">
 				<label>65: Dimming time (soft on/off)</label>
 				<description><![CDATA[Set value means time of moving the Dimmer between min. and max. 
 				dimming values by short press of push button I1 or controlled through UI.<br/>
@@ -126,7 +131,7 @@
 				Default value 100 (Dimming time between min. and max. dimming values is 1s)]]></description>
 				<default>100</default>
 			</parameter>
-			<parameter name="config_66" type="integer" groupName="configuration">
+			<parameter name="config_66_1" type="integer" groupName="configuration">
 				<label>66: Dimming time when key pressed</label>
 				<description><![CDATA[Time of moving the Dimmer between min. and max dimming values by continues 
 				hold of push button I1.<br/>
@@ -138,23 +143,27 @@
 				groupName="association">
 				<label>multilevel (triggered at changes of state/value of the Flush
 					dimmer)</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>4</multipleLimit>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>basic on/off (triggered at change of the input I2 state and
 					reflecting its state)</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>4</multipleLimit>
 			</parameter>
 			<parameter name="group_3" type="integer" multiple="true"
 				groupName="association">
 				<label>basic on/off (triggered at change of the input I3 state and
 					reflecting its state)</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>4</multipleLimit>
 			</parameter>
 			<parameter name="group_4" type="integer" multiple="true"
 				groupName="association">
 				<label>default reporting group (reserved for the main controller)</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>4</multipleLimit>
 			</parameter>
 		</config-description>
@@ -163,6 +172,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

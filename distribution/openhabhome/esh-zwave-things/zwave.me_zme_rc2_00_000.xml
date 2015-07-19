@@ -7,11 +7,16 @@
 		<label>ZWave.me ZME_RC2</label>
 		<description><![CDATA[Z-Wave Remote Control+]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -32,13 +37,13 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_10" type="integer" min="1" max="100"
+			<parameter name="config_10_1" type="integer" min="1" max="100"
 				groupName="configuration">
 				<label>10: Typical click timeout</label>
 				<description><![CDATA[Typical time used to differentiate click, hold, double and triple clicks<BR/>Defined in 10ms ticks.]]></description>
 				<default>50</default>
 			</parameter>
-			<parameter name="config_11" type="integer" groupName="configuration">
+			<parameter name="config_11_1" type="integer" groupName="configuration">
 				<label>11: Invert buttons</label>
 				<description><![CDATA[]]>
 				</description>
@@ -48,7 +53,7 @@
 					<option value="1">Yes</option>
 				</options>
 			</parameter>
-			<parameter name="config_13" type="integer" groupName="configuration">
+			<parameter name="config_13_1" type="integer" groupName="configuration">
 				<label>13: Action on button single press or hold</label>
 				<description><![CDATA[Defines which command should be sent on button single press or hold. Basic and Scene commands are sent to Association group. Switch All commands are sent broadcast. Scenes have following meaning: Up = 1, Down = 2, Dim Up = 3, Dim Down = 4, Dim Up Stop = 5, Dim Down Stop = 6.]]></description>
 				<default>1</default>
@@ -59,7 +64,7 @@
 					<option value="3">Scenes</option>
 				</options>
 			</parameter>
-			<parameter name="config_14" type="integer" groupName="configuration">
+			<parameter name="config_14_1" type="integer" groupName="configuration">
 				<label>14: Action on button double press or hold</label>
 				<description><![CDATA[Defines which command should be sent on button double press or press-hold. Basic and Scene commands are sent to Association group. Switch All commands are sent broadcast. If not disabled, the device will wait for a click timeout to see if the second click would be pressed. This will introduce a small delay for single click commands. Scenes have following meaning: Up = 11, Down = 12, Dim Up = 13, Dim Down = 14, Dim Up Stop = 15, Dim Down Stop = 16.]]></description>
 				<default>1</default>
@@ -70,7 +75,7 @@
 					<option value="3">Scenes</option>
 				</options>
 			</parameter>
-			<parameter name="config_15" type="integer" groupName="configuration">
+			<parameter name="config_15_1" type="integer" groupName="configuration">
 				<label>15: Send the following Switch All commands</label>
 				<description><![CDATA[]]>
 				</description>
@@ -80,7 +85,7 @@
 					<option value="-1">Switch all on and off</option>
 				</options>
 			</parameter>
-			<parameter name="config_20" type="integer" groupName="configuration">
+			<parameter name="config_20_1" type="integer" groupName="configuration">
 				<label>20: Send unsolicited Battery Report on Wake Up</label>
 				<description><![CDATA[]]>
 				</description>
@@ -94,11 +99,13 @@
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
 				<label>Single Press</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>10</multipleLimit>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Double Press</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>10</multipleLimit>
 			</parameter>
 		</config-description>
@@ -107,6 +114,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

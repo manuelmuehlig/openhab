@@ -7,11 +7,16 @@
 		<label>Linear WAPIRZ-1</label>
 		<description><![CDATA[PIR Motion Detector]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -32,7 +37,7 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_3" type="integer" groupName="configuration">
+			<parameter name="config_3_1" type="integer" groupName="configuration">
 				<label>3: Night Light</label>
 				<description><![CDATA[The WD500Z-1 will flicker its LED when it is
 				transmitting to any of its groups. This can be changed if desired.
@@ -43,7 +48,7 @@
 					<option value="1">Off when load is on</option>
 				</options>
 			</parameter>
-			<parameter name="config_4" type="integer" groupName="configuration">
+			<parameter name="config_4_1" type="integer" groupName="configuration">
 				<label>4: Invert Switch</label>
 				<description><![CDATA[To change the top of the switch to OFF and the bottom
 				to ON change parameter to 1.]]></description>
@@ -59,6 +64,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

@@ -7,11 +7,16 @@
 		<label>Everspring SP103</label>
 		<description><![CDATA[Motion Detector]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -33,13 +38,13 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_1" type="integer" min="0" max="254"
+			<parameter name="config_1_1" type="integer" min="0" max="254"
 				groupName="configuration">
 				<label>1: True Period</label>
 				<description><![CDATA[This is the time the switching status needs to remain unchanged after a change to cause the device to send out a status message]]></description>
 				<default>10</default>
 			</parameter>
-			<parameter name="config_2" type="integer" groupName="configuration">
+			<parameter name="config_2_1" type="integer" groupName="configuration">
 				<label>2: Send Out Basic Command</label>
 				<description><![CDATA[Enable or Disable the status message function when the local button press changes the switching state.]]></description>
 				<default>0</default>
@@ -48,7 +53,7 @@
 					<option value="1">Enabled</option>
 				</options>
 			</parameter>
-			<parameter name="config_3" type="integer" min="0" max="3240"
+			<parameter name="config_3_2" type="integer" min="0" max="3240"
 				groupName="configuration">
 				<label>3: Meter Report Period</label>
 				<description><![CDATA[The device will report its meter value within the interval set. Set to 0 will disable the autoreporting function.]]></description>
@@ -56,10 +61,12 @@
 			</parameter>
 			<parameter name="group_1" type="integer" groupName="association">
 				<label>Reports</label>
+				<description><![CDATA[***Add description here***]]></description>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Control</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>4</multipleLimit>
 			</parameter>
 		</config-description>
@@ -68,6 +75,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

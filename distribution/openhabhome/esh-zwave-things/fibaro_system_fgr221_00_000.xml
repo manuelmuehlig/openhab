@@ -7,11 +7,16 @@
 		<label>Fibaro System FGR221</label>
 		<description><![CDATA[Fibaro FGR221 Roller Shutter Controller]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -33,7 +38,7 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_1" type="integer" groupName="configuration">
+			<parameter name="config_1_1" type="integer" groupName="configuration">
 				<label>1: ALL ON / ALL OFF function activation</label>
 				<description><![CDATA[Activation/deactivation of ALL ON/ALL OFF functions. By default, ALL ON active ALL OFF active.<BR/>
                              Default setting: ALL ON active ALL OFF active
@@ -46,7 +51,7 @@
 					<option value="-1">ALL ON active ALL OFF active</option>
 				</options>
 			</parameter>
-			<parameter name="config_6" type="integer" groupName="configuration">
+			<parameter name="config_6_1" type="integer" groupName="configuration">
 				<label>6: Associations command class choice</label>
 				<description><![CDATA[Associations command class choice. By default, Normal (Dimmer) - BASIC_SET/SWITCH_MULTILEVEL_START/STOP.<BR/>
                              Default setting: Normal (Dimmer) - BASIC_SET/SWITCH_MULTILEVEL_START/STOP
@@ -63,7 +68,7 @@
 					<option value="4">Rainbow (RGBW) - COLOR_CONTROL_SET</option>
 				</options>
 			</parameter>
-			<parameter name="config_8" type="integer" groupName="configuration">
+			<parameter name="config_8_1" type="integer" groupName="configuration">
 				<label>8: Outputs state change mode</label>
 				<description><![CDATA[MODE1, Example: change saturation level from 0% to 99% <BR/> 
 			                 Parameter 9: Step = 5 <BR/> 
@@ -78,7 +83,7 @@
 						value, relevant for RGB/RGBW)</option>
 				</options>
 			</parameter>
-			<parameter name="config_9" type="integer" min="1" max="255"
+			<parameter name="config_9_1" type="integer" min="1" max="255"
 				groupName="configuration">
 				<label>9: Step value (relevant for MODE1)</label>
 				<description><![CDATA[Step value (relevant for MODE1).<BR/>
@@ -87,7 +92,7 @@
 			]]></description>
 				<default>1</default>
 			</parameter>
-			<parameter name="config_10" type="integer" min="0" max="60000"
+			<parameter name="config_10_2" type="integer" min="0" max="60000"
 				groupName="configuration">
 				<label>10: Time between steps (relevant for MODE1)</label>
 				<description><![CDATA[Time between steps (relevant for MODE1).<BR/>
@@ -97,7 +102,7 @@
 			]]></description>
 				<default>10</default>
 			</parameter>
-			<parameter name="config_11" type="integer" min="1" max="255"
+			<parameter name="config_11_1" type="integer" min="1" max="255"
 				groupName="configuration">
 				<label>11: Time for changing from start to end value</label>
 				<description><![CDATA[Step value (relevant for MODE1).<BR/>
@@ -110,7 +115,7 @@
 			]]></description>
 				<default>67</default>
 			</parameter>
-			<parameter name="config_12" type="integer" min="3" max="255"
+			<parameter name="config_12_1" type="integer" min="3" max="255"
 				groupName="configuration">
 				<label>12: Maximum Brightening level</label>
 				<description><![CDATA[Maximum Brightening level.<BR/>
@@ -119,7 +124,7 @@
 			]]></description>
 				<default>255</default>
 			</parameter>
-			<parameter name="config_13" type="integer" min="3" max="255"
+			<parameter name="config_13_1" type="integer" min="3" max="255"
 				groupName="configuration">
 				<label>13: Minimum dim level</label>
 				<description><![CDATA[Minimum dim level.<BR/>
@@ -128,7 +133,7 @@
 			]]></description>
 				<default>2</default>
 			</parameter>
-			<parameter name="config_14" type="integer" min="0" max="65535"
+			<parameter name="config_14_2" type="integer" min="0" max="65535"
 				groupName="configuration">
 				<label>14: Inputs/Outputs configuration - relevant for main
 					controllers other than Home Center 2 only</label>
@@ -140,7 +145,7 @@
 			]]></description>
 				<default>4369</default>
 			</parameter>
-			<parameter name="config_16" type="integer" groupName="configuration">
+			<parameter name="config_16_1" type="integer" groupName="configuration">
 				<label>16: Remember device status after power failure</label>
 				<description><![CDATA[Define how will the Plug react after the power supply is back on.<BR/>
                               Default setting: 1<BR/>
@@ -154,7 +159,7 @@
 					<option value="1">Remember state before power failure</option>
 				</options>
 			</parameter>
-			<parameter name="config_30" type="integer" groupName="configuration">
+			<parameter name="config_30_1" type="integer" groupName="configuration">
 				<label>30: Alarm of any type (General alarm, flood alarm, smoke
 					alarm: CO, CO2, temperature alarm.)</label>
 				<description><![CDATA[Alarm of any type (General alarm, flood alarm, smoke alarm: CO, CO2, temperature alarm.)<BR/> 
@@ -172,7 +177,7 @@
 						(program selected in parameter 38)</option>
 				</options>
 			</parameter>
-			<parameter name="config_38" type="integer" min="1" max="10"
+			<parameter name="config_38_1" type="integer" min="1" max="10"
 				groupName="configuration">
 				<label>38: Alarm sequence program</label>
 				<description><![CDATA[Alarm sequence program.<BR/>
@@ -181,7 +186,7 @@
 			]]></description>
 				<default>10</default>
 			</parameter>
-			<parameter name="config_39" type="integer" min="1" max="65534"
+			<parameter name="config_39_2" type="integer" min="1" max="65534"
 				groupName="configuration">
 				<label>39: Active PROGRAM alarm time</label>
 				<description><![CDATA[IActive PROGRAM alarm time.<BR/>
@@ -190,7 +195,7 @@
 			]]></description>
 				<default>600</default>
 			</parameter>
-			<parameter name="config_42" type="integer" groupName="configuration">
+			<parameter name="config_42_1" type="integer" groupName="configuration">
 				<label>42: Command class reporting Outputs status change</label>
 				<description><![CDATA[Command class reporting Outputs status change.<BR/>
                               Default setting: 0
@@ -205,7 +210,7 @@
 						CONTROL)</option>
 				</options>
 			</parameter>
-			<parameter name="config_43" type="integer" min="1" max="100"
+			<parameter name="config_43_1" type="integer" min="1" max="100"
 				groupName="configuration">
 				<label>43: Reporting 0-10v analog inputs change threshold</label>
 				<description><![CDATA[Parameter defines a value by which input voltage must change in order to be reported to the main controller.<BR/>
@@ -215,7 +220,7 @@
 			]]></description>
 				<default>5</default>
 			</parameter>
-			<parameter name="config_44" type="integer" min="1" max="65534"
+			<parameter name="config_44_2" type="integer" min="1" max="65534"
 				groupName="configuration">
 				<label>44: Power load reporting frequency</label>
 				<description><![CDATA[Parameter defines Time between reports. The report will be sent if last reported value differs from the current value, else reports will also be sent in case of polling.<BR/> 
@@ -225,7 +230,7 @@
                              Reports will be sent only in case of power load / energy consumption changes (parameters 40, 42, 43,45) or in case of polling.]]></description>
 				<default>30</default>
 			</parameter>
-			<parameter name="config_45" type="integer" min="1" max="255"
+			<parameter name="config_45_1" type="integer" min="1" max="255"
 				groupName="configuration">
 				<label>45: Reporting Changes in energy consumed by controlled
 					devices</label>
@@ -237,7 +242,7 @@
 			]]></description>
 				<default>1</default>
 			</parameter>
-			<parameter name="config_71" type="integer" groupName="configuration">
+			<parameter name="config_71_1" type="integer" groupName="configuration">
 				<label>71: Response to BRIGHTNESS set to 0%</label>
 				<description><![CDATA[Response to BRIGHTNESS set to 0%.<BR/>
                               Default setting: 1
@@ -249,7 +254,7 @@
 					<option value="1">last set colour is memorized</option>
 				</options>
 			</parameter>
-			<parameter name="config_72" type="integer" min="1" max="10"
+			<parameter name="config_72_1" type="integer" min="1" max="10"
 				groupName="configuration">
 				<label>72: Starting animation programm</label>
 				<description><![CDATA[Starting animation programm.<BR/>
@@ -259,7 +264,7 @@
 			]]></description>
 				<default>1</default>
 			</parameter>
-			<parameter name="config_73" type="integer" groupName="configuration">
+			<parameter name="config_73_1" type="integer" groupName="configuration">
 				<label>73: Triple click action</label>
 				<description><![CDATA[Triple click action.<BR/>
                               Default setting: 0
@@ -304,6 +309,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

@@ -7,11 +7,16 @@
 		<label>NorthQ NQ-9022</label>
 		<description><![CDATA[NorthQ Electrical Meter]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -32,89 +37,89 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_1" type="integer" min="0" max="65535"
+			<parameter name="config_1_2" type="integer" min="0" max="65535"
 				groupName="configuration">
 				<label>1: Pulse factor</label>
 				<description><![CDATA[Impulse or Rotation factor per KWh * 10]]></description>
 				<default>1024</default>
 			</parameter>
-			<parameter name="config_2" type="integer" groupName="configuration">
+			<parameter name="config_2_1" type="integer" groupName="configuration">
 				<label>2: Sensor type</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>2</default>
 				<options>
 					<option value="1">Pulse meter</option>
 					<option value="2">Mechanical meter</option>
 				</options>
 			</parameter>
-			<parameter name="config_3" type="integer" min="0" max="255"
+			<parameter name="config_3_1" type="integer" min="0" max="255"
 				groupName="configuration">
 				<label>3: IR Listen period</label>
 				<description><![CDATA[Additional time for feedback measurement. Should always be 0.]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_4" type="integer" min="0" max="255"
+			<parameter name="config_4_1" type="integer" min="0" max="255"
 				groupName="configuration">
 				<label>4: IR Pulse Width</label>
 				<description><![CDATA[Adjusts transmit signal so received signal will in average be equal to this values.]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_5" type="integer" min="1" max="50"
+			<parameter name="config_5_1" type="integer" min="1" max="50"
 				groupName="configuration">
 				<label>5: Poll / Wake up frequency</label>
 				<description><![CDATA[Wake device up this many times per second. This value also controls number of measurements per second on mechanical meters]]></description>
 				<default>20</default>
 			</parameter>
-			<parameter name="config_6" type="integer" min="0" max="143"
+			<parameter name="config_6_1" type="integer" min="0" max="143"
 				groupName="configuration">
 				<label>6: Pulse Threshold Low</label>
 				<description><![CDATA[Low detection threshold for wheel meters]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_7" type="integer" min="0" max="143"
+			<parameter name="config_7_1" type="integer" min="0" max="143"
 				groupName="configuration">
 				<label>7: Pulse Threshold High</label>
 				<description><![CDATA[High detection threshold for wheel meters]]></description>
 				<default>5</default>
 			</parameter>
-			<parameter name="config_8" type="integer" min="0" max="65535"
+			<parameter name="config_8_2" type="integer" min="0" max="65535"
 				groupName="configuration">
 				<label>8: Wakeup Interval</label>
 				<description><![CDATA[like WAKEUP command class]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_9" type="integer" min="1" max="-1"
+			<parameter name="config_9_4" type="integer" min="1" max="-1"
 				groupName="configuration">
 				<label>9: Pulse count</label>
 				<description><![CDATA[Total pulse count (Meter reading / impulse factor)]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_10" type="integer" min="0" max="65535"
+			<parameter name="config_10_2" type="integer" min="0" max="65535"
 				groupName="configuration">
 				<label>10: Keep alive period</label>
 				<description><![CDATA[How many seconds before going back to sleep in normal wakeup mode.]]></description>
 				<default>3</default>
 			</parameter>
-			<parameter name="config_11" type="integer" min="0" max="65535"
+			<parameter name="config_11_2" type="integer" min="0" max="65535"
 				groupName="configuration">
 				<label>11: Real-time mode</label>
 				<description><![CDATA[Set this to enter real-time mode from remote. Contains seconds * poll frequency before going back to sleep. If you press the button once this value will be set.]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_12" type="integer" groupName="configuration">
+			<parameter name="config_12_4" type="integer" groupName="configuration">
 				<label>12: Serial number</label>
 				<description><![CDATA[Read-only serial number in decimal]]></description>
 			</parameter>
-			<parameter name="config_13" type="integer" groupName="configuration">
+			<parameter name="config_13_1" type="integer" groupName="configuration">
 				<label>13: Debug mode</label>
-				<description><![CDATA[null]]></description>
+				<description><![CDATA[***Add description here***]]></description>
 				<default>1</default>
 				<options>
 					<option value="0">Off</option>
 					<option value="1">LED blinks at pulse counting</option>
 				</options>
 			</parameter>
-			<parameter name="config_15" type="integer" groupName="configuration">
+			<parameter name="config_15_4" type="integer" groupName="configuration">
 				<label>15: Calibration status</label>
 				<description><![CDATA[The calibration progress is calculated as (value[1] - 65 + value[2] / value[3]) * 25. The calibration is finished successfully when value[0]  =  2 and value[2] = value[3]. The calibration has failed if value[0] != 1 OR (value[0] = 2 AND value[2] != value[3]. Setting the value 0 on this register will restart the calibration process.]]></description>
 			</parameter>
@@ -124,6 +129,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

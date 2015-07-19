@@ -7,11 +7,16 @@
 		<label>Qubino ZMNHDA</label>
 		<description><![CDATA[Flush dimmer]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -33,7 +38,7 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_1" type="integer" groupName="configuration">
+			<parameter name="config_1_1" type="integer" groupName="configuration">
 				<label>1: Input 1 switch type</label>
 				<description><![CDATA[Input 1 switch type]]></description>
 				<default>1</default>
@@ -42,7 +47,7 @@
 					<option value="1">bi-stable switch type</option>
 				</options>
 			</parameter>
-			<parameter name="config_2" type="integer" groupName="configuration">
+			<parameter name="config_2_1" type="integer" groupName="configuration">
 				<label>2: Input 2 switch type</label>
 				<description><![CDATA[Input 2 switch type]]></description>
 				<default>1</default>
@@ -51,7 +56,7 @@
 					<option value="1">bi-stable switch type</option>
 				</options>
 			</parameter>
-			<parameter name="config_10" type="integer" groupName="configuration">
+			<parameter name="config_10_1" type="integer" groupName="configuration">
 				<label>10: Activate / deactivate functions ALL ON/ALL OFF</label>
 				<description><![CDATA[Flush 1 relay module responds to commands ALL ON / ALL OFF 
 				that may be sent by the main controller or by other controller belonging to the system.]]></description>
@@ -63,21 +68,21 @@
 					<option value="2">ALL ON active ALL OFF is not active</option>
 				</options>
 			</parameter>
-			<parameter name="config_11" type="integer" groupName="configuration">
+			<parameter name="config_11_2" type="integer" groupName="configuration">
 				<label>11: Automatic turning off relay Q1 after set time</label>
 				<description><![CDATA[Auto OFF enabled with define time, step is 10 mseconds<br/>
 				<ul><li>0 = Auto OFF disabled</li> 
 				<li>1–65535 = 0,01 second – 655,35 seconds</li></ul>]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_12" type="integer" groupName="configuration">
+			<parameter name="config_12_2" type="integer" groupName="configuration">
 				<label>12: Automatic turning off relay Q2 after set time</label>
 				<description><![CDATA[Auto OFF enabled with define time, step is 10 mseconds<br/>
 				<ul><li>0 = Auto OFF disabled</li> 
 				<li>1–65535 = 0,01 second – 655,35 seconds</li></ul>]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_30" type="integer" groupName="configuration">
+			<parameter name="config_30_1" type="integer" groupName="configuration">
 				<label>30: Saving the state of the relays Q1 and Q2 after a power
 					failure</label>
 				<description><![CDATA[Saving the state of the relays Q1 and Q2 after a power failure]]></description>
@@ -90,7 +95,7 @@
 						after a power failure, it returns to "off" position.</option>
 				</options>
 			</parameter>
-			<parameter name="config_40" type="integer" groupName="configuration">
+			<parameter name="config_40_1" type="integer" groupName="configuration">
 				<label>40: Power reporting in Watts on power change for Q1</label>
 				<description><![CDATA[Power report is sent (pushed) only when actual power in Watts in real time changed for more than 
 				set percentage comparing to previous actual power in Watts, step is 1%.<br/>
@@ -99,7 +104,7 @@
 				NOTE: if power changed is less than 1W, the report is not sent (pushed), regardless of percentage set.]]></description>
 				<default>1</default>
 			</parameter>
-			<parameter name="config_41" type="integer" groupName="configuration">
+			<parameter name="config_41_1" type="integer" groupName="configuration">
 				<label>41: Power reporting in Watts on power change for Q2</label>
 				<description><![CDATA[Power report is sent (pushed) only when actual power in Watts in real time changed for more than 
 				set percentage comparing to previous actual power in Watts, step is 1%.<br/>
@@ -108,7 +113,7 @@
 				NOTE: if power changed is less than 1W, the report is not sent (pushed), regardless of percentage set.]]></description>
 				<default>1</default>
 			</parameter>
-			<parameter name="config_42" type="integer" groupName="configuration">
+			<parameter name="config_42_2" type="integer" groupName="configuration">
 				<label>42: Power reporting in Watts by time interval for Q1</label>
 				<description><![CDATA[default value is 300 (power report in Watts is sent each 300s)<br/>
 				<ul><li>0 = Reporting Disabled</li>
@@ -116,7 +121,7 @@
 				Power report is sent with time interval set by entered value.</li></ul>]]></description>
 				<default>300</default>
 			</parameter>
-			<parameter name="config_43" type="integer" groupName="configuration">
+			<parameter name="config_43_2" type="integer" groupName="configuration">
 				<label>43: Power reporting in Watts by time interval for Q2</label>
 				<description><![CDATA[default value is 300 (power report in Watts is sent each 300s)<br/>
 				<ul><li>0 = Reporting Disabled</li>
@@ -148,6 +153,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

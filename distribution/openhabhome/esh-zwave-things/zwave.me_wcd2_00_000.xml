@@ -7,11 +7,16 @@
 		<label>ZWave.me WCD2</label>
 		<description><![CDATA[Double Paddle Wall Controller]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -32,7 +37,7 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_1" type="integer" groupName="configuration">
+			<parameter name="config_1_1" type="integer" groupName="configuration">
 				<label>1: Button 1 and 3 pair mode</label>
 				<description><![CDATA[In separate mode button 1 works with group 1, button 3 with groups 3. Click is On, Hold is dimming Up, Double click is Off, Click-Hold is dimming Down. In pair button 1/3 are Up/Down correspondingly. Click is On/Off, Hold is dimming Up/Down. Single clicks works with group 1, double click with group 3.]]></description>
 				<default>1</default>
@@ -42,7 +47,7 @@
 					<option value="2">In pair with double clicks</option>
 				</options>
 			</parameter>
-			<parameter name="config_2" type="integer" groupName="configuration">
+			<parameter name="config_2_1" type="integer" groupName="configuration">
 				<label>2: Button 2 and 4 pair mode</label>
 				<description><![CDATA[In separate mode button 1 works with group 2, button 4 with groups 3. Click is On, Hold is dimming Up, Double click is Off, Click-Hold is dimming Down. In pair button 2/4 are Up/Down correspondingly. Click is On/Off, Hold is dimming Up/Down. Single clicks works with group 2, double click with group 4.]]></description>
 				<default>1</default>
@@ -52,7 +57,7 @@
 					<option value="2">In pair with double clicks</option>
 				</options>
 			</parameter>
-			<parameter name="config_11" type="integer" groupName="configuration">
+			<parameter name="config_11_1" type="integer" groupName="configuration">
 				<label>11: Action on group 1</label>
 				<description><![CDATA[In Switch On/Off only mode On command is sent on Dim Up, Off on Dim Down. In Scenes mode the scene ID sent is (10 * group + ActionID), where ActionID is: 1 = On, 2 = Off, 3 = Dim Up Start, 4 = Dim Down Start, 5 = Dim Up Stop, 6 = Dim Down Stop]]></description>
 				<default>1</default>
@@ -67,7 +72,7 @@
 					<option value="6">Control devices in proximity</option>
 				</options>
 			</parameter>
-			<parameter name="config_12" type="integer" groupName="configuration">
+			<parameter name="config_12_1" type="integer" groupName="configuration">
 				<label>12: Action on group 2</label>
 				<description><![CDATA[In Switch On/Off only mode On command is sent on Dim Up, Off on Dim Down. In Scenes mode the scene ID sent is (10 * group + ActionID), where ActionID is: 1 = On, 2 = Off, 3 = Dim Up Start, 4 = Dim Down Start, 5 = Dim Up Stop, 6 = Dim Down Stop]]></description>
 				<default>1</default>
@@ -82,7 +87,7 @@
 					<option value="6">Control devices in proximity</option>
 				</options>
 			</parameter>
-			<parameter name="config_13" type="integer" groupName="configuration">
+			<parameter name="config_13_1" type="integer" groupName="configuration">
 				<label>13: Action on group 3</label>
 				<description><![CDATA[In Switch On/Off only mode On command is sent on Dim Up, Off on Dim Down. In Scenes mode the scene ID sent is (10 * group + ActionID), where ActionID is: 1 = On, 2 = Off, 3 = Dim Up Start, 4 = Dim Down Start, 5 = Dim Up Stop, 6 = Dim Down Stop]]></description>
 				<default>1</default>
@@ -97,7 +102,7 @@
 					<option value="6">Control devices in proximity</option>
 				</options>
 			</parameter>
-			<parameter name="config_14" type="integer" groupName="configuration">
+			<parameter name="config_14_1" type="integer" groupName="configuration">
 				<label>14: Action on group 4</label>
 				<description><![CDATA[In Switch On/Off only mode On command is sent on Dim Up, Off on Dim Down. In Scenes mode the scene ID sent is (10 * group + ActionID), where ActionID is: 1 = On, 2 = Off, 3 = Dim Up Start, 4 = Dim Down Start, 5 = Dim Up Stop, 6 = Dim Down Stop]]></description>
 				<default>1</default>
@@ -112,13 +117,13 @@
 					<option value="6">Control devices in proximity</option>
 				</options>
 			</parameter>
-			<parameter name="config_20" type="integer" min="0" max="1000"
+			<parameter name="config_20_1" type="integer" min="0" max="1000"
 				groupName="configuration">
 				<label>20: Typical click timeout</label>
 				<description><![CDATA[Typical time used to differenciate click, hold and double clicks in 10ms units]]></description>
 				<default>50</default>
 			</parameter>
-			<parameter name="config_21" type="integer" groupName="configuration">
+			<parameter name="config_21_1" type="integer" groupName="configuration">
 				<label>21: Send the following Switch All commands</label>
 				<description><![CDATA[]]>
 				</description>
@@ -129,7 +134,7 @@
 					<option value="-1">Switch all on and off</option>
 				</options>
 			</parameter>
-			<parameter name="config_22" type="integer" groupName="configuration">
+			<parameter name="config_22_1" type="integer" groupName="configuration">
 				<label>22: Invert buttons</label>
 				<description><![CDATA[]]>
 				</description>
@@ -139,7 +144,7 @@
 					<option value="1">Yes</option>
 				</options>
 			</parameter>
-			<parameter name="config_30" type="integer" groupName="configuration">
+			<parameter name="config_30_1" type="integer" groupName="configuration">
 				<label>30: Send unsolicited Battery Report on Wake Up</label>
 				<description><![CDATA[]]>
 				</description>
@@ -150,7 +155,7 @@
 					<option value="2">Broadcast to neighbours</option>
 				</options>
 			</parameter>
-			<parameter name="config_24" type="integer" groupName="configuration">
+			<parameter name="config_24_1" type="integer" groupName="configuration">
 				<label>24: LED confirmation mode</label>
 				<description><![CDATA[]]>
 				</description>
@@ -164,21 +169,25 @@
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
 				<label>Controlled by button 1 or single clicks of buttons 1 and 3</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>8</multipleLimit>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Controlled by button 3 or double clicks of buttons 1 and 3</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>8</multipleLimit>
 			</parameter>
 			<parameter name="group_3" type="integer" multiple="true"
 				groupName="association">
 				<label>Controlled by button 2 or single clicks of buttons 2 and 4</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>8</multipleLimit>
 			</parameter>
 			<parameter name="group_4" type="integer" multiple="true"
 				groupName="association">
 				<label>Controlled by button 4 or double clicks of buttons 2 and 4</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>8</multipleLimit>
 			</parameter>
 		</config-description>
@@ -187,6 +196,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

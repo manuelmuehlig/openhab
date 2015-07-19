@@ -7,11 +7,16 @@
 		<label>Linear WD500Z-1</label>
 		<description><![CDATA[Wall Dimmer Switch]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -33,7 +38,7 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_1" type="integer" min="1" max="255"
+			<parameter name="config_1_2" type="integer" min="1" max="255"
 				groupName="configuration">
 				<label>1: Re-trigger Wait Time</label>
 				<description><![CDATA[By default, to conserve battery life, after the WAPIRZ-1 detects motion it cannot
@@ -46,6 +51,7 @@ re-trigger wait time can be adjusted with this setting.
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
 				<label>Group 1</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 		</config-description>
@@ -54,6 +60,12 @@ re-trigger wait time can be adjusted with this setting.
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

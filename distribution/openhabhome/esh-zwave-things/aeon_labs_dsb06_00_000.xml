@@ -7,11 +7,16 @@
 		<label>Aeon Labs DSB06</label>
 		<description><![CDATA[Smart Energy Switch]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -32,7 +37,7 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_241" type="integer" groupName="configuration">
+			<parameter name="config_241_1" type="integer" groupName="configuration">
 				<label>241: Mode of Button 1 (upper left)</label>
 				<description><![CDATA[Defines the switching mode of Button 1]]></description>
 				<default>0</default>
@@ -45,7 +50,7 @@
 					<option value="5">Learn Mode</option>
 				</options>
 			</parameter>
-			<parameter name="config_242" type="integer" groupName="configuration">
+			<parameter name="config_242_1" type="integer" groupName="configuration">
 				<label>242: Mode of Button 2 (upper right)</label>
 				<description><![CDATA[Defines the switching mode of Button 2]]></description>
 				<default>0</default>
@@ -58,7 +63,7 @@
 					<option value="5">Learn Mode</option>
 				</options>
 			</parameter>
-			<parameter name="config_243" type="integer" groupName="configuration">
+			<parameter name="config_243_1" type="integer" groupName="configuration">
 				<label>243: Mode of Button 3 (lower left)</label>
 				<description><![CDATA[Defines the switching mode of Button 3]]></description>
 				<default>0</default>
@@ -71,7 +76,7 @@
 					<option value="5">Learn Mode</option>
 				</options>
 			</parameter>
-			<parameter name="config_244" type="integer" groupName="configuration">
+			<parameter name="config_244_1" type="integer" groupName="configuration">
 				<label>244: Mode of Button 4 (lower right)</label>
 				<description><![CDATA[Defines the switching mode of Button 4]]></description>
 				<default>0</default>
@@ -84,7 +89,7 @@
 					<option value="5">Learn Mode</option>
 				</options>
 			</parameter>
-			<parameter name="config_245" type="integer" groupName="configuration">
+			<parameter name="config_245_1" type="integer" groupName="configuration">
 				<label>245: Mode of Button 5 (Include)</label>
 				<description><![CDATA[Defines the switching mode of Button 5]]></description>
 				<default>0</default>
@@ -97,7 +102,7 @@
 					<option value="5">Learn Mode</option>
 				</options>
 			</parameter>
-			<parameter name="config_246" type="integer" groupName="configuration">
+			<parameter name="config_246_1" type="integer" groupName="configuration">
 				<label>246: Mode of Button 6 (Exclude)</label>
 				<description><![CDATA[Defines the switching mode of Button 6]]></description>
 				<default>0</default>
@@ -110,7 +115,7 @@
 					<option value="5">Learn Mode</option>
 				</options>
 			</parameter>
-			<parameter name="config_247" type="integer" groupName="configuration">
+			<parameter name="config_247_1" type="integer" groupName="configuration">
 				<label>247: Mode of Button 7 (Association)</label>
 				<description><![CDATA[Defines the switching mode of Button 7]]></description>
 				<default>0</default>
@@ -123,7 +128,7 @@
 					<option value="5">Learn Mode</option>
 				</options>
 			</parameter>
-			<parameter name="config_248" type="integer" groupName="configuration">
+			<parameter name="config_248_1" type="integer" groupName="configuration">
 				<label>248: Mode of Button 8 (Learn)</label>
 				<description><![CDATA[Defines the switching mode of Button 8]]></description>
 				<default>0</default>
@@ -139,21 +144,25 @@
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
 				<label>Scene 1</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Scene 2</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 			<parameter name="group_3" type="integer" multiple="true"
 				groupName="association">
 				<label>Scene 3</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 			<parameter name="group_4" type="integer" multiple="true"
 				groupName="association">
 				<label>Scene 4</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 		</config-description>
@@ -162,6 +171,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>

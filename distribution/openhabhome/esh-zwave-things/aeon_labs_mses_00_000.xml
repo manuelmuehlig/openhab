@@ -7,11 +7,16 @@
 		<label>Aeon Labs MSES</label>
 		<description><![CDATA[Micro Smart Switch]]></description>
 		<channels>
-			<channel id="switch0" typeId="dimmer">
+			<channel id="dimmer-1" typeId="dimmer">
 				<properties>
 					<property name="endpoint">0</property>
-					<property name="command_class">SWITCH_MULTILEVEL</property>
-					<property name="set_to_basic">true</property>
+					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="endpoint">1</property>
+					<property name="commandClass">SWITCH_BINARY,BASIC</property>
 				</properties>
 			</channel>
 		</channels>
@@ -32,7 +37,7 @@
 				<label>Association Groups</label>
 				<description></description>
 			</parameter-group>
-			<parameter name="config_80" type="integer" groupName="configuration">
+			<parameter name="config_80_1" type="integer" groupName="configuration">
 				<label>80: Notification on Status Change</label>
 				<description><![CDATA[Parameter to Enable to send notification to associated devices (Group 1) when the state of Micro Dimmer's load changed]]></description>
 				<default>0</default>
@@ -42,7 +47,7 @@
 					<option value="2">Basic CC Report Sent</option>
 				</options>
 			</parameter>
-			<parameter name="config_120" type="integer" groupName="configuration">
+			<parameter name="config_120_1" type="integer" groupName="configuration">
 				<label>120: Turn External Button Mode</label>
 				<description><![CDATA[Parameter to set External button type]]></description>
 				<default>255</default>
@@ -55,6 +60,7 @@
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
 				<label>Target for automatic reports</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 		</config-description>
@@ -63,6 +69,12 @@
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>
 		<description>Set the light level</description>
+		<category>Light</category>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch the light on and off</description>
 		<category>Light</category>
 	</channel-type>
 </thing:thing-descriptions>
