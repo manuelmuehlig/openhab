@@ -122,16 +122,16 @@ public final class ZWaveActivator implements BundleActivator {
 				outstring += "<channels>";
 
 				outstring += "<channel id=\"dimmer-1\" typeId=\"dimmer\">";
+				outstring += "<label>Dimmer 1</label>";
 				outstring += "<properties>";
-				outstring += "<property name=\"endpoint\">0</property>";
 				outstring += "<property name=\"commandClass\">SWITCH_MULTILEVEL,BASIC</property>";
 				outstring += "</properties>";
 				outstring += "</channel>";
 
 				outstring += "<channel id=\"switch-1\" typeId=\"switch\">";
+				outstring += "<label>Switch 1</label>";
 				outstring += "<properties>";
-				outstring += "<property name=\"endpoint\">1</property>";
-				outstring += "<property name=\"commandClass\">SWITCH_BINARY,BASIC</property>";
+				outstring += "<property name=\"commandClass\">1:SWITCH_BINARY,BASIC</property>";
 				outstring += "</properties>";
 				outstring += "</channel>";
 

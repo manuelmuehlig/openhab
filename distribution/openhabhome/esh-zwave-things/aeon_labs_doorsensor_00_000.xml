@@ -60,7 +60,10 @@
 			</parameter>
 			<parameter name="config_101_1" type="integer" groupName="configuration">
 				<label>101: Low battery voltage check</label>
-				<description><![CDATA[parameter defines, if battery check function is possible, when battery is below warning voltage]]></description>
+				<description>parameter
+					defines, if battery check function is possible,
+					when battery is below warning voltage
+				</description>
 				<default>0</default>
 				<options>
 					<option value="0">Disable</option>
