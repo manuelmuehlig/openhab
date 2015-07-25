@@ -3,9 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
 	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
-	<thing-type id="aeonlabs_zw100-a_00_000">
-		<label>Aeon Labs ZW100-A</label>
-		<description><![CDATA[MultiSensor 6]]></description>
+	<thing-type id="aeonlabs_4in1ms-g5_00_000">
+		<label>Aeon Labs 4in1MS-G5</label>
+		<description><![CDATA[4 in One MultiSensor (G5)]]></description>
 		<channels><!-- The following is a random selection of channels - it must 
 				be changed! -->
 			<channel id="dimmer-1" typeId="dimmer">
@@ -28,10 +28,9 @@
 		</channels>
 		<properties>
 			<property name="vendor">Aeon Labs</property>
-			<property name="model">ZW100-A</property>
+			<property name="model">4in1MS-G5</property>
 			<property name="manufacturerId">0086</property>
-			<property name="manufacturerRef">0002:0064,0102:0064,0202:0064</property>
-			<property name="commandClass:ASSOCIATION:0:default">1</property>
+			<property name="manufacturerRef">0002:004A,0102:004A</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">
@@ -123,6 +122,15 @@
 				<options>
 					<option value="0">No</option>
 					<option value="1">Yes</option>
+				</options>
+			</parameter>
+			<parameter name="config_5_1_wo" type="integer" groupName="tools">
+				<label>5: Command to send when movement</label>
+				<description><![CDATA[null]]></description>
+				<default>1</default>
+				<options>
+					<option value="1">Basic Set</option>
+					<option value="2">Sensor Binary Report</option>
 				</options>
 			</parameter>
 			<parameter name="group_1" type="integer" multiple="true"

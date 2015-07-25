@@ -6,17 +6,23 @@
 	<thing-type id="reitzgroup_054313_00_000">
 		<label>Reitz Group 054313</label>
 		<description><![CDATA[Single button wall switch]]></description>
-		<channels>
+		<channels><!-- The following is a random selection of channels - it must 
+				be changed! -->
 			<channel id="dimmer-1" typeId="dimmer">
+				<label>Dimmer 1</label>
 				<properties>
-					<property name="endpoint">0</property>
 					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
 				</properties>
 			</channel>
 			<channel id="switch-1" typeId="switch">
+				<label>Switch 1</label>
 				<properties>
-					<property name="endpoint">1</property>
-					<property name="commandClass">SWITCH_BINARY,BASIC</property>
+					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="battery-level" typeId="system.battery-level">
+				<properties>
+					<property name="commandClass">BATTERY</property>
 				</properties>
 			</channel>
 		</channels>
@@ -44,7 +50,8 @@
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 		</config-description>
-	</thing-type>
+	</thing-type><!-- The following is a random selection of channel-types - 
+		it must be changed! -->
 	<channel-type id="dimmer">
 		<item-type>Dimmer</item-type>
 		<label>Dimmer</label>

@@ -120,6 +120,8 @@ public final class ZWaveActivator implements BundleActivator {
 				outstring += "<description><![CDATA[" + database.getLabel(product.Label) + "]]></description>";
 
 				outstring += "<channels>";
+				
+				outstring += "<!-- The following is a random selection of channels - it must be changed! -->";
 
 				outstring += "<channel id=\"dimmer-1\" typeId=\"dimmer\">";
 				outstring += "<label>Dimmer 1</label>";
@@ -132,6 +134,13 @@ public final class ZWaveActivator implements BundleActivator {
 				outstring += "<label>Switch 1</label>";
 				outstring += "<properties>";
 				outstring += "<property name=\"commandClass\">1:SWITCH_BINARY,BASIC</property>";
+				outstring += "</properties>";
+				outstring += "</channel>";
+				
+
+				outstring += "<channel id=\"battery-level\" typeId=\"system.battery-level\">";
+				outstring += "<properties>";
+				outstring += "<property name=\"commandClass\">BATTERY</property>";
 				outstring += "</properties>";
 				outstring += "</channel>";
 
@@ -345,7 +354,7 @@ public final class ZWaveActivator implements BundleActivator {
 							outstring += "</parameter>";
 						}
 					}
-	
+
 					if (groupList != null) {
 						// Loop through the associations and add to the
 						// records...
@@ -381,6 +390,8 @@ public final class ZWaveActivator implements BundleActivator {
 				
 				outstring += "</thing-type>";
 				
+				outstring += "<!-- The following is a random selection of channel-types - it must be changed! -->";
+
 				outstring += "<channel-type id=\"dimmer\">";
 				outstring += "<item-type>Dimmer</item-type>";
 				outstring += "<label>Dimmer</label>";
