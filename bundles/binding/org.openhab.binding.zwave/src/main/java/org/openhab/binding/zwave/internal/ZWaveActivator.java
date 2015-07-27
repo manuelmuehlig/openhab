@@ -77,6 +77,7 @@ public final class ZWaveActivator implements BundleActivator {
 
 			// Loop over the products
 			for (ZWaveDbProduct product : database.GetProducts()) {
+				logger.debug("Processing {} {}", manufacturer.Name, product.Model);
 				
 				if(product.ConfigFile == null)
 					continue;
@@ -102,10 +103,6 @@ public final class ZWaveActivator implements BundleActivator {
 				if(cfg.VersionMax != null) {
 					vmax = new Version(cfg.VersionMax);
 				}
-				
-				// 
-				List<ZWaveDbConfigurationParameter> configList = database.getProductConfigParameters();
-				List<ZWaveDbAssociationGroup> groupList = database.getProductAssociationGroups();
 
 				if(product.Model.equals("FGD211")) {
 					logger.debug("");
@@ -113,7 +110,11 @@ public final class ZWaveActivator implements BundleActivator {
 				if(database.FindProduct(manufacturer.Id, product.Reference.get(0).Type, product.Reference.get(0).Id, vmin.toString()) == false) {
 					logger.debug("Product not found for {}", product.Model);
 				}
-						
+
+				// 
+				List<ZWaveDbConfigurationParameter> configList = database.getProductConfigParameters();
+				List<ZWaveDbAssociationGroup> groupList = database.getProductAssociationGroups();
+
 				String id = manufacturer.Name + "_" + product.Model + "_" + String.format("%02d", vmin.getMajor())  + "_" + String.format("%03d", vmin.getMinor()) ; 
 				outstring += "<thing-type id=\"" + id.replaceAll("\\s+","").toLowerCase() + "\">";
 				outstring += "<label>" + manufacturer.Name + " " + product.Model + "</label>";
@@ -138,6 +139,7 @@ public final class ZWaveActivator implements BundleActivator {
 				outstring += "</channel>";
 				
 
+				outstring += "<!-- Remove if this is not a battery device -->";
 				outstring += "<channel id=\"battery-level\" typeId=\"system.battery-level\">";
 				outstring += "<properties>";
 				outstring += "<property name=\"commandClass\">BATTERY</property>";
@@ -246,16 +248,21 @@ public final class ZWaveActivator implements BundleActivator {
 						outstring += "<parameter-group name=\"configuration\">";
 						outstring += "<context>setup</context>";
 						outstring += "<label>Configuration Parameters</label>";
-						outstring += "<description></description>";
 						outstring += "</parameter-group>";
 					}
 					if(groupList != null) {
 						outstring += "<parameter-group name=\"association\">";
 						outstring += "<context>link</context>";
 						outstring += "<label>Association Groups</label>";
-						outstring += "<description></description>";
 						outstring += "</parameter-group>";
 					}
+
+					outstring += "<!-- Remove if this is not a battery device -->";
+					outstring += "<parameter-group name=\"wakeup\">";
+					outstring += "<context>sleep</context>";
+					outstring += "<label>Wakeup Configuration</label>";
+					outstring += "</parameter-group>";
+				
 
 					// Loop through the parameters and add to the records...
 					if(configList != null) {
@@ -383,11 +390,21 @@ public final class ZWaveActivator implements BundleActivator {
 							outstring += "</parameter>";
 						}
 					}
-					
-					outstring += "</config-description>";
 				}
 				
-				
+				outstring += "<!-- Remove the wakeup if this is not a battery device -->";
+				outstring += "<parameter name=\"wakeup_interval\" type=\"integer\" groupName=\"wakeup\">";
+				outstring += "<label>Wakeup Period</label>";
+				outstring += "<description>Set the wakeup period in seconds</description>";
+				outstring += "</parameter>";
+				outstring += "<parameter name=\"wakeup_node\" type=\"integer\" groupName=\"wakeup\" readOnly=\"true\">";
+				outstring += "<label>Wakeup Node</label>";
+				outstring += "<description>The node to which wakeup messages will be sent";
+				outstring += "</description>";
+				outstring += "</parameter>";
+
+				outstring += "</config-description>";
+
 				outstring += "</thing-type>";
 				
 				outstring += "<!-- The following is a random selection of channel-types - it must be changed! -->";

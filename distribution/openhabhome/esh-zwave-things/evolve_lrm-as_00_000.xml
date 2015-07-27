@@ -19,7 +19,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -37,22 +37,15 @@
 			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
-				<description></description>
 			</parameter-group>
 			<parameter-group name="association">
 				<context>link</context>
 				<label>Association Groups</label>
-				<description></description>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
 			</parameter-group>
-			<parameter name="config_1_1" type="integer" groupName="configuration">
-				<label>1: Ignore Start Level (Transmitting)</label>
-				<description><![CDATA[Dimmers controlled by this switch will start dimming from their current level.]]></description>
-				<default>1</default>
-				<options>
-					<option value="0">No</option>
-					<option value="1">Yes</option>
-				</options>
-			</parameter>
 			<parameter name="config_3_1" type="integer" groupName="configuration">
 				<label>3: Night Light</label>
 				<description><![CDATA[In night-light mode the LED on the switch will turn ON when the switch is turned OFF.]]></description>
@@ -71,45 +64,31 @@
 					<option value="1">Yes</option>
 				</options>
 			</parameter>
-			<parameter name="config_5_1" type="integer" groupName="configuration">
-				<label>5: Ignore Start-Level (Receiving)</label>
-				<description><![CDATA[The dimmer will start dimming from its current level.]]></description>
-				<default>1</default>
-				<options>
-					<option value="0">No</option>
-					<option value="1">Yes</option>
-				</options>
-			</parameter>
-			<parameter name="config_19_1" type="integer" groupName="configuration">
-				<label>19: Transmission Indication</label>
-				<description><![CDATA[Flicker LED while transmitting.]]></description>
-				<default>2</default>
-				<options>
-					<option value="0">No Flicker</option>
-					<option value="1">Flicker Whole Transmission</option>
-					<option value="2">Flicker 1 Second</option>
-				</options>
-			</parameter>
-			<parameter name="config_20_1" type="integer" min="1" max="255"
-				groupName="configuration">
-				<label>20: Polling Interval</label>
-				<description><![CDATA[How often, in minutes, to poll to keep synchronized with group.]]></description>
-				<default>2</default>
-			</parameter>
-			<parameter name="config_21_1" type="integer" groupName="configuration">
-				<label>21: Poll First Node</label>
-				<description><![CDATA[Poll only the first node in Group 1.]]></description>
+			<parameter name="config_29_1" type="integer" groupName="configuration">
+				<label>29: Load Sense</label>
+				<description><![CDATA[]]>
+				</description>
 				<default>0</default>
 				<options>
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+					<option value="0">Disable</option>
+					<option value="1">Enable</option>
 				</options>
 			</parameter>
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
 				<label>Group 1</label>
-				<description><![CDATA[Nodes in this group are turned ON/OFF by tapping the paddle or dimmed/brightened by holding the paddle. The LED will indicate the status of this group.]]></description>
+				<description><![CDATA[]]>
+				</description>
 				<multipleLimit>5</multipleLimit>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
 			</parameter>
 		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 

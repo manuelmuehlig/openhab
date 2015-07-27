@@ -19,7 +19,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -31,271 +31,156 @@
 			<property name="model">Minimote</property>
 			<property name="manufacturerId">0086</property>
 			<property name="manufacturerRef">0006:0002,0001:0003</property>
-			<property name="commandClass:ASSOCIATION:0:default">1</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
-				<description></description>
 			</parameter-group>
 			<parameter-group name="association">
 				<context>link</context>
 				<label>Association Groups</label>
-				<description></description>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
 			</parameter-group>
-			<parameter-group name="tools">
-				<context>menu</context>
-				<label>Tools</label>
-			</parameter-group>
-			<parameter name="config_3_2" type="integer" min="1" max="15300"
-				groupName="configuration">
-				<label>3: Motion Sensor Timeout</label>
-				<description><![CDATA[How long should the device associated to MultiSensor
-				keep state On before sending it Off command (if the value is bigger
-				than 255, the value would be rounded to next integer in minutes,
-				else seconds)
-			]]></description>
-				<default>240</default>
-			</parameter>
-			<parameter name="config_4_1" type="integer" groupName="configuration">
-				<label>4: Motion sensor
-				</label>
-				<description><![CDATA[***Add description here***]]></description>
-				<default>1</default>
+			<parameter name="config_241_1" type="integer" groupName="configuration">
+				<label>241: Mode of Button 1 (upper left)</label>
+				<description><![CDATA[Defines the switching mode of Button 1]]></description>
+				<default>0</default>
 				<options>
-					<option value="0">Disable</option>
-					<option value="1">Enable</option>
+					<option value="0">Factory Default</option>
+					<option value="1">Scene Mode</option>
+					<option value="2">Add Mode</option>
+					<option value="3">Remove Mode</option>
+					<option value="4">Association Mode</option>
+					<option value="5">Learn Mode</option>
 				</options>
 			</parameter>
-			<parameter name="config_5_1" type="integer" groupName="configuration">
-				<label>5: Motion Sensor Triggered Command</label>
-				<description><![CDATA[***Add description here***]]></description>
-				<default>1</default>
+			<parameter name="config_242_1" type="integer" groupName="configuration">
+				<label>242: Mode of Button 2 (upper right)</label>
+				<description><![CDATA[Defines the switching mode of Button 2]]></description>
+				<default>0</default>
 				<options>
-					<option value="1">Send Basic Set CC</option>
-					<option value="2">Send Sensor Binary Report CC</option>
+					<option value="0">Factory Default</option>
+					<option value="1">Scene Mode</option>
+					<option value="2">Add Mode</option>
+					<option value="3">Remove Mode</option>
+					<option value="4">Association Mode</option>
+					<option value="5">Learn Mode</option>
 				</options>
 			</parameter>
-			<parameter name="config_6_1" type="integer" min="0" max="127"
-				groupName="configuration">
-				<label>6: PIR Sensitivity</label>
-				<description><![CDATA[The range of PIR Sensitivity is 0 to 127 (127 max
-				sensitivity)
-			]]></description>
-				<default>127</default>
-			</parameter>
-			<parameter name="config_39_1" type="integer" min="10" max="50"
-				groupName="configuration">
-				<label>39: Low Battery Report</label>
-				<description><![CDATA[Low Battery report if bellow this value. The range of
-				low battery value is 10% to 50%]]></description>
-				<default>20</default>
-			</parameter>
-			<parameter name="config_40_1" type="integer" groupName="configuration">
-				<label>40: Selective Reporting</label>
-				<description><![CDATA[Send reports only when measurements reach a certain
-				threshold or percentage. Set in parameters 41-44
-			]]></description>
+			<parameter name="config_243_1" type="integer" groupName="configuration">
+				<label>243: Mode of Button 3 (lower left)</label>
+				<description><![CDATA[Defines the switching mode of Button 3]]></description>
 				<default>0</default>
 				<options>
-					<option value="0">Disable</option>
-					<option value="1">Enable</option>
+					<option value="0">Factory Default</option>
+					<option value="1">Scene Mode</option>
+					<option value="2">Add Mode</option>
+					<option value="3">Remove Mode</option>
+					<option value="4">Association Mode</option>
+					<option value="5">Learn Mode</option>
 				</options>
 			</parameter>
-			<parameter name="config_41_2" type="integer" min="0" max="65535"
-				groupName="configuration">
-				<label>41: Temperature Threshold</label>
-				<description><![CDATA[Threshold change in temperature to induce an
-				automatic report. When the unit is Celsius, threshold=Value. When
-				the unit is Fahrenheit, threshold=Value*1.8. The accuracy is 0.1.
-				The high byte is the part of integer, the low byte is the fractional
-				part
-			]]></description>
-				<default>256</default>
-			</parameter>
-			<parameter name="config_42_2" type="integer" min="0" max="100"
-				groupName="configuration">
-				<label>42: Humidity Threshold</label>
-				<description><![CDATA[Threshold change in humidity to induce an automatic
-				report
-			]]></description>
-				<default>5</default>
-			</parameter>
-			<parameter name="config_43_2" type="integer" min="0" max="1000"
-				groupName="configuration">
-				<label>43: Luminance Threshold</label>
-				<description><![CDATA[Threshold change in luminance to induce an automatic
-				report
-			]]></description>
-				<default>100</default>
-			</parameter>
-			<parameter name="config_44_2" type="integer" min="0" max="100"
-				groupName="configuration">
-				<label>44: Battery Threshold</label>
-				<description><![CDATA[Threshold change in battery level to induce an
-				automatic report
-			]]></description>
-				<default>5</default>
-			</parameter>
-			<parameter name="config_45_1" type="integer" min="0" max="11"
-				groupName="configuration">
-				<label>45: Ultraviolet Threshold</label>
-				<description><![CDATA[Threshold change in ultraviolet to induce an
-				automatic report
-			]]></description>
-				<default>2</default>
-			</parameter>
-			<parameter name="config_46_1" type="integer" groupName="configuration">
-				<label>46: Send Alarm Report if low
-					temperature
-				</label>
-				<description><![CDATA[Send an alarm report if temperature is less than
-				-15 degrees C
-			]]></description>
+			<parameter name="config_244_1" type="integer" groupName="configuration">
+				<label>244: Mode of Button 4 (lower right)</label>
+				<description><![CDATA[Defines the switching mode of Button 4]]></description>
 				<default>0</default>
 				<options>
-					<option value="0">Disable
-					</option>
-					<option value="1">Enable
-					</option>
+					<option value="0">Factory Default</option>
+					<option value="1">Scene Mode</option>
+					<option value="2">Add Mode</option>
+					<option value="3">Remove Mode</option>
+					<option value="4">Association Mode</option>
+					<option value="5">Learn Mode</option>
 				</options>
 			</parameter>
-			<parameter name="config_101_4" type="integer" groupName="configuration">
-				<label>101: Group 1 Periodic Reports
-				</label>
-				<description><![CDATA[The value is a combination number made up of the sum
-				of the values for the individual sensors and battery. The sensors
-				have the values: Battery=1, Ultraviolet=16, Temperature=32,
-				Humidity=64, Light=128 Therefore if you want all sensors and the
-				battery sending regular reports, set the parameter to 241 (1 + 16 +
-				32 + 64 + 128).
-			]]></description>
-				<default>241</default>
-			</parameter>
-			<parameter name="config_102_4" type="integer" groupName="configuration">
-				<label>102: Group 2 Periodic Reports
-				</label>
-				<description><![CDATA[The value is a combination number made up of the sum
-				of the values for the individual sensors and battery. The sensors
-				have the values: Battery=1, Ultraviolet=16, Temperature=32,
-				Humidity=64, Light=128 Therefore if you want all sensors and the
-				battery sending regular reports, set the parameter to 241 (1 + 16 +
-				32 + 64 + 128).
-			]]></description>
+			<parameter name="config_245_1" type="integer" groupName="configuration">
+				<label>245: Mode of Button 5 (Include)</label>
+				<description><![CDATA[Defines the switching mode of Button 5]]></description>
 				<default>0</default>
-			</parameter>
-			<parameter name="config_103_4" type="integer" groupName="configuration">
-				<label>103: Group 3 Periodic Reports
-				</label>
-				<description><![CDATA[The value is a combination number made up of the sum
-				of the values for the individual sensors and battery. The sensors
-				have the values: Battery=1, Ultraviolet=16, Temperature=32,
-				Humidity=64, Light=128 Therefore if you want all sensors and the
-				battery sending regular reports, set the parameter to 241 (1 + 16 +
-				32 + 64 + 128).
-			]]></description>
-				<default>0</default>
-			</parameter>
-			<parameter name="config_111_4" type="integer" min="5" max="2678400"
-				groupName="configuration">
-				<label>111: Group 1 Report Interval</label>
-				<description><![CDATA[***Add description here***]]></description>
-				<default>3600</default>
-			</parameter>
-			<parameter name="config_112_4" type="integer" min="5" max="2678400"
-				groupName="configuration">
-				<label>112: Group 2 Report Interval</label>
-				<description><![CDATA[***Add description here***]]></description>
-				<default>3600</default>
-			</parameter>
-			<parameter name="config_113_4" type="integer" min="5" max="2678400"
-				groupName="configuration">
-				<label>113: Group 3 Report Interval</label>
-				<description><![CDATA[***Add description here***]]></description>
-				<default>3600</default>
-			</parameter>
-			<parameter name="config_201_2" type="integer" min="-32768"
-				max="32767" groupName="configuration">
-				<label>201: Temperature Calibration</label>
-				<description><![CDATA[The range of calibration value is -32768 to 32767
-			]]></description>
-				<default>0</default>
-			</parameter>
-			<parameter name="config_202_2" type="integer" min="-32768"
-				max="32767" groupName="configuration">
-				<label>202: Humidity Sensor Calibration</label>
-				<description><![CDATA[The range of calibration value is -32768 to 32767
-			]]></description>
-				<default>0</default>
-			</parameter>
-			<parameter name="config_203_2" type="integer" min="-32768"
-				max="32767" groupName="configuration">
-				<label>203: Luminance Sensor Calibration</label>
-				<description><![CDATA[The range of calibration value is -32768 to 32767
-			]]></description>
-				<default>0</default>
-			</parameter>
-			<parameter name="config_204_1" type="integer" min="-11"
-				max="11" groupName="configuration">
-				<label>204: Ultraviolet Sensor Calibration</label>
-				<description><![CDATA[The range of calibration value is -11 to 11]]></description>
-				<default>0</default>
-			</parameter>
-			<parameter name="config_252_1" type="integer" groupName="configuration">
-				<label>252: Lock Configuration Parameters
-				</label>
-				<description><![CDATA[***Add description here***]]></description>
-				<default>1</default>
 				<options>
-					<option value="0">Disable</option>
-					<option value="1">Enable</option>
+					<option value="0">Factory Default</option>
+					<option value="1">Scene Mode</option>
+					<option value="2">Add Mode</option>
+					<option value="3">Remove Mode</option>
+					<option value="4">Association Mode</option>
+					<option value="5">Learn Mode</option>
 				</options>
 			</parameter>
-			<parameter name="config_255_4" type="integer" groupName="configuration">
-				<label>255: Reset to default factory settings</label>
-				<description><![CDATA[***Add description here***]]></description>
-				<options>
-					<option value="1">Resets all configuration parameters to default
-						settings</option>
-					<option value="1431655765">Reset to default factory settings and be
-						excluded
-						from the Z-wave network</option>
-				</options>
-			</parameter>
-			<parameter name="config_2_1_wo" type="integer" groupName="tools">
-				<label>2: Stay Awake in Battery Mode
-				</label>
-				<description><![CDATA[Stay awake for 10 minutes when re-powering the
-				MultiSensor (battery mode)
-			]]></description>
+			<parameter name="config_246_1" type="integer" groupName="configuration">
+				<label>246: Mode of Button 6 (Exclude)</label>
+				<description><![CDATA[Defines the switching mode of Button 6]]></description>
 				<default>0</default>
 				<options>
-					<option value="0">Disable</option>
-					<option value="1">Enable</option>
+					<option value="0">Factory Default</option>
+					<option value="1">Scene Mode</option>
+					<option value="2">Add Mode</option>
+					<option value="3">Remove Mode</option>
+					<option value="4">Association Mode</option>
+					<option value="5">Learn Mode</option>
+				</options>
+			</parameter>
+			<parameter name="config_247_1" type="integer" groupName="configuration">
+				<label>247: Mode of Button 7 (Association)</label>
+				<description><![CDATA[Defines the switching mode of Button 7]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Factory Default</option>
+					<option value="1">Scene Mode</option>
+					<option value="2">Add Mode</option>
+					<option value="3">Remove Mode</option>
+					<option value="4">Association Mode</option>
+					<option value="5">Learn Mode</option>
+				</options>
+			</parameter>
+			<parameter name="config_248_1" type="integer" groupName="configuration">
+				<label>248: Mode of Button 8 (Learn)</label>
+				<description><![CDATA[Defines the switching mode of Button 8]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Factory Default</option>
+					<option value="1">Scene Mode</option>
+					<option value="2">Add Mode</option>
+					<option value="3">Remove Mode</option>
+					<option value="4">Association Mode</option>
+					<option value="5">Learn Mode</option>
 				</options>
 			</parameter>
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
-				<label>Group 1</label>
-				<description><![CDATA[Group 1 is assigned to the Lifeline association group
-				and every device has 5 nodes to associate. The Motion sensor,
-				Humidity sensor, thermometer, light sensor and Ultraviolet sensor
-				reports will be sent to the associated nodes in Group 1
-			]]></description>
+				<label>Scene 1</label>
+				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
-				<label>Group 2</label>
+				<label>Scene 2</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 			<parameter name="group_3" type="integer" multiple="true"
 				groupName="association">
-				<label>Group 3</label>
+				<label>Scene 3</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
+			</parameter>
+			<parameter name="group_4" type="integer" multiple="true"
+				groupName="association">
+				<label>Scene 4</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<multipleLimit>5</multipleLimit>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
 			</parameter>
 		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 

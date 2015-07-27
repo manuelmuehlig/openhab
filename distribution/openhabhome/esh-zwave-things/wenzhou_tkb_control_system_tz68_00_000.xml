@@ -19,7 +19,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -36,21 +36,49 @@
 			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
-				<description></description>
 			</parameter-group>
 			<parameter-group name="association">
 				<context>link</context>
 				<label>Association Groups</label>
-				<description></description>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
 			</parameter-group>
 			<parameter name="config_1_1" type="integer" groupName="configuration">
-				<label>1: LED Behavior</label>
-				<description><![CDATA[defines the behavior of the blue LED]]></description>
-				<default>0</default>
+				<label>1: Selected endpoint</label>
+				<description><![CDATA[If Controller not using Multi_Channel command class
+							to access the endpoint of PAN06, you may configure
+							the endpoint value to react the Basic Command Class]]></description>
+				<default>1</default>
 				<options>
-					<option value="0">blue indicates off</option>
-					<option value="1">blue indicates on</option>
+					<option value="1">Relay 1</option>
 				</options>
+			</parameter>
+			<parameter name="config_2_1" type="integer" groupName="configuration">
+				<label>2: Switch mode</label>
+				<description><![CDATA[Change the external switch mode]]></description>
+				<default>1</default>
+				<options>
+					<option value="1">Edge mode</option>
+					<option value="2">Pulse mode</option>
+					<option value="3">Edge-Toggle mode</option>
+				</options>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Target for automatic reports</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<multipleLimit>5</multipleLimit>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
 			</parameter>
 		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 

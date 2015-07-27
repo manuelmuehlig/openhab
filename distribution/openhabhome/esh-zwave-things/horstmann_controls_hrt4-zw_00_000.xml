@@ -19,7 +19,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -31,13 +31,83 @@
 			<property name="model">HRT4-ZW</property>
 			<property name="manufacturerId">0059</property>
 			<property name="manufacturerRef">0001:0003</property>
+			<property name="commandClass:ASSOCIATION:0:default">1,2,3,4,5</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
-				<description></description>
 			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
+			</parameter-group>
+			<parameter name="config_1_1" type="integer" groupName="configuration">
+				<label>1: Enable Temperature Sensor</label>
+				<description><![CDATA[Controls the use of the temperature sensor on the device]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Disable</option>
+					<option value="255">Enable</option>
+				</options>
+			</parameter>
+			<parameter name="config_2_1" type="integer" groupName="configuration">
+				<label>2: Temperature Scale</label>
+				<description><![CDATA[Controls the temperature sensor scale]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Celsius</option>
+					<option value="255">Fahrenheit</option>
+				</options>
+			</parameter>
+			<parameter name="config_3_1" type="integer" groupName="configuration">
+				<label>3: Delta T</label>
+				<description><![CDATA[Defines the temperature steps of the heating control. Steps are 0.1 K]]></description>
+				<default>10</default>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Thermostat Mode Set</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<multipleLimit>4</multipleLimit>
+			</parameter>
+			<parameter name="group_2" type="integer" multiple="true"
+				groupName="association">
+				<label>Binary Switch Set</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<multipleLimit>4</multipleLimit>
+			</parameter>
+			<parameter name="group_3" type="integer" multiple="true"
+				groupName="association">
+				<label>Unsolicited Battery Level Reports</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<multipleLimit>4</multipleLimit>
+			</parameter>
+			<parameter name="group_4" type="integer" multiple="true"
+				groupName="association">
+				<label>Thermostat Set Point Reports</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<multipleLimit>4</multipleLimit>
+			</parameter>
+			<parameter name="group_5" type="integer" multiple="true"
+				groupName="association">
+				<label>Unsolicited Sensor Multilevel Reports</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<multipleLimit>4</multipleLimit>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
+			</parameter>
 		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 
 		it must be changed! -->

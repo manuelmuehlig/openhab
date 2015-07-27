@@ -19,7 +19,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -36,100 +36,32 @@
 			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
-				<description></description>
 			</parameter-group>
 			<parameter-group name="association">
 				<context>link</context>
 				<label>Association Groups</label>
-				<description></description>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
 			</parameter-group>
-			<parameter name="config_1_1" type="integer" groupName="configuration">
-				<label>1: Dim Start Level</label>
-				<description><![CDATA[A dimmer receiving this command will start dimming
-				from that start level if this bit is set to 0. If the bit is set to
-				1, the dimmer will ignore the start level and instead start dimming
-				from its current level.]]></description>
+			<parameter name="config_29_1" type="integer" groupName="configuration">
+				<label>29: Load Sense</label>
+				<description><![CDATA[Set parameter to 0 to disable load sense, set parameter to 1 to enable load sense.]]></description>
 				<default>1</default>
 				<options>
-					<option value="0">Use Start Level</option>
-					<option value="1">Ignore Start Level</option>
+					<option value="0">Disable load sense</option>
+					<option value="1">Enable load sense</option>
 				</options>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
 			</parameter>
-			<parameter name="config_3_1" type="integer" groupName="configuration">
-				<label>3: LED Indication</label>
-				<description><![CDATA[The WD500Z-1 will flicker its LED when it is
-				transmitting to any of its groups. This can be changed if desired.
-			]]></description>
-				<default>0</default>
-				<options>
-					<option value="0">0</option>
-					<option value="1">1</option>
-				</options>
-			</parameter>
-			<parameter name="config_4_1" type="integer" groupName="configuration">
-				<label>4: Invert Switch</label>
-				<description><![CDATA[To change the top of the switch to OFF and the bottom
-				to ON change parameter to 1.]]></description>
-				<default>0</default>
-				<options>
-					<option value="0">Top-ON, Bottom-OFF </option>
-					<option value="1">Bottom-ON, Top-OFF</option>
-				</options>
-			</parameter>
-			<parameter name="config_14_1" type="integer" groupName="configuration">
-				<label>14: Enable Shade Control Group 2</label>
-				<description><![CDATA[The switch can control shade control devices if this
-				parameter is set to 1]]></description>
-				<default>0</default>
-				<options>
-					<option value="0">Disable</option>
-					<option value="1">Enable</option>
-				</options>
-			</parameter>
-			<parameter name="config_15_1" type="integer" groupName="configuration">
-				<label>15: Enable Shade Control Group 3</label>
-				<description><![CDATA[The switch can control shade control devices if this
-				parameter is set to 1.]]></description>
-				<default>0</default>
-				<options>
-					<option value="0">Disable</option>
-					<option value="1">Enable</option>
-				</options>
-			</parameter>
-			<parameter name="config_19_1" type="integer" groupName="configuration">
-				<label>19: LED Transmission Indication</label>
-				<description><![CDATA[The WD500Z-1 will flicker its LED when it is
-				transmitting to any of its groups. Parameter set to 0 = not flicker
-				Parameter set to 1 = flicker the entire time of transmitting
-				Parameter set to 2 = flicker for only 1 second.]]></description>
-				<default>2</default>
-				<options>
-					<option value="0">Disable Flicker</option>
-					<option value="1">Flicker while transmitting</option>
-					<option value="2">Flicker for 1 second</option>
-				</options>
-			</parameter>
-			<parameter name="group_1" type="integer" multiple="true"
-				groupName="association">
-				<label>UNKNOWN!!!</label>
-				<description><![CDATA[***Add description here***]]></description>
-				<multipleLimit>5</multipleLimit>
-			</parameter>
-			<parameter name="group_2" type="integer" multiple="true"
-				groupName="association">
-				<label>Double Tap</label>
-				<description><![CDATA[Turn devices on an off by tapping the top or the
-				bottom of the switch twice. Brighten or dim devices by tapping and
-				then hold the top or the bottom of the switch.]]></description>
-				<multipleLimit>5</multipleLimit>
-			</parameter>
-			<parameter name="group_3" type="integer" multiple="true"
-				groupName="association">
-				<label>Triple Tap</label>
-				<description><![CDATA[ Turn devices on an off by tapping the top or the
-				bottom of the switch three times. Brighten or dim devices by tapping
-				twice and then hold the top or the bottom of the switch.]]></description>
-				<multipleLimit>5</multipleLimit>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
 			</parameter>
 		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 

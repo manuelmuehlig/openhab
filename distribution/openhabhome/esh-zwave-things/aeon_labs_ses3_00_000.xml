@@ -19,7 +19,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -36,16 +36,18 @@
 			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
-				<description></description>
 			</parameter-group>
 			<parameter-group name="association">
 				<context>link</context>
 				<label>Association Groups</label>
-				<description></description>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
 			</parameter-group>
 			<parameter name="config_2_2" type="integer" min="0" max="65535"
 				groupName="configuration">
-				<label>2: Make Micro Smart Switch 2nd Edition Blink</label>
+				<label>2: Blinking Behaviour</label>
 				<description><![CDATA[This is a double byte value. The LSB defines the total time the device need to blink. The value if set in seconds. The MSB defines the on/off interval of the blinking. The unit is 0.1 s.]]></description>
 				<default>0</default>
 			</parameter>
@@ -58,6 +60,16 @@
 					<option value="1">Activate</option>
 				</options>
 			</parameter>
+			<parameter name="config_20_1" type="integer" groupName="configuration">
+				<label>20: Output Load Status</label>
+				<description><![CDATA[Configure the output load status after re‐power on.]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Last Status</option>
+					<option value="1">Always On</option>
+					<option value="2">Always Off</option>
+				</options>
+			</parameter>
 			<parameter name="config_80_1" type="integer" groupName="configuration">
 				<label>80: Notification on Status Change</label>
 				<description><![CDATA[Parameter to Enable to send notification to associated devices (Group 1) when the state of Micro Smart Switch's load changed]]></description>
@@ -66,6 +78,15 @@
 					<option value="0">Deactivate</option>
 					<option value="1">Hail CC Sent</option>
 					<option value="2">Basic CC Report Sent</option>
+				</options>
+			</parameter>
+			<parameter name="config_81_1" type="integer" groupName="configuration">
+				<label>81: Configure the state of red LED </label>
+				<description><![CDATA[Parameter to Enable to send notification to associated devices (Group 1) when the state of Micro Smart Switch's load changed]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Follow switch status</option>
+					<option value="1">Switch off after 5 seconds</option>
 				</options>
 			</parameter>
 			<parameter name="config_90_1" type="integer" groupName="configuration">
@@ -130,14 +151,14 @@
 				<description><![CDATA[***Add description here***]]></description>
 				<default>600</default>
 			</parameter>
-			<parameter name="config_120_1" type="integer" groupName="configuration">
-				<label>120: Turn External Button Mode</label>
-				<description><![CDATA[Parameter to set External button type]]></description>
-				<default>255</default>
+			<parameter name="config_252_1" type="integer" groupName="configuration">
+				<label>252: Enable/disable Configuration Lock</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>0</default>
 				<options>
-					<option value="0">Momentary Button Mode</option>
-					<option value="1">2 State Switch Mode</option>
-					<option value="2">3 Way Switch Mode</option>
+					<option value="0">Deavtivate</option>
+					<option value="1">Activate</option>
 				</options>
 			</parameter>
 			<parameter name="group_1" type="integer" multiple="true"
@@ -151,6 +172,15 @@
 				<label>Target for automatic reports</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
 			</parameter>
 		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 

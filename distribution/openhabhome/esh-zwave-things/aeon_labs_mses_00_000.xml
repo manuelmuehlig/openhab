@@ -19,7 +19,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -36,16 +36,33 @@
 			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
-				<description></description>
 			</parameter-group>
 			<parameter-group name="association">
 				<context>link</context>
 				<label>Association Groups</label>
-				<description></description>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
 			</parameter-group>
+			<parameter name="config_1_1" type="integer" groupName="configuration">
+				<label>1: Type of Sensor Report</label>
+				<description><![CDATA[Load will be closed when current more that 15.5A and time more than 2 minutes]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Power</option>
+					<option value="1">Voltage</option>
+				</options>
+			</parameter>
+			<parameter name="config_2_2" type="integer" min="0" max="65535"
+				groupName="configuration">
+				<label>2: Blink</label>
+				<description><![CDATA[This is a double byte value. The LSB defines the total time the device need to blink. The value if set in seconds. The MSB defines the on/off interval of the blinking. The unit is 0.1 s.]]></description>
+				<default>0</default>
+			</parameter>
 			<parameter name="config_80_1" type="integer" groupName="configuration">
 				<label>80: Notification on Status Change</label>
-				<description><![CDATA[Parameter to Enable to send notification to associated devices (Group 1) when the state of Micro Dimmer's load changed]]></description>
+				<description><![CDATA[Parameter to Enable to send notification to associated devices (Group 1) when the state of Micro Smart Switch's load changed]]></description>
 				<default>0</default>
 				<options>
 					<option value="0">Deactivate</option>
@@ -53,21 +70,94 @@
 					<option value="2">Basic CC Report Sent</option>
 				</options>
 			</parameter>
-			<parameter name="config_120_1" type="integer" groupName="configuration">
-				<label>120: Turn External Button Mode</label>
-				<description><![CDATA[Parameter to set External button type]]></description>
-				<default>255</default>
+			<parameter name="config_90_1" type="integer" groupName="configuration">
+				<label>90: Automated sending of a Report triggered by minimal change
+					of value.</label>
+				<description><![CDATA[Parameter to Enable/Disable automated sending of a Report triggered by minimal change of value.]]></description>
+				<default>0</default>
 				<options>
-					<option value="0">Momentary Button Mode</option>
-					<option value="1">2 State Switch Mode</option>
-					<option value="2">3 Way Switch Mode</option>
+					<option value="0">Deavtivate</option>
+					<option value="1">Activate</option>
 				</options>
+			</parameter>
+			<parameter name="config_91_2" type="integer" groupName="configuration">
+				<label>91: Minimum Change to send Report (Watt)</label>
+				<description><![CDATA[The value represents the minimum change in Wattage for a Report to be sent.]]></description>
+				<default>25</default>
+			</parameter>
+			<parameter name="config_92_1" type="integer" groupName="configuration">
+				<label>92: Minimum Change to send Report (%)</label>
+				<description><![CDATA[The value represents the minimum change in Watage Percent for a report to be sent.]]></description>
+				<default>5</default>
+			</parameter>
+			<parameter name="config_101_4" type="integer" groupName="configuration">
+				<label>101: Which reports need to send automatically in timing
+					intervals for group 1</label>
+				<description><![CDATA[The value is a combination number made up of the sum of the values for the individual parameters.
+                                                        The parameters have the values: KWH=8, Wattage=4, Current=2, Voltage=1.
+                                                        Therefore if you want all parameters sending regular reports, set the parameter to 15 (8 + 4 + 2 + 1).]]></description>
+				<default>4</default>
+			</parameter>
+			<parameter name="config_102_4" type="integer" groupName="configuration">
+				<label>102: Which reports need to send automatically in timing
+					intervals for group 2</label>
+				<description><![CDATA[The value is a combination number made up of the sum of the values for the individual parameters.
+                                                        The parameters have the values: KWH=8, Wattage=4, Current=2, Voltage=1.
+                                                        Therefore if you want all parameters sending regular reports, set the parameter to 15 (8 + 4 + 2 + 1).]]></description>
+				<default>8</default>
+			</parameter>
+			<parameter name="config_103_4" type="integer" groupName="configuration">
+				<label>103: Which reports need to send automatically in timing
+					intervals for group 3</label>
+				<description><![CDATA[The value is a combination number made up of the sum of the values for the individual parameters.
+                                                        The parameters have the values: KWH=8, Wattage=4, Current=2, Voltage=1.
+                                                        Therefore if you want all parameters sending regular reports, set the parameter to 15 (8 + 4 + 2 + 1).]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_111_4" type="integer" min="1" max="2678400"
+				groupName="configuration">
+				<label>111: Interval to send out reports of group 1</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>3</default>
+			</parameter>
+			<parameter name="config_112_4" type="integer" min="1" max="2678400"
+				groupName="configuration">
+				<label>112: Interval to send out reports of group 2</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>600</default>
+			</parameter>
+			<parameter name="config_113_4" type="integer" min="1" max="2678400"
+				groupName="configuration">
+				<label>113: Interval to send out reports of group 3</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>600</default>
 			</parameter>
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
-				<label>Target for automatic reports</label>
+				<label>Group 1</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
+			</parameter>
+			<parameter name="group_2" type="integer" multiple="true"
+				groupName="association">
+				<label>Group 2</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+			<parameter name="group_3" type="integer" multiple="true"
+				groupName="association">
+				<label>Group 3</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<multipleLimit>5</multipleLimit>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
 			</parameter>
 		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 

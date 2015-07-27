@@ -19,7 +19,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -36,99 +36,15 @@
 			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
-				<description></description>
 			</parameter-group>
 			<parameter-group name="association">
 				<context>link</context>
 				<label>Association Groups</label>
-				<description></description>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
 			</parameter-group>
-			<parameter name="config_1_1" type="integer" min="0" max="256"
-				groupName="configuration">
-				<label>1: Reset to factory settings</label>
-				<description><![CDATA[Set all configuration values to default values (factory settings).]]></description>
-				<default>0</default>
-			</parameter>
-			<parameter name="config_2_1" type="integer" groupName="configuration">
-				<label>2: The way how the button reacts when press/released</label>
-				<description><![CDATA[The way how the button reacts when press/released]]></description>
-				<default>0</default>
-				<options>
-					<option value="0">Toggle light when button is pressed, no action
-						when button is released.</option>
-					<option value="1">Toggle light when button is released, Start
-						dimming when button pressed.</option>
-					<option value="2">Toggle light when button is pressed and when
-						button is Released, start dimming when quickly press and release
-						button.</option>
-				</options>
-			</parameter>
-			<parameter name="config_3_1" type="integer" groupName="configuration">
-				<label>3: The way the Built-in Dimmer reacts when light is turned
-					on/off with button</label>
-				<description><![CDATA[The way the Built-in Dimmer reacts when light is turned on/off with button]]></description>
-				<default>0</default>
-				<options>
-					<option value="0">Switch own light on and send a Z-Wave message
-						to all associated nodes (direct and extern)</option>
-					<option value="1">Don.t switch own light on but only send a
-						Z-Wave message to associated node. (extern only).</option>
-				</options>
-			</parameter>
-			<parameter name="config_4_1" type="integer" groupName="configuration">
-				<label>4: Enable dimming</label>
-				<description><![CDATA[This parameter is used to enable the dimming option of the product. When disabled the dimming and fading routine are disabled.]]></description>
-				<default>0</default>
-				<options>
-					<option value="0">Disable</option>
-					<option value="1">Enable</option>
-				</options>
-			</parameter>
-			<parameter name="config_6_2" type="integer" groupName="configuration">
-				<label>6: Maximum load</label>
-				<description><![CDATA[The maximum powerload in watts when light is turned on, when measured higher then this value the Inline Dimmer is automatically turned off.]]></description>
-				<default>200</default>
-			</parameter>
-			<parameter name="config_7_1" type="integer" groupName="configuration">
-				<label>7: Dimming speed</label>
-				<description><![CDATA[The speed of dimming when activated (manual and RF). Dim speed is 1% per value (* 10 ms)]]></description>
-				<default>3</default>
-			</parameter>
-			<parameter name="config_15_1" type="integer" groupName="configuration">
-				<label>15: Fading down speed</label>
-				<description><![CDATA[The speed of fading when activated (manual and RF). Fade speed is 1% per value (* 10 ms)]]></description>
-				<default>1</default>
-			</parameter>
-			<parameter name="config_8_1" type="integer" groupName="configuration">
-				<label>8: Fading up speed</label>
-				<description><![CDATA[The speed of fading when activated (manual and RF). Fade speed is 1% per value (* 10 ms)]]></description>
-				<default>3</default>
-			</parameter>
-			<parameter name="config_9_1" type="integer" groupName="configuration">
-				<label>9: Toggle time</label>
-				<description><![CDATA[The time window to repress button to start dimming. Toggle time is value (* 10ms)]]></description>
-				<default>50</default>
-			</parameter>
-			<parameter name="config_11_1" type="integer" groupName="configuration">
-				<label>11: Auto meter report: percentage</label>
-				<description><![CDATA[A percentage that an energy value must be different compared to a previous sent value before an unsolicited meter report is sent. Minimum value = 10%  Maximum value = 100%]]></description>
-				<default>20</default>
-			</parameter>
-			<parameter name="config_12_1" type="integer" groupName="configuration">
-				<label>12: Auto meter report: watt</label>
-				<description><![CDATA[A watt value that an energy value must be different compared to a previous sent value before an unsolicited meter report is sent. Minimum value = 5 watt  Maximum value = 255 watt]]></description>
-				<default>10</default>
-			</parameter>
-			<parameter name="config_13_1" type="integer" groupName="configuration">
-				<label>13: Auto meter report: time</label>
-				<description><![CDATA[A time value that has to be passed compared to a previous sent value before a unsolicited meter report is sent. Minimum value = 10 seconds  Maximum value = 255 seconds]]></description>
-				<default>10</default>
-			</parameter>
-			<parameter name="config_14_1" type="integer" groupName="configuration">
-				<label>14: Last known status</label>
-				<description><![CDATA[What to do with lamp status when power applied. If 0x00: Always switch light off when power applied. If > 0x00: Switch lamp on/off depending on last known lampstatus before power was disconnected.]]></description>
-				<default>0</default>
-			</parameter>
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
 				<label>Group 1</label>
@@ -142,6 +58,15 @@
 			<parameter name="group_3" type="integer" groupName="association">
 				<label>Group 3</label>
 				<description><![CDATA[***Add description here***]]></description>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
 			</parameter>
 		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 

@@ -19,7 +19,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -36,52 +36,30 @@
 			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
-				<description></description>
 			</parameter-group>
 			<parameter-group name="association">
 				<context>link</context>
 				<label>Association Groups</label>
-				<description></description>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
 			</parameter-group>
-			<parameter name="config_1_1" type="integer" min="1" max="255"
-				groupName="configuration">
-				<label>1: Set to Default</label>
-				<description><![CDATA[Set all configuration values to default values (factory settings).]]></description>
-				<default>-1</default>
-			</parameter>
-			<parameter name="config_2_1" type="integer" min="1" max="255"
-				groupName="configuration">
-				<label>2: Feedback time</label>
-				<description><![CDATA[To configure the time the beep is automatically turned off in seconds.<BR/>
-						0	   ->  	disabled<BR/>
-						255	   ->  	endless]]></description>
-				<default>15</default>
-			</parameter>
-			<parameter name="config_3_1" type="integer" min="0" max="255"
-				groupName="configuration">
-				<label>3: Feedback timeout</label>
-				<description><![CDATA[To configure the timeout to wait for a WAKEUP_NO_MORE_INFORMATION before the error beep is automatically sound. The error beeps are fixed 8 beeps shortly after each other.<BR/>
-						0	   ->  	disabled]]></description>
-				<default>0</default>
-			</parameter>
-			<parameter name="config_4_1" type="integer" min="1" max="255"
-				groupName="configuration">
-				<label>4: Feedback beeps per Second</label>
-				<description><![CDATA[To configure the number of beeps per second. Every beep is fixed about 10ms.]]></description>
-				<default>2</default>
-			</parameter>
-			<parameter name="config_5_1" type="integer" min="1" max="255"
-				groupName="configuration">
-				<label>5: Operating mode</label>
-				<description><![CDATA[To configure the operating mode. If any mode other then 3, that value will be reported after a get but will be handled in SW as mode 1.]]></description>
-				<default>1</default>
-			</parameter>
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
-				<label>Group1</label>
+				<label>Group 1</label>
 				<description><![CDATA[]]>
 				</description>
 				<multipleLimit>5</multipleLimit>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
 			</parameter>
 		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 

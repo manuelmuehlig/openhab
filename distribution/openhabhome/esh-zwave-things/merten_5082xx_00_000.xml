@@ -19,7 +19,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -36,20 +36,15 @@
 			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
-				<description></description>
 			</parameter-group>
 			<parameter-group name="association">
 				<context>link</context>
 				<label>Association Groups</label>
-				<description></description>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
 			</parameter-group>
-			<parameter name="config_0_1" type="integer" min="0" max="127"
-				groupName="configuration">
-				<label>0: Switching/dimming/shutters</label>
-				<description><![CDATA[]]>
-				</description>
-				<default>0</default>
-			</parameter>
 			<parameter name="config_4_1" type="integer" min="0" max="127"
 				groupName="configuration">
 				<label>4: Switching single-surface</label>
@@ -67,14 +62,14 @@
 			<parameter name="config_52_1" type="integer" min="0" max="127"
 				groupName="configuration">
 				<label>52: LOWER shutter as long as button is pressed</label>
-				<description><![CDATA[]]>
-				</description>
+				<description><![CDATA[Direction of movement changes after each switching process]]></description>
 				<default>0</default>
 			</parameter>
 			<parameter name="config_54_1" type="integer" min="0" max="127"
 				groupName="configuration">
 				<label>54: Move shutter single-surface</label>
-				<description><![CDATA[Direction of movement changes after each switching process]]></description>
+				<description><![CDATA[]]>
+				</description>
 				<default>0</default>
 			</parameter>
 			<parameter name="config_55_1" type="integer" min="0" max="127"
@@ -86,27 +81,18 @@
 			</parameter>
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
-				<label>Red Cables</label>
+				<label>Button</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>12</multipleLimit>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
 			</parameter>
-			<parameter name="group_2" type="integer" multiple="true"
-				groupName="association">
-				<label>Green Cables</label>
-				<description><![CDATA[***Add description here***]]></description>
-				<multipleLimit>12</multipleLimit>
-			</parameter>
-			<parameter name="group_3" type="integer" multiple="true"
-				groupName="association">
-				<label>Brown Cables</label>
-				<description><![CDATA[***Add description here***]]></description>
-				<multipleLimit>12</multipleLimit>
-			</parameter>
-			<parameter name="group_4" type="integer" multiple="true"
-				groupName="association">
-				<label>Blue Cables</label>
-				<description><![CDATA[***Add description here***]]></description>
-				<multipleLimit>12</multipleLimit>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
 			</parameter>
 		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 

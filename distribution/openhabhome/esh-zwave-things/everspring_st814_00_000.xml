@@ -19,7 +19,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -37,51 +37,65 @@
 			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
-				<description></description>
 			</parameter-group>
 			<parameter-group name="association">
 				<context>link</context>
 				<label>Association Groups</label>
-				<description></description>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
 			</parameter-group>
 			<parameter name="config_1_1" type="integer" min="0" max="99"
 				groupName="configuration">
 				<label>1: Basic Set Level</label>
-				<description><![CDATA[Sets the command value sent when motion is triggered.<BR/>0=OFF<BR/>1-99=ON or dimmer level]]></description>
-				<default>255</default>
+				<description><![CDATA[Set basic set value to be on or off.<BR/>0=Disable<BR/>1-99=Use Value]]></description>
+				<default>99</default>
 			</parameter>
-			<parameter name="config_2_1" type="integer" groupName="configuration">
-				<label>2: Enable/Disable Detecting</label>
-				<description><![CDATA[The Detecting function can be Disabled or Enabled.]]></description>
-				<default>1</default>
-				<options>
-					<option value="0">Disabled</option>
-					<option value="1">Enabled</option>
-				</options>
-			</parameter>
-			<parameter name="config_3_1" type="integer" min="1" max="10"
+			<parameter name="config_2_1" type="integer" min="-20" max="99"
 				groupName="configuration">
-				<label>3: Sensitivity Level</label>
-				<description><![CDATA[1 Means lowest sensitivity and 10 means highest.]]></description>
-				<default>6</default>
+				<label>2: Temperature Trigger ON value</label>
+				<description><![CDATA[Temperature level when a ON command is sent out. Set to 99 to disable.]]></description>
+				<default>99</default>
 			</parameter>
-			<parameter name="config_4_2" type="integer" min="5" max="3600"
+			<parameter name="config_3_1" type="integer" min="-20" max="99"
 				groupName="configuration">
-				<label>4: Re-trigger Interval</label>
-				<description><![CDATA[Adjust the interval of being re-triggered after the detector has been triggered.<BR/>Interval in seconds.]]></description>
-				<default>5</default>
+				<label>3: Temperature Trigger OFF value</label>
+				<description><![CDATA[Temperature level when a OFF command is sent out. Set to 99 to disable.]]></description>
+				<default>99</default>
 			</parameter>
-			<parameter name="config_5_1" type="integer" min="1" max="100"
+			<parameter name="config_4_1" type="integer" min="20" max="99"
 				groupName="configuration">
-				<label>5: Lux Level</label>
-				<description><![CDATA[Sets minimum Lux Level of ambient illumination necessary for Motion Detector to trigger.]]></description>
-				<default>10</default>
+				<label>4: Humidity Trigger ON value</label>
+				<description><![CDATA[Humidity level when a ON command is sent out. Set to 99 to disable.<BR/>Interval in seconds.]]></description>
+				<default>99</default>
 			</parameter>
-			<parameter name="config_6_1" type="integer" min="5" max="3600"
+			<parameter name="config_5_1" type="integer" min="20" max="99"
 				groupName="configuration">
-				<label>6: On-Off Duration</label>
-				<description><![CDATA[The duration determines how long before the module sends an Off after being triggered.<BR/>Duration in seconds]]></description>
-				<default>5</default>
+				<label>5: Humidity Trigger OFF value</label>
+				<description><![CDATA[Humidity level when a OFF command is sent out. Set to 99 to disable.<BR/>Interval in seconds.]]></description>
+				<default>99</default>
+			</parameter>
+			<parameter name="config_6_2" type="integer" min="0" max="1439"
+				groupName="configuration">
+				<label>6: Auto report time</label>
+				<description><![CDATA[Sets the time interval when a sensor report is sent.<BR/>0 = Disable<BR/>
+1 min - 1439 min = Auto report periodically]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_7_1" type="integer" min="0" max="70"
+				groupName="configuration">
+				<label>7: Auto report temperature</label>
+				<description><![CDATA[Sets the temperature change causing a sensor report.<BR/>0 = Disable<BR/>
+1 - 70 = Auto report on temperature change]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_8_1" type="integer" min="0" max="70"
+				groupName="configuration">
+				<label>8: Auto report humidity</label>
+				<description><![CDATA[Sets the humidity change causing a sensor report.<BR/>0 = Disable<BR/>
+5 - 70 = Auto report on humidity change]]></description>
+				<default>0</default>
 			</parameter>
 			<parameter name="group_1" type="integer" groupName="association">
 				<label>Reports</label>
@@ -92,6 +106,15 @@
 				<label>Control</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>3</multipleLimit>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
 			</parameter>
 		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 

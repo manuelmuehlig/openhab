@@ -19,7 +19,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -37,62 +37,49 @@
 			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
-				<description></description>
 			</parameter-group>
 			<parameter-group name="association">
 				<context>link</context>
 				<label>Association Groups</label>
-				<description></description>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
 			</parameter-group>
 			<parameter name="config_1_1" type="integer" min="0" max="99"
 				groupName="configuration">
 				<label>1: Basic Set Level</label>
-				<description><![CDATA[Set basic set value to be on or off.<BR/>0=Disable<BR/>1-99=Use Value]]></description>
+				<description><![CDATA[Set basic set value to be on or off.<BR/>Set to 0 to disable]]></description>
 				<default>99</default>
 			</parameter>
-			<parameter name="config_2_1" type="integer" min="-20" max="99"
+			<parameter name="config_2_2" type="integer" min="0" max="1000"
 				groupName="configuration">
-				<label>2: Temperature Trigger ON value</label>
-				<description><![CDATA[Temperature level when a ON command is sent out. Set to 99 to disable.]]></description>
-				<default>99</default>
+				<label>2: Lux Trigger On Value</label>
+				<description><![CDATA[Lux level when ON command is sent out. <BR/>Set to 0 to disable.]]></description>
+				<default>300</default>
 			</parameter>
-			<parameter name="config_3_1" type="integer" min="-20" max="99"
+			<parameter name="config_3_2" type="integer" min="0" max="1000"
 				groupName="configuration">
-				<label>3: Temperature Trigger OFF value</label>
-				<description><![CDATA[Temperature level when a OFF command is sent out. Set to 99 to disable.]]></description>
-				<default>99</default>
+				<label>3: Lux Trigger Off Value</label>
+				<description><![CDATA[Lux level when Off command is sent out. <BR/>Set to 0 to disable.]]></description>
+				<default>500</default>
 			</parameter>
-			<parameter name="config_4_1" type="integer" min="20" max="99"
+			<parameter name="config_4_2" type="integer" min="0" max="480"
 				groupName="configuration">
-				<label>4: Humidity Trigger ON value</label>
-				<description><![CDATA[Humidity level when a ON command is sent out. Set to 99 to disable.<BR/>Interval in seconds.]]></description>
-				<default>99</default>
-			</parameter>
-			<parameter name="config_5_1" type="integer" min="20" max="99"
-				groupName="configuration">
-				<label>5: Humidity Trigger OFF value</label>
-				<description><![CDATA[Humidity level when a OFF command is sent out. Set to 99 to disable.<BR/>Interval in seconds.]]></description>
-				<default>99</default>
-			</parameter>
-			<parameter name="config_6_2" type="integer" min="0" max="1439"
-				groupName="configuration">
-				<label>6: Auto report time</label>
-				<description><![CDATA[Sets the time interval when a sensor report is sent.<BR/>0 = Disable<BR/>
-1 min - 1439 min = Auto report periodically]]></description>
+				<label>4: Lux Trigger Off Timer Value.</label>
+				<description><![CDATA[Timer value in minutes. <BR/>Set to 0 to disable.]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_7_1" type="integer" min="0" max="70"
+			<parameter name="config_5_2" type="integer" min="0" max="1439"
 				groupName="configuration">
-				<label>7: Auto report temperature</label>
-				<description><![CDATA[Sets the temperature change causing a sensor report.<BR/>0 = Disable<BR/>
-1 - 70 = Auto report on temperature change]]></description>
+				<label>5: Auto Report Time Interval</label>
+				<description><![CDATA[Time interval in minutes to auto report to association group 1<BR/> Set to 0 to Disable]]></description>
 				<default>0</default>
 			</parameter>
-			<parameter name="config_8_1" type="integer" min="0" max="70"
+			<parameter name="config_6_2" type="integer" min="0" max="1000"
 				groupName="configuration">
-				<label>8: Auto report humidity</label>
-				<description><![CDATA[Sets the humidity change causing a sensor report.<BR/>0 = Disable<BR/>
-5 - 70 = Auto report on humidity change]]></description>
+				<label>6: Auto Report Lux Interval</label>
+				<description><![CDATA[Lux interval step size to auto report to association group 1<BR/> Set to 0 to Disable]]></description>
 				<default>0</default>
 			</parameter>
 			<parameter name="group_1" type="integer" groupName="association">
@@ -104,6 +91,15 @@
 				<label>Control</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>3</multipleLimit>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
 			</parameter>
 		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 

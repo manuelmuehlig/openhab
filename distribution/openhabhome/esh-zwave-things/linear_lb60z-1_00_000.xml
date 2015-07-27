@@ -19,7 +19,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -31,26 +31,44 @@
 			<property name="model">LB60Z-1</property>
 			<property name="manufacturerId">014F</property>
 			<property name="manufacturerRef">4754:3038</property>
+			<property name="commandClass:ASSOCIATION:0:default">1</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
-				<description></description>
 			</parameter-group>
 			<parameter-group name="association">
 				<context>link</context>
 				<label>Association Groups</label>
-				<description></description>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
 			</parameter-group>
-			<parameter name="config_29_1" type="integer" groupName="configuration">
-				<label>29: Load Sense</label>
-				<description><![CDATA[Set parameter to 0 to disable load sense, set parameter to 1 to enable load sense.]]></description>
-				<default>1</default>
+			<parameter name="config_1_1" type="integer" groupName="configuration">
+				<label>1: Dim Level Memory</label>
+				<description><![CDATA[By default, the LB60Z-1 bulb will go to full brightness when turned on. To have the bulb turn on to the last dim level setting, set parameter 1 to 1.]]></description>
+				<default>0</default>
 				<options>
-					<option value="0">Disable load sense</option>
-					<option value="1">Enable load sense</option>
+					<option value="0">Disable dim level memory</option>
+					<option value="1">Enable dim level memory</option>
 				</options>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Lifeline</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<multipleLimit>5</multipleLimit>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
 			</parameter>
 		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 

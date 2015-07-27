@@ -19,7 +19,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -36,12 +36,14 @@
 			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
-				<description></description>
 			</parameter-group>
 			<parameter-group name="association">
 				<context>link</context>
 				<label>Association Groups</label>
-				<description></description>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
 			</parameter-group>
 			<parameter name="config_1_1" type="integer" groupName="configuration">
 				<label>1: Set LED indication mode</label>
@@ -52,6 +54,7 @@
 					<option value="0">Disabled</option>
 					<option value="1">Show switch state</option>
 					<option value="2">Night mode</option>
+					<option value="3">Remote by indicator command class</option>
 				</options>
 			</parameter>
 			<parameter name="config_2_2" type="integer" groupName="configuration">
@@ -70,8 +73,17 @@
 					<option value="3">Switch on if load is off else switch off</option>
 				</options>
 			</parameter>
+			<parameter name="config_4_1" type="integer" groupName="configuration">
+				<label>4: Switch on dimming by buttons</label>
+				<description><![CDATA[Defines if the switch should change it state to on/off if it is dimmed by buttons]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">No</option>
+					<option value="1">Yes (Default)</option>
+				</options>
+			</parameter>
 			<parameter name="config_5_1" type="integer" groupName="configuration">
-				<label>5: Restore switch state after power cycle</label>
+				<label>5: Switch on dimming by buttons</label>
 				<description><![CDATA[Defines if the switch should restore switch state to the last state prior to device power off (power cycle).]]></description>
 				<default>1</default>
 				<options>
@@ -79,49 +91,108 @@
 					<option value="1">Yes (Default)</option>
 				</options>
 			</parameter>
-			<parameter name="config_20_2" type="integer" min="0" max="1800"
+			<parameter name="config_10_1" type="integer" min="1" max="100"
 				groupName="configuration">
-				<label>20: Energy consumption</label>
-				<description><![CDATA[Specify the consumption of the load in watts, for the calculation of power consumption. Max load 1800 W.]]></description>
-				<default>0</default>
+				<label>10: Typical click timeout</label>
+				<description><![CDATA[Typical time used to differentiate click, hold, double and triple clicks<BR/>Defined in 10ms ticks.]]></description>
+				<default>50</default>
 			</parameter>
-			<parameter name="config_21_1" type="integer" groupName="configuration">
-				<label>21: Off Color</label>
+			<parameter name="config_11_1" type="integer" groupName="configuration">
+				<label>11: Invert buttons</label>
 				<description><![CDATA[]]>
 				</description>
 				<default>0</default>
 				<options>
-					<option value="0">Off</option>
-					<option value="1">Red</option>
-					<option value="2">Green</option>
-					<option value="3">Blue</option>
-					<option value="4">Yellow</option>
+					<option value="0">No</option>
+					<option value="1">Yes</option>
 				</options>
 			</parameter>
-			<parameter name="config_22_1" type="integer" groupName="configuration">
-				<label>22: On Color</label>
+			<parameter name="config_12_1" type="integer" groupName="configuration">
+				<label>12: Switch by buttons</label>
+				<description><![CDATA[If disabled, the local operations by buttons will not switch the load, but only send commands to On/Off association group. In this mode buttons are not linked with the switch anymore. They can be used separately: buttons to control remote device, switch will operate by RF commands only.]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">No</option>
+					<option value="1">By single press and hold</option>
+					<option value="2">By double press and hold</option>
+				</options>
+			</parameter>
+			<parameter name="config_13_1" type="integer" groupName="configuration">
+				<label>13: Action on button single press or hold</label>
+				<description><![CDATA[Defines which command should be sent on button single press or hold. Basic commands are sent to Association group. Switch All commands are sent broadcast.]]></description>
+				<default>4</default>
+				<options>
+					<option value="0">Disabled</option>
+					<option value="4">Switch On/Off and Dim (send Basic Set and
+						Switch Multilevel) (Default)</option>
+					<option value="1">Switch On, Off and dim using Basic Set</option>
+					<option value="2">Switch All</option>
+					<option value="3">Send Scenes</option>
+					<option value="5">Send Preconfigured Scenes</option>
+				</options>
+			</parameter>
+			<parameter name="config_14_1" type="integer" groupName="configuration">
+				<label>14: Action on button double press or hold</label>
+				<description><![CDATA[Defines which command should be sent on button double press or press-hold. Basic commands are sent to Association group. Switch All commands are sent broadcast. If not disabled, the device will wait for a click timeout to see if the second click would be pressed. This will introduce a small delay for single click commands.]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Disabled (Default)</option>
+					<option value="4">Switch On/Off and Dim (send Basic Set and
+						Switch Multilevel)</option>
+					<option value="1">Switch On, Off and dim using Basic Set</option>
+					<option value="2">Switch All</option>
+					<option value="3">Send Scenes</option>
+					<option value="5">Send Preconfigured Scenes</option>
+				</options>
+			</parameter>
+			<parameter name="config_15_1" type="integer" groupName="configuration">
+				<label>15: Send the following switch all commands</label>
 				<description><![CDATA[]]>
 				</description>
-				<default>3</default>
+				<default>1</default>
 				<options>
-					<option value="0">Off</option>
-					<option value="1">Red</option>
-					<option value="2">Green</option>
-					<option value="3">Blue</option>
-					<option value="4">Yellow</option>
+					<option value="0">Switch off only</option>
+					<option value="1">Switch on only</option>
+					<option value="-1">Switch all on and off</option>
+				</options>
+			</parameter>
+			<parameter name="config_16_1" type="integer" groupName="configuration">
+				<label>16: What to do on button Down press</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>1</default>
+				<options>
+					<option value="0">Switch off (Default)</option>
+					<option value="1">Switch On if load is Off, else switch Off</option>
+					<option value="3">Switch on</option>
 				</options>
 			</parameter>
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
 				<label>Group 1</label>
-				<description><![CDATA[Send Reports on switch state change]]></description>
-				<multipleLimit>5</multipleLimit>
+				<description><![CDATA[Single press and hold of up/down buttons]]></description>
+				<multipleLimit>8</multipleLimit>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Group 2</label>
-				<description><![CDATA[Controlled by buttons]]></description>
-				<multipleLimit>5</multipleLimit>
+				<description><![CDATA[Double press and press-hold of up/down buttons]]></description>
+				<multipleLimit>8</multipleLimit>
+			</parameter>
+			<parameter name="group_3" type="integer" multiple="true"
+				groupName="association">
+				<label>Group 3</label>
+				<description><![CDATA[Send Reports on switch state change]]></description>
+				<multipleLimit>8</multipleLimit>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
 			</parameter>
 		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 

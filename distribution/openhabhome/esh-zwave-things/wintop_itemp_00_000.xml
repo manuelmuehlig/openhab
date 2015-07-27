@@ -19,7 +19,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -36,8 +36,69 @@
 			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
-				<description></description>
 			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
+			</parameter-group>
+			<parameter name="config_1_1" type="integer" groupName="configuration">
+				<label>1: Reset to factory default</label>
+				<description><![CDATA[Delete configuration but keeps inclusion]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">No (default)</option>
+					<option value="1">Execute reset</option>
+				</options>
+			</parameter>
+			<parameter name="config_2_1" type="integer" groupName="configuration">
+				<label>2: Command sent on external dry contact</label>
+				<description><![CDATA[Configure what te external contact sends when trigger]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Alarm Resport Type 2 (default)</option>
+					<option value="1">Basic On or Basic Off</option>
+				</options>
+			</parameter>
+			<parameter name="config_5_1" type="integer" groupName="configuration">
+				<label>5: Operating Mode</label>
+				<description><![CDATA[Defines if the sensor is in normal wakeup mode or always on (drains battery fast)]]></description>
+				<default>1</default>
+				<options>
+					<option value="1">Normal Wakeup (default)</option>
+					<option value="3">Always awake</option>
+				</options>
+			</parameter>
+			<parameter name="config_6_2" type="integer" min="1" max="15300"
+				groupName="configuration">
+				<label>6: Temperature Offset</label>
+				<description><![CDATA[Can be used to calibrate the temperature sensors function. Calibrated as factory default.]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Binary input Group</label>
+				<description><![CDATA[Dry binary input close/open]]></description>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+			<parameter name="group_2" type="integer" multiple="true"
+				groupName="association">
+				<label>Alarm Group</label>
+				<description><![CDATA[Alarm Condition - tempering switch trips]]></description>
+				<multipleLimit>5</multipleLimit>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
+			</parameter>
 		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 
 		it must be changed! -->

@@ -19,7 +19,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -31,7 +31,7 @@
 			<property name="model">ZMNHBA</property>
 			<property name="manufacturerId">0159</property>
 			<property name="manufacturerRef">0002:0001</property>
-			<property name="commandClass:ASSOCIATION:0:default">4</property>
+			<property name="commandClass:ASSOCIATION:0:default">3</property>
 			<property
 				name="commandClass:SENSOR_MULTILEVEL:NO_GET</property-group><property name="
 				commandClass:METER:1:METER_CAN_RESETMETER_TYPE=ELECTRICMETER_SCALE=E_W,E_KWh
@@ -41,12 +41,14 @@
 					configuration ">
 					<context>setup</context>
 					<label>Configuration Parameters</label>
-					<description></description>
 				</parameter-group>
 					<parameter-group name="association">
 						<context>link</context>
 						<label>Association Groups</label>
-						<description></description>
+					</parameter-group><!-- Remove if this is not a battery device -->
+					<parameter-group name="wakeup">
+						<context>sleep</context>
+						<label>Wakeup Configuration</label>
 					</parameter-group>
 					<parameter name="config_1_1" type="integer" groupName="configuration">
 						<label>1: Input 1 switch type</label>
@@ -58,28 +60,18 @@
 						</options>
 					</parameter>
 					<parameter name="config_2_1" type="integer" groupName="configuration">
-						<label>2: Input 2 contact type</label>
-						<description><![CDATA[Input 2 contact type]]></description>
-						<default>0</default>
+						<label>2: Input 2 switch type</label>
+						<description><![CDATA[Input 2 switch type]]></description>
+						<default>1</default>
 						<options>
-							<option value="0">NO (normaly open) input type</option>
-							<option value="1"> NC (normaly close) input type</option>
-						</options>
-					</parameter>
-					<parameter name="config_3_1" type="integer" groupName="configuration">
-						<label>3: Input 3 contact type</label>
-						<description><![CDATA[Input 3 contact type]]></description>
-						<default>0</default>
-						<options>
-							<option value="0">NO (normaly open) input type</option>
-							<option value="1"> NC (normaly close) input type</option>
+							<option value="0">mono-stable switch type (push button)</option>
+							<option value="1">bi-stable switch type</option>
 						</options>
 					</parameter>
 					<parameter name="config_10_1" type="integer" groupName="configuration">
 						<label>10: Activate / deactivate functions ALL ON/ALL OFF</label>
-						<description><![CDATA[Flush 1 relay module responds to commands ALL ON / 
-ALL OFF that may be sent by the main controller or by 
-other controller belonging to the system.]]></description>
+						<description><![CDATA[Flush 1 relay module responds to commands ALL ON / ALL OFF 
+				that may be sent by the main controller or by other controller belonging to the system.]]></description>
 						<default>255</default>
 						<options>
 							<option value="255">ALL ON active, ALL OFF active</option>
@@ -89,71 +81,93 @@ other controller belonging to the system.]]></description>
 						</options>
 					</parameter>
 					<parameter name="config_11_2" type="integer" groupName="configuration">
-						<label>11: Automatic turning off relay after set time</label>
-						<description><![CDATA[0 - Auto OFF disabled 
-1 – 65535 = 0,01second – 655,35 seconds
-Auto OFF enabled with define time, step is 10mseconds]]></description>
+						<label>11: Automatic turning off relay Q1 after set time</label>
+						<description><![CDATA[Auto OFF enabled with define time, step is 10 mseconds<br/>
+				<ul><li>0 = Auto OFF disabled</li> 
+				<li>1–65535 = 0,01 second – 655,35 seconds</li></ul>]]></description>
+						<default>0</default>
+					</parameter>
+					<parameter name="config_12_2" type="integer" groupName="configuration">
+						<label>12: Automatic turning off relay Q2 after set time</label>
+						<description><![CDATA[Auto OFF enabled with define time, step is 10 mseconds<br/>
+				<ul><li>0 = Auto OFF disabled</li> 
+				<li>1–65535 = 0,01 second – 655,35 seconds</li></ul>]]></description>
 						<default>0</default>
 					</parameter>
 					<parameter name="config_30_1" type="integer" groupName="configuration">
-						<label>30: Saving the state of the relay after a power failure</label>
-						<description><![CDATA[Saving the state of the relay after a power failure]]></description>
+						<label>30: Saving the state of the relays Q1 and Q2 after a power
+							failure</label>
+						<description><![CDATA[Saving the state of the relays Q1 and Q2 after a power failure]]></description>
 						<default>0</default>
 						<options>
-							<option value="0">Flush 1relay module saves its state before
+							<option value="0">Flush 2 relays module saves its state before
 								power failure (it returns to the last position saved before a
 								power failure)</option>
-							<option value="1">Flush 1relay module does not save the state
-								after a power failure, it returns to "off" position.
-							</option>
+							<option value="1">Flush 2 relays module does not save the
+								state after a power failure, it returns to "off" position.</option>
 						</options>
 					</parameter>
 					<parameter name="config_40_1" type="integer" groupName="configuration">
-						<label>40: Power reporting in Watts on power change</label>
-						<description><![CDATA[0 – Reporting Disabled
-1 – 100 = 1% - 100% Reporting enabled
-Power report is send (push) only when actual 
-power in Watts in real time change for more than 
-set percentage comparing to previous actual 
-power in Watts, step is 1%.
-NOTE: if power changed is less than 1W, the report is 
-not send (pushed), independent of percentage set. ]]></description>
-						<default>3</default>
+						<label>40: Power reporting in Watts on power change for Q1</label>
+						<description><![CDATA[Power report is sent (pushed) only when actual power in Watts in real time changed for more than 
+				set percentage comparing to previous actual power in Watts, step is 1%.<br/>
+				<ul><li>0 = Reporting Disabled</li>
+				<li>1–100 = 1% - 100% Reporting enabled</li></ul>
+				NOTE: if power changed is less than 1W, the report is not sent (pushed), regardless of percentage set.]]></description>
+						<default>1</default>
+					</parameter>
+					<parameter name="config_41_1" type="integer" groupName="configuration">
+						<label>41: Power reporting in Watts on power change for Q2</label>
+						<description><![CDATA[Power report is sent (pushed) only when actual power in Watts in real time changed for more than 
+				set percentage comparing to previous actual power in Watts, step is 1%.<br/>
+				<ul><li>0 = Reporting Disabled</li>
+				<li>1–100 = 1% - 100% Reporting enabled</li></ul>
+				NOTE: if power changed is less than 1W, the report is not sent (pushed), regardless of percentage set.]]></description>
+						<default>1</default>
 					</parameter>
 					<parameter name="config_42_2" type="integer" groupName="configuration">
-						<label>42: Power reporting in Watts on power change</label>
-						<description><![CDATA[default value 300 (power report in Watts is 
-send each 300s)
-0 – Reporting Disabled
-1 – 65535 = 1second – 65535 seconds.
-Reporting enabled. Power report is send with time 
-interval set by entered value. ]]></description>
+						<label>42: Power reporting in Watts by time interval for Q1</label>
+						<description><![CDATA[default value is 300 (power report in Watts is sent each 300s)<br/>
+				<ul><li>0 = Reporting Disabled</li>
+				<li>1–65535 = 1 second – 65535 seconds. Reporting enabled. 
+				Power report is sent with time interval set by entered value.</li></ul>]]></description>
+						<default>300</default>
+					</parameter>
+					<parameter name="config_43_2" type="integer" groupName="configuration">
+						<label>43: Power reporting in Watts by time interval for Q2</label>
+						<description><![CDATA[default value is 300 (power report in Watts is sent each 300s)<br/>
+				<ul><li>0 = Reporting Disabled</li>
+				<li>1–65535 = 1 second – 65535 seconds. Reporting enabled. 
+				Power report is sent with time interval set by entered value.</li></ul>]]></description>
 						<default>300</default>
 					</parameter>
 					<parameter name="group_1" type="integer" multiple="true"
 						groupName="association">
-						<label>basic on/off (triggered at change of the output
-							Q state and reflecting its state)</label>
-						<description><![CDATA[***Add description here***]]></description>
+						<label>Basic on/off Q1</label>
+						<description><![CDATA[Triggered at change of the output Q1 state and reflecting its state]]></description>
 						<multipleLimit>4</multipleLimit>
 					</parameter>
 					<parameter name="group_2" type="integer" multiple="true"
 						groupName="association">
-						<label> basic on/off (triggered at change of the input I2
-							state and reflecting its state)</label>
-						<description><![CDATA[***Add description here***]]></description>
+						<label>Basic on/off Q2</label>
+						<description><![CDATA[Triggered at change of the output Q2 state and reflecting its state]]></description>
 						<multipleLimit>4</multipleLimit>
 					</parameter>
 					<parameter name="group_3" type="integer" multiple="true"
 						groupName="association">
-						<label> basic on/off (triggered at change of the input I3
-							state and reflecting its state)</label>
-						<description><![CDATA[***Add description here***]]></description>
+						<label>Default Reporting Group</label>
+						<description><![CDATA[Reporting for controller]]></description>
 						<multipleLimit>4</multipleLimit>
+					</parameter><!-- Remove the wakeup if this is not a battery device -->
+					<parameter name="wakeup_interval" type="integer"
+						groupName="wakeup">
+						<label>Wakeup Period</label>
+						<description>Set the wakeup period in seconds</description>
 					</parameter>
-					<parameter name="group_4" type="integer" groupName="association">
-						<label>Controller Updates</label>
-						<description><![CDATA[***Add description here***]]></description>
+					<parameter name="wakeup_node" type="integer" groupName="wakeup"
+						readOnly="true">
+						<label>Wakeup Node</label>
+						<description>The node to which wakeup messages will be sent</description>
 					</parameter>
 				</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 

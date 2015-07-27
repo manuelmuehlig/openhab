@@ -19,7 +19,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -36,8 +36,81 @@
 			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
-				<description></description>
 			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
+			</parameter-group>
+			<parameter name="config_25_1" type="integer" min="0" max="22"
+				groupName="configuration">
+				<label>25: Indicate a location for IR code learning and start
+					learning</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>1</default>
+			</parameter>
+			<parameter name="config_26_1" type="integer" min="0" max="4"
+				groupName="configuration">
+				<label>26: (Read Only) Learning status register</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_27_1" type="integer" min="0" max="512"
+				groupName="configuration">
+				<label>27: IR code number for built-in code library</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_28_1" type="integer" groupName="configuration">
+				<label>28: External IR Emitter power level</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>-1</default>
+				<options>
+					<option value="0">Normal power mode</option>
+					<option value="-1">High power mode</option>
+				</options>
+			</parameter>
+			<parameter name="config_32_1" type="integer" groupName="configuration">
+				<label>32: Surround IR control</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>-1</default>
+				<options>
+					<option value="0">Disable Surround IR Emitters</option>
+					<option value="-1">Enable Surround IR Emitters</option>
+				</options>
+			</parameter>
+			<parameter name="config_33_1" type="integer" groupName="configuration">
+				<label>33: AC function Swing control</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">Swing Off</option>
+					<option value="1">Swing Auto</option>
+				</options>
+			</parameter>
+			<parameter name="config_35_4" type="integer" groupName="configuration">
+				<label>35: (Read Only) Learn location status. Bitmask.</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_37_1" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>37: Sensor temperature compensation</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>0</default>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
+			</parameter>
 		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 
 		it must be changed! -->

@@ -19,7 +19,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -36,12 +36,14 @@
 			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
-				<description></description>
 			</parameter-group>
 			<parameter-group name="association">
 				<context>link</context>
 				<label>Association Groups</label>
-				<description></description>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
 			</parameter-group>
 			<parameter name="config_1_1" type="integer" groupName="configuration">
 				<label>1: Button 1 and 3 pair mode</label>
@@ -75,8 +77,7 @@
 					<option value="3">Switch all</option>
 					<option value="4">Send Scenes</option>
 					<option value="5">Send Preconfigured Scenes</option>
-					<option value="7">Control Door Lock</option>
-					<option value="8">Central Scene to Gateway</option>
+					<option value="6">Control devices in proximity</option>
 				</options>
 			</parameter>
 			<parameter name="config_12_1" type="integer" groupName="configuration">
@@ -91,8 +92,7 @@
 					<option value="3">Switch all</option>
 					<option value="4">Send Scenes</option>
 					<option value="5">Send Preconfigured Scenes</option>
-					<option value="7">Control Door Lock</option>
-					<option value="8">Central Scene to Gateway</option>
+					<option value="6">Control devices in proximity</option>
 				</options>
 			</parameter>
 			<parameter name="config_13_1" type="integer" groupName="configuration">
@@ -107,8 +107,7 @@
 					<option value="3">Switch all</option>
 					<option value="4">Send Scenes</option>
 					<option value="5">Send Preconfigured Scenes</option>
-					<option value="7">Control Door Lock</option>
-					<option value="8">Central Scene to Gateway</option>
+					<option value="6">Control devices in proximity</option>
 				</options>
 			</parameter>
 			<parameter name="config_14_1" type="integer" groupName="configuration">
@@ -123,9 +122,14 @@
 					<option value="3">Switch all</option>
 					<option value="4">Send Scenes</option>
 					<option value="5">Send Preconfigured Scenes</option>
-					<option value="7">Control Door Lock</option>
-					<option value="8">Central Scene to Gateway</option>
+					<option value="6">Control devices in proximity</option>
 				</options>
+			</parameter>
+			<parameter name="config_20_1" type="integer" min="0" max="1000"
+				groupName="configuration">
+				<label>20: Typical click timeout</label>
+				<description><![CDATA[Typical time used to differenciate click, hold and double clicks in 10ms units]]></description>
+				<default>50</default>
 			</parameter>
 			<parameter name="config_21_1" type="integer" groupName="configuration">
 				<label>21: Send the following Switch All commands</label>
@@ -135,7 +139,7 @@
 				<options>
 					<option value="1">NO (Normal Open)</option>
 					<option value="2">NC (Normal Close)</option>
-					<option value="255">Switch all on and off</option>
+					<option value="-1">Switch all on and off</option>
 				</options>
 			</parameter>
 			<parameter name="config_22_1" type="integer" groupName="configuration">
@@ -159,44 +163,49 @@
 					<option value="2">Broadcast to neighbours</option>
 				</options>
 			</parameter>
-			<parameter name="config_25_1" type="integer" groupName="configuration">
-				<label>25: Blocks wakeup even when wakeup interval is set</label>
-				<description><![CDATA[If the device wakes up and there is no controller nearby, several unsuccessful communication attempts will drain battery.]]></description>
-				<default>0</default>
+			<parameter name="config_24_1" type="integer" groupName="configuration">
+				<label>24: LED confirmation mode</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>2</default>
 				<options>
-					<option value="0">Wakeup is blocked</option>
-					<option value="1">Wakeup is possible </option>
+					<option value="0">No confirmations</option>
+					<option value="1">Confirm button press</option>
+					<option value="2">Confirm button press and delivery</option>
 				</options>
 			</parameter>
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
-				<label>Lifeline</label>
+				<label>Controlled by button 1 or single clicks of buttons 1 and 3</label>
 				<description><![CDATA[***Add description here***]]></description>
-				<multipleLimit>10</multipleLimit>
+				<multipleLimit>8</multipleLimit>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
-				<label>Group 1</label>
+				<label>Controlled by button 3 or double clicks of buttons 1 and 3</label>
 				<description><![CDATA[***Add description here***]]></description>
-				<multipleLimit>10</multipleLimit>
+				<multipleLimit>8</multipleLimit>
 			</parameter>
 			<parameter name="group_3" type="integer" multiple="true"
 				groupName="association">
-				<label>Group 2</label>
+				<label>Controlled by button 2 or single clicks of buttons 2 and 4</label>
 				<description><![CDATA[***Add description here***]]></description>
-				<multipleLimit>10</multipleLimit>
+				<multipleLimit>8</multipleLimit>
 			</parameter>
 			<parameter name="group_4" type="integer" multiple="true"
 				groupName="association">
-				<label>Group 3</label>
+				<label>Controlled by button 4 or double clicks of buttons 2 and 4</label>
 				<description><![CDATA[***Add description here***]]></description>
-				<multipleLimit>10</multipleLimit>
+				<multipleLimit>8</multipleLimit>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
 			</parameter>
-			<parameter name="group_5" type="integer" multiple="true"
-				groupName="association">
-				<label>Group 4</label>
-				<description><![CDATA[***Add description here***]]></description>
-				<multipleLimit>10</multipleLimit>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
 			</parameter>
 		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 

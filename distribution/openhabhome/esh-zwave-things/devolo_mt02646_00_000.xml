@@ -19,7 +19,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -31,13 +31,113 @@
 			<property name="model">MT02646</property>
 			<property name="manufacturerId">0175</property>
 			<property name="manufacturerRef">0001:0011</property>
+			<property name="commandClass:ASSOCIATION:0:default">1</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
-				<description></description>
 			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
+			</parameter-group>
+			<parameter name="config_1_2" type="integer" min="0" max="32767"
+				groupName="configuration">
+				<label>1: Watt Meter Report Period</label>
+				<description><![CDATA[Enable automatic interval in seconds reporting with an interval of 5s * the value. Set to 0 will disable the autoreporting function.]]></description>
+				<default>720</default>
+			</parameter>
+			<parameter name="config_2_2" type="integer" min="0" max="32767"
+				groupName="configuration">
+				<label>2: KWH Meter Report Period</label>
+				<description><![CDATA[Enable automatic interval in minutes reporting with an interval of 10min * the value. Set to 0 will disable the autoreporting function.]]></description>
+				<default>6</default>
+			</parameter>
+			<parameter name="config_3_2" type="integer" min="10" max="1300"
+				groupName="configuration">
+				<label>3: Threshold of current for Load Caution</label>
+				<description><![CDATA[1300*0.01A = 13A]]></description>
+				<default>1300</default>
+			</parameter>
+			<parameter name="config_4_2" type="integer" min="1" max="10000"
+				groupName="configuration">
+				<label>4: Threshold of KWh for Load Caution</label>
+				<description><![CDATA[Enable automatic warning when the accumulated kWh power consumption exceeds the setting value from 1KWh ~ 10000KWh.. Set to 0 will disable kWh load caution reporting.]]></description>
+				<default>10000</default>
+			</parameter>
+			<parameter name="config_5_1" type="integer" groupName="configuration">
+				<label>5: Restore switch state mode</label>
+				<description><![CDATA[Restore switch state mode. 1 is default.]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">Upon the return of AC power, the switch will
+						remain Off.</option>
+					<option value="1">Upon the return of AC power, the switch will
+						return to the state it was in when the power was turned off.</option>
+					<option value="2">Upon the return of AC power, the switch will
+						turn On.</option>
+				</options>
+			</parameter>
+			<parameter name="config_6_1" type="integer" groupName="configuration">
+				<label>6: Mode of switch off function</label>
+				<description><![CDATA[Mode of switch off function. 1 is default.]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">SWITCH OFF commands received are ignored.</option>
+					<option value="1">SWITCH OFF commands received are honored.</option>
+				</options>
+			</parameter>
+			<parameter name="config_7_1" type="integer" groupName="configuration">
+				<label>7: LED indication mode</label>
+				<description><![CDATA[Restore switch state mode. 1 is default.]]></description>
+				<default>1</default>
+				<options>
+					<option value="1">The LED follows the state of the switch.</option>
+					<option value="2">Night Mode - When the switch is On, the LED is
+						Off, and when the switch is Off, the LED is On.</option>
+					<option value="3">Flash Mode - When the state of the switch
+						changes, the LED will be on for one second and then will turn off.</option>
+				</options>
+			</parameter>
+			<parameter name="config_8_1" type="integer" min="0" max="32767"
+				groupName="configuration">
+				<label>8: Auto off timer</label>
+				<description><![CDATA[Auto off timer. 0 will disable the auto off function.]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_9_1" type="integer" groupName="configuration">
+				<label>9: RF off command mode</label>
+				<description><![CDATA[RF off command mode]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">When SWITCH ALL OFF is received, the MT02646
+						turns Off.</option>
+					<option value="1">When SWITCH ALL OFF is received, the MT02646
+						ignores the command and does nothing.</option>
+					<option value="2">When SWITCH ALL OFF is received, the MT02646
+						will turn On if it is Off, and will turn Off if it is On.</option>
+					<option value="3">When SWITCH ALL OFF is received, the MT02646
+						turns On.</option>
+				</options>
+			</parameter>
+			<parameter name="group_1" type="integer" groupName="association">
+				<label>Reports</label>
+				<description><![CDATA[***Add description here***]]></description>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
+			</parameter>
 		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 
 		it must be changed! -->

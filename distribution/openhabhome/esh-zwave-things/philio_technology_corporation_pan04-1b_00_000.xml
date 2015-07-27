@@ -21,7 +21,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -33,17 +33,20 @@
 			<property name="model">PAN04-1B</property>
 			<property name="manufacturerId">013C</property>
 			<property name="manufacturerRef">0001:0012</property>
+			<property name="commandClass:ASSOCIATION:0:default">2,3</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
-				<description></description>
 			</parameter-group>
 			<parameter-group name="association">
 				<context>link</context>
 				<label>Association Groups</label>
-				<description></description>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
 			</parameter-group>
 			<parameter name="config_1_2" type="integer" groupName="configuration">
 				<label>1: W meter report period</label>
@@ -66,9 +69,9 @@
 							the endpoint value to react the Basic Command Class]]></description>
 				<default>1</default>
 				<options>
-					<option value="1">Relay 1 + 2</option>
-					<option value="2">Relay 1</option>
-					<option value="3">Relay 2</option>
+					<option value="1">Relay 1</option>
+					<option value="2">Relay 2</option>
+					<option value="3">Relay 1 + 2</option>
 				</options>
 			</parameter>
 			<parameter name="config_4_1" type="integer" groupName="configuration">
@@ -84,12 +87,47 @@
 			<parameter name="config_5_2" type="integer" groupName="configuration">
 				<label>5: Threshold of Watt for Load Caution</label>
 				<description><![CDATA[If threshold of wattage is reached, a meter report will be generated]]></description>
-				<default>720</default>
+				<default>750</default>
 			</parameter>
 			<parameter name="config_6_2" type="integer" groupName="configuration">
 				<label>6: Threshold of kWh for Load Caution</label>
 				<description><![CDATA[If threshold of kWh is reached, a Meter Report will be generated]]></description>
-				<default>720</default>
+				<default>10000</default>
+			</parameter>
+			<parameter name="config_7_1" type="integer" groupName="configuration">
+				<label>7: Restore switch state mode</label>
+				<description><![CDATA[Restores the switch state setting in case the device was disconnected from the power source.]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">Switch Off</option>
+					<option value="1">Last State</option>
+					<option value="2">Switch On</option>
+				</options>
+			</parameter>
+			<parameter name="config_8_2" type="integer" groupName="configuration">
+				<label>8: Auto Off Timer</label>
+				<description><![CDATA[Whenever the device switches to on, the auto off timer begin to count down. After the timer decrease to zero, it will switch off automatically.]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_9_1" type="integer" groupName="configuration">
+				<label>9: RF off command mode</label>
+				<description><![CDATA[Whenever a switch off command, BASIC_SET 、BINARY_SWITCH_SET 、 SWITCH_ALL_OFF, is received, it could be interpreted as 4 kinds of commands.]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">Switch Off</option>
+					<option value="1">Ignore</option>
+					<option value="2">Switch Toggle</option>
+					<option value="3">Switch On</option>
+				</options>
+			</parameter>
+			<parameter name="config_10_1" type="integer" groupName="configuration">
+				<label>10: Endpoint 3</label>
+				<description><![CDATA[Multi-Channel Command is a good way to control relay1 and relay2 of PAN04 individually. The endpoint3 of PAN04 is related to both relay1 and relay2. In some condition it becomes redundant in Multi-Channel Command Class.]]></description>
+				<default>1</default>
+				<options>
+					<option value="1">Exists</option>
+					<option value="2">Doesn't Exist</option>
+				</options>
 			</parameter>
 			<parameter name="group_1" type="integer" groupName="association">
 				<label>Relay 1 + 2</label>
@@ -102,6 +140,15 @@
 			<parameter name="group_3" type="integer" groupName="association">
 				<label>Relay 2</label>
 				<description><![CDATA[***Add description here***]]></description>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
 			</parameter>
 		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 

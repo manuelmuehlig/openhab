@@ -19,7 +19,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -36,62 +36,23 @@
 			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
-				<description></description>
 			</parameter-group>
 			<parameter-group name="association">
 				<context>link</context>
 				<label>Association Groups</label>
-				<description></description>
-			</parameter-group>
-			<parameter name="config_1_1" type="integer" min="0" max="99"
-				groupName="configuration">
-				<label>1: Basic Set Level</label>
-				<description><![CDATA[Value to be sent with a BASIC SET command]]></description>
-				<default>99</default>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
+			</parameter-group><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
 			</parameter>
-			<parameter name="config_2_1" type="integer" groupName="configuration">
-				<label>2: Sensor Detecting Function</label>
-				<description><![CDATA[***Add description here***]]></description>
-				<default>1</default>
-				<options>
-					<option value="1">Group 1 Enabled / Group 2 Enabled</option>
-					<option value="2">Group 1 Enabled / Group 2 Disabled</option>
-					<option value="3">Group 1 Disabled / Group 2 Disabled</option>
-				</options>
-			</parameter>
-			<parameter name="config_3_1" type="integer" min="1" max="10"
-				groupName="configuration">
-				<label>3: Sensitivity Level</label>
-				<description><![CDATA[***Add description here***]]></description>
-				<default>6</default>
-			</parameter>
-			<parameter name="config_4_1" type="integer" min="5" max="3600"
-				groupName="configuration">
-				<label>4: Re-trigger Interval Setting</label>
-				<description><![CDATA[***Add description here***]]></description>
-				<default>180</default>
-			</parameter>
-			<parameter name="config_5_1" type="integer" min="1" max="100"
-				groupName="configuration">
-				<label>5: LUX Level</label>
-				<description><![CDATA[Value for what LUX level will arm the detection sensor]]></description>
-				<default>10</default>
-			</parameter>
-			<parameter name="config_6_1" type="integer" min="5" max="3600"
-				groupName="configuration">
-				<label>6: On-Off Duration</label>
-				<description><![CDATA[***Add description here***]]></description>
-				<default>15</default>
-			</parameter>
-			<parameter name="group_1" type="integer" groupName="association">
-				<label>Target for reports</label>
-				<description><![CDATA[***Add description here***]]></description>
-			</parameter>
-			<parameter name="group_2" type="integer" multiple="true"
-				groupName="association">
-				<label>Target nodes who receive BASIC_SET command</label>
-				<description><![CDATA[***Add description here***]]></description>
-				<multipleLimit>5</multipleLimit>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
 			</parameter>
 		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 

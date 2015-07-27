@@ -19,7 +19,7 @@
 				<properties>
 					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
 				</properties>
-			</channel>
+			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
@@ -31,13 +31,78 @@
 			<property name="model">123665</property>
 			<property name="manufacturerId">0154</property>
 			<property name="manufacturerRef">0001:0001</property>
+			<property name="commandClass:ASSOCIATION:0:default">1</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
-				<description></description>
 			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
+			</parameter-group>
+			<parameter name="config_1_2" type="integer" groupName="configuration">
+				<label>1: Watt Meter Report Period</label>
+				<description><![CDATA[If the setting is configured for 1hour (set value
+				=720), the device will report its instant power consumption every 1
+				hour to Z-Wave Controller. (in seconds)]]></description>
+				<default>720</default>
+			</parameter>
+			<parameter name="config_2_2" type="integer" groupName="configuration">
+				<label>2: KWH Meter Report Period</label>
+				<description><![CDATA[if the setting is configured for 1hour (set value
+				=6), the device will report its Accumulated Power Consumption (KW/h)
+				every hour (in seconds)]]></description>
+				<default>6</default>
+			</parameter>
+			<parameter name="config_4_2" type="integer" groupName="configuration">
+				<label>4: Threshold of KWh for Load caution </label>
+				<description><![CDATA[This is a warning when the KWh of load over the
+				preset threshold value, if the Accumulated Power Consumption exceeds
+				the setting value the device will send a warning alarm command to
+				the controller.]]></description>
+				<default>10000</default>
+			</parameter>
+			<parameter name="config_5_1" type="integer" groupName="configuration">
+				<label>5: Ignore start level</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>1</default>
+				<options>
+					<option value="0">null</option>
+					<option value="1">Last Switch State (Default)</option>
+					<option value="2">Switch On</option>
+				</options>
+			</parameter>
+			<parameter name="config_11_1" type="integer" groupName="configuration">
+				<label>11: Ignore start level</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">Disabled</option>
+					<option value="1">Enabled (Default)</option>
+				</options>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Switch State</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<multipleLimit>5</multipleLimit>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
+			</parameter>
 		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 
 		it must be changed! -->
