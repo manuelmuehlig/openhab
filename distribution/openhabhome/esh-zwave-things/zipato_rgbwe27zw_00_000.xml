@@ -32,49 +32,50 @@
 			<property name="manufacturerId">0131</property>
 			<property name="manufacturerRef">0002:0002</property>
 			<property name="commandClass:ASSOCIATION:0:default">1</property>
-			<property
-				name="commandClass:ZIP_ADV_SERVER:NO_GET</property-group></properties><config-description><parameter-group name="
-				configuration ">
+			<property name="commandClass:COLOR:NO_GET"></property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
 				<context>setup</context>
 				<label>Configuration Parameters</label>
 			</parameter-group>
-				<parameter-group name="association">
-					<context>link</context>
-					<label>Association Groups</label>
-				</parameter-group><!-- Remove if this is not a battery device -->
-				<parameter-group name="wakeup">
-					<context>sleep</context>
-					<label>Wakeup Configuration</label>
-				</parameter-group>
-				<parameter name="config_1_1" type="integer" min="1" max="100"
-					groupName="configuration">
-					<label>1: Color temperature</label>
-					<description><![CDATA[Configuration option 1 is used to adjust color temperature. Values range from 0 to 100 where 0 means full cold white and 100 means full warm white.]]></description>
-					<default>50</default>
-				</parameter>
-				<parameter name="config_2_1" type="integer" min="0" max="31"
-					groupName="configuration">
-					<label>2: Shock sensor sensitivity</label>
-					<description><![CDATA[Configuration option 2 is used to adjust shock sensor sensitivity. Values range from 0 to 31 where 0 means minimum sensitivity and 31 means maximum sensitivity.]]></description>
-					<default>16</default>
-				</parameter>
-				<parameter name="group_1" type="integer" multiple="true"
-					groupName="association">
-					<label>Lifeline</label>
-					<description><![CDATA[***Add description here***]]></description>
-					<multipleLimit>7</multipleLimit>
-				</parameter><!-- Remove the wakeup if this is not a battery device -->
-				<parameter name="wakeup_interval" type="integer"
-					groupName="wakeup">
-					<label>Wakeup Period</label>
-					<description>Set the wakeup period in seconds</description>
-				</parameter>
-				<parameter name="wakeup_node" type="integer" groupName="wakeup"
-					readOnly="true">
-					<label>Wakeup Node</label>
-					<description>The node to which wakeup messages will be sent</description>
-				</parameter>
-			</config-description>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
+			</parameter-group>
+			<parameter name="config_1_1" type="integer" min="1" max="100"
+				groupName="configuration">
+				<label>1: Color temperature</label>
+				<description><![CDATA[Configuration option 1 is used to adjust color temperature. Values range from 0 to 100 where 0 means full cold white and 100 means full warm white.]]></description>
+				<default>50</default>
+			</parameter>
+			<parameter name="config_2_1" type="integer" min="0" max="31"
+				groupName="configuration">
+				<label>2: Shock sensor sensitivity</label>
+				<description><![CDATA[Configuration option 2 is used to adjust shock sensor sensitivity. Values range from 0 to 31 where 0 means minimum sensitivity and 31 means maximum sensitivity.]]></description>
+				<default>16</default>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Lifeline</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<multipleLimit>7</multipleLimit>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent
+				</description>
+			</parameter>
+		</config-description>
 	</thing-type><!-- The following is a random selection of channel-types - 
 		it must be changed! -->
 	<channel-type id="dimmer">

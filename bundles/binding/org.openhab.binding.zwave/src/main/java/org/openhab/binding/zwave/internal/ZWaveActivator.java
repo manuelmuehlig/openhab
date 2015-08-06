@@ -206,34 +206,32 @@ public final class ZWaveActivator implements BundleActivator {
 						if(dbClass.add==null&&dbClass.isGetSupported==null&&dbClass.meterCanReset==null&&dbClass.remove==null&&dbClass.meterScale==null&&dbClass.meterType==null) {
 							continue;
 						}
-						outstring += "<property name=\"commandClass:" + CommandClass.getCommandClass(dbClass.Id) + ":";
+						String propertyString = "<property name=\"commandClass:" + CommandClass.getCommandClass(dbClass.Id) + ":";
 						if(dbClass.endpoint != null) {
-							outstring += dbClass.endpoint + ":";
+							propertyString += dbClass.endpoint + ":";
 						}
 						// If we want to remove the class, then remove it!
 						if(dbClass.remove != null && dbClass.remove == true) {
-							outstring += "REMOVE";
+							outstring += propertyString + "REMOVE" + "\"></property>";
 						}
 						if(dbClass.add != null && dbClass.add == true) {
-							outstring += "ADD";
+							outstring += propertyString + "ADD" + "\"></property>";
 						}
 
 						if(dbClass.isGetSupported != null && dbClass.isGetSupported == false) {
-							outstring += "NO_GET";
+							outstring += propertyString + "NO_GET" + "\"></property>";
 						}
 
 						if(dbClass.meterCanReset != null && dbClass.meterCanReset == true) {
-							outstring += "METER_CAN_RESET";
+							outstring += propertyString + "METER_CAN_RESET" + "\"></property>";
 						}
 						
 						if(dbClass.meterType != null) {
-							outstring += "METER_TYPE=" + dbClass.meterType;
+							outstring += propertyString + "METER_TYPE=" + dbClass.meterType + "\"></property>";
 						}
 						if(dbClass.meterScale != null) {
-							outstring += "METER_SCALE=" + dbClass.meterScale;
+							outstring += propertyString + "METER_SCALE=" + dbClass.meterScale + "\"></property>";
 						}
-						
-						outstring += "</property-group>";
 					}
 				}
 				
