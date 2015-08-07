@@ -118,7 +118,10 @@ public final class ZWaveActivator implements BundleActivator {
 				String id = manufacturer.Name + "_" + product.Model + "_" + String.format("%02d", vmin.getMajor())  + "_" + String.format("%03d", vmin.getMinor()) ; 
 				outstring += "<thing-type id=\"" + id.replaceAll("\\s+","").toLowerCase() + "\">";
 				outstring += "<label>" + manufacturer.Name + " " + product.Model + "</label>";
-				outstring += "<description><![CDATA[" + database.getLabel(product.Label) + "]]></description>";
+				outstring += "<description><![CDATA[" + database.getLabel(product.Label) + "<br>";
+				outstring += "<h1>Device Overview</h1><p>Brief description here</p>";
+				outstring += "<h1>Inclusion and Exclusion</h1><p>To include the device into the network...</p><p>To exclude the device from the network...</p>";
+				outstring += "]]></description>";
 
 				outstring += "<channels>";
 				

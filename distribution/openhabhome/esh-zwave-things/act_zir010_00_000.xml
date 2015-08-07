@@ -3,9 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
 	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
-	<thing-type id="fortrezz_wwa-02_00_000">
-		<label>FortrezZ WWA-02</label>
-		<description><![CDATA[Wireless Water and Temperature Alarm<br><h1>Device Overview</h1><p>Brief description here</p><h1>Inclusion and Exclusion</h1><p>To include the device into the network...</p><p>To exclude the device from the network...</p>]]></description>
+	<thing-type id="act_zir010_00_000">
+		<label>ACT ZIR010</label>
+		<description><![CDATA[PIR Motion Sensor<br><h1>Device Overview</h1><p>Brief description here</p><h1>Inclusion and Exclusion</h1><p>To include the device into the network...</p><p>To exclude the device from the network...</p>]]></description>
 		<channels><!-- The following is a random selection of channels - it must 
 				be changed! -->
 			<channel id="dimmer-1" typeId="dimmer">
@@ -27,10 +27,10 @@
 			</channel>
 		</channels>
 		<properties>
-			<property name="vendor">FortrezZ</property>
-			<property name="model">WWA-02</property>
-			<property name="manufacturerId">0084</property>
-			<property name="manufacturerRef">0063:010C</property>
+			<property name="vendor">ACT</property>
+			<property name="model">ZIR010</property>
+			<property name="manufacturerId">0001</property>
+			<property name="manufacturerRef">4952:3130</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">
@@ -45,33 +45,73 @@
 				<context>sleep</context>
 				<label>Wakeup Configuration</label>
 			</parameter-group>
-			<parameter name="config_1_1" type="integer" groupName="configuration">
-				<label>1: Low Temperature Trigger Point</label>
-				<description><![CDATA[]]>
-				</description>
-				<default>4</default>
+			<parameter name="config_17_1" type="integer" groupName="configuration">
+				<label>17: Mode</label>
+				<description><![CDATA[The ZIR010 can be configured to operate in 1 of 3 modes.
+				Those modes are:
+				Lighting Mode (factory default)
+				Alarm Mode
+				Sensor Mode
+				Information reproduced from: http://www.pepper1.net/zwavedb/uploads/resources/bdf086a9388325a2fb8b8aa298e24e512faec65d.pdf
+			]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Lightning</option>
+					<option value="1">Alarm</option>
+					<option value="2">Sensor</option>
+				</options>
 			</parameter>
-			<parameter name="config_2_1" type="integer" groupName="configuration">
-				<label>2: High Temperature Trigger Point</label>
-				<description><![CDATA[]]>
-				</description>
-				<default>70</default>
+			<parameter name="config_18_null" type="integer" min="0"
+				max="255" groupName="configuration">
+				<label>18: Off/Idle delay</label>
+				<description><![CDATA[The configuration parameter that can be used to adjust the amount of delay before the OFF or IDLE command is transmitted is Configuration Parameter # 18.
+				This parameter can be configured with the value of 0 through 255.
+				Where 0 means no delay and 255 means 255 minutes of delay.
+				Default appears to be 1 min.
+				Information reproduced from: http://www.pepper1.net/zwavedb/uploads/resources/bdf086a9388325a2fb8b8aa298e24e512faec65d.pdf
+			]]></description>
+				<default>1</default>
+			</parameter>
+			<parameter name="config_19_null" type="integer" groupName="configuration">
+				<label>19: Unsolicited Commands</label>
+				<description><![CDATA[The ZIR010 can be disabled from sending commands unsolicited without removing associated devices by
+				setting Configuration Parameter # 19 to 0 (when asked for number of bytes, select 1).
+				Setting it back to 1 will re-enable the ZIR010.
+				Information reproduced from: http://www.pepper1.net/zwavedb/uploads/resources/bdf086a9388325a2fb8b8aa298e24e512faec65d.pdf
+			]]></description>
+				<default>1</default>
+				<options>
+					<option value="1">enabled</option>
+					<option value="0">disabled</option>
+				</options>
+			</parameter>
+			<parameter name="config_22_null" type="integer" min="15"
+				max="45" groupName="configuration">
+				<label>22: Awake Time</label>
+				<description><![CDATA[
+				The time the ZIR010 stays awake can be adjusted from 15 seconds to 45 seconds by sending a value of 15
+				to 45 to the ZIR010 using Configuration Parameter # 22 (when asked for the number of bytes, select 1).
+				This awake time period starts over every time the ZIR010 receives a command or request.
+				Defaults to 30 seconds.
+				Information reproduced from: http://www.pepper1.net/zwavedb/uploads/resources/bdf086a9388325a2fb8b8aa298e24e512faec65d.pdf
+			]]></description>
+				<default>30</default>
 			</parameter>
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
-				<label>Water and Temperature Alarms</label>
+				<label>Motion</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
-				<label>Water Alarms</label>
+				<label>Tamper</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter>
 			<parameter name="group_3" type="integer" multiple="true"
 				groupName="association">
-				<label>Temperature Alarms</label>
+				<label>Battery</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
