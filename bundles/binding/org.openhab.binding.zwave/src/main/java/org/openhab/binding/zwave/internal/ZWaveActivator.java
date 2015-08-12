@@ -127,17 +127,25 @@ public final class ZWaveActivator implements BundleActivator {
 				
 				outstring += "<!-- The following is a random selection of channels - it must be changed! -->";
 
-				outstring += "<channel id=\"dimmer-1\" typeId=\"dimmer\">";
+				outstring += "<channel id=\"brightness-1\" typeId=\"brightness\">";
 				outstring += "<label>Dimmer 1</label>";
 				outstring += "<properties>";
-				outstring += "<property name=\"commandClass\">SWITCH_MULTILEVEL,BASIC</property>";
+				outstring += "<property name=\"binding:*:HSBType\">COLOR;colorHue=true</property>";
+				outstring += "<property name=\"binding:*:PercentType\">SWITCH_MULTILEVEL,BASIC</property>";
+				outstring += "<property name=\"binding:Command:OnOffType\">SWITCH_MULTILEVEL</property>";
+				outstring += "<property name=\"binding:*:OnOffType\">SWITCH_BINARY:1,BASIC:1</property>";
+                outstring += "<property name=\"name=binding:*:OnOffType\">SWITCH_BINARY:2,BASIC:2</property>";
 				outstring += "</properties>";
 				outstring += "</channel>";
 
 				outstring += "<channel id=\"switch-1\" typeId=\"switch\">";
 				outstring += "<label>Switch 1</label>";
 				outstring += "<properties>";
-				outstring += "<property name=\"commandClass\">1:SWITCH_BINARY,BASIC</property>";
+				outstring += "<property name=\"binding:*:HSBType\">COLOR;colorHue=true</property>";
+				outstring += "<property name=\"binding:*:PercentType\">SWITCH_MULTILEVEL,BASIC</property>";
+				outstring += "<property name=\"binding:Command:OnOffType\">SWITCH_MULTILEVEL</property>";
+				outstring += "<property name=\"binding:*:OnOffType\">SWITCH_BINARY:1,BASIC:1</property>";
+                outstring += "<property name=\"name=binding:*:OnOffType\">SWITCH_BINARY:2,BASIC:2</property>";
 				outstring += "</properties>";
 				outstring += "</channel>";
 				
@@ -188,7 +196,7 @@ public final class ZWaveActivator implements BundleActivator {
 					
 					if(defaultAssoc == true) {
 						first = true;
-						outstring += "<property name=\"commandClass:ASSOCIATION:0:default\">";
+						outstring += "<property name=\"commandClass:ASSOCIATION:default\">";
 						for (ZWaveDbAssociationGroup group : groupList) {
 							if(group.SetToController == true) {
 								if(first == false) {
@@ -215,25 +223,25 @@ public final class ZWaveActivator implements BundleActivator {
 						}
 						// If we want to remove the class, then remove it!
 						if(dbClass.remove != null && dbClass.remove == true) {
-							outstring += propertyString + "REMOVE" + "\"></property>";
+							outstring += propertyString + "remove" + "\"></property>";
 						}
 						if(dbClass.add != null && dbClass.add == true) {
-							outstring += propertyString + "ADD" + "\"></property>";
+							outstring += propertyString + "add" + "\"></property>";
 						}
 
 						if(dbClass.isGetSupported != null && dbClass.isGetSupported == false) {
-							outstring += propertyString + "NO_GET" + "\"></property>";
+							outstring += propertyString + "getSupported" + "\"></property>";
 						}
 
 						if(dbClass.meterCanReset != null && dbClass.meterCanReset == true) {
-							outstring += propertyString + "METER_CAN_RESET" + "\"></property>";
+							outstring += propertyString + "meterCanReset" + "\"></property>";
 						}
 						
 						if(dbClass.meterType != null) {
-							outstring += propertyString + "METER_TYPE=" + dbClass.meterType + "\"></property>";
+							outstring += propertyString + "meterType=" + dbClass.meterType + "\"></property>";
 						}
 						if(dbClass.meterScale != null) {
-							outstring += propertyString + "METER_SCALE=" + dbClass.meterScale + "\"></property>";
+							outstring += propertyString + "meterScale=" + dbClass.meterScale + "\"></property>";
 						}
 					}
 				}
@@ -407,22 +415,7 @@ public final class ZWaveActivator implements BundleActivator {
 				outstring += "</config-description>";
 
 				outstring += "</thing-type>";
-				
-				outstring += "<!-- The following is a random selection of channel-types - it must be changed! -->";
-
-				outstring += "<channel-type id=\"dimmer\">";
-				outstring += "<item-type>Dimmer</item-type>";
-				outstring += "<label>Dimmer</label>";
-				outstring += "<description>Set the light level</description>";
-				outstring += "<category>Light</category>";
-				outstring += "</channel-type>";
-
-				outstring += "<channel-type id=\"switch\">";
-				outstring += "<item-type>Switch</item-type>";
-				outstring += "<label>Switch</label>";
-				outstring += "<description>Switch the light on and off</description>";
-				outstring += "<category>Light</category>";
-				outstring += "</channel-type>";
+			
 
 				
 				if(cfgCnt > maxCfg)

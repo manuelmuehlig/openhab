@@ -1,72 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<thing:thing-descriptions bindingId="zwave"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
-	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
-	<thing-type id="widom_wps104_00_000">
-		<label>WiDOM WPS104</label>
-		<description><![CDATA[Energy Driven Switch<br><h1>Device Overview</h1><p>Brief description here</p><h1>Inclusion and Exclusion</h1><p>To include the device into the network...</p><p>To exclude the device from the network...</p>]]></description>
-		<channels><!-- The following is a random selection of channels - it must 
-				be changed! -->
-			<channel id="dimmer-1" typeId="dimmer">
-				<label>Dimmer 1</label>
-				<properties>
-					<property name="commandClass">SWITCH_MULTILEVEL,BASIC</property>
-				</properties>
-			</channel>
-			<channel id="switch-1" typeId="switch">
-				<label>Switch 1</label>
-				<properties>
-					<property name="commandClass">1:SWITCH_BINARY,BASIC</property>
-				</properties>
-			</channel><!-- Remove if this is not a battery device -->
-			<channel id="battery-level" typeId="system.battery-level">
-				<properties>
-					<property name="commandClass">BATTERY</property>
-				</properties>
-			</channel>
-		</channels>
-		<properties>
-			<property name="vendor">WiDOM</property>
-			<property name="model">WPS104</property>
-			<property name="manufacturerId">0149</property>
-			<property name="manufacturerRef">1214:0304</property>
-			<property name="commandClass:ASSOCIATION:0:default">1</property>
-		</properties>
-		<config-description>
-			<parameter-group name="configuration">
-				<context>setup</context>
-				<label>Configuration Parameters</label>
-			</parameter-group>
-			<parameter-group name="association">
-				<context>link</context>
-				<label>Association Groups</label>
-			</parameter-group><!-- Remove if this is not a battery device -->
-			<parameter-group name="wakeup">
-				<context>sleep</context>
-				<label>Wakeup Configuration</label>
-			</parameter-group>
-			<parameter name="config_1_1" type="integer" groupName="configuration">
-				<label>1: </label>
-				<description><![CDATA[Controlling the relay by means of a single click on the external switch or on the 
+<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="widom_wps104_00_000"><label>WiDOM WPS104</label><description><![CDATA[Energy Driven Switch<br><h1>Device Overview</h1><p>Brief description here</p><h1>Inclusion and Exclusion</h1><p>To include the device into the network...</p><p>To exclude the device from the network...</p>]]></description><channels><!-- The following is a random selection of channels - it must be changed! --><channel id="brightness-1" typeId="brightness"><label>Dimmer 1</label><properties><property name="binding:*:HSBType">COLOR;colorHue=true</property><property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property><property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property><property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property><property name="name=binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property></properties></channel><channel id="switch-1" typeId="switch"><label>Switch 1</label><properties><property name="binding:*:HSBType">COLOR;colorHue=true</property><property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property><property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property><property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property><property name="name=binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property></properties></channel><!-- Remove if this is not a battery device --><channel id="battery-level" typeId="system.battery-level"><properties><property name="commandClass">BATTERY</property></properties></channel></channels><properties><property name="vendor">WiDOM</property><property name="model">WPS104</property><property name="manufacturerId">0149</property><property name="manufacturerRef">1214:0304</property><property name="commandClass:ASSOCIATION:default">1</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label></parameter-group><!-- Remove if this is not a battery device --><parameter-group name="wakeup"><context>sleep</context><label>Wakeup Configuration</label></parameter-group><parameter name="config_1_1" type="integer" groupName="configuration"><label>1: </label><description><![CDATA[Controlling the relay by means of a single click on the external switch or on the 
 			integrated button. 
 			TOGGLE: If initial status is ON, then final status is OFF. If initial status 
 			is OFF, then final status is ON.
 			ON: If the initial status is OFF the system switches to ON; conversely, it maintains 
 			its status (ON).
 			OFF: If the initial status is ON the system switches to OFF; conversely, it maintains 
-			its status (OFF).]]></description>
-				<default>1</default>
-				<options>
-					<option value="1">TOGGLE:ON/OFF</option>
-					<option value="2">ON</option>
-					<option value="3">OFF</option>
-					<option value="4">IGNORE</option>
-				</options>
-			</parameter>
-			<parameter name="config_20_1" type="integer" groupName="configuration">
-				<label>20: Device Status</label>
-				<description><![CDATA[The final status achieved by the device when it receives a Basic Set command through 
+			its status (OFF).]]></description><default>1</default><options><option value="1">TOGGLE:ON/OFF</option><option value="2">ON</option><option value="3">OFF</option><option value="4">IGNORE</option></options></parameter><parameter name="config_20_1" type="integer" groupName="configuration"><label>20: Device Status</label><description><![CDATA[The final status achieved by the device when it receives a Basic Set command through 
 			the Z-Wave network. Available Parameters are;
 			AS RECIEVED: If received command is ON, then final status is ON. If received command is OFF, then 
 			final status is OFF.
@@ -74,307 +13,67 @@
 			is OFF, then final status is OFF.
 			IGNORE IF OFF: If received command is ON, then final status is ON. If received command is OFF, then 
 			the initial status is maintained.
-			IGNORE: The device maintains the initial status.]]></description>
-				<default>1</default>
-				<options>
-					<option value="1">AS RECEIVED</option>
-					<option value="2">IGNORE IF ON</option>
-					<option value="3">IGNORE IF OFF</option>
-					<option value="4">IGNORE</option>
-				</options>
-			</parameter>
-			<parameter name="config_30_2" type="integer" min="0" max="4500"
-				groupName="configuration">
-				<label>30: Overcurrent Level</label>
-				<description><![CDATA[Sets the current level above which the time spent above that level is measured. 
-			Defined value is divided by 100.]]></description>
-				<default>4500</default>
-			</parameter>
-			<parameter name="config_31_2" type="integer" min="0" max="10800"
-				groupName="configuration">
-				<label>31: Overcurrent Time</label>
-				<description><![CDATA[Sets the time beyond which, in the case of overcurrent at a level higher than that 
-			established in parameter 30, an OverCurrent event occurs.]]></description>
-				<default>10</default>
-			</parameter>
-			<parameter name="config_32_1" type="integer" groupName="configuration">
-				<label>32: Next State</label>
-				<description><![CDATA[Defines the next state of the device if an overcurrent event has occurred.
+			IGNORE: The device maintains the initial status.]]></description><default>1</default><options><option value="1">AS RECEIVED</option><option value="2">IGNORE IF ON</option><option value="3">IGNORE IF OFF</option><option value="4">IGNORE</option></options></parameter><parameter name="config_30_2" type="integer" min="0" max="4500" groupName="configuration"><label>30: Overcurrent Level</label><description><![CDATA[Sets the current level above which the time spent above that level is measured. 
+			Defined value is divided by 100.]]></description><default>4500</default></parameter><parameter name="config_31_2" type="integer" min="0" max="10800" groupName="configuration"><label>31: Overcurrent Time</label><description><![CDATA[Sets the time beyond which, in the case of overcurrent at a level higher than that 
+			established in parameter 30, an OverCurrent event occurs.]]></description><default>10</default></parameter><parameter name="config_32_1" type="integer" groupName="configuration"><label>32: Next State</label><description><![CDATA[Defines the next state of the device if an overcurrent event has occurred.
 			Available Parameters: IGNORE - The device maintains the initial status.
 			ON - If the initial status is OFF the system switches to ON; 
 			conversely, it maintains its status (ON).
 			OFF - If the initial status is ON the system switches to OFF: 
 			conversely, it maintains its status (OFF).
-			TOGGLE  - If the initial status is ON/OFF the system switches to OFF/ON.]]></description>
-				<default>0</default>
-				<options>
-					<option value="0">IGNORE</option>
-					<option value="1">ON</option>
-					<option value="2">OFF</option>
-					<option value="3">TOGGLE</option>
-				</options>
-			</parameter>
-			<parameter name="config_33_4" type="integer" groupName="configuration">
-				<label>33: Meter Reset</label>
-				<description><![CDATA[Provides total operating time from last meter reset. When set 
-			to 0 it resets the cumulative values of energy and total operating time.]]></description>
-				<default>0</default>
-				<options>
-					<option value="0">Meter parameters, including total operating
-						time, will be reset.</option>
-					<option value="1">Greater than 0 – IGNORE (The meter will not be
-						reset.)</option>
-				</options>
-			</parameter>
-			<parameter name="config_34_1" type="integer" groupName="configuration">
-				<label>34: Energy flow</label>
-				<description><![CDATA[Determines whether energy events are related to energy consumed or energy produced.
+			TOGGLE  - If the initial status is ON/OFF the system switches to OFF/ON.]]></description><default>0</default><options><option value="0">IGNORE</option><option value="1">ON</option><option value="2">OFF</option><option value="3">TOGGLE</option></options></parameter><parameter name="config_33_4" type="integer" groupName="configuration"><label>33: Meter Reset</label><description><![CDATA[Provides total operating time from last meter reset. When set 
+			to 0 it resets the cumulative values of energy and total operating time.]]></description><default>0</default><options><option value="0">Meter parameters, including total operating time, will be reset.</option><option value="1">Greater than 0 – IGNORE (The meter will not be reset.)</option></options></parameter><parameter name="config_34_1" type="integer" groupName="configuration"><label>34: Energy flow</label><description><![CDATA[Determines whether energy events are related to energy consumed or energy produced.
 			Available Parameters are: CONSUMED - Events will be active for Consumed energy flows to which the 
 			positive sign will be attributed.
-			PRODUCED - Events will be active for Produced energy flows to which the negative sign will be attributed.]]></description>
-				<default>1</default>
-				<options>
-					<option value="1">CONSUMED</option>
-					<option value="2">PRODUCED</option>
-				</options>
-			</parameter>
-			<parameter name="config_35_2" type="integer" min="0" max="11250"
-				groupName="configuration">
-				<label>35: UP Power Level</label>
-				<description><![CDATA[Sets the level of instantaneous power in Watts beyond which time of permanence above this 
+			PRODUCED - Events will be active for Produced energy flows to which the negative sign will be attributed.]]></description><default>1</default><options><option value="1">CONSUMED</option><option value="2">PRODUCED</option></options></parameter><parameter name="config_35_2" type="integer" min="0" max="11250" groupName="configuration"><label>35: UP Power Level</label><description><![CDATA[Sets the level of instantaneous power in Watts beyond which time of permanence above this 
 			level is calculated.
-			0 W - 11250 W Define level of instantaneous power.]]></description>
-				<default>11250</default>
-			</parameter>
-			<parameter name="config_36_2" type="integer" min="0" max="10800"
-				groupName="configuration">
-				<label>36: UP Power Time</label>
-				<description><![CDATA[Sets the time in seconds beyond which, if instantaneous power remains at 
+			0 W - 11250 W Define level of instantaneous power.]]></description><default>11250</default></parameter><parameter name="config_36_2" type="integer" min="0" max="10800" groupName="configuration"><label>36: UP Power Time</label><description><![CDATA[Sets the time in seconds beyond which, if instantaneous power remains at 
 			levels exceeding threshold defined by parameter 35, a UP Power event occurs.
-			0 sec - 10800 sec Define time parameter.]]></description>
-				<default>10</default>
-			</parameter>
-			<parameter name="config_37_1" type="integer" groupName="configuration">
-				<label>37: UP Power State</label>
-				<description><![CDATA[Defines the next status of the device in the case of a UP Power event occurring.
+			0 sec - 10800 sec Define time parameter.]]></description><default>10</default></parameter><parameter name="config_37_1" type="integer" groupName="configuration"><label>37: UP Power State</label><description><![CDATA[Defines the next status of the device in the case of a UP Power event occurring.
 			Available Parameters: IGNORE - The device maintains the initial status.
 			ON - If the initial status is OFF the system switches to ON; 
 			conversely, it maintains its status (ON).
 			OFF - If the initial status is ON the system switches to OFF: 
 			conversely, it maintains its status (OFF).
-			TOGGLE  - If the initial status is ON/OFF the system switches to OFF/ON.]]></description>
-				<default>0</default>
-				<options>
-					<option value="0">IGNORE</option>
-					<option value="1">ON</option>
-					<option value="2">OFF</option>
-					<option value="3">TOGGLE</option>
-				</options>
-			</parameter>
-			<parameter name="config_38_1" type="integer" min="-1" max="99"
-				groupName="configuration">
-				<label>38: UP Power Associated</label>
-				<description><![CDATA[Sets the level of instantaneous power beyond which the time 
+			TOGGLE  - If the initial status is ON/OFF the system switches to OFF/ON.]]></description><default>0</default><options><option value="0">IGNORE</option><option value="1">ON</option><option value="2">OFF</option><option value="3">TOGGLE</option></options></parameter><parameter name="config_38_1" type="integer" min="-1" max="99" groupName="configuration"><label>38: UP Power Associated</label><description><![CDATA[Sets the level of instantaneous power beyond which the time 
 			of permanence below this level is calculated. 
 			0 - Associated devices are switched OFF.
 			-1 - Associated devices are switched ON.
-			1 - 99 Set parameter for dimming purposes.]]></description>
-				<default>0</default>
-			</parameter>
-			<parameter name="config_39_2" type="integer" min="0" max="11250"
-				groupName="configuration">
-				<label>39: DOWN Power Level</label>
-				<description><![CDATA[Sets the level of instantaneous power beyond which the time 
+			1 - 99 Set parameter for dimming purposes.]]></description><default>0</default></parameter><parameter name="config_39_2" type="integer" min="0" max="11250" groupName="configuration"><label>39: DOWN Power Level</label><description><![CDATA[Sets the level of instantaneous power beyond which the time 
 			of permanence below this level is calculated.
-			0 W - 11250 W Define level of instantaneous power.]]></description>
-				<default>0</default>
-			</parameter>
-			<parameter name="config_40_2" type="integer" min="0" max="10800"
-				groupName="configuration">
-				<label>40: DOWN Power Time</label>
-				<description><![CDATA[SSets the time beyond which, if instantaneous power remains at 
+			0 W - 11250 W Define level of instantaneous power.]]></description><default>0</default></parameter><parameter name="config_40_2" type="integer" min="0" max="10800" groupName="configuration"><label>40: DOWN Power Time</label><description><![CDATA[SSets the time beyond which, if instantaneous power remains at 
 			levels below threshold defined by parameter 39, a DOWN Power event occurs.
-			0 sec - 10800 sec. Define time parameter.]]></description>
-				<default>10</default>
-			</parameter>
-			<parameter name="config_41_1" type="integer" groupName="configuration">
-				<label>41: DOWN Power State</label>
-				<description><![CDATA[Defines the next state of the device in the case of a DOWN Power event occurring.
+			0 sec - 10800 sec. Define time parameter.]]></description><default>10</default></parameter><parameter name="config_41_1" type="integer" groupName="configuration"><label>41: DOWN Power State</label><description><![CDATA[Defines the next state of the device in the case of a DOWN Power event occurring.
 			Available Parameters: IGNORE - The device maintains the initial status.
 			ON - If the initial status is OFF the system switches to ON; 
 			conversely, it maintains its status (ON).
 			OFF - If the initial status is ON the system switches to OFF: 
 			conversely, it maintains its status (OFF).
-			TOGGLE  - If the initial status is ON/OFF the system switches to OFF/ON.]]></description>
-				<default>0</default>
-				<options>
-					<option value="0">IGNORE</option>
-					<option value="1">ON</option>
-					<option value="2">OFF</option>
-					<option value="3">TOGGLE</option>
-				</options>
-			</parameter>
-			<parameter name="config_42_1" type="integer" min="-1" max="99"
-				groupName="configuration">
-				<label>42: DOWN Power Associated</label>
-				<description><![CDATA[Defines the status of associated devices in the presence of a DOWN Power event.
+			TOGGLE  - If the initial status is ON/OFF the system switches to OFF/ON.]]></description><default>0</default><options><option value="0">IGNORE</option><option value="1">ON</option><option value="2">OFF</option><option value="3">TOGGLE</option></options></parameter><parameter name="config_42_1" type="integer" min="-1" max="99" groupName="configuration"><label>42: DOWN Power Associated</label><description><![CDATA[Defines the status of associated devices in the presence of a DOWN Power event.
  			0 - Associated devices are switched OFF.
 			-1 - Associated devices are switched ON.
-			1 - 99 Set parameter for dimming purposes.]]></description>
-				<default>0</default>
-			</parameter>
-			<parameter name="config_43_4" type="integer" min="0" max="2000000"
-				groupName="configuration">
-				<label>43: DOWN Power Associated</label>
-				<description><![CDATA[Sets the energy level that once exceeded an Energy Limit event occurs.
-			Available Range: 0 KWh - 2000000 KWh]]></description>
-				<default>2000000</default>
-			</parameter>
-			<parameter name="config_44_1" type="integer" groupName="configuration">
-				<label>44: Energy Limit State</label>
-				<description><![CDATA[Defines the next state of the device in the case of an Energy Limit event occurring.
+			1 - 99 Set parameter for dimming purposes.]]></description><default>0</default></parameter><parameter name="config_43_4" type="integer" min="0" max="2000000" groupName="configuration"><label>43: DOWN Power Associated</label><description><![CDATA[Sets the energy level that once exceeded an Energy Limit event occurs.
+			Available Range: 0 KWh - 2000000 KWh]]></description><default>2000000</default></parameter><parameter name="config_44_1" type="integer" groupName="configuration"><label>44: Energy Limit State</label><description><![CDATA[Defines the next state of the device in the case of an Energy Limit event occurring.
 			Available Parameters: IGNORE - The device maintains the initial status.
 			ON - If the initial status is OFF the system switches to ON; 
 			conversely, it maintains its status (ON).
 			OFF - If the initial status is ON the system switches to OFF: 
 			conversely, it maintains its status (OFF).
-			TOGGLE  - If the initial status is ON/OFF the system switches to OFF/ON.]]></description>
-				<default>0</default>
-				<options>
-					<option value="0">IGNORE</option>
-					<option value="1">ON</option>
-					<option value="2">OFF</option>
-					<option value="3">TOGGLE</option>
-				</options>
-			</parameter>
-			<parameter name="config_45_1" type="integer" min="1" max="100"
-				groupName="configuration">
-				<label>45: Variation Instantaneous Power</label>
-				<description><![CDATA[Defines the percentage variation of instantaneous power determining the sending of the report.
-			Available Range: 1 % - 100 %]]></description>
-				<default>10</default>
-			</parameter>
-			<parameter name="config_46_1" type="integer" min="1" max="100"
-				groupName="configuration">
-				<label>46: Report Time Frequency</label>
-				<description><![CDATA[Defines the percentage variation of instantaneous power determining the sending of the report.
-			Available Range: 1 min - 100 mins]]></description>
-				<default>10</default>
-			</parameter>
-			<parameter name="config_47_1" type="integer" groupName="configuration">
-				<label>47: Variation Total Energy</label>
-				<description><![CDATA[Defines the increase of total energy required to generate a report listing the level 
+			TOGGLE  - If the initial status is ON/OFF the system switches to OFF/ON.]]></description><default>0</default><options><option value="0">IGNORE</option><option value="1">ON</option><option value="2">OFF</option><option value="3">TOGGLE</option></options></parameter><parameter name="config_45_1" type="integer" min="1" max="100" groupName="configuration"><label>45: Variation Instantaneous Power</label><description><![CDATA[Defines the percentage variation of instantaneous power determining the sending of the report.
+			Available Range: 1 % - 100 %]]></description><default>10</default></parameter><parameter name="config_46_1" type="integer" min="1" max="100" groupName="configuration"><label>46: Report Time Frequency</label><description><![CDATA[Defines the percentage variation of instantaneous power determining the sending of the report.
+			Available Range: 1 min - 100 mins]]></description><default>10</default></parameter><parameter name="config_47_1" type="integer" groupName="configuration"><label>47: Variation Total Energy</label><description><![CDATA[Defines the increase of total energy required to generate a report listing the level 
 			of total energy to the devices associated to the Energy Notification Group.
-			]]></description>
-				<default>3</default>
-				<options>
-					<option value="0">IGNORE: No report provided.</option>
-					<option value="1">No report provided.</option>
-					<option value="2">Report at 1 hundredth of KWh.</option>
-					<option value="3">Report at 1 tenth of KWh</option>
-					<option value="4">Report at 1 KWh</option>
-				</options>
-			</parameter>
-			<parameter name="config_48_2" type="integer" min="1100"
-				max="2500" groupName="configuration">
-				<label>48: Nominal Voltage</label>
-				<description><![CDATA[Defines the nominal voltage value in tenths of volts. Together with parameter No. 49 
+			]]></description><default>3</default><options><option value="0">IGNORE: No report provided.</option><option value="1">No report provided.</option><option value="2">Report at 1 hundredth of KWh.</option><option value="3">Report at 1 tenth of KWh</option><option value="4">Report at 1 KWh</option></options></parameter><parameter name="config_48_2" type="integer" min="1100" max="2500" groupName="configuration"><label>48: Nominal Voltage</label><description><![CDATA[Defines the nominal voltage value in tenths of volts. Together with parameter No. 49 
 			this is used by the automatic notification system to send reports on variations of voltage.
-			Available Range: 1100 v - 2500 v]]></description>
-				<default>2300</default>
-			</parameter>
-			<parameter name="config_49_1" type="integer" min="1" max="100"
-				groupName="configuration">
-				<label>49: Fall In Maximum Voltage</label>
-				<description><![CDATA[Defines, as a percentage, the nominal value for permitted fall in maximum voltage.
-			Available Range: 1 - 100%]]></description>
-				<default>10</default>
-			</parameter>
-			<parameter name="config_50_2" type="integer" min="0" max="62"
-				groupName="configuration">
-				<label>50: Electric parameters subjected to automatic notification</label>
-				<description><![CDATA[Defines which electric parameters, other than power, will be subjected to automatic 
+			Available Range: 1100 v - 2500 v]]></description><default>2300</default></parameter><parameter name="config_49_1" type="integer" min="1" max="100" groupName="configuration"><label>49: Fall In Maximum Voltage</label><description><![CDATA[Defines, as a percentage, the nominal value for permitted fall in maximum voltage.
+			Available Range: 1 - 100%]]></description><default>10</default></parameter><parameter name="config_50_2" type="integer" min="0" max="62" groupName="configuration"><label>50: Electric parameters subjected to automatic notification</label><description><![CDATA[Defines which electric parameters, other than power, will be subjected to automatic 
 			notification. The value to be set for this parameter must be calculated as the sum of values 
 			associated to the individual electric parameter: Power=0, Energy=2, Voltage=4, Current=8, 
 			Power factor=16, Multilevel Sensor: Power Report=32 To send report only for Power please set 
 			the value to 0. By default the report are sent for (Power, Energy, Voltage, Current, Power Factor)
-			 0+2+4+8+16=30]]></description>
-				<default>0</default>
-			</parameter>
-			<parameter name="config_51_2" type="integer" min="0" max="65535"
-				readOnly="true" groupName="configuration">
-				<label>51: Voltage RMS value</label>
-				<description><![CDATA[Reading of this parameter returns the value of voltage RMS at the time of the reading 
-			expressed in tenths of Volts.]]></description>
-				<default>0</default>
-			</parameter>
-			<parameter name="config_52_2" type="integer" min="0" max="65535"
-				readOnly="true" groupName="configuration">
-				<label>52: Current RMS value</label>
-				<description><![CDATA[Returns the value of current RMS expressed in hundredths of Amperes.]]></description>
-				<default>0</default>
-			</parameter>
-			<parameter name="config_53_4" type="integer" readOnly="true"
-				groupName="configuration">
-				<label>53: Power Factor</label>
-				<description><![CDATA[Returns the value of power factor as a percentage]]></description>
-				<default>0</default>
-			</parameter>
-			<parameter name="config_54_4" type="integer" readOnly="true"
-				groupName="configuration">
-				<label>54: Total energy consumed</label>
-				<description><![CDATA[Returns the value of total energy consumed expressed in Wh (thousandths of KWh).]]></description>
-				<default>0</default>
-			</parameter>
-			<parameter name="config_55_4" type="integer" readOnly="true"
-				groupName="configuration">
-				<label>55: Total energy produced</label>
-				<description><![CDATA[Returns the value of total energy consumed expressed in Wh (thousandths of KWh).]]></description>
-				<default>0</default>
-			</parameter>
-			<parameter name="config_60_1" type="integer" groupName="configuration">
-				<label>60: Start-up status</label>
-				<description><![CDATA[Defines the status of the device following a restart.]]></description>
-				<default>3</default>
-				<options>
-					<option value="1">ON: Device on</option>
-					<option value="2">OFF: Device off</option>
-					<option value="3">PREVIOUS STATUS: Status prior to restart</option>
-				</options>
-			</parameter>
-			<parameter name="config_61_1" type="integer" groupName="configuration">
-				<label>61: Configuration reset</label>
-				<description><![CDATA[Defines which parameters should be reset to default values.]]></description>
-				<default>3</default>
-				<options>
-					<option value="0">FACTORY RESET: The device is reset to the
-						original factory settings.</option>
-					<option value="1">ASSOCIATIONS RESET: All associations and only
-						the associations are reset.</option>
-					<option value="2">CONFIGURATIONS RESET: The associations are
-						maintained while all other configuration
-						parameters are reset to the original factory settings, except for the
-						specific configuration.</option>
-					<option value="3">IGNORE: No action is performed.</option>
-				</options>
-			</parameter>
-			<parameter name="config_62_1" type="integer" groupName="configuration">
-				<label>62: Type of external switch</label>
-				<description><![CDATA[Defines the type of external switch connected to the device.]]></description>
-				<default>3</default>
-				<options>
-					<option value="0">IGNORE: The external switch is not connected
-						or not present.</option>
-					<option value="1">BUTTON: The external switch is a normally open
-						button.</option>
-					<option value="2">SWITCH: The external switch is a traditional
-						switch.</option>
-					<option value="3">AUTOMATIC RECOGNITION:</option>
-				</options>
-			</parameter>
-			<parameter name="config_63_1" type="integer" groupName="configuration">
-				<label>63: Load Control</label>
-				<description><![CDATA[Defines the load control mode. Available Parameters are:
+			 0+2+4+8+16=30]]></description><default>0</default></parameter><parameter name="config_51_2" type="integer" min="0" max="65535" readOnly="true" groupName="configuration"><label>51: Voltage RMS value</label><description><![CDATA[Reading of this parameter returns the value of voltage RMS at the time of the reading 
+			expressed in tenths of Volts.]]></description><default>0</default></parameter><parameter name="config_52_2" type="integer" min="0" max="65535" readOnly="true" groupName="configuration"><label>52: Current RMS value</label><description><![CDATA[Returns the value of current RMS expressed in hundredths of Amperes.]]></description><default>0</default></parameter><parameter name="config_53_4" type="integer" readOnly="true" groupName="configuration"><label>53: Power Factor</label><description><![CDATA[Returns the value of power factor as a percentage]]></description><default>0</default></parameter><parameter name="config_54_4" type="integer" readOnly="true" groupName="configuration"><label>54: Total energy consumed</label><description><![CDATA[Returns the value of total energy consumed expressed in Wh (thousandths of KWh).]]></description><default>0</default></parameter><parameter name="config_55_4" type="integer" readOnly="true" groupName="configuration"><label>55: Total energy produced</label><description><![CDATA[Returns the value of total energy consumed expressed in Wh (thousandths of KWh).]]></description><default>0</default></parameter><parameter name="config_60_1" type="integer" groupName="configuration"><label>60: Start-up status</label><description><![CDATA[Defines the status of the device following a restart.]]></description><default>3</default><options><option value="1">ON: Device on</option><option value="2">OFF: Device off</option><option value="3">PREVIOUS STATUS: Status prior to restart</option></options></parameter><parameter name="config_61_1" type="integer" groupName="configuration"><label>61: Configuration reset</label><description><![CDATA[Defines which parameters should be reset to default values.]]></description><default>3</default><options><option value="0">FACTORY RESET: The device is reset to the original factory settings.</option><option value="1">ASSOCIATIONS RESET: All associations and only the associations are reset.</option><option value="2">CONFIGURATIONS RESET: The associations are maintained while all other configuration
+				 parameters are reset to the original factory settings, except for the specific configuration.</option><option value="3">IGNORE: No action is performed.</option></options></parameter><parameter name="config_62_1" type="integer" groupName="configuration"><label>62: Type of external switch</label><description><![CDATA[Defines the type of external switch connected to the device.]]></description><default>3</default><options><option value="0">IGNORE: The external switch is not connected or not present.</option><option value="1">BUTTON: The external switch is a normally open button.</option><option value="2">SWITCH: The external switch is a traditional switch.</option><option value="3">AUTOMATIC RECOGNITION:</option></options></parameter><parameter name="config_63_1" type="integer" groupName="configuration"><label>63: Load Control</label><description><![CDATA[Defines the load control mode. Available Parameters are:
 			1 - DIRECT CONTROL The external load is controlled directly by the relay. 
 				Reference diagram local load control.
 			2 - The external load is controlled by a contactor that in a resting state has open contacts 
@@ -382,57 +81,4 @@
 			3 - The external load is controlled by a contactor that in a resting state has closed contacts 
 				(load control by means of external contactor).	
 			4 - The relay is only used to control the ignition of an external warning light, as, 
-				for example, in the case of notification of excess loads and surges (remote load control).]]></description>
-				<default>1</default>
-				<options>
-					<option value="1">DIRECT CONTROL</option>
-					<option value="2">CONTROL BY MEANS OF A CONTACTOR WITH NORMALLY
-						OPEN COMMAND:</option>
-					<option value="3">CONTROL BY MEANS OF A CONTACTOR WITH NORMALLY
-						CLOSED COMMAND:</option>
-					<option value="4">AS AN EXTERNAL INDICATOR:</option>
-				</options>
-			</parameter>
-			<parameter name="group_1" type="integer" multiple="true"
-				groupName="association">
-				<label>Group 1</label>
-				<description><![CDATA[***Add description here***]]></description>
-				<multipleLimit>8</multipleLimit>
-			</parameter>
-			<parameter name="group_2" type="integer" multiple="true"
-				groupName="association">
-				<label>Up Power Level Group</label>
-				<description><![CDATA[***Add description here***]]></description>
-				<multipleLimit>8</multipleLimit>
-			</parameter>
-			<parameter name="group_3" type="integer" multiple="true"
-				groupName="association">
-				<label>Down Power Level Group</label>
-				<description><![CDATA[***Add description here***]]></description>
-				<multipleLimit>8</multipleLimit>
-			</parameter><!-- Remove the wakeup if this is not a battery device -->
-			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
-				<label>Wakeup Period</label>
-				<description>Set the wakeup period in seconds</description>
-			</parameter>
-			<parameter name="wakeup_node" type="integer" groupName="wakeup"
-				readOnly="true">
-				<label>Wakeup Node</label>
-				<description>The node to which wakeup messages will be sent</description>
-			</parameter>
-		</config-description>
-	</thing-type><!-- The following is a random selection of channel-types - 
-		it must be changed! -->
-	<channel-type id="dimmer">
-		<item-type>Dimmer</item-type>
-		<label>Dimmer</label>
-		<description>Set the light level</description>
-		<category>Light</category>
-	</channel-type>
-	<channel-type id="switch">
-		<item-type>Switch</item-type>
-		<label>Switch</label>
-		<description>Switch the light on and off</description>
-		<category>Light</category>
-	</channel-type>
-</thing:thing-descriptions>
+				for example, in the case of notification of excess loads and surges (remote load control).]]></description><default>1</default><options><option value="1">DIRECT CONTROL</option><option value="2">CONTROL BY MEANS OF A CONTACTOR WITH NORMALLY OPEN COMMAND:</option><option value="3">CONTROL BY MEANS OF A CONTACTOR WITH NORMALLY CLOSED COMMAND:</option><option value="4">AS AN EXTERNAL INDICATOR:</option></options></parameter><parameter name="group_1" type="integer" multiple="true" groupName="association"><label>Group 1</label><description><![CDATA[***Add description here***]]></description><multipleLimit>8</multipleLimit></parameter><parameter name="group_2" type="integer" multiple="true" groupName="association"><label>Up Power Level Group</label><description><![CDATA[***Add description here***]]></description><multipleLimit>8</multipleLimit></parameter><parameter name="group_3" type="integer" multiple="true" groupName="association"><label>Down Power Level Group</label><description><![CDATA[***Add description here***]]></description><multipleLimit>8</multipleLimit></parameter><!-- Remove the wakeup if this is not a battery device --><parameter name="wakeup_interval" type="integer" groupName="wakeup"><label>Wakeup Period</label><description>Set the wakeup period in seconds</description></parameter><parameter name="wakeup_node" type="integer" groupName="wakeup" readOnly="true"><label>Wakeup Node</label><description>The node to which wakeup messages will be sent</description></parameter></config-description></thing-type></thing:thing-descriptions>
