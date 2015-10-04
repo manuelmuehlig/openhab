@@ -341,6 +341,16 @@
 		</Product>
 		<Product>
 			<Reference>
+				<Type>0003</Type>
+				<Id>0002</Id>
+			</Reference>
+			<Model>AD146</Model>
+			<Label lang="en">In-Wall Dimmer Module</Label>
+			<Label lang="de">Unterputz Dimmer Modul</Label>
+			<ConfigFile>everspring/ad146.xml</ConfigFile>
+		</Product>
+		<Product>
+			<Reference>
 				<Type>0103</Type>
 				<Id>0001</Id>
 			</Reference>
@@ -366,6 +376,15 @@
 			<Model>AN158</Model>
 			<Label lang="en">Switch Meter Plugin</Label>
 			<ConfigFile>everspring/an158.xml</ConfigFile>
+		</Product>
+		<Product>
+			<Reference>
+				<Type>0004</Type>
+				<Id>0008</Id>
+			</Reference>
+			<Model>AN179</Model>
+			<Label lang="en">In-Wall Switch Module</Label>
+			<ConfigFile>everspring/an179.xml</ConfigFile>
 		</Product>
 		<Product>
 			<Reference>
@@ -1007,6 +1026,10 @@
 				<Id>0058</Id>
 			</Reference>
 			<Reference>
+				<Type>0101</Type>
+				<Id>0058</Id>
+			</Reference>
+			<Reference>
 				<Type>0201</Type>
 				<Id>0058</Id>
 			</Reference>
@@ -1145,6 +1168,10 @@
 				<Type>0003</Type>
 				<Id>0004</Id>
 			</Reference>
+			<Reference>
+				<Type>0003</Type>
+				<Id>0003</Id>
+			</Reference>
 			<Model>NP210</Model>
 			<Label lang="en">Smart PowerNode</Label>
 			<ConfigFile>greenwave/np210.xml</ConfigFile>
@@ -1269,7 +1296,8 @@
 			</Reference>
 			<Model>ZM1602</Model>
 			<Label lang="en">AC/DC Siren</Label>
-			<ConfigFile>vision/zm1602.xml</ConfigFile>
+			<ConfigFile VersionMin="1" VersionMax="15.2">vision/zm1602.xml</ConfigFile>
+			<ConfigFile VersionMax="15.3">vision/zm1602v4.xml</ConfigFile> 
 		</Product>
 		<Product>
 			<Reference>
@@ -1363,7 +1391,7 @@
 			</Reference>
 			<Model>FGD211</Model>
 			<Label lang="en">Universal Dimmer 500W</Label>
-			<ConfigFile VersionMin="1.4" VersionMax="1.8">fibaro/fgd211-14.xml</ConfigFile> <!-- -->
+			<ConfigFile VersionMax="1.8">fibaro/fgd211-14.xml</ConfigFile> <!-- VersionMin="1.4" -->
 			<ConfigFile VersionMin="1.9" VersionMax="1.11">fibaro/fgd211-19.xml</ConfigFile>
 			<ConfigFile VersionMin="2.1">fibaro/fgd211-21.xml</ConfigFile> <!-- VersionMax="2.3" -->
 		</Product>
@@ -1827,6 +1855,15 @@
 			<Label lang="en">In Wall Micro Switch</Label>
 			<ConfigFile>tkb/tz78.xml</ConfigFile>
 		</Product>
+		<Product>
+			<Reference>
+				<Type>0001</Type>
+				<Id>0001</Id>
+			</Reference>
+			<Model>TZ88</Model>
+			<Label lang="en">Energy Monitoring Wall Plug</Label>
+			<ConfigFile>tkb/tz88.xml</ConfigFile>
+		</Product>
 		<Product>	
 			<Reference>
 				<Type>0002</Type>
@@ -1926,6 +1963,15 @@
 		</Product>
 		<Product>
 			<Reference>
+				<Type>0002</Type>
+				<Id>000d</Id>
+			</Reference>
+			<Model>PST-02B</Model>
+			<Label lang="en">Slim Multi-Sensor</Label>
+			<ConfigFile>philio/pst02b.xml</ConfigFile>
+		</Product>
+		<Product>
+			<Reference>
 				<Type>0001</Type>
 				<Id>0003</Id>
 			</Reference>
@@ -1977,11 +2023,29 @@
 		<Product>
 			<Reference>
 				<Type>0001</Type>
+				<Id>0006</Id>
+			</Reference>
+			<Model>PAN08</Model>
+			<Label lang="en">Relay Insert for Blind Control</Label>
+			<ConfigFile>philio/pan08.xml</ConfigFile>
+		</Product>
+		<Product>
+			<Reference>
+				<Type>0001</Type>
 				<Id>0001</Id>
 			</Reference>
 			<Model>PAN11-1</Model>
 			<Label lang="en">Smart Energy Plug In Switch</Label>
 			<ConfigFile>philio/pan11_1.xml</ConfigFile>
+		</Product>
+		<Product>
+			<Reference>
+				<Type>0001</Type>
+				<Id>0011</Id>
+			</Reference>
+			<Model>PAN11-1B</Model>
+			<Label lang="en">Smart Energy Plug In Switch</Label>
+			<ConfigFile>philio/pan11_1b.xml</ConfigFile>
 		</Product>
 	</Manufacturer>
 	<Manufacturer>
@@ -2085,6 +2149,15 @@
             <Model>ZW20R</Model>
             <Label lang="en">20A Tamper Resistant Duplex Receptacle</Label>
             <ConfigFile>enerwave/zw20r.xml</ConfigFile>
+        </Product>
+        <Product>
+            <Reference>
+                <Type>0601</Type>
+                <Id>0901</Id>
+            </Reference>
+            <Model>ZWN-BPC</Model>
+            <Label lang="en">PIR Sensor</Label>
+            <ConfigFile>enerwave/zwn-bpc.xml</ConfigFile>
         </Product>
     </Manufacturer>
 	<Manufacturer>
@@ -2211,6 +2284,15 @@
 			<Model>VRPD3-1LW</Model>
 			<Label lang="en">Scene Capable Plug-in Dimmer</Label>
 			<ConfigFile>leviton/vrpd3-1lw.xml</ConfigFile>
+		</Product>
+		<Product>
+			<Reference>
+				<Type>1d04</Type>
+				<Id>334</Id>
+			</Reference>
+			<Model>DZR15-1LZ</Model>
+			<Label lang="en">Scene Capable Receptacle</Label>
+			<ConfigFile>leviton/dzr15-1lz.xml</ConfigFile>
 		</Product>
 	</Manufacturer>
 	<Manufacturer>
@@ -2401,13 +2483,31 @@
 		<Name>BeNext</Name>
 		<Product>
 			<Reference>
+				<Type>0004</Type>
+				<Id>0101</Id>
+			</Reference>
+			<Model>doorSensor</Model>
+			<Label lang="en">BeNext Door Sensor</Label>
+			<ConfigFile>benext/doorsensor.xml</ConfigFile>
+		</Product>
+		<Product>
+			<Reference>
+				<Type>0008</Type>
+				<Id>0101</Id>
+			</Reference>
+			<Model>powerSwitch</Model>
+			<Label lang="en">BeNext Power Switch EU</Label>
+			<ConfigFile>benext/switch.xml</ConfigFile>
+		</Product>
+		<Product>
+			<Reference>
 				<Type>000d</Type>
 				<Id>0100</Id>
 			</Reference>
 			<Model>builtInDimmer</Model>
 			<Label lang="en">BeNext Built-in Dimmer</Label>
 			<ConfigFile>benext/builtindimmer.xml</ConfigFile>
-		</Product>
+		</Product>		
 		<Product>
 			<Reference>
 				<Type>0018</Type>
@@ -2460,6 +2560,15 @@
 			<Model>123580</Model>
 			<Label lang="en">Wall Plug Dimmer</Label>
 			<ConfigFile>popp/123580.xml</ConfigFile>
+		</Product>
+		<Product>
+			<Reference>
+				<Type>0100</Type>
+				<Id>0101</Id>
+			</Reference>
+			<Model>009303</Model>
+			<Label lang="en">Wall Controller</Label>
+			<ConfigFile>popp/009303.xml</ConfigFile>
 		</Product>
 	</Manufacturer>
 	<Manufacturer>
@@ -2655,6 +2764,30 @@
 			<Model>ARZ</Model>
 			<Label lang="en">Roller Shutter Module</Label>
 			<ConfigFile>fakro/arz.xml</ConfigFile>
+		</Product>
+	</Manufacturer>
+	<Manufacturer>
+		<Id>0157</Id>
+		<Name>EcoNet Controls</Name>
+		<Product>
+			<Reference>
+				<Type>0101</Type>
+				<Id>0101</Id>
+			</Reference>
+			<Model>EV-100</Model>
+			<Label lang="en">Vent</Label>
+		</Product>
+	</Manufacturer>
+	<Manufacturer>
+		<Id>00A5</Id>
+		<Name>Nodon</Name>
+		<Product>
+			<Reference>
+				<Type>0002</Type>
+				<Id>0001</Id>
+			</Reference>
+			<Model>CRC-3100</Model>
+			<Label lang="en">Remote Control</Label>
 		</Product>
 	</Manufacturer>
 </Manufacturers>
