@@ -196,7 +196,7 @@ public final class ZWaveActivator implements BundleActivator {
 					
 					if(defaultAssoc == true) {
 						first = true;
-						outstring += "<property name=\"DefaultAssociation\">";
+						outstring += "<property name=\"DefaultAssociations\">";
 						for (ZWaveDbAssociationGroup group : groupList) {
 							if(group.SetToController == true) {
 								if(first == false) {
@@ -218,33 +218,35 @@ public final class ZWaveActivator implements BundleActivator {
 							continue;
 						}
 						String propertyString = "<property name=\"commandClass:";
+						outstring += CommandClass.getCommandClass(dbClass.Id);
+						if(dbClass.endpoint != null && dbClass.endpoint != 0) {
+							outstring +=  ":" + dbClass.endpoint;
+						}
+						outstring += "\">";
+						
 						// If we want to remove the class, then remove it!
 						if(dbClass.remove != null && dbClass.remove == true) {
-							outstring += propertyString + "remove" + "\">";
+							outstring += propertyString + "REMOVE";
 						}
 						if(dbClass.add != null && dbClass.add == true) {
-							outstring += propertyString + "add" + "\">";
+							outstring += propertyString + "ADD";
 						}
 
 						if(dbClass.isGetSupported != null && dbClass.isGetSupported == false) {
-							outstring += propertyString + "getSupported" + "\">";
+							outstring += propertyString + "getSupported=false";
 						}
 
 						if(dbClass.meterCanReset != null && dbClass.meterCanReset == true) {
-							outstring += propertyString + "meterCanReset" + "\">";
+							outstring += propertyString + "meterCanReset=true";
 						}
 
 						if(dbClass.meterType != null) {
-							outstring += propertyString + "meterType=" + dbClass.meterType + "\">";
+							outstring += propertyString + "meterType=" + dbClass.meterType;
 						}
 						if(dbClass.meterScale != null) {
-							outstring += propertyString + "meterScale=" + dbClass.meterScale + "\">";
+							outstring += propertyString + "meterScale=" + dbClass.meterScale;
 						}
-						
-						outstring += CommandClass.getCommandClass(dbClass.Id);
-						if(dbClass.endpoint != null && dbClass.endpoint != 0) {
-							propertyString +=  ":" + dbClass.endpoint;
-						}
+
 						outstring += "</property>";
 					}
 				}
