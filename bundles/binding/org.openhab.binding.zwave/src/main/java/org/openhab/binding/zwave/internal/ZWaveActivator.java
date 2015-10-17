@@ -196,7 +196,7 @@ public final class ZWaveActivator implements BundleActivator {
 					
 					if(defaultAssoc == true) {
 						first = true;
-						outstring += "<property name=\"commandClass:ASSOCIATION:default\">";
+						outstring += "<property name=\"DefaultAssociation\">";
 						for (ZWaveDbAssociationGroup group : groupList) {
 							if(group.SetToController == true) {
 								if(first == false) {
@@ -217,32 +217,35 @@ public final class ZWaveActivator implements BundleActivator {
 						if(dbClass.add==null&&dbClass.isGetSupported==null&&dbClass.meterCanReset==null&&dbClass.remove==null&&dbClass.meterScale==null&&dbClass.meterType==null) {
 							continue;
 						}
-						String propertyString = "<property name=\"commandClass:" + CommandClass.getCommandClass(dbClass.Id) + ":";
-						if(dbClass.endpoint != null) {
-							propertyString += dbClass.endpoint + ":";
-						}
+						String propertyString = "<property name=\"commandClass:";
 						// If we want to remove the class, then remove it!
 						if(dbClass.remove != null && dbClass.remove == true) {
-							outstring += propertyString + "remove" + "\"></property>";
+							outstring += propertyString + "remove" + "\">";
 						}
 						if(dbClass.add != null && dbClass.add == true) {
-							outstring += propertyString + "add" + "\"></property>";
+							outstring += propertyString + "add" + "\">";
 						}
 
 						if(dbClass.isGetSupported != null && dbClass.isGetSupported == false) {
-							outstring += propertyString + "getSupported" + "\"></property>";
+							outstring += propertyString + "getSupported" + "\">";
 						}
 
 						if(dbClass.meterCanReset != null && dbClass.meterCanReset == true) {
-							outstring += propertyString + "meterCanReset" + "\"></property>";
+							outstring += propertyString + "meterCanReset" + "\">";
 						}
-						
+
 						if(dbClass.meterType != null) {
-							outstring += propertyString + "meterType=" + dbClass.meterType + "\"></property>";
+							outstring += propertyString + "meterType=" + dbClass.meterType + "\">";
 						}
 						if(dbClass.meterScale != null) {
-							outstring += propertyString + "meterScale=" + dbClass.meterScale + "\"></property>";
+							outstring += propertyString + "meterScale=" + dbClass.meterScale + "\">";
 						}
+						
+						outstring += CommandClass.getCommandClass(dbClass.Id);
+						if(dbClass.endpoint != null && dbClass.endpoint != 0) {
+							propertyString +=  ":" + dbClass.endpoint;
+						}
+						outstring += "</property>";
 					}
 				}
 				
