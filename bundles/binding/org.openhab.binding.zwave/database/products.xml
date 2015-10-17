@@ -483,6 +483,14 @@
 		</Product>
 		<Product>
 			<Reference>
+				<Type>5456</Type>
+				<Id>3133</Id>
+			</Reference>
+			<Model>LFM-20</Model>
+			<Label lang="en">Isolated Contact Fixture Module</Label>
+		</Product>
+		<Product>
+			<Reference>
 				<Type>4457</Type>
 				<Id>3034</Id>
 			</Reference>
@@ -650,9 +658,9 @@
 				<Type>2001</Type>
 				<Id>0000</Id>
 			</Reference>
-			<Model>054313</Model>
-			<Label lang="en">Single button wall switch</Label>
-			<Label lang="de">Wandschalter</Label>
+			<Model>ZME_054313Z</Model>
+			<Label lang="en">Duewi ZW BJ ES 1000 / Reitz 054313 / ZWave.me 05457 Single button wall switch</Label>
+			<Label lang="de">Duewi ZW BJ ES 1000 / Reitz 054313 / ZWave.me 05457 Wandeinbautaster einfach</Label>
 			<ConfigFile>reitz/054313.xml</ConfigFile>
 		</Product>
 	</Manufacturer>
@@ -1516,6 +1524,10 @@
 			<Reference>
 				<Type>0B00</Type>
 				<Id>1001</Id>
+			</Reference>
+			<Reference>
+				<Type>0B00</Type>
+				<Id>2001</Id>
 			</Reference>
 			<Reference>
 				<Type>0B00</Type>
@@ -2383,6 +2395,10 @@
 				<Type>3</Type>
 				<Id>2</Id>
 			</Reference>
+			<Reference>
+				<Type>3</Type>
+				<Id>52</Id>
+			</Reference>
 			<Model>ZMNHCD</Model>
 			<Label lang="en">Flush Shutter</Label>
 			<ConfigFile>qubino/zmnhcd.xml</ConfigFile>
@@ -2435,6 +2451,10 @@
 			<Reference>
 				<Type>453</Type>
 				<Id>10E</Id>
+			</Reference>
+			<Reference>
+				<Type>453</Type>
+				<Id>10F</Id>
 			</Reference>
 			<Reference>
 				<Type>453</Type>
@@ -2779,7 +2799,7 @@
 		</Product>
 	</Manufacturer>
 	<Manufacturer>
-		<Id>00A5</Id>
+		<Id>0165</Id>
 		<Name>Nodon</Name>
 		<Product>
 			<Reference>
@@ -2788,6 +2808,7 @@
 			</Reference>
 			<Model>CRC-3100</Model>
 			<Label lang="en">Remote Control</Label>
+			<ConfigFile>nodon/crc3100.xml</ConfigFile>
 		</Product>
 	</Manufacturer>
 </Manufacturers>

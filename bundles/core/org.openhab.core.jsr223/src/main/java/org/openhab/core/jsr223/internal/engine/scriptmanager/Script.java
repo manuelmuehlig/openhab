@@ -26,6 +26,7 @@ import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.openhab.core.jsr223.internal.engine.RuleExecutionRunnable;
 import org.openhab.core.jsr223.internal.shared.ChangedEventTrigger;
+import org.openhab.core.jsr223.internal.shared.UpdatedEventTrigger;
 import org.openhab.core.jsr223.internal.shared.CommandEventTrigger;
 import org.openhab.core.jsr223.internal.shared.Event;
 import org.openhab.core.jsr223.internal.shared.EventTrigger;
@@ -51,6 +52,7 @@ import org.openhab.core.persistence.*;
 import org.openhab.core.persistence.extensions.PersistenceExtensions;
 import org.openhab.core.types.Command;
 import org.openhab.core.types.State;
+import org.openhab.core.types.UnDefType;
 import org.openhab.library.tel.types.CallType;
 import org.openhab.model.script.actions.BusEvent;
 import org.slf4j.Logger;
@@ -179,6 +181,7 @@ public class Script{
 				+"StopMoveType 			= Java.type('org.openhab.core.library.types.StopMoveType'),\n"
 				+"UpDownType 			= Java.type('org.openhab.core.library.types.UpDownType'),\n"
 				+"StringType 			= Java.type('org.openhab.core.library.types.StringType'),\n"
+				+"UnDefType 			= Java.type('org.openhab.core.types.UnDefType'),\n"
 				
 				//As of now, Nashorn does not support calling super class methods.
 				//http://nashorn-dev.openjdk.java.narkive.com/VX59ksgk/calling-super-methods-when-extending-classes
@@ -214,6 +217,7 @@ public class Script{
 		engine.put("RuleSet", 				RuleSet.class);
 		engine.put("Rule", 					Rule.class);
 		engine.put("ChangedEventTrigger", 	ChangedEventTrigger.class);
+		engine.put("UpdatedEventTrigger", 	UpdatedEventTrigger.class);
 		engine.put("CommandEventTrigger", 	CommandEventTrigger.class);
 		engine.put("Event", 				Event.class);
 		engine.put("EventTrigger", 			EventTrigger.class);
@@ -251,6 +255,7 @@ public class Script{
 		engine.put("StopMoveType", 			StopMoveType.class);
 		engine.put("UpDownType", 			UpDownType.class);
 		engine.put("StringType", 			StringType.class);
+		engine.put("UnDefType", 			UnDefType.class);
 	}
 
 	private String getFileExtension(File file) {
