@@ -1,1 +1,196 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="popp_123580_00_000"><label>POPP 123580</label><description><![CDATA[Wall Plug Dimmer<br><h1>Device Overview</h1><p>Brief description here</p><h1>Inclusion and Exclusion</h1><p>To include the device into the network...</p><p>To exclude the device from the network...</p>]]></description><channels><!-- The following is a random selection of channels - it must be changed! --><channel id="brightness-1" typeId="brightness"><label>Dimmer 1</label><properties><property name="binding:*:HSBType">COLOR;colorHue=true</property><property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property><property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property><property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property><property name="name=binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property></properties></channel><channel id="switch-1" typeId="switch"><label>Switch 1</label><properties><property name="binding:*:HSBType">COLOR;colorHue=true</property><property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property><property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property><property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property><property name="name=binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property></properties></channel><!-- Remove if this is not a battery device --><channel id="battery-level" typeId="system.battery-level"><properties><property name="commandClass">BATTERY</property></properties></channel></channels><properties><property name="vendor">POPP</property><property name="model">123580</property><property name="manufacturerId">0154</property><property name="manufacturerRef">1100:0002</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label></parameter-group><!-- Remove if this is not a battery device --><parameter-group name="wakeup"><context>sleep</context><label>Wakeup Configuration</label></parameter-group><parameter name="config_1_1" type="integer" groupName="configuration"><label>1: Set LED indication mode</label><description><![CDATA[]]></description><default>1</default><options><option value="0">Disabled</option><option value="1">On when switch on</option><option value="2">On when switch off</option><option value="3">Operated by command</option></options></parameter><parameter name="config_2_2" type="integer" groupName="configuration"><label>2: Automatic switch off time</label><description><![CDATA[If not zero, automatically switch off after a user defined time (in seconds)]]></description><default>0</default></parameter><parameter name="config_3_1" type="integer" groupName="configuration"><label>3: RF Off command</label><description><![CDATA[Defines how to interpret RF Off command. Can be used in conjunction with Auto Off function: Ignore - to switch on the light by motion detectors and switch it off after some amount of time: in case of multiple motion detectors each would try to switch the light off that would break logics; Switch on - to switch on the light on both On and Off paddle press on the remote and switch it off after some amount of time. Button off click will still work (if button operations are not disabled).]]></description><default>0</default><options><option value="0">Switch OFF</option><option value="1">Ignore</option><option value="2">Switch ON</option><option value="3">Switch on if load is off else switch off</option></options></parameter><parameter name="config_4_1" type="integer" groupName="configuration"><label>4: Ignore start level</label><description><![CDATA[]]></description><default>1</default><options><option value="0">No</option><option value="1">Yes</option></options></parameter><parameter name="config_5_1" type="integer" min="0" max="255" groupName="configuration"><label>5: Speed for fast dimming</label><description><![CDATA[Time to dim on button presses and Set command (if it has no duration specified). If not 0, dimming will be done smoothly to preserve bulb life. Set in 10ms steps.]]></description><default>30</default></parameter><parameter name="config_6_1" type="integer" min="0" max="255" groupName="configuration"><label>6: Speed for slow dimming</label><description><![CDATA[Time to dim on button presses and Set command (if it has no duration specified). If not 0, dimming will be done smoothly to preserve bulb life. Set in 10ms steps.]]></description><default>3</default></parameter><parameter name="config_7_1" type="integer" groupName="configuration"><label>7: Behavior when ON received</label><description><![CDATA[Defines the dim level on command 'ON'. On default he dimmer restores last dim level. This parameter allows configuring the maximum level on second On command (if already On) or to always switch on to maximum level.]]></description><default>0</default><options><option value="0">Set to last dim level</option><option value="1">If on already, set to maximum</option><option value="2">Always maximum dim level</option></options></parameter><parameter name="config_8_1" type="integer" min="0" max="99" groupName="configuration"><label>8: Baby dimming time</label><description><![CDATA[Time to dim on double click Off button for Baby-Dim function. This function works only if the load is operated by single press and hold button action. If enabled, the device will wait for a click timeout to see if the second click would be pressed. This will introduce a small delay for single click commands. Set in 1 minute steps.]]></description><default>0</default></parameter><parameter name="config_9_1" type="integer" min="0" max="100" groupName="configuration"><label>9: Baby target level</label><description><![CDATA[Target percentage level on which to stop while executing Baby Dimming. Can be 0 to completely switch off the light.]]></description><default>0</default></parameter><parameter name="config_10_1" type="integer" min="0" max="100" groupName="configuration"><label>10: Baby target level</label><description><![CDATA[Typical time used to differentiate click, hold, double and triple clicks. Set in 10ms steps.]]></description><default>50</default></parameter><parameter name="config_17_1" type="integer" min="1" max="95" groupName="configuration"><label>17: Limit minimum light level</label><description><![CDATA[Minimum level should be greater than maximum.]]></description><default>1</default></parameter><parameter name="config_18_1" type="integer" min="0" max="99" groupName="configuration"><label>18: Limit maximum light level</label><description><![CDATA[Maximum level should be greater than minimum. Set to 0 to act as a switch.]]></description><default>1</default></parameter><parameter name="config_19_1" type="integer" min="0" max="99" groupName="configuration"><label>19: Dim Level on 'Switch On'</label><description><![CDATA[defines how the dimmer hall react on a simple ON Command. Set to 0 to restore last level, otherwise sets dim level.]]></description><default>1</default></parameter><parameter name="config_51_1" type="integer" min="5" max="60" groupName="configuration"><label>51: Pause before pulse</label><description><![CDATA[NB: Do not touch these settings if you are not sure what they mean! For dimmable LEDs and CFL with bypass use value 1. For other bulbs use default value.]]></description><default>28</default></parameter><parameter name="config_52_1" type="integer" min="5" max="60" groupName="configuration"><label>52: Pause after pulse</label><description><![CDATA[NB: Do not touch these settings if you are not sure what they mean! For dimmable LEDs and CFL with bypass use value 40. For other bulbs use default value.]]></description><default>28</default></parameter><parameter name="config_53_1" type="integer" min="3" max="20" groupName="configuration"><label>53: Pulse width</label><description><![CDATA[NB: Do not touch these settings if you are not sure what they mean! For dimmable LEDs and CFL with bypass use value 20. For other bulbs use default value.]]></description><default>10</default></parameter><parameter name="config_54_1" type="integer" groupName="configuration"><label>54: Pulse type</label><description><![CDATA[NB: Do not touch these settings if you are not sure what they mean!]]></description><default>0</default><options><option value="0">Long</option><option value="1">Short</option></options></parameter><parameter name="group_1" type="integer" multiple="true" groupName="association"><label>Switch State</label><description><![CDATA[***Add description here***]]></description><multipleLimit>5</multipleLimit></parameter><!-- Remove the wakeup if this is not a battery device --><parameter name="wakeup_interval" type="integer" groupName="wakeup"><label>Wakeup Period</label><description>Set the wakeup period in seconds</description></parameter><parameter name="wakeup_node" type="integer" groupName="wakeup" readOnly="true"><label>Wakeup Node</label><description>The node to which wakeup messages will be sent</description></parameter></config-description></thing-type></thing:thing-descriptions>
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="popp_123580_00_000">
+		<label>POPP 123580</label>
+		<description><![CDATA[Wall Plug Dimmer<br><h1>Device Overview</h1><p>Brief description here</p><h1>Inclusion and Exclusion</h1><p>To include the device into the network...</p><p>To exclude the device from the network...</p>]]></description>
+		<channels><!-- The following is a random selection of channels - it must 
+				be changed! -->
+			<channel id="brightness-1" typeId="brightness">
+				<label>Dimmer 1</label>
+				<properties>
+					<property name="binding:*:HSBType">COLOR;colorHue=true</property>
+					<property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property>
+					<property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property>
+					<property name="name=binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<label>Switch 1</label>
+				<properties>
+					<property name="binding:*:HSBType">COLOR;colorHue=true</property>
+					<property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property>
+					<property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property>
+					<property name="name=binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+				</properties>
+			</channel><!-- Remove if this is not a battery device -->
+			<channel id="battery-level" typeId="system.battery-level">
+				<properties>
+					<property name="commandClass">BATTERY</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">POPP</property>
+			<property name="model">123580</property>
+			<property name="manufacturerId">0154</property>
+			<property name="manufacturerRef">1100:0002</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
+			</parameter-group>
+			<parameter name="config_1_1" type="integer" groupName="configuration">
+				<label>1: Set LED indication mode</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>1</default>
+				<options>
+					<option value="0">Disabled</option>
+					<option value="1">On when switch on</option>
+					<option value="2">On when switch off</option>
+					<option value="3">Operated by command</option>
+				</options>
+			</parameter>
+			<parameter name="config_2_2" type="integer" groupName="configuration">
+				<label>2: Automatic switch off time</label>
+				<description><![CDATA[If not zero, automatically switch off after a user defined time (in seconds)]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_3_1" type="integer" groupName="configuration">
+				<label>3: RF Off command</label>
+				<description><![CDATA[Defines how to interpret RF Off command. Can be used in conjunction with Auto Off function: Ignore - to switch on the light by motion detectors and switch it off after some amount of time: in case of multiple motion detectors each would try to switch the light off that would break logics; Switch on - to switch on the light on both On and Off paddle press on the remote and switch it off after some amount of time. Button off click will still work (if button operations are not disabled).]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Switch OFF</option>
+					<option value="1">Ignore</option>
+					<option value="2">Switch ON</option>
+					<option value="3">Switch on if load is off else switch off</option>
+				</options>
+			</parameter>
+			<parameter name="config_4_1" type="integer" groupName="configuration">
+				<label>4: Ignore start level</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>1</default>
+				<options>
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</options>
+			</parameter>
+			<parameter name="config_5_1" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>5: Speed for fast dimming</label>
+				<description><![CDATA[Time to dim on button presses and Set command (if it has no duration specified). If not 0, dimming will be done smoothly to preserve bulb life. Set in 10ms steps.]]></description>
+				<default>30</default>
+			</parameter>
+			<parameter name="config_6_1" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>6: Speed for slow dimming</label>
+				<description><![CDATA[Time to dim on button presses and Set command (if it has no duration specified). If not 0, dimming will be done smoothly to preserve bulb life. Set in 10ms steps.]]></description>
+				<default>3</default>
+			</parameter>
+			<parameter name="config_7_1" type="integer" groupName="configuration">
+				<label>7: Behavior when ON received</label>
+				<description><![CDATA[Defines the dim level on command 'ON'. On default he dimmer restores last dim level. This parameter allows configuring the maximum level on second On command (if already On) or to always switch on to maximum level.]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Set to last dim level</option>
+					<option value="1">If on already, set to maximum</option>
+					<option value="2">Always maximum dim level</option>
+				</options>
+			</parameter>
+			<parameter name="config_8_1" type="integer" min="0" max="99"
+				groupName="configuration">
+				<label>8: Baby dimming time</label>
+				<description><![CDATA[Time to dim on double click Off button for Baby-Dim function. This function works only if the load is operated by single press and hold button action. If enabled, the device will wait for a click timeout to see if the second click would be pressed. This will introduce a small delay for single click commands. Set in 1 minute steps.]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_9_1" type="integer" min="0" max="100"
+				groupName="configuration">
+				<label>9: Baby target level</label>
+				<description><![CDATA[Target percentage level on which to stop while executing Baby Dimming. Can be 0 to completely switch off the light.]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_10_1" type="integer" min="0" max="100"
+				groupName="configuration">
+				<label>10: Baby target level</label>
+				<description><![CDATA[Typical time used to differentiate click, hold, double and triple clicks. Set in 10ms steps.]]></description>
+				<default>50</default>
+			</parameter>
+			<parameter name="config_17_1" type="integer" min="1" max="95"
+				groupName="configuration">
+				<label>17: Limit minimum light level</label>
+				<description><![CDATA[Minimum level should be greater than maximum.]]></description>
+				<default>1</default>
+			</parameter>
+			<parameter name="config_18_1" type="integer" min="0" max="99"
+				groupName="configuration">
+				<label>18: Limit maximum light level</label>
+				<description><![CDATA[Maximum level should be greater than minimum. Set to 0 to act as a switch.]]></description>
+				<default>1</default>
+			</parameter>
+			<parameter name="config_19_1" type="integer" min="0" max="99"
+				groupName="configuration">
+				<label>19: Dim Level on 'Switch On'</label>
+				<description><![CDATA[defines how the dimmer hall react on a simple ON Command. Set to 0 to restore last level, otherwise sets dim level.]]></description>
+				<default>1</default>
+			</parameter>
+			<parameter name="config_51_1" type="integer" min="5" max="60"
+				groupName="configuration">
+				<label>51: Pause before pulse</label>
+				<description><![CDATA[NB: Do not touch these settings if you are not sure what they mean! For dimmable LEDs and CFL with bypass use value 1. For other bulbs use default value.]]></description>
+				<default>28</default>
+			</parameter>
+			<parameter name="config_52_1" type="integer" min="5" max="60"
+				groupName="configuration">
+				<label>52: Pause after pulse</label>
+				<description><![CDATA[NB: Do not touch these settings if you are not sure what they mean! For dimmable LEDs and CFL with bypass use value 40. For other bulbs use default value.]]></description>
+				<default>28</default>
+			</parameter>
+			<parameter name="config_53_1" type="integer" min="3" max="20"
+				groupName="configuration">
+				<label>53: Pulse width</label>
+				<description><![CDATA[NB: Do not touch these settings if you are not sure what they mean! For dimmable LEDs and CFL with bypass use value 20. For other bulbs use default value.]]></description>
+				<default>10</default>
+			</parameter>
+			<parameter name="config_54_1" type="integer" groupName="configuration">
+				<label>54: Pulse type</label>
+				<description><![CDATA[NB: Do not touch these settings if you are not sure what they mean!]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Long</option>
+					<option value="1">Short</option>
+				</options>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Switch State</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<multipleLimit>5</multipleLimit>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+</thing:thing-descriptions>

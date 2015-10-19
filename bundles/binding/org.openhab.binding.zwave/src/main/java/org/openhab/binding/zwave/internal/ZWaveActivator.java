@@ -69,7 +69,7 @@ public final class ZWaveActivator implements BundleActivator {
 				continue;
 			}
 			
-			if(manufacturer.Id == 0x10f) {
+			if(manufacturer.Id == 0x118) {
 				int x;
 				
 				x= 1;
@@ -104,7 +104,7 @@ public final class ZWaveActivator implements BundleActivator {
 					vmax = new Version(cfg.VersionMax);
 				}
 
-				if(product.Model.equals("FGD211")) {
+				if(product.Model.equals("TZ88")) {
 					logger.debug("");
 				}
 				if(database.FindProduct(manufacturer.Id, product.Reference.get(0).Type, product.Reference.get(0).Id, vmin.toString()) == false) {
@@ -145,7 +145,8 @@ public final class ZWaveActivator implements BundleActivator {
 				outstring += "<property name=\"binding:*:PercentType\">SWITCH_MULTILEVEL,BASIC</property>";
 				outstring += "<property name=\"binding:Command:OnOffType\">SWITCH_MULTILEVEL</property>";
 				outstring += "<property name=\"binding:*:OnOffType\">SWITCH_BINARY:1,BASIC:1</property>";
-                outstring += "<property name=\"name=binding:*:OnOffType\">SWITCH_BINARY:2,BASIC:2</property>";
+                outstring += "<property name=\"binding:*:OnOffType\">SWITCH_BINARY:2,BASIC:2</property>";
+                outstring += "<property name=\"binding:*:DecimalType\">METER;meterScale=E_W</property>";
 				outstring += "</properties>";
 				outstring += "</channel>";
 				
@@ -430,9 +431,13 @@ public final class ZWaveActivator implements BundleActivator {
 				outstring += "</thing:thing-descriptions>";
 
 				if(outstring.isEmpty() == false) {
+					if(product.Model.equals("TZ88")) {
+						logger.debug("");
+					}
+
 					String name = manufacturer.Name.toLowerCase()+"_"+product.Model.toLowerCase() + "_" + String.format("%02d", vmin.getMajor())  + "_" + String.format("%03d", vmin.getMinor()) +".xml";
 					name = "esh-zwave-things/" + name.toLowerCase().replaceAll("[^a-z0-9.-]", "_");
-					final File folder = new File(name);
+//					final File folder = new File(name);
 					try {
 						BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(name), "UTF-8"));
 	

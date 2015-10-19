@@ -1,22 +1,153 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="ge_zw3003_00_000"><label>GE ZW3003</label><description><![CDATA[In-Wall Dimmer<br><h1>Device Overview</h1><p>Brief description here</p><h1>Inclusion and Exclusion</h1><p>To include the device into the network...</p><p>To exclude the device from the network...</p>]]></description><channels><!-- The following is a random selection of channels - it must be changed! --><channel id="brightness-1" typeId="brightness"><label>Dimmer 1</label><properties><property name="binding:*:HSBType">COLOR;colorHue=true</property><property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property><property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property><property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property><property name="name=binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property></properties></channel><channel id="switch-1" typeId="switch"><label>Switch 1</label><properties><property name="binding:*:HSBType">COLOR;colorHue=true</property><property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property><property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property><property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property><property name="name=binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property></properties></channel><!-- Remove if this is not a battery device --><channel id="battery-level" typeId="system.battery-level"><properties><property name="commandClass">BATTERY</property></properties></channel></channels><properties><property name="vendor">GE</property><property name="model">ZW3003</property><property name="manufacturerId">0063</property><property name="manufacturerRef">4944:3031</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label></parameter-group><!-- Remove if this is not a battery device --><parameter-group name="wakeup"><context>sleep</context><label>Wakeup Configuration</label></parameter-group><parameter name="config_3_1" type="integer" groupName="configuration"><label>3: Night Light</label><description><![CDATA[Defines the behavior of the blue LED. <br>
-			Default is Night Light mode where LED is on when switch is off.]]></description><default>0</default><options><option value="0">LED on when switch is OFF</option><option value="1">LED on when switch is ON</option><option value="2">LED always off</option></options></parameter><parameter name="config_4_1" type="integer" groupName="configuration"><label>4: Invert Switch</label><description><![CDATA[Invert the ON/OFF Switch State. <br>
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="ge_zw3003_00_000">
+		<label>GE ZW3003</label>
+		<description><![CDATA[In-Wall Dimmer<br><h1>Device Overview</h1><p>Brief description here</p><h1>Inclusion and Exclusion</h1><p>To include the device into the network...</p><p>To exclude the device from the network...</p>]]></description>
+		<channels><!-- The following is a random selection of channels - it must 
+				be changed! -->
+			<channel id="brightness-1" typeId="brightness">
+				<label>Dimmer 1</label>
+				<properties>
+					<property name="binding:*:HSBType">COLOR;colorHue=true</property>
+					<property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property>
+					<property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property>
+					<property name="name=binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<label>Switch 1</label>
+				<properties>
+					<property name="binding:*:HSBType">COLOR;colorHue=true</property>
+					<property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property>
+					<property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+					<property name="binding:*:DecimalType">METER;meterScale=E_W</property>
+				</properties>
+			</channel><!-- Remove if this is not a battery device -->
+			<channel id="battery-level" typeId="system.battery-level">
+				<properties>
+					<property name="commandClass">BATTERY</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">GE</property>
+			<property name="model">ZW3003</property>
+			<property name="manufacturerId">0063</property>
+			<property name="manufacturerRef">4944:3031</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
+			</parameter-group>
+			<parameter name="config_3_1" type="integer" groupName="configuration">
+				<label>3: Night Light</label>
+				<description><![CDATA[Defines the behavior of the blue LED. <br>
+			Default is Night Light mode where LED is on when switch is off.]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">LED on when switch is OFF</option>
+					<option value="1">LED on when switch is ON</option>
+					<option value="2">LED always off</option>
+				</options>
+			</parameter>
+			<parameter name="config_4_1" type="integer" groupName="configuration">
+				<label>4: Invert Switch</label>
+				<description><![CDATA[Invert the ON/OFF Switch State. <br>
 			 Setting this parameter to Yes will change the top of the switch to OFF and the bottom to ON. <br> 
 			 Note: If you invert the switches and also install the product upside down, the load will now 
-			 be controlled by the right, not the left switch.]]></description><default>0</default><options><option value="0">No</option><option value="1">Yes</option></options></parameter><parameter name="config_5_1" type="integer" groupName="configuration"><label>5: Ignore Start-Level (Receiving)</label><description><![CDATA[This dimmer will start dimming from its current
+			 be controlled by the right, not the left switch.]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</options>
+			</parameter>
+			<parameter name="config_5_1" type="integer" groupName="configuration">
+				<label>5: Ignore Start-Level (Receiving)</label>
+				<description><![CDATA[This dimmer will start dimming from its current
 				level.
-			]]></description><default>0</default><options><option value="0">No</option><option value="1">Yes</option></options></parameter><parameter name="config_7_1" type="integer" min="1" max="99" groupName="configuration"><label>7: On/Off Command Dim Step</label><description><![CDATA[Indicates how many levels the dimmer will change for
+			]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</options>
+			</parameter>
+			<parameter name="config_7_1" type="integer" min="1" max="99"
+				groupName="configuration">
+				<label>7: On/Off Command Dim Step</label>
+				<description><![CDATA[Indicates how many levels the dimmer will change for
 				each dimming step.
-			]]></description><default>1</default></parameter><parameter name="config_8_1" type="integer" min="1" max="255" groupName="configuration"><label>8: On/Off Command Dim Rate</label><description><![CDATA[This value indicates in 10 millisecond resolution. <br>
+			]]></description>
+				<default>1</default>
+			</parameter>
+			<parameter name="config_8_1" type="integer" min="1" max="255"
+				groupName="configuration">
+				<label>8: On/Off Command Dim Rate</label>
+				<description><![CDATA[This value indicates in 10 millisecond resolution. <br>
 			This sets how often the dim level will change. For example, if you set this parameter to 1, 
 			then every 10ms the dim level will change. If you set it to 255, then every 2.55 
-			seconds the dim level will change.]]></description><default>3</default></parameter><parameter name="config_9_1" type="integer" min="1" max="99" groupName="configuration"><label>9: Local Control Dim Step</label><description><![CDATA[Indicates how many levels the dimmer will change for
+			seconds the dim level will change.]]></description>
+				<default>3</default>
+			</parameter>
+			<parameter name="config_9_1" type="integer" min="1" max="99"
+				groupName="configuration">
+				<label>9: Local Control Dim Step</label>
+				<description><![CDATA[Indicates how many levels the dimmer will change for
 				each dimming step.
-			]]></description><default>1</default></parameter><parameter name="config_10_1" type="integer" min="1" max="255" groupName="configuration"><label>10: Local Control Dim Rate</label><description><![CDATA[This value indicates in 10 millisecond resolution. <br>
+			]]></description>
+				<default>1</default>
+			</parameter>
+			<parameter name="config_10_1" type="integer" min="1" max="255"
+				groupName="configuration">
+				<label>10: Local Control Dim Rate</label>
+				<description><![CDATA[This value indicates in 10 millisecond resolution. <br>
 			This sets how often the dim level will change. For example, if you set this parameter to 1, 
 			then every 10ms the dim level will change. If you set it to 255, then every 2.55 
-			seconds the dim level will change.]]></description><default>3</default></parameter><parameter name="config_11_1" type="integer" min="1" max="99" groupName="configuration"><label>11: ALL ON/ALL OFF Dim Step</label><description><![CDATA[Indicates how many levels the dimmer will change for
+			seconds the dim level will change.]]></description>
+				<default>3</default>
+			</parameter>
+			<parameter name="config_11_1" type="integer" min="1" max="99"
+				groupName="configuration">
+				<label>11: ALL ON/ALL OFF Dim Step</label>
+				<description><![CDATA[Indicates how many levels the dimmer will change for
 				each dimming step.
-			]]></description><default>1</default></parameter><parameter name="config_12_1" type="integer" min="1" max="255" groupName="configuration"><label>12: ALL ON/ALL OFF Dim Rate</label><description><![CDATA[This value indicates in 10 millisecond resolution. <br>
+			]]></description>
+				<default>1</default>
+			</parameter>
+			<parameter name="config_12_1" type="integer" min="1" max="255"
+				groupName="configuration">
+				<label>12: ALL ON/ALL OFF Dim Rate</label>
+				<description><![CDATA[This value indicates in 10 millisecond resolution. <br>
 			This sets how often the dim level will change. For example, if you set this parameter to 1, 
 			then every 10ms the dim level will change. If you set it to 255, then every 2.55 
-			seconds the dim level will change.]]></description><default>3</default></parameter><!-- Remove the wakeup if this is not a battery device --><parameter name="wakeup_interval" type="integer" groupName="wakeup"><label>Wakeup Period</label><description>Set the wakeup period in seconds</description></parameter><parameter name="wakeup_node" type="integer" groupName="wakeup" readOnly="true"><label>Wakeup Node</label><description>The node to which wakeup messages will be sent</description></parameter></config-description></thing-type></thing:thing-descriptions>
+			seconds the dim level will change.]]></description>
+				<default>3</default>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+</thing:thing-descriptions>

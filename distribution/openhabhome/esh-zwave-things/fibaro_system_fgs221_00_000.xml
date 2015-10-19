@@ -25,7 +25,8 @@
 					<property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property>
 					<property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property>
 					<property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property>
-					<property name="name=binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+					<property name="binding:*:DecimalType">METER;meterScale=E_W</property>
 				</properties>
 			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
@@ -39,7 +40,7 @@
 			<property name="model">FGS221</property>
 			<property name="manufacturerId">010F</property>
 			<property name="manufacturerRef">0200:0102,0200:0103,0200:0104,0200:0105,0200:0106,0200:0107,0200:0109,0200:100A,0200:300A</property>
-			<property name="commandClass:ASSOCIATION:default">3</property>
+			<property name="DefaultAssociations">3</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">

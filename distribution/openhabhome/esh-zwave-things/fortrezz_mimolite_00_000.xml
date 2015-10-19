@@ -1,9 +1,209 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="fortrezz_mimolite_00_000"><label>FortrezZ MIMOlite</label><description><![CDATA[Digital or Analog Voltage input and/or Dry Contact
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="fortrezz_mimolite_00_000">
+		<label>FortrezZ MIMOlite</label>
+		<description><![CDATA[Digital or Analog Voltage input and/or Dry Contact
 				Relay
-			<br><h1>Device Overview</h1><p>Brief description here</p><h1>Inclusion and Exclusion</h1><p>To include the device into the network...</p><p>To exclude the device from the network...</p>]]></description><channels><!-- The following is a random selection of channels - it must be changed! --><channel id="brightness-1" typeId="brightness"><label>Dimmer 1</label><properties><property name="binding:*:HSBType">COLOR;colorHue=true</property><property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property><property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property><property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property><property name="name=binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property></properties></channel><channel id="switch-1" typeId="switch"><label>Switch 1</label><properties><property name="binding:*:HSBType">COLOR;colorHue=true</property><property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property><property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property><property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property><property name="name=binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property></properties></channel><!-- Remove if this is not a battery device --><channel id="battery-level" typeId="system.battery-level"><properties><property name="commandClass">BATTERY</property></properties></channel></channels><properties><property name="vendor">FortrezZ</property><property name="model">MIMOlite</property><property name="manufacturerId">0084</property><property name="manufacturerRef">0453:010E,0453:0110</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label></parameter-group><!-- Remove if this is not a battery device --><parameter-group name="wakeup"><context>sleep</context><label>Wakeup Configuration</label></parameter-group><parameter name="config_1_1" type="integer" groupName="configuration"><label>1: Not_Used_1</label><description><![CDATA[***Add description here***]]></description><default>0</default><options><option value="0">Null</option></options></parameter><parameter name="config_2_1" type="integer" groupName="configuration"><label>2: Clear_Pulse_Meter_Counts</label><description><![CDATA[***Add description here***]]></description><default>0</default><options><option value="0">Actual value doesn't matter. Count gets reset
-					whenever this command is received</option></options></parameter><parameter name="config_3_1" type="integer" groupName="configuration"><label>3: Trigger_Mapping</label><description><![CDATA[***Add description here***]]></description><default>0</default><options><option value="0">Disabled</option><option value="1">SIG1 triggered/untriggered sets or clears Relay1
-				</option></options></parameter><parameter name="config_4_1" type="integer" min="0" max="255" groupName="configuration"><label>4: Lower_Threshold_High</label><description><![CDATA[***Add description here***]]></description><default>187</default><options><option value="187">Default (0xBB)</option></options></parameter><parameter name="config_5_1" type="integer" min="0" max="255" groupName="configuration"><label>5: Lower_Threshold_Low</label><description><![CDATA[***Add description here***]]></description><default>171</default><options><option value="171">Default (0xAB)</option></options></parameter><parameter name="config_6_1" type="integer" min="0" max="255" groupName="configuration"><label>6: Upper_Threshold_High</label><description><![CDATA[***Add description here***]]></description><default>255</default><options><option value="255">Default (0xFF)</option></options></parameter><parameter name="config_7_1" type="integer" min="0" max="255" groupName="configuration"><label>7: Upper_Threshold_Low</label><description><![CDATA[***Add description here***]]></description><default>254</default><options><option value="254">Default (0xFE)</option></options></parameter><parameter name="config_8_1" type="integer" groupName="configuration"><label>8: Trigger_Level_And_Input_Threshold</label><description><![CDATA[***Add description here***]]></description><default>3</default><options><option value="0">TriggerLevel ANALOG and Triggered when input falls
-					OUTSIDE of thresholds</option><option value="1">TriggerLevel ANALOG and Triggered when input falls
-					BETWEEN thresholds</option><option value="2">TriggerLevel DIGITAL and Triggered when input
-					falls OUTSIDE of thresholds</option><option value="3">TriggerLevel DIGITAL and Triggered when input
-					falls BETWEEN thresholds (Default)</option></options></parameter><parameter name="config_9_1" type="integer" min="0" max="255" groupName="configuration"><label>9: Multilevel_AutoReport_Interval</label><description><![CDATA[***Add description here***]]></description><default>3</default><options><option value="0">Disable Automatic Reports</option><option value="3">Enable Reports every 30 seconds (Default)</option></options></parameter><parameter name="config_10_1" type="integer" groupName="configuration"><label>10: Not_Used_2</label><description><![CDATA[***Add description here***]]></description><default>0</default><options><option value="0">Null</option></options></parameter><parameter name="config_11_1" type="integer" min="0" max="255" groupName="configuration"><label>11: Momentary_Relay1_Duration</label><description><![CDATA[***Add description here***]]></description><default>0</default><options><option value="0">Disabled (Default)</option><option value="5">500 milliseconds</option></options></parameter><parameter name="group_1" type="integer" multiple="true" groupName="association"><label>Binary input Set Group</label><description><![CDATA[When the input is triggered or untriggered, the MIMOlite will automatically send a Basic Set command to turn on or off the device(s) associated with this group]]></description><multipleLimit>2</multipleLimit></parameter><parameter name="group_2" type="integer" multiple="true" groupName="association"><label>MultiLevel Sensor report</label><description><![CDATA[The MIMOlite will periodically send a MultiLevel Sensor report indicating the input’s analog voltage level.]]></description><multipleLimit>2</multipleLimit></parameter><parameter name="group_3" type="integer" multiple="true" groupName="association"><label>Power Alarm</label><description><![CDATA[If a power dropout occurs, the MIMOlite will send an Alarm Command Class report (if there is enough available residual power)]]></description><multipleLimit>2</multipleLimit></parameter><parameter name="group_4" type="integer" multiple="true" groupName="association"><label>Binary Sensor report</label><description><![CDATA[When the input is triggered or untriggered, the MIMOlite will automatically send a Binary Sensor report to this group’s associated device(s).]]></description><multipleLimit>2</multipleLimit></parameter><parameter name="group_5" type="integer" multiple="true" groupName="association"><label>Pulse Meter Sensor report</label><description><![CDATA[Pulse meter counts will be sent to this group’s associated device(s). This will be sent periodically at the same intervals as Association Group 2, MLS Report except that if the pulse meter count is unchanged the report will not be sent.]]]></description><multipleLimit>2</multipleLimit></parameter><!-- Remove the wakeup if this is not a battery device --><parameter name="wakeup_interval" type="integer" groupName="wakeup"><label>Wakeup Period</label><description>Set the wakeup period in seconds</description></parameter><parameter name="wakeup_node" type="integer" groupName="wakeup" readOnly="true"><label>Wakeup Node</label><description>The node to which wakeup messages will be sent</description></parameter></config-description></thing-type></thing:thing-descriptions>
+			<br><h1>Device Overview</h1><p>Brief description here</p><h1>Inclusion and Exclusion</h1><p>To include the device into the network...</p><p>To exclude the device from the network...</p>]]></description>
+		<channels><!-- The following is a random selection of channels - it must 
+				be changed! -->
+			<channel id="brightness-1" typeId="brightness">
+				<label>Dimmer 1</label>
+				<properties>
+					<property name="binding:*:HSBType">COLOR;colorHue=true</property>
+					<property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property>
+					<property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property>
+					<property name="name=binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<label>Switch 1</label>
+				<properties>
+					<property name="binding:*:HSBType">COLOR;colorHue=true</property>
+					<property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property>
+					<property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+					<property name="binding:*:DecimalType">METER;meterScale=E_W</property>
+				</properties>
+			</channel><!-- Remove if this is not a battery device -->
+			<channel id="battery-level" typeId="system.battery-level">
+				<properties>
+					<property name="commandClass">BATTERY</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">FortrezZ</property>
+			<property name="model">MIMOlite</property>
+			<property name="manufacturerId">0084</property>
+			<property name="manufacturerRef">0453:010E,0453:010F,0453:0110</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
+			</parameter-group>
+			<parameter name="config_1_1" type="integer" groupName="configuration">
+				<label>1: Not_Used_1</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Null</option>
+				</options>
+			</parameter>
+			<parameter name="config_2_1" type="integer" groupName="configuration">
+				<label>2: Clear_Pulse_Meter_Counts</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Actual value doesn't matter. Count gets reset
+						whenever this command is received</option>
+				</options>
+			</parameter>
+			<parameter name="config_3_1" type="integer" groupName="configuration">
+				<label>3: Trigger_Mapping</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Disabled</option>
+					<option value="1">SIG1 triggered/untriggered sets or clears
+						Relay1
+					</option>
+				</options>
+			</parameter>
+			<parameter name="config_4_1" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>4: Lower_Threshold_High</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>187</default>
+				<options>
+					<option value="187">Default (0xBB)</option>
+				</options>
+			</parameter>
+			<parameter name="config_5_1" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>5: Lower_Threshold_Low</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>171</default>
+				<options>
+					<option value="171">Default (0xAB)</option>
+				</options>
+			</parameter>
+			<parameter name="config_6_1" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>6: Upper_Threshold_High</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>255</default>
+				<options>
+					<option value="255">Default (0xFF)</option>
+				</options>
+			</parameter>
+			<parameter name="config_7_1" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>7: Upper_Threshold_Low</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>254</default>
+				<options>
+					<option value="254">Default (0xFE)</option>
+				</options>
+			</parameter>
+			<parameter name="config_8_1" type="integer" groupName="configuration">
+				<label>8: Trigger_Level_And_Input_Threshold</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>3</default>
+				<options>
+					<option value="0">TriggerLevel ANALOG and Triggered when input
+						falls
+						OUTSIDE of thresholds</option>
+					<option value="1">TriggerLevel ANALOG and Triggered when input
+						falls
+						BETWEEN thresholds</option>
+					<option value="2">TriggerLevel DIGITAL and Triggered when input
+						falls OUTSIDE of thresholds</option>
+					<option value="3">TriggerLevel DIGITAL and Triggered when input
+						falls BETWEEN thresholds (Default)</option>
+				</options>
+			</parameter>
+			<parameter name="config_9_1" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>9: Multilevel_AutoReport_Interval</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>3</default>
+				<options>
+					<option value="0">Disable Automatic Reports</option>
+					<option value="3">Enable Reports every 30 seconds (Default)</option>
+				</options>
+			</parameter>
+			<parameter name="config_10_1" type="integer" groupName="configuration">
+				<label>10: Not_Used_2</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Null</option>
+				</options>
+			</parameter>
+			<parameter name="config_11_1" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>11: Momentary_Relay1_Duration</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Disabled (Default)</option>
+					<option value="5">500 milliseconds</option>
+				</options>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Binary input Set Group</label>
+				<description><![CDATA[When the input is triggered or untriggered, the MIMOlite will automatically send a Basic Set command to turn on or off the device(s) associated with this group]]></description>
+				<multipleLimit>2</multipleLimit>
+			</parameter>
+			<parameter name="group_2" type="integer" multiple="true"
+				groupName="association">
+				<label>MultiLevel Sensor report</label>
+				<description><![CDATA[The MIMOlite will periodically send a MultiLevel Sensor report indicating the input’s analog voltage level.]]></description>
+				<multipleLimit>2</multipleLimit>
+			</parameter>
+			<parameter name="group_3" type="integer" multiple="true"
+				groupName="association">
+				<label>Power Alarm</label>
+				<description><![CDATA[If a power dropout occurs, the MIMOlite will send an Alarm Command Class report (if there is enough available residual power)]]></description>
+				<multipleLimit>2</multipleLimit>
+			</parameter>
+			<parameter name="group_4" type="integer" multiple="true"
+				groupName="association">
+				<label>Binary Sensor report</label>
+				<description><![CDATA[When the input is triggered or untriggered, the MIMOlite will automatically send a Binary Sensor report to this group’s associated device(s).]]></description>
+				<multipleLimit>2</multipleLimit>
+			</parameter>
+			<parameter name="group_5" type="integer" multiple="true"
+				groupName="association">
+				<label>Pulse Meter Sensor report</label>
+				<description><![CDATA[Pulse meter counts will be sent to this group’s associated device(s). This will be sent periodically at the same intervals as Association Group 2, MLS Report except that if the pulse meter count is unchanged the report will not be sent.]]]></description>
+				<multipleLimit>2</multipleLimit>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+</thing:thing-descriptions>

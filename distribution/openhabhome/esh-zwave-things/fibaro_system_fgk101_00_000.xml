@@ -1,16 +1,116 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="fibarosystem_fgk101_00_000"><label>Fibaro System FGK101</label><description><![CDATA[Door Opening Sensor<br><h1>Device Overview</h1><p>Brief description here</p><h1>Inclusion and Exclusion</h1><p>To include the device into the network...</p><p>To exclude the device from the network...</p>]]></description><channels><!-- The following is a random selection of channels - it must be changed! --><channel id="brightness-1" typeId="brightness"><label>Dimmer 1</label><properties><property name="binding:*:HSBType">COLOR;colorHue=true</property><property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property><property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property><property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property><property name="name=binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property></properties></channel><channel id="switch-1" typeId="switch"><label>Switch 1</label><properties><property name="binding:*:HSBType">COLOR;colorHue=true</property><property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property><property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property><property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property><property name="name=binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property></properties></channel><!-- Remove if this is not a battery device --><channel id="battery-level" typeId="system.battery-level"><properties><property name="commandClass">BATTERY</property></properties></channel></channels><properties><property name="vendor">Fibaro System</property><property name="model">FGK101</property><property name="manufacturerId">010F</property><property name="manufacturerRef">0700:1000,0700:3000</property><property name="commandClass:ASSOCIATION:default">3</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label></parameter-group><!-- Remove if this is not a battery device --><parameter-group name="wakeup"><context>sleep</context><label>Wakeup Configuration</label></parameter-group><parameter name="config_1_2" type="integer" groupName="configuration"><label>1: IN1 Alarm Cancellation Delay</label><description><![CDATA[Additional delay
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="fibarosystem_fgk101_00_000">
+		<label>Fibaro System FGK101</label>
+		<description><![CDATA[Door Opening Sensor<br><h1>Device Overview</h1><p>Brief description here</p><h1>Inclusion and Exclusion</h1><p>To include the device into the network...</p><p>To exclude the device from the network...</p>]]></description>
+		<channels><!-- The following is a random selection of channels - it must 
+				be changed! -->
+			<channel id="brightness-1" typeId="brightness">
+				<label>Dimmer 1</label>
+				<properties>
+					<property name="binding:*:HSBType">COLOR;colorHue=true</property>
+					<property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property>
+					<property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property>
+					<property name="name=binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<label>Switch 1</label>
+				<properties>
+					<property name="binding:*:HSBType">COLOR;colorHue=true</property>
+					<property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property>
+					<property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+					<property name="binding:*:DecimalType">METER;meterScale=E_W</property>
+				</properties>
+			</channel><!-- Remove if this is not a battery device -->
+			<channel id="battery-level" typeId="system.battery-level">
+				<properties>
+					<property name="commandClass">BATTERY</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">Fibaro System</property>
+			<property name="model">FGK101</property>
+			<property name="manufacturerId">010F</property>
+			<property name="manufacturerRef">0700:1000,0700:3000</property>
+			<property name="DefaultAssociations">3</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
+			</parameter-group>
+			<parameter name="config_1_2" type="integer" groupName="configuration">
+				<label>1: IN1 Alarm Cancellation Delay</label>
+				<description><![CDATA[Additional delay
 				after an alarm from input IN1 has ceased. The parameter allows you
 				to specify additional time, after which the input no. 1 alarm is
 				cancelled once its violation has ceased.
-			]]></description><default>0</default></parameter><parameter name="config_2_1" type="integer" groupName="configuration"><label>2: Status change signalled by LED</label><description><![CDATA[]]></description><default>1</default><options><option value="0">LED turned Off</option><option value="1">LED turned On</option></options></parameter><parameter name="config_3_1" type="integer" groupName="configuration"><label>3: Type of input no. 1</label><description><![CDATA[Type of input no. 1, what the input 1 will report if
+			]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_2_1" type="integer" groupName="configuration">
+				<label>2: Status change signalled by LED</label>
+				<description><![CDATA[]]>
+				</description>
+				<default>1</default>
+				<options>
+					<option value="0">LED turned Off</option>
+					<option value="1">LED turned On</option>
+				</options>
+			</parameter>
+			<parameter name="config_3_1" type="integer" groupName="configuration">
+				<label>3: Type of input no. 1</label>
+				<description><![CDATA[Type of input no. 1, what the input 1 will report if
 				no contact is made
-			]]></description><default>1</default><options><option value="0">Normally Open</option><option value="1">Normally Closed</option><option value="2">Monostable</option><option value="3">Bistable</option></options></parameter><parameter name="config_5_1" type="integer" groupName="configuration"><label>5: Type of transmitted control frame for association
-				group 1
-			</label><description><![CDATA[Type of transmitted control frame for association
+			]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">Normally Open</option>
+					<option value="1">Normally Closed</option>
+					<option value="2">Monostable</option>
+					<option value="3">Bistable</option>
+				</options>
+			</parameter>
+			<parameter name="config_5_1" type="integer" groupName="configuration">
+				<label>5: Type of transmitted control frame for association
+					group 1
+				</label>
+				<description><![CDATA[Type of transmitted control frame for association
 				group 1, activated via input IN1. The parameter allows to specify
 				the type of alarm frame or to force transmission of control commands
 				(BASIC_SET)
-			]]></description><default>-1</default><options><option value="0">ALARM GENERIC</option><option value="1">ALARM SMOKE</option><option value="2">ALARM CO</option><option value="3">ALARM CO2</option><option value="4">ALARM HEAT</option><option value="5">ALARM WATER</option><option value="-1">BASIC_SET</option></options></parameter><parameter name="config_7_1" type="integer" min="1" max="255" groupName="configuration"><label>7: Forced Level of Dimming group 1</label><description><![CDATA[Value of the parameter specifying the forced level of
+			]]></description>
+				<default>-1</default>
+				<options>
+					<option value="0">ALARM GENERIC</option>
+					<option value="1">ALARM SMOKE</option>
+					<option value="2">ALARM CO</option>
+					<option value="3">ALARM CO2</option>
+					<option value="4">ALARM HEAT</option>
+					<option value="5">ALARM WATER</option>
+					<option value="-1">BASIC_SET</option>
+				</options>
+			</parameter>
+			<parameter name="config_7_1" type="integer" min="1" max="255"
+				groupName="configuration">
+				<label>7: Forced Level of Dimming group 1</label>
+				<description><![CDATA[Value of the parameter specifying the forced level of
 				dimming / opening sun blinds when comes "switch on" / "open" command
 				to devices from association group no. 1.
 				In the case of alarm frames
@@ -26,15 +126,30 @@
 				then reactivated using command 255, it
 				will automatically be set to
 				the previous condition, i.e. 30%.
-				]]></description><default>255</default></parameter><parameter name="config_9_1" type="integer" groupName="configuration"><label>9: Deactivate transmission of frame cancelling alarm
-			</label><description><![CDATA[Deactivating transmission of the frame cancelling the
+				]]></description>
+				<default>255</default>
+			</parameter>
+			<parameter name="config_9_1" type="integer" groupName="configuration">
+				<label>9: Deactivate transmission of frame cancelling alarm
+				</label>
+				<description><![CDATA[Deactivating transmission of the frame cancelling the
 				alarm or the control frame deactivating the device (Basic). It
 				allows for disabling the deactivation function or the alarm
 				cancellation function for devices associated with the appropriate
 				input of the Fibaro Sensor.<BR/><B>NOTE:</B> Information concerning alarm
 				violation or activation commands for devices from association groups
 				are always sent.
-			]]></description><default>0</default><options><option value="0">Groups 1 and 2 sent</option><option value="1">Group 1 sent, Group 2 not sent.</option><option value="2">Group 2 sent, Group 1 not sent.</option></options></parameter><parameter name="config_12_1" type="integer" groupName="configuration"><label>12: Insensitiveness to temperature changes.</label><description><![CDATA[This is the maximum acceptable difference between the last reported temperature and the current temperature taken from the sensor. If the temperatures differ by the set value or more, then a report with the current temperature value is sent to the device assigned to association group no. 3. Intervals between taking readings from sensors are specified by parameter no. 10.
+			]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Groups 1 and 2 sent</option>
+					<option value="1">Group 1 sent, Group 2 not sent.</option>
+					<option value="2">Group 2 sent, Group 1 not sent.</option>
+				</options>
+			</parameter>
+			<parameter name="config_12_1" type="integer" groupName="configuration">
+				<label>12: Insensitiveness to temperature changes.</label>
+				<description><![CDATA[This is the maximum acceptable difference between the last reported temperature and the current temperature taken from the sensor. If the temperatures differ by the set value or more, then a report with the current temperature value is sent to the device assigned to association group no. 3. Intervals between taking readings from sensors are specified by parameter no. 10.
                           Possible parameter settings: 0 - 255 [0oC to 16oC] [0 oF - 28.8oF]<BR/>
                           In order to set the appropriate value of the parameter, the following formula should be used:<BR/>
                           x = delta T x 16 - for Celsius<BR/>
@@ -43,21 +158,73 @@
                           delta T - maximum acceptable temperature gradient in Celsius or Fahrenheit<BR/>
                           If the value is set to 0, then information about the temperature will be sent every time, immediately once the readings have been taken from the sensor.
                    
-			]]></description><default>8</default></parameter><parameter name="config_13_1" type="integer" groupName="configuration"><label>13: Transmitting the alarm or control frame broadcast
-				mode
-			</label><description><![CDATA[Transmitting the alarm or control frame in
+			]]></description>
+				<default>8</default>
+			</parameter>
+			<parameter name="config_13_1" type="integer" groupName="configuration">
+				<label>13: Transmitting the alarm or control frame broadcast
+					mode
+				</label>
+				<description><![CDATA[Transmitting the alarm or control frame in
 				"broadcast" mode (i.e. to all devices within range), information
 				sent in this mode is not repeated by the mesh network.<BR/>
 				<B>NOTE:</BR> If the broadcast mode of information transmission is activated for a given
 				channel, then transmission of information in singlecast mode to
 				devices assigned to the association group of this channel is
 				deactivated.
-			]]></description><default>0</default><options><option value="0">IN1 and IN2 Broadcast inactive</option><option value="1">IN1 broadcast mode active, Sensor 2 broadcast mode
-					inactive
-				</option><option value="2">IN1 broadcast mode inactive, Sensor 2 broadcast
-					mode active
-				</option><option value="3">INI and IN2 broadcast mode active</option></options></parameter><parameter name="config_14_1" type="integer" groupName="configuration"><label>14: Scene activation</label><description><![CDATA[Enable/Disable scene functionality. The device offers
+			]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">IN1 and IN2 Broadcast inactive</option>
+					<option value="1">IN1 broadcast mode active, Sensor 2 broadcast
+						mode
+						inactive
+					</option>
+					<option value="2">IN1 broadcast mode inactive, Sensor 2
+						broadcast
+						mode active
+					</option>
+					<option value="3">INI and IN2 broadcast mode active</option>
+				</options>
+			</parameter>
+			<parameter name="config_14_1" type="integer" groupName="configuration">
+				<label>14: Scene activation</label>
+				<description><![CDATA[Enable/Disable scene functionality. The device offers
 				the possibility of sending commands compatible with Command class
 				scene activation. Information is sent to devices assigned to
 				association group no. 3.
-			]]></description><default>0</default><options><option value="0">Disabled</option><option value="1">Enabled</option></options></parameter><parameter name="group_1" type="integer" multiple="true" groupName="association"><label>Input IN1</label><description><![CDATA[***Add description here***]]></description><multipleLimit>5</multipleLimit></parameter><parameter name="group_2" type="integer" multiple="true" groupName="association"><label>TMP Button</label><description><![CDATA[***Add description here***]]></description><multipleLimit>5</multipleLimit></parameter><parameter name="group_3" type="integer" groupName="association"><label>Condition</label><description><![CDATA[***Add description here***]]></description></parameter><!-- Remove the wakeup if this is not a battery device --><parameter name="wakeup_interval" type="integer" groupName="wakeup"><label>Wakeup Period</label><description>Set the wakeup period in seconds</description></parameter><parameter name="wakeup_node" type="integer" groupName="wakeup" readOnly="true"><label>Wakeup Node</label><description>The node to which wakeup messages will be sent</description></parameter></config-description></thing-type></thing:thing-descriptions>
+			]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Disabled</option>
+					<option value="1">Enabled</option>
+				</options>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Input IN1</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+			<parameter name="group_2" type="integer" multiple="true"
+				groupName="association">
+				<label>TMP Button</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+			<parameter name="group_3" type="integer" groupName="association">
+				<label>Condition</label>
+				<description><![CDATA[***Add description here***]]></description>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+</thing:thing-descriptions>
