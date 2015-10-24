@@ -15,7 +15,7 @@
 					<property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property>
 					<property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property>
 					<property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property>
-					<property name="name=binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
 				</properties>
 			</channel>
 			<channel id="switch-1" typeId="switch">
@@ -25,12 +25,43 @@
 					<property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property>
 					<property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property>
 					<property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property>
-					<property name="name=binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+					<property name="binding:*:DecimalType">METER;meterScale=E_W</property>
 				</properties>
 			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
+				</properties>
+			</channel><!-- More samples... -->
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="binding:Command:OnOffType">SWITCH_BINARY,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="power_watts-1" typeId="power_watts">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_W</property>
+				</properties>
+			</channel>
+			<channel id="power_current-1" typeId="power_current">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_A</property>
+				</properties>
+			</channel>
+			<channel id="power_voltage-1" typeId="power_voltage">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_V</property>
+				</properties>
+			</channel>
+			<channel id="power_powerfactor-1" typeId="power_powerfactor">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_Power_Factor</property>
+				</properties>
+			</channel>
+			<channel id="power_energy-1" typeId="power_energy">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_KWh</property>
 				</properties>
 			</channel>
 		</channels>
@@ -53,6 +84,62 @@
 				<context>sleep</context>
 				<label>Wakeup Configuration</label>
 			</parameter-group>
+			<parameter name="config_1_1" type="integer" min="0" max="256"
+				groupName="configuration">
+				<label>1: Reset to factory settings</label>
+				<description><![CDATA[Set all configuration values to default values (factory settings).]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_4_1" type="integer" groupName="configuration">
+				<label>4: Enable dimming</label>
+				<description><![CDATA[This parameter is used to enable the dimming option of the product. When disabled the dimming and fading routine are disabled.]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Disable</option>
+					<option value="1">Enable</option>
+				</options>
+			</parameter>
+			<parameter name="config_6_2" type="integer" min="25" max="150"
+				groupName="configuration">
+				<label>6: Maximum powerload</label>
+				<description><![CDATA[The maximum powerload in watts when light is turned on, when measured higher then this value the Plugin Dimmer is automatically stops with dimming or is turned off.]]></description>
+				<default>125</default>
+			</parameter>
+			<parameter name="config_7_1" type="integer" groupName="configuration">
+				<label>7: Dimming speed</label>
+				<description><![CDATA[The speed of dimming when activated (manual and RF). Dim speed is 1% per value (* 10 ms)]]></description>
+				<default>3</default>
+			</parameter>
+			<parameter name="config_8_1" type="integer" groupName="configuration">
+				<label>8: Fading up speed</label>
+				<description><![CDATA[The speed of fading up when activated (manual and RF). Fade speed is 1% per value (* 10 ms)]]></description>
+				<default>1</default>
+			</parameter>
+			<parameter name="config_11_1" type="integer" groupName="configuration">
+				<label>11: Auto meter report: percentage</label>
+				<description><![CDATA[A percentage that an energy value must be different compared to a previous sent value before an unsolicited meter report is sent. Minimum value = 1%  Maximum value = 100%]]></description>
+				<default>1</default>
+			</parameter>
+			<parameter name="config_12_1" type="integer" groupName="configuration">
+				<label>12: Auto meter report: watt</label>
+				<description><![CDATA[A watt value that an energy value must be different compared to a previous sent value before an unsolicited meter report is sent. Minimum value = 5 watt  Maximum value = 255 watt]]></description>
+				<default>5</default>
+			</parameter>
+			<parameter name="config_13_1" type="integer" groupName="configuration">
+				<label>13: Auto meter report: time</label>
+				<description><![CDATA[A time value that has to be passed compared to a previous sent value before a unsolicited meter report is sent. Minimum value = 10 seconds  Maximum value = 255 seconds]]></description>
+				<default>10</default>
+			</parameter>
+			<parameter name="config_14_1" type="integer" groupName="configuration">
+				<label>14: Last known status</label>
+				<description><![CDATA[What to do with lamp status when power applied. If 0x00: Always switch light off when power applied. If > 0x00: Switch lamp on/off depending on last known lampstatus before power was disconnected.]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_15_1" type="integer" groupName="configuration">
+				<label>15: Fading down speed</label>
+				<description><![CDATA[The speed of fading down when activated (manual and RF). Fade speed is 1% per value (* 10 ms)]]></description>
+				<default>1</default>
+			</parameter>
 			<parameter name="group_1" type="integer" multiple="true"
 				groupName="association">
 				<label>Group 1</label>

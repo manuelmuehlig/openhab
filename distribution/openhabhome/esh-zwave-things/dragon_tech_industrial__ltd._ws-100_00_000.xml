@@ -15,7 +15,7 @@
 					<property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property>
 					<property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property>
 					<property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property>
-					<property name="name=binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
 				</properties>
 			</channel>
 			<channel id="switch-1" typeId="switch">
@@ -25,12 +25,43 @@
 					<property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property>
 					<property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property>
 					<property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property>
-					<property name="name=binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+					<property name="binding:*:DecimalType">METER;meterScale=E_W</property>
 				</properties>
 			</channel><!-- Remove if this is not a battery device -->
 			<channel id="battery-level" typeId="system.battery-level">
 				<properties>
 					<property name="commandClass">BATTERY</property>
+				</properties>
+			</channel><!-- More samples... -->
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="binding:Command:OnOffType">SWITCH_BINARY,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="power_watts-1" typeId="power_watts">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_W</property>
+				</properties>
+			</channel>
+			<channel id="power_current-1" typeId="power_current">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_A</property>
+				</properties>
+			</channel>
+			<channel id="power_voltage-1" typeId="power_voltage">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_V</property>
+				</properties>
+			</channel>
+			<channel id="power_powerfactor-1" typeId="power_powerfactor">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_Power_Factor</property>
+				</properties>
+			</channel>
+			<channel id="power_energy-1" typeId="power_energy">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_KWh</property>
 				</properties>
 			</channel>
 		</channels>
@@ -39,7 +70,7 @@
 			<property name="model">WS-100</property>
 			<property name="manufacturerId">0184</property>
 			<property name="manufacturerRef">4447:3033</property>
-			<property name="commandClass:ASSOCIATION:default">1</property>
+			<property name="DefaultAssociations">1</property>
 		</properties>
 		<config-description>
 			<parameter-group name="configuration">
