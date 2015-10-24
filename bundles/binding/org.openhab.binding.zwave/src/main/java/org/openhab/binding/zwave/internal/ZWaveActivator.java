@@ -34,7 +34,6 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.List;
 
-
 /**
  * Extension of the default OSGi bundle activator.
  * 
@@ -43,13 +42,15 @@ import java.util.List;
  */
 public final class ZWaveActivator implements BundleActivator {
 
-	private static Logger logger = LoggerFactory.getLogger(ZWaveActivator.class); 
-	
+	private static Logger logger = LoggerFactory.getLogger(ZWaveActivator.class);
+
 	private static BundleContext context;
-	
+
 	/**
 	 * Called whenever the OSGi framework starts our bundle
-	 * @param bc the bundle's execution context within the framework
+	 * 
+	 * @param bc
+	 *            the bundle's execution context within the framework
 	 */
 	public void start(BundleContext bc) throws Exception {
 		context = bc;
@@ -134,7 +135,7 @@ public final class ZWaveActivator implements BundleActivator {
 				outstring += "<property name=\"binding:*:PercentType\">SWITCH_MULTILEVEL,BASIC</property>";
 				outstring += "<property name=\"binding:Command:OnOffType\">SWITCH_MULTILEVEL</property>";
 				outstring += "<property name=\"binding:*:OnOffType\">SWITCH_BINARY:1,BASIC:1</property>";
-                outstring += "<property name=\"name=binding:*:OnOffType\">SWITCH_BINARY:2,BASIC:2</property>";
+                outstring += "<property name=\"binding:*:OnOffType\">SWITCH_BINARY:2,BASIC:2</property>";
 				outstring += "</properties>";
 				outstring += "</channel>";
 
@@ -155,6 +156,38 @@ public final class ZWaveActivator implements BundleActivator {
 				outstring += "<channel id=\"battery-level\" typeId=\"system.battery-level\">";
 				outstring += "<properties>";
 				outstring += "<property name=\"commandClass\">BATTERY</property>";
+				outstring += "</properties>";
+				outstring += "</channel>";
+				
+				outstring += "<!-- More samples... -->";
+				outstring += "<channel id=\"switch-1\" typeId=\"switch\">";
+				outstring += "<properties>";
+				outstring += "<property name=\"binding:Command:OnOffType\">SWITCH_BINARY,BASIC</property>";
+				outstring += "</properties>";
+				outstring += "</channel>";
+				outstring += "<channel id=\"power_watts-1\" typeId=\"power_watts\">";
+				outstring += "<properties>";
+				outstring += "<property name=\"binding:*:DecimalType\">METER;meterScale=E_W</property>";
+				outstring += "</properties>";
+				outstring += "</channel>";
+				outstring += "<channel id=\"power_current-1\" typeId=\"power_current\">";
+				outstring += "<properties>";
+				outstring += "<property name=\"binding:*:DecimalType\">METER;meterScale=E_A</property>";
+				outstring += "</properties>";
+				outstring += "</channel>";
+				outstring += "<channel id=\"power_voltage-1\" typeId=\"power_voltage\">";
+				outstring += "<properties>";
+				outstring += "<property name=\"binding:*:DecimalType\">METER;meterScale=E_V</property>";
+				outstring += "</properties>";
+				outstring += "</channel>";
+				outstring += "<channel id=\"power_powerfactor-1\" typeId=\"power_powerfactor\">";
+				outstring += "<properties>";
+				outstring += "<property name=\"binding:*:DecimalType\">METER;meterScale=E_Power_Factor</property>";
+				outstring += "</properties>";
+				outstring += "</channel>";
+				outstring += "<channel id=\"power_energy-1\" typeId=\"power_energy\">";
+				outstring += "<properties>";
+				outstring += "<property name=\"binding:*:DecimalType\">METER;meterScale=E_KWh</property>";
 				outstring += "</properties>";
 				outstring += "</channel>";
 
@@ -464,15 +497,18 @@ public final class ZWaveActivator implements BundleActivator {
 
 	/**
 	 * Called whenever the OSGi framework stops our bundle
-	 * @param bc the bundle's execution context within the framework
+	 * 
+	 * @param bc
+	 *            the bundle's execution context within the framework
 	 */
 	public void stop(BundleContext bc) throws Exception {
 		context = null;
 		logger.debug("Z-Wave binding stopped.");
 	}
-	
+
 	/**
 	 * Returns the bundle context of this bundle
+	 * 
 	 * @return the bundle context
 	 */
 	public static BundleContext getContext() {
@@ -481,6 +517,7 @@ public final class ZWaveActivator implements BundleActivator {
 
 	/**
 	 * Returns the current version of the bundle.
+	 * 
 	 * @return the current version of the bundle.
 	 */
 	public static Version getVersion() {
