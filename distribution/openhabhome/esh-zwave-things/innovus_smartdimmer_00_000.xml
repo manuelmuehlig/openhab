@@ -1,1 +1,182 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="innovus_smartdimmer_00_000"><label>INNOVUS SmartDimmer</label><description><![CDATA[RAone SmartDimmer<br><h1>Device Overview</h1><p>Brief description here</p><h1>Inclusion and Exclusion</h1><p>To include the device into the network...</p><p>To exclude the device from the network...</p>]]></description><channels><!-- The following is a random selection of channels - it must be changed! --><channel id="brightness-1" typeId="brightness"><label>Dimmer 1</label><properties><property name="binding:*:HSBType">COLOR;colorHue=true</property><property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property><property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property><property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property><property name="binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property></properties></channel><channel id="switch-1" typeId="switch"><label>Switch 1</label><properties><property name="binding:*:HSBType">COLOR;colorHue=true</property><property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property><property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property><property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property><property name="binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property><property name="binding:*:DecimalType">METER;meterScale=E_W</property></properties></channel><!-- Remove if this is not a battery device --><channel id="battery-level" typeId="system.battery-level"><properties><property name="commandClass">BATTERY</property></properties></channel><!-- More samples... --><channel id="switch-1" typeId="switch"><properties><property name="binding:Command:OnOffType">SWITCH_BINARY,BASIC</property></properties></channel><channel id="power_watts-1" typeId="power_watts"><properties><property name="binding:*:DecimalType">METER;meterScale=E_W</property></properties></channel><channel id="power_current-1" typeId="power_current"><properties><property name="binding:*:DecimalType">METER;meterScale=E_A</property></properties></channel><channel id="power_voltage-1" typeId="power_voltage"><properties><property name="binding:*:DecimalType">METER;meterScale=E_V</property></properties></channel><channel id="power_powerfactor-1" typeId="power_powerfactor"><properties><property name="binding:*:DecimalType">METER;meterScale=E_Power_Factor</property></properties></channel><channel id="power_energy-1" typeId="power_energy"><properties><property name="binding:*:DecimalType">METER;meterScale=E_KWh</property></properties></channel></channels><properties><property name="vendor">INNOVUS</property><property name="model">SmartDimmer</property><property name="manufacturerId">0077</property><property name="manufacturerRef">0011:0001</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label></parameter-group><!-- Remove if this is not a battery device --><parameter-group name="wakeup"><context>sleep</context><label>Wakeup Configuration</label></parameter-group><parameter name="config_0_1" type="integer" min="0" max="99" groupName="configuration"><label>0: Maximum dim level</label><description><![CDATA[Maximum Level, a limit on the maximum level the dimmer can reach. Levels larger than 99 will simply be interpreted as 99 ie. no limit.]]></description><default>99</default></parameter><parameter name="config_1_1" type="integer" min="0" max="255" groupName="configuration"><label>1: Report node</label><description><![CDATA[Report Node, reports changes in level to this node id. Disabled if 0.]]></description><default>0</default></parameter><parameter name="config_2_1" type="integer" groupName="configuration"><label>2: B&O IR support</label><description><![CDATA[B&O IR support is disabled if 0 otherwise enabled.]]></description><default>1</default><options><option value="0">disabled</option><option value="1">enabled</option></options></parameter><parameter name="config_3_1" type="integer" groupName="configuration"><label>3: Dimming type</label><description><![CDATA[Dimming Type, trailing edge enabled if 0 otherwise leading edge enabled.]]></description><default>1</default><options><option value="0">Trailing edge</option><option value="1">Leading edge</option></options></parameter><parameter name="config_4_1" type="integer" min="1" max="255" groupName="configuration"><label>4: Dimming level duration</label><description><![CDATA[Default Dimming Level Duration, how long time it takes to dim one level in 0.01s.]]></description><default>8</default></parameter><parameter name="config_5_1" type="integer" min="1" max="255" groupName="configuration"><label>5: Set level duration</label><description><![CDATA[Default Set Level Duration, how long time it takes to set one level in 0.01s.]]></description><default>1</default></parameter><parameter name="config_6_1" type="integer" min="0" max="255" groupName="configuration"><label>6: Long dim duration</label><description><![CDATA[Long Dim Duration, time to use dimming to level 0 when double clicking. Format is the same as multilevel switch duration.]]></description><default>158</default></parameter><parameter name="config_7_1" type="integer" min="1" max="255" groupName="configuration"><label>7: Touch press time</label><description><![CDATA[Touch Press Time, time for presses to register as seperate and not part of a sequence, measured in 0.01s. 0 is interpreted as a 1.]]></description><default>50</default></parameter><parameter name="config_8_1" type="integer" min="0" max="255" groupName="configuration"><label>8: Touch Multiple Press Time</label><description><![CDATA[Touch Multiple Press Time, has no specific usage is this product, shouldn't be changed.]]></description><default>100</default></parameter><parameter name="config_9_1" type="integer" min="0" max="255" groupName="configuration"><label>9: Touch Hold Time</label><description><![CDATA[Touch Hold Time, time for presses to register as being held down in 0.01s. 0 is interpreted asa1.]]></description><default>40</default></parameter><parameter name="config_10_2" type="integer" min="0" max="65536" groupName="configuration"><label>10: Network Update Interval</label><description><![CDATA[Network Update Interval, time between network updates in 256 seconds. Disabled if 0.]]></description><default>168</default></parameter><parameter name="config_11_2" type="integer" min="0" max="65536" groupName="configuration"><label>11: Rediscover Interval</label><description><![CDATA[Rediscover Interval, time between rediscoveries in 256 seconds. Disabled if 0.]]></description><default>2362</default></parameter><parameter name="group_1" type="integer" multiple="true" groupName="association"><label>Dimmer</label><description><![CDATA[***Add description here***]]></description><multipleLimit>5</multipleLimit></parameter><!-- Remove the wakeup if this is not a battery device --><parameter name="wakeup_interval" type="integer" groupName="wakeup"><label>Wakeup Period</label><description>Set the wakeup period in seconds</description></parameter><parameter name="wakeup_node" type="integer" groupName="wakeup" readOnly="true"><label>Wakeup Node</label><description>The node to which wakeup messages will be sent</description></parameter></config-description></thing-type></thing:thing-descriptions>
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="innovus_smartdimmer_00_000">
+		<label>INNOVUS SmartDimmer</label>
+		<description><![CDATA[RAone SmartDimmer<br><h1>Device Overview</h1><p>Brief description here</p><h1>Inclusion and Exclusion</h1><p>To include the device into the network...</p><p>To exclude the device from the network...</p>]]></description>
+		<channels><!-- The following is a random selection of channels - it must 
+				be changed! -->
+			<channel id="brightness-1" typeId="brightness">
+				<label>Dimmer 1</label>
+				<properties>
+					<property name="binding:*:HSBType">COLOR;colorHue=true</property>
+					<property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property>
+					<property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<label>Switch 1</label>
+				<properties>
+					<property name="binding:*:HSBType">COLOR;colorHue=true</property>
+					<property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property>
+					<property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+					<property name="binding:*:DecimalType">METER;meterScale=E_W</property>
+				</properties>
+			</channel><!-- Remove if this is not a battery device -->
+			<channel id="battery-level" typeId="system.battery-level">
+				<properties>
+					<property name="commandClass">BATTERY</property>
+				</properties>
+			</channel><!-- More samples... -->
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="binding:Command:OnOffType">SWITCH_BINARY,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="power_watts-1" typeId="power_watts">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_W</property>
+				</properties>
+			</channel>
+			<channel id="power_current-1" typeId="power_current">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_A</property>
+				</properties>
+			</channel>
+			<channel id="power_voltage-1" typeId="power_voltage">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_V</property>
+				</properties>
+			</channel>
+			<channel id="power_powerfactor-1" typeId="power_powerfactor">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_Power_Factor</property>
+				</properties>
+			</channel>
+			<channel id="power_energy-1" typeId="power_energy">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_KWh</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">INNOVUS</property>
+			<property name="model">SmartDimmer</property>
+			<property name="manufacturerId">0077</property>
+			<property name="manufacturerRef">0011:0001</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
+			</parameter-group>
+			<parameter name="config_0_1" type="integer" min="0" max="99"
+				groupName="configuration">
+				<label>0: Maximum dim level</label>
+				<description><![CDATA[Maximum Level, a limit on the maximum level the dimmer can reach. Levels larger than 99 will simply be interpreted as 99 ie. no limit.]]></description>
+				<default>99</default>
+			</parameter>
+			<parameter name="config_1_1" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>1: Report node</label>
+				<description><![CDATA[Report Node, reports changes in level to this node id. Disabled if 0.]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_2_1" type="integer" groupName="configuration">
+				<label>2: B&O IR support</label>
+				<description><![CDATA[B&O IR support is disabled if 0 otherwise enabled.]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">disabled</option>
+					<option value="1">enabled</option>
+				</options>
+			</parameter>
+			<parameter name="config_3_1" type="integer" groupName="configuration">
+				<label>3: Dimming type</label>
+				<description><![CDATA[Dimming Type, trailing edge enabled if 0 otherwise leading edge enabled.]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">Trailing edge</option>
+					<option value="1">Leading edge</option>
+				</options>
+			</parameter>
+			<parameter name="config_4_1" type="integer" min="1" max="255"
+				groupName="configuration">
+				<label>4: Dimming level duration</label>
+				<description><![CDATA[Default Dimming Level Duration, how long time it takes to dim one level in 0.01s.]]></description>
+				<default>8</default>
+			</parameter>
+			<parameter name="config_5_1" type="integer" min="1" max="255"
+				groupName="configuration">
+				<label>5: Set level duration</label>
+				<description><![CDATA[Default Set Level Duration, how long time it takes to set one level in 0.01s.]]></description>
+				<default>1</default>
+			</parameter>
+			<parameter name="config_6_1" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>6: Long dim duration</label>
+				<description><![CDATA[Long Dim Duration, time to use dimming to level 0 when double clicking. Format is the same as multilevel switch duration.]]></description>
+				<default>158</default>
+			</parameter>
+			<parameter name="config_7_1" type="integer" min="1" max="255"
+				groupName="configuration">
+				<label>7: Touch press time</label>
+				<description><![CDATA[Touch Press Time, time for presses to register as seperate and not part of a sequence, measured in 0.01s. 0 is interpreted as a 1.]]></description>
+				<default>50</default>
+			</parameter>
+			<parameter name="config_8_1" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>8: Touch Multiple Press Time</label>
+				<description><![CDATA[Touch Multiple Press Time, has no specific usage is this product, shouldn't be changed.]]></description>
+				<default>100</default>
+			</parameter>
+			<parameter name="config_9_1" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>9: Touch Hold Time</label>
+				<description><![CDATA[Touch Hold Time, time for presses to register as being held down in 0.01s. 0 is interpreted asa1.]]></description>
+				<default>40</default>
+			</parameter>
+			<parameter name="config_10_2" type="integer" min="0" max="65536"
+				groupName="configuration">
+				<label>10: Network Update Interval</label>
+				<description><![CDATA[Network Update Interval, time between network updates in 256 seconds. Disabled if 0.]]></description>
+				<default>168</default>
+			</parameter>
+			<parameter name="config_11_2" type="integer" min="0" max="65536"
+				groupName="configuration">
+				<label>11: Rediscover Interval</label>
+				<description><![CDATA[Rediscover Interval, time between rediscoveries in 256 seconds. Disabled if 0.]]></description>
+				<default>2362</default>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Dimmer</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<multipleLimit>5</multipleLimit>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+</thing:thing-descriptions>

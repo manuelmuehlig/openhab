@@ -1,1 +1,202 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="wenzhoutkbcontrolsystem_tz65d_00_000"><label>Wenzhou TKB Control System TZ65D</label><description><![CDATA[Dual Paddle Wall Dimmer<br><h1>Device Overview</h1><p>Brief description here</p><h1>Inclusion and Exclusion</h1><p>To include the device into the network...</p><p>To exclude the device from the network...</p>]]></description><channels><!-- The following is a random selection of channels - it must be changed! --><channel id="brightness-1" typeId="brightness"><label>Dimmer 1</label><properties><property name="binding:*:HSBType">COLOR;colorHue=true</property><property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property><property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property><property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property><property name="binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property></properties></channel><channel id="switch-1" typeId="switch"><label>Switch 1</label><properties><property name="binding:*:HSBType">COLOR;colorHue=true</property><property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property><property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property><property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property><property name="binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property><property name="binding:*:DecimalType">METER;meterScale=E_W</property></properties></channel><!-- Remove if this is not a battery device --><channel id="battery-level" typeId="system.battery-level"><properties><property name="commandClass">BATTERY</property></properties></channel><!-- More samples... --><channel id="switch-1" typeId="switch"><properties><property name="binding:Command:OnOffType">SWITCH_BINARY,BASIC</property></properties></channel><channel id="power_watts-1" typeId="power_watts"><properties><property name="binding:*:DecimalType">METER;meterScale=E_W</property></properties></channel><channel id="power_current-1" typeId="power_current"><properties><property name="binding:*:DecimalType">METER;meterScale=E_A</property></properties></channel><channel id="power_voltage-1" typeId="power_voltage"><properties><property name="binding:*:DecimalType">METER;meterScale=E_V</property></properties></channel><channel id="power_powerfactor-1" typeId="power_powerfactor"><properties><property name="binding:*:DecimalType">METER;meterScale=E_Power_Factor</property></properties></channel><channel id="power_energy-1" typeId="power_energy"><properties><property name="binding:*:DecimalType">METER;meterScale=E_KWh</property></properties></channel></channels><properties><property name="vendor">Wenzhou TKB Control System</property><property name="model">TZ65D</property><property name="manufacturerId">0118</property><property name="manufacturerRef">0808:0808</property><property name="DefaultAssociations">4</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label></parameter-group><!-- Remove if this is not a battery device --><parameter-group name="wakeup"><context>sleep</context><label>Wakeup Configuration</label></parameter-group><parameter name="config_1_1" type="integer" groupName="configuration"><label>1: Ignore start level</label><description><![CDATA[Ignore start level when transmitting a dim command to the dimmer]]></description><default>1</default><options><option value="0">Ignore</option><option value="1">Don't ignore</option></options></parameter><parameter name="config_2_1" type="integer" groupName="configuration"><label>2: Suspend Group 4</label><description><![CDATA[Setting this parameter will disable transmitting commands to devices in association group 4]]></description><default>0</default><options><option value="0">Transmit to group 4</option><option value="1">Disable transmitting to group 4</option></options></parameter><parameter name="config_3_1" type="integer" groupName="configuration"><label>3: Blue LED light Behavior</label><description><![CDATA[Defines the behavior of the blue LED. Default is Night Light mode where LED is on when switch is off]]></description><default>0</default><options><option value="0">Led on when switch on</option><option value="1">Night light</option></options></parameter><parameter name="config_4_1" type="integer" groupName="configuration"><label>4: Invert Switch</label><description><![CDATA[To change the top of the switch to off and the botton to on]]></description><default>0</default><options><option value="0">ON on top</option><option value="1">OFF on top</option></options></parameter><parameter name="config_14_1" type="integer" groupName="configuration"><label>14: Enable Shade Control Group 2</label><description><![CDATA[Enable the control of shade devices in association group 2 when this option is activated]]></description><default>0</default><options><option value="0">Inactive</option><option value="1">Shade Control</option></options></parameter><parameter name="config_15_1" type="integer" groupName="configuration"><label>15: Enable Shade Control Group 3</label><description><![CDATA[Enable the control of shade devices in association group 3 when this option is activated]]></description><default>0</default><options><option value="0">Inactive</option><option value="1">Shade Control</option></options></parameter><parameter name="config_19_1" type="integer" groupName="configuration"><label>19: Blue LED light behavior on transmission</label><description><![CDATA[Defines the behavior of the blue LED when transmission of data]]></description><default>2</default><options><option value="0">LED does not blinks on activity</option><option value="1">LED blinks on activity all the time</option><option value="2">LED blinks on activity 1 second</option></options></parameter><parameter name="config_20_1" type="integer" min="1" max="255" groupName="configuration"><label>20: Poll Group 2 Interval (minutes)</label><description><![CDATA[Polling Interval in minutes (default 2)]]></description><default>2</default></parameter><parameter name="config_22_1" type="integer" groupName="configuration"><label>22: Poll Group 2</label><description><![CDATA[Defines if the device will poll association Group 2 at the interval defined in parameter 20]]></description><default>1</default><options><option value="0">Disabled</option><option value="1">Enabled</option></options></parameter><parameter name="group_1" type="integer" multiple="true" groupName="association"><label>Group 1</label><description><![CDATA[Left button press and hold of up/down buttons]]></description><multipleLimit>5</multipleLimit></parameter><parameter name="group_2" type="integer" multiple="true" groupName="association"><label>Group 2</label><description><![CDATA[Right button press and hold of up/down buttons]]></description><multipleLimit>5</multipleLimit></parameter><parameter name="group_3" type="integer" multiple="true" groupName="association"><label>Group 3</label><description><![CDATA[Right button double-press and hold of up/down buttons]]></description><multipleLimit>5</multipleLimit></parameter><parameter name="group_4" type="integer" multiple="true" groupName="association"><label>Group 4</label><description><![CDATA[Send Reports on switch state change]]></description><multipleLimit>5</multipleLimit></parameter><!-- Remove the wakeup if this is not a battery device --><parameter name="wakeup_interval" type="integer" groupName="wakeup"><label>Wakeup Period</label><description>Set the wakeup period in seconds</description></parameter><parameter name="wakeup_node" type="integer" groupName="wakeup" readOnly="true"><label>Wakeup Node</label><description>The node to which wakeup messages will be sent</description></parameter></config-description></thing-type></thing:thing-descriptions>
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="wenzhoutkbcontrolsystem_tz65d_00_000">
+		<label>Wenzhou TKB Control System TZ65D</label>
+		<description><![CDATA[Dual Paddle Wall Dimmer<br><h1>Device Overview</h1><p>Brief description here</p><h1>Inclusion and Exclusion</h1><p>To include the device into the network...</p><p>To exclude the device from the network...</p>]]></description>
+		<channels><!-- The following is a random selection of channels - it must 
+				be changed! -->
+			<channel id="brightness-1" typeId="brightness">
+				<label>Dimmer 1</label>
+				<properties>
+					<property name="binding:*:HSBType">COLOR;colorHue=true</property>
+					<property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property>
+					<property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<label>Switch 1</label>
+				<properties>
+					<property name="binding:*:HSBType">COLOR;colorHue=true</property>
+					<property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property>
+					<property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+					<property name="binding:*:DecimalType">METER;meterScale=E_W</property>
+				</properties>
+			</channel><!-- Remove if this is not a battery device -->
+			<channel id="battery-level" typeId="system.battery-level">
+				<properties>
+					<property name="commandClass">BATTERY</property>
+				</properties>
+			</channel><!-- More samples... -->
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="binding:Command:OnOffType">SWITCH_BINARY,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="power_watts-1" typeId="power_watts">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_W</property>
+				</properties>
+			</channel>
+			<channel id="power_current-1" typeId="power_current">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_A</property>
+				</properties>
+			</channel>
+			<channel id="power_voltage-1" typeId="power_voltage">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_V</property>
+				</properties>
+			</channel>
+			<channel id="power_powerfactor-1" typeId="power_powerfactor">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_Power_Factor</property>
+				</properties>
+			</channel>
+			<channel id="power_energy-1" typeId="power_energy">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_KWh</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">Wenzhou TKB Control System</property>
+			<property name="model">TZ65D</property>
+			<property name="manufacturerId">0118</property>
+			<property name="manufacturerRef">0808:0808</property>
+			<property name="DefaultAssociations">4</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
+			</parameter-group>
+			<parameter name="config_1_1" type="integer" groupName="configuration">
+				<label>1: Ignore start level</label>
+				<description><![CDATA[Ignore start level when transmitting a dim command to the dimmer]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">Ignore</option>
+					<option value="1">Don't ignore</option>
+				</options>
+			</parameter>
+			<parameter name="config_2_1" type="integer" groupName="configuration">
+				<label>2: Suspend Group 4</label>
+				<description><![CDATA[Setting this parameter will disable transmitting commands to devices in association group 4]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Transmit to group 4</option>
+					<option value="1">Disable transmitting to group 4</option>
+				</options>
+			</parameter>
+			<parameter name="config_3_1" type="integer" groupName="configuration">
+				<label>3: Blue LED light Behavior</label>
+				<description><![CDATA[Defines the behavior of the blue LED. Default is Night Light mode where LED is on when switch is off]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Led on when switch on</option>
+					<option value="1">Night light</option>
+				</options>
+			</parameter>
+			<parameter name="config_4_1" type="integer" groupName="configuration">
+				<label>4: Invert Switch</label>
+				<description><![CDATA[To change the top of the switch to off and the botton to on]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">ON on top</option>
+					<option value="1">OFF on top</option>
+				</options>
+			</parameter>
+			<parameter name="config_14_1" type="integer" groupName="configuration">
+				<label>14: Enable Shade Control Group 2</label>
+				<description><![CDATA[Enable the control of shade devices in association group 2 when this option is activated]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Inactive</option>
+					<option value="1">Shade Control</option>
+				</options>
+			</parameter>
+			<parameter name="config_15_1" type="integer" groupName="configuration">
+				<label>15: Enable Shade Control Group 3</label>
+				<description><![CDATA[Enable the control of shade devices in association group 3 when this option is activated]]></description>
+				<default>0</default>
+				<options>
+					<option value="0">Inactive</option>
+					<option value="1">Shade Control</option>
+				</options>
+			</parameter>
+			<parameter name="config_19_1" type="integer" groupName="configuration">
+				<label>19: Blue LED light behavior on transmission</label>
+				<description><![CDATA[Defines the behavior of the blue LED when transmission of data]]></description>
+				<default>2</default>
+				<options>
+					<option value="0">LED does not blinks on activity</option>
+					<option value="1">LED blinks on activity all the time</option>
+					<option value="2">LED blinks on activity 1 second</option>
+				</options>
+			</parameter>
+			<parameter name="config_20_1" type="integer" min="1" max="255"
+				groupName="configuration">
+				<label>20: Poll Group 2 Interval (minutes)</label>
+				<description><![CDATA[Polling Interval in minutes (default 2)]]></description>
+				<default>2</default>
+			</parameter>
+			<parameter name="config_22_1" type="integer" groupName="configuration">
+				<label>22: Poll Group 2</label>
+				<description><![CDATA[Defines if the device will poll association Group 2 at the interval defined in parameter 20]]></description>
+				<default>1</default>
+				<options>
+					<option value="0">Disabled</option>
+					<option value="1">Enabled</option>
+				</options>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Group 1</label>
+				<description><![CDATA[Left button press and hold of up/down buttons]]></description>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+			<parameter name="group_2" type="integer" multiple="true"
+				groupName="association">
+				<label>Group 2</label>
+				<description><![CDATA[Right button press and hold of up/down buttons]]></description>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+			<parameter name="group_3" type="integer" multiple="true"
+				groupName="association">
+				<label>Group 3</label>
+				<description><![CDATA[Right button double-press and hold of up/down buttons]]></description>
+				<multipleLimit>5</multipleLimit>
+			</parameter>
+			<parameter name="group_4" type="integer" multiple="true"
+				groupName="association">
+				<label>Group 4</label>
+				<description><![CDATA[Send Reports on switch state change]]></description>
+				<multipleLimit>5</multipleLimit>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+</thing:thing-descriptions>
