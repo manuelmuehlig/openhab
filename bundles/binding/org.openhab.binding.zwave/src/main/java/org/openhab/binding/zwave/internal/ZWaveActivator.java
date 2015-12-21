@@ -372,7 +372,7 @@ public final class ZWaveActivator implements BundleActivator {
 								}
 								outstring += "</options>";
 							}
-		
+							
 							outstring += "</parameter>";
 						}
 
@@ -434,7 +434,12 @@ public final class ZWaveActivator implements BundleActivator {
 							}
 							if(group.Maximum > 1) {
 								outstring += "<multipleLimit>" + group.Maximum + "</multipleLimit>";								
+							} else {
+								outstring += "<options>";
+								outstring += "<option value=\"empty\">None</option>";
+								outstring += "</options>";
 							}
+							outstring += "<default>empty</default>";
 							outstring += "</parameter>";
 						}
 					}
