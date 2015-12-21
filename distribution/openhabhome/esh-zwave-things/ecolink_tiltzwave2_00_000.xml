@@ -91,6 +91,7 @@
 				<description><![CDATA[All nodes associated with Group 1 will receive unsolicited alarm report 
 			frames, and basic report frames of ON and OFF.]]></description>
 				<multipleLimit>5</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
@@ -98,6 +99,7 @@
 				<description><![CDATA[This group is intended for any device that is controllable with a Basic 
 			Set of ON such as lights, sirens, or chimes.]]></description>
 				<multipleLimit>5</multipleLimit>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

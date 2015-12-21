@@ -112,6 +112,10 @@
 			<parameter name="group_1" type="integer" groupName="association">
 				<label>Reports</label>
 				<description><![CDATA[When the power consumption of load vary over 5%, the PAN11 will send a Meter Report. When "on" or "off" state has been changed, it will send Binary Switch Report.]]></description>
+				<options>
+					<option value="empty">None</option>
+				</options>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

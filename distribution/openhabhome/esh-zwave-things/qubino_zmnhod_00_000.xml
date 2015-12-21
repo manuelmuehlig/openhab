@@ -263,30 +263,38 @@
 			<parameter name="group_1" type="integer" groupName="association">
 				<label>Group 1</label>
 				<description><![CDATA[Reserved for main controller]]></description>
+				<options>
+					<option value="empty">None</option>
+				</options>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Group 2</label>
 				<description><![CDATA[Basic on/off (triggered at change of the input I1 state and reflecting its state)]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_3" type="integer" multiple="true"
 				groupName="association">
 				<label>Group 3</label>
 				<description><![CDATA[Basic on/off (triggered at change of the input I2 state and reflecting its state)]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_4" type="integer" multiple="true"
 				groupName="association">
 				<label>Group 4</label>
 				<description><![CDATA[Multilevel (triggered at changes of value of the Flush shutter DC position)]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_5" type="integer" multiple="true"
 				groupName="association">
 				<label>Group 5</label>
 				<description><![CDATA[Multilevel (triggered at changes of value of slats tilting position)]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

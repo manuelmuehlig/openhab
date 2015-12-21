@@ -1,1 +1,148 @@
-<?xml version="1.0" encoding="UTF-8"?><thing:thing-descriptions bindingId="zwave"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"><thing-type id="cooperwiringdevices_rf9501_00_000"><label>Cooper Wiring Devices RF9501</label><description><![CDATA[15A Light Switch<br><h1>Device Overview</h1><p>Brief description here</p><h1>Inclusion and Exclusion</h1><p>To include the device into the network...</p><p>To exclude the device from the network...</p>]]></description><channels><!-- The following is a random selection of channels - it must be changed! --><channel id="brightness-1" typeId="brightness"><label>Dimmer 1</label><properties><property name="binding:*:HSBType">COLOR;colorHue=true</property><property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property><property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property><property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property><property name="binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property></properties></channel><channel id="switch-1" typeId="switch"><label>Switch 1</label><properties><property name="binding:*:HSBType">COLOR;colorHue=true</property><property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property><property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property><property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property><property name="binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property><property name="binding:*:DecimalType">METER;meterScale=E_W</property></properties></channel><!-- Remove if this is not a battery device --><channel id="battery-level" typeId="system.battery-level"><properties><property name="commandClass">BATTERY</property></properties></channel><!-- More samples... --><channel id="switch-1" typeId="switch"><properties><property name="binding:Command:OnOffType">SWITCH_BINARY,BASIC</property></properties></channel><channel id="power_watts-1" typeId="power_watts"><properties><property name="binding:*:DecimalType">METER;meterScale=E_W</property></properties></channel><channel id="power_current-1" typeId="power_current"><properties><property name="binding:*:DecimalType">METER;meterScale=E_A</property></properties></channel><channel id="power_voltage-1" typeId="power_voltage"><properties><property name="binding:*:DecimalType">METER;meterScale=E_V</property></properties></channel><channel id="power_powerfactor-1" typeId="power_powerfactor"><properties><property name="binding:*:DecimalType">METER;meterScale=E_Power_Factor</property></properties></channel><channel id="power_energy-1" typeId="power_energy"><properties><property name="binding:*:DecimalType">METER;meterScale=E_KWh</property></properties></channel></channels><properties><property name="vendor">Cooper Wiring Devices</property><property name="model">RF9501</property><property name="manufacturerId">001A</property><property name="manufacturerRef">534C:0000</property></properties><config-description><parameter-group name="configuration"><context>setup</context><label>Configuration Parameters</label></parameter-group><parameter-group name="association"><context>link</context><label>Association Groups</label></parameter-group><!-- Remove if this is not a battery device --><parameter-group name="wakeup"><context>sleep</context><label>Wakeup Configuration</label></parameter-group><parameter name="config_1_1" type="integer" min="0" max="255" groupName="configuration"><label>1: Delayed OFF time</label><description><![CDATA[The amount of time in seconds the switch will delay when trigger the delayed off feature]]></description><default>0</default></parameter><parameter name="config_2_1" type="integer" min="0" max="255" groupName="configuration"><label>2: Panic ON time</label><description><![CDATA[The amount of time in seconds the switch will turn on for when panic mode is triggered]]></description><default>0</default></parameter><parameter name="config_3_1" type="integer" min="0" max="255" groupName="configuration"><label>3: Panic OFF time</label><description><![CDATA[The amount of time in seconds the switch will turn off for when panic mode is triggered]]></description><default>0</default></parameter><parameter name="config_4_1" type="integer" min="0" max="255" groupName="configuration"><label>4: Basic Set Value</label><description><![CDATA[Setting this to anything other than 0 will cause the value to be transmitted to devices in the association group when the switch is triggered. A setting other than 0 will likely result in undesired operation]]></description><default>0</default></parameter><parameter name="config_5_1" type="integer" groupName="configuration"><label>5: Power Up State</label><description><![CDATA[Power Up State of the switch]]></description><default>1</default><options><option value="1">OFF</option><option value="2">ON</option><option value="3">Last State</option></options></parameter><parameter name="config_6_1" type="integer" groupName="configuration"><label>6: Panic mode enable</label><description><![CDATA[Enables this switch to participate in panic mode]]></description><default>1</default><options><option value="1">OFF</option><option value="2">ON</option></options></parameter><parameter name="group_1" type="integer" multiple="true" groupName="association"><label>Group 1</label><description><![CDATA[***Add description here***]]></description><multipleLimit>5</multipleLimit><default>empty</default></parameter><!-- Remove the wakeup if this is not a battery device --><parameter name="wakeup_interval" type="integer" groupName="wakeup"><label>Wakeup Period</label><description>Set the wakeup period in seconds</description></parameter><parameter name="wakeup_node" type="integer" groupName="wakeup" readOnly="true"><label>Wakeup Node</label><description>The node to which wakeup messages will be sent</description></parameter></config-description></thing-type></thing:thing-descriptions>
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zwave"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/zwave-thing-description/v1.0.0">
+	<thing-type id="cooperwiringdevices_rf9501_00_000">
+		<label>Cooper Wiring Devices RF9501</label>
+		<description><![CDATA[15A Light Switch<br><h1>Device Overview</h1><p>Brief description here</p><h1>Inclusion and Exclusion</h1><p>To include the device into the network...</p><p>To exclude the device from the network...</p>]]></description>
+		<channels><!-- The following is a random selection of channels - it must 
+				be changed! -->
+			<channel id="brightness-1" typeId="brightness">
+				<label>Dimmer 1</label>
+				<properties>
+					<property name="binding:*:HSBType">COLOR;colorHue=true</property>
+					<property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property>
+					<property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+				</properties>
+			</channel>
+			<channel id="switch-1" typeId="switch">
+				<label>Switch 1</label>
+				<properties>
+					<property name="binding:*:HSBType">COLOR;colorHue=true</property>
+					<property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC</property>
+					<property name="binding:Command:OnOffType">SWITCH_MULTILEVEL</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:1,BASIC:1</property>
+					<property name="binding:*:OnOffType">SWITCH_BINARY:2,BASIC:2</property>
+					<property name="binding:*:DecimalType">METER;meterScale=E_W</property>
+				</properties>
+			</channel><!-- Remove if this is not a battery device -->
+			<channel id="battery-level" typeId="system.battery-level">
+				<properties>
+					<property name="commandClass">BATTERY</property>
+				</properties>
+			</channel><!-- More samples... -->
+			<channel id="switch-1" typeId="switch">
+				<properties>
+					<property name="binding:Command:OnOffType">SWITCH_BINARY,BASIC</property>
+				</properties>
+			</channel>
+			<channel id="power_watts-1" typeId="power_watts">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_W</property>
+				</properties>
+			</channel>
+			<channel id="power_current-1" typeId="power_current">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_A</property>
+				</properties>
+			</channel>
+			<channel id="power_voltage-1" typeId="power_voltage">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_V</property>
+				</properties>
+			</channel>
+			<channel id="power_powerfactor-1" typeId="power_powerfactor">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_Power_Factor</property>
+				</properties>
+			</channel>
+			<channel id="power_energy-1" typeId="power_energy">
+				<properties>
+					<property name="binding:*:DecimalType">METER;meterScale=E_KWh</property>
+				</properties>
+			</channel>
+		</channels>
+		<properties>
+			<property name="vendor">Cooper Wiring Devices</property>
+			<property name="model">RF9501</property>
+			<property name="manufacturerId">001A</property>
+			<property name="manufacturerRef">534C:0000</property>
+		</properties>
+		<config-description>
+			<parameter-group name="configuration">
+				<context>setup</context>
+				<label>Configuration Parameters</label>
+			</parameter-group>
+			<parameter-group name="association">
+				<context>link</context>
+				<label>Association Groups</label>
+			</parameter-group><!-- Remove if this is not a battery device -->
+			<parameter-group name="wakeup">
+				<context>sleep</context>
+				<label>Wakeup Configuration</label>
+			</parameter-group>
+			<parameter name="config_1_1" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>1: Delayed OFF time</label>
+				<description><![CDATA[The amount of time in seconds the switch will delay when trigger the delayed off feature]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_2_1" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>2: Panic ON time</label>
+				<description><![CDATA[The amount of time in seconds the switch will turn on for when panic mode is triggered]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_3_1" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>3: Panic OFF time</label>
+				<description><![CDATA[The amount of time in seconds the switch will turn off for when panic mode is triggered]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_4_1" type="integer" min="0" max="255"
+				groupName="configuration">
+				<label>4: Basic Set Value</label>
+				<description><![CDATA[Setting this to anything other than 0 will cause the value to be transmitted to devices in the association group when the switch is triggered. A setting other than 0 will likely result in undesired operation]]></description>
+				<default>0</default>
+			</parameter>
+			<parameter name="config_5_1" type="integer" groupName="configuration">
+				<label>5: Power Up State</label>
+				<description><![CDATA[Power Up State of the switch]]></description>
+				<default>1</default>
+				<options>
+					<option value="1">OFF</option>
+					<option value="2">ON</option>
+					<option value="3">Last State</option>
+				</options>
+			</parameter>
+			<parameter name="config_6_1" type="integer" groupName="configuration">
+				<label>6: Panic mode enable</label>
+				<description><![CDATA[Enables this switch to participate in panic mode]]></description>
+				<default>1</default>
+				<options>
+					<option value="1">OFF</option>
+					<option value="2">ON</option>
+				</options>
+			</parameter>
+			<parameter name="group_1" type="integer" multiple="true"
+				groupName="association">
+				<label>Group 1</label>
+				<description><![CDATA[***Add description here***]]></description>
+				<multipleLimit>5</multipleLimit>
+				<default>empty</default>
+			</parameter><!-- Remove the wakeup if this is not a battery device -->
+			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
+				<label>Wakeup Period</label>
+				<description>Set the wakeup period in seconds</description>
+			</parameter>
+			<parameter name="wakeup_node" type="integer" groupName="wakeup"
+				readOnly="true">
+				<label>Wakeup Node</label>
+				<description>The node to which wakeup messages will be sent</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+</thing:thing-descriptions>

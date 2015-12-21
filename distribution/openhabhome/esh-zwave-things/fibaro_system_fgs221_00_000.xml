@@ -69,7 +69,8 @@
 			<property name="vendor">Fibaro System</property>
 			<property name="model">FGS221</property>
 			<property name="manufacturerId">010F</property>
-			<property name="manufacturerRef">0200:0102,0200:0103,0200:0104,0200:0105,0200:0106,0200:0107,0200:0109,0200:100A,0200:300A</property>
+			<property name="manufacturerRef">0200:0102,0200:0103,0200:0104,0200:0105,0200:0106,0200:0107,0200:0109,0200:100A,0200:300A,0202:3002</property>
+			<property name="versionMax">1.8</property>
 			<property name="DefaultAssociations">3</property>
 		</properties>
 		<config-description>
@@ -120,29 +121,31 @@
 			<parameter name="config_6_1" type="integer" groupName="configuration">
 				<label>6: Separation of association sending (key 1)</label>
 				<description><![CDATA[Activate/Deactivate association sending for group
-				1 - Also see param #16]]></description>
+				1 - activate param #15 for this to work]]></description>
 				<default>0</default>
 				<options>
 					<option value="0">Map status to all devices in group 1</option>
 					<option value="1">Map OFF status to all devices in group 1,
-						Double click on key 1 will send ON to all devices in group 1, all
+						double click on key 1 will send ON to all devices in group 1, all
 						dimmers set to prev.value</option>
 					<option value="2">Map OFF status to all devices in group 1,
-						Double click on key 1 will send ON to all devices in group 1, all
+						double click on key 1 will send ON to all devices in group 1, all
 						dimmers set to 100%</option>
 				</options>
 			</parameter>
 			<parameter name="config_7_1" type="integer" groupName="configuration">
-				<label>7: Control key #2 behaviour</label>
-				<description><![CDATA[Key no.2 is not represented by any physical device - only
-				devices in the association list.
-				This functionality prevents of lack of reaction on pressing key no.2
-				through polling devices
-				from association list one by one and checking their actual statuses.]]></description>
-				<default>1</default>
+				<label>7: Separation of association sending (key 2)</label>
+				<description><![CDATA[Activate/Deactivate association sending for group
+				2 - activate param #15 for this to work]]></description>
+				<default>0</default>
 				<options>
-					<option value="0">Device status is not checked</option>
-					<option value="1">Device status is checked</option>
+					<option value="0">Map status to all devices in group 2</option>
+					<option value="1">Map OFF status to all devices in group 2,
+						double click on key 2 will send ON to all devices in group 2, all
+						dimmers set to prev.value</option>
+					<option value="2">Map OFF status to all devices in group 2,
+						double click on key 2 will send ON to all devices in group 2, all
+						dimmers set to 100%</option>
 				</options>
 			</parameter>
 			<parameter name="config_13_1" type="integer" groupName="configuration">
@@ -317,16 +320,22 @@
 				<label>Switch 1</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Switch 2</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_3" type="integer" groupName="association">
 				<label>Controller Updates</label>
 				<description><![CDATA[***Add description here***]]></description>
+				<options>
+					<option value="empty">None</option>
+				</options>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

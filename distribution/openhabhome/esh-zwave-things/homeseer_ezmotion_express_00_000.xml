@@ -144,6 +144,7 @@ A value of 255 will turn the light on.]]></description>
 				<label>Association Group</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>4</multipleLimit>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

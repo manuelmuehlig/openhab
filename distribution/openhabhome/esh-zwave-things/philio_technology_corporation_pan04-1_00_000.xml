@@ -135,14 +135,26 @@
 			<parameter name="group_1" type="integer" groupName="association">
 				<label>Relay 1 + 2</label>
 				<description><![CDATA[***Add description here***]]></description>
+				<options>
+					<option value="empty">None</option>
+				</options>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_2" type="integer" groupName="association">
 				<label>Relay 1</label>
 				<description><![CDATA[***Add description here***]]></description>
+				<options>
+					<option value="empty">None</option>
+				</options>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_3" type="integer" groupName="association">
 				<label>Relay 2</label>
 				<description><![CDATA[***Add description here***]]></description>
+				<options>
+					<option value="empty">None</option>
+				</options>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

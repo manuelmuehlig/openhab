@@ -218,24 +218,28 @@
 				<label>Controlled by button 1 or single clicks of buttons 1 and 3</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>8</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Controlled by button 3 or double clicks of buttons 1 and 3</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>8</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_3" type="integer" multiple="true"
 				groupName="association">
 				<label>Controlled by button 2 or single clicks of buttons 2 and 4</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>8</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_4" type="integer" multiple="true"
 				groupName="association">
 				<label>Controlled by button 4 or double clicks of buttons 2 and 4</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>8</multipleLimit>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

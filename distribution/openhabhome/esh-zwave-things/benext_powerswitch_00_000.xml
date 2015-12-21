@@ -88,6 +88,10 @@
 			<parameter name="group_1" type="integer" groupName="association">
 				<label>Group 1</label>
 				<description><![CDATA[***Add description here***]]></description>
+				<options>
+					<option value="empty">None</option>
+				</options>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

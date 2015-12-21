@@ -271,6 +271,10 @@ on temperature change defined by this parameter.
 				<label>Lifeline to Controller (reserved for communication with the
 					main controller)</label>
 				<description><![CDATA[***Add description here***]]></description>
+				<options>
+					<option value="empty">None</option>
+				</options>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
@@ -278,6 +282,7 @@ on temperature change defined by this parameter.
 					state and reflecting its state)</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_3" type="integer" multiple="true"
 				groupName="association">
@@ -285,6 +290,7 @@ on temperature change defined by this parameter.
 					state and reflecting its state)</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_4" type="integer" multiple="true"
 				groupName="association">
@@ -292,6 +298,7 @@ on temperature change defined by this parameter.
 					state and reflecting its state)</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_5" type="integer" multiple="true"
 				groupName="association">
@@ -299,6 +306,7 @@ on temperature change defined by this parameter.
 					state and reflecting its state)</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_6" type="integer" multiple="true"
 				groupName="association">
@@ -306,6 +314,7 @@ on temperature change defined by this parameter.
 					state and reflecting its state)</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_7" type="integer" multiple="true"
 				groupName="association">
@@ -313,6 +322,7 @@ on temperature change defined by this parameter.
 					state and reflecting its state)</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_8" type="integer" multiple="true"
 				groupName="association">
@@ -320,6 +330,7 @@ on temperature change defined by this parameter.
 					state and reflecting its state)</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_9" type="integer" multiple="true"
 				groupName="association">
@@ -327,6 +338,7 @@ on temperature change defined by this parameter.
 					sensor)</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

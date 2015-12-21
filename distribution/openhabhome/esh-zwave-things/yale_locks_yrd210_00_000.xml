@@ -153,6 +153,7 @@ Privacy Mode - all user codes disabled and RF Lock/Unlock disabled]]></descripti
 				<label>Alarm Reports</label>
 				<description><![CDATA[Alarm reports are sent out unsolicited to devices included in the association group.]]></description>
 				<multipleLimit>4</multipleLimit>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

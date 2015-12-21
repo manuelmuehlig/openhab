@@ -445,6 +445,7 @@
 				Q state and reflecting its state)up to 16 nodes.
 			]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
@@ -453,6 +454,7 @@
 				state and reflecting its state)up to 16 nodes.
 			]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_3" type="integer" multiple="true"
 				groupName="association">
@@ -461,6 +463,7 @@
 				state and reflecting its state)up to 16 nodes.
 			]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_4" type="integer" multiple="true"
 				groupName="association">
@@ -470,6 +473,7 @@
 				to up to 16 nodes.
 			]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_5" type="integer" multiple="true"
 				groupName="association">
@@ -479,10 +483,15 @@
 				to up to 16 nodes.
 			]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_6" type="integer" groupName="association">
 				<label>Controller Updates</label>
 				<description><![CDATA[***Add description here***]]></description>
+				<options>
+					<option value="empty">None</option>
+				</options>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

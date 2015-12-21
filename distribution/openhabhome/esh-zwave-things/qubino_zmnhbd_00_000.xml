@@ -246,48 +246,59 @@
 			<parameter name="group_1" type="integer" groupName="association">
 				<label>Default Reporting Group</label>
 				<description><![CDATA[Reporting for controller]]></description>
+				<options>
+					<option value="empty">None</option>
+				</options>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Q1 basic on/off</label>
 				<description><![CDATA[Triggered at change of the output Q1 state and reflecting its state]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_3" type="integer" multiple="true"
 				groupName="association">
 				<label>Q1 switch binary</label>
 				<description><![CDATA[Switch binary report (triggered at change of the output Q1 state and reflecting its state) up to 16 nodes]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_4" type="integer" multiple="true"
 				groupName="association">
 				<label>Q1 power meter</label>
 				<description><![CDATA[Power meter report (triggered at change of the output Q1 state) up to 16 nodes.]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_5" type="integer" multiple="true"
 				groupName="association">
 				<label>Q2 basic on/off</label>
 				<description><![CDATA[Triggered at change of the output Q2 state and reflecting its state]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_6" type="integer" multiple="true"
 				groupName="association">
 				<label>Q2 switch binary</label>
 				<description><![CDATA[Switch binary report (triggered at change of the output Q2 state and reflecting its state) up to 16 nodes]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_7" type="integer" multiple="true"
 				groupName="association">
 				<label>Q2 power meter</label>
 				<description><![CDATA[Power meter report (triggered at change of the output Q2 state) up to 16 nodes.]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_8" type="integer" multiple="true"
 				groupName="association">
 				<label>Multilevel sensor</label>
 				<description><![CDATA[Multilevel sensor report (triggered at change of temperature sensor) up to 16 nodes.]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

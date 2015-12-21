@@ -225,18 +225,21 @@ Available configuration parameters (data type is 1 Byte DEC):
 				<label>Basic on/off Q1</label>
 				<description><![CDATA[Triggered at change of the output Q1 state and reflecting its state]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Basic on/off I2</label>
 				<description><![CDATA[Triggered at change of the output I2 state and reflecting its state]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_3" type="integer" multiple="true"
 				groupName="association">
 				<label>Basic on/off I3</label>
 				<description><![CDATA[Triggered at change of the output I3 state and reflecting its state]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_4" type="integer" multiple="true"
 				groupName="association">
@@ -244,6 +247,7 @@ Available configuration parameters (data type is 1 Byte DEC):
 				<description><![CDATA[]]>
 				</description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_5" type="integer" multiple="true"
 				groupName="association">
@@ -251,10 +255,15 @@ Available configuration parameters (data type is 1 Byte DEC):
 				<description><![CDATA[]]>
 				</description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_6" type="integer" groupName="association">
 				<label>Default Reporting Group</label>
 				<description><![CDATA[Reporting for controller]]></description>
+				<options>
+					<option value="empty">None</option>
+				</options>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

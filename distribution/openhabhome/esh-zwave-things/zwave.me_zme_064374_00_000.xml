@@ -157,12 +157,14 @@
 				<label>Group 1</label>
 				<description><![CDATA[Send Reports on switch state change]]></description>
 				<multipleLimit>5</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Group 2</label>
 				<description><![CDATA[Controlled by buttons]]></description>
 				<multipleLimit>5</multipleLimit>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

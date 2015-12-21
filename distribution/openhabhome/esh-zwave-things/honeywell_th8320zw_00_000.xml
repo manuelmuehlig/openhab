@@ -91,6 +91,7 @@
 				<label>Relationship of devices in the network</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

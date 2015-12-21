@@ -132,6 +132,7 @@
 				<label>Group 1</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>2</multipleLimit>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

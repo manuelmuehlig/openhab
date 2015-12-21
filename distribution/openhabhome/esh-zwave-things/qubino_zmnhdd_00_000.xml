@@ -369,6 +369,10 @@
 				<description><![CDATA[
 				Default reporting group (reserved for the main controller)
 			]]></description>
+				<options>
+					<option value="empty">None</option>
+				</options>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
@@ -377,6 +381,7 @@
 				Basic on/off (triggered at change of the input I1 state and reflecting its state) up to 16 nodes
 			]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_3" type="integer" multiple="true"
 				groupName="association">
@@ -385,6 +390,7 @@
 				Start level change/stop level change (triggered at change of the input I1 state and reflecting its state) up to 16 nodes
 			]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_4" type="integer" multiple="true"
 				groupName="association">
@@ -393,6 +399,7 @@
 				Multilevel set (triggered at changes of state/value of the Flush dimmer) up to 16 nodes
 			]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_5" type="integer" multiple="true"
 				groupName="association">
@@ -401,6 +408,7 @@
 				Basic on/off (triggered at change of the input I2 state and reflecting its state) up to 16 nodes
 			]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_6" type="integer" multiple="true"
 				groupName="association">
@@ -409,6 +417,7 @@
 				Notification report (triggered at change of the input I2 state and reflecting its state) up to 16 nodes
 			]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_7" type="integer" multiple="true"
 				groupName="association">
@@ -417,6 +426,7 @@
 				Binary sensor (triggered at change of the input I2 state and reflecting its state) up to 16 nodes
 			]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_8" type="integer" multiple="true"
 				groupName="association">
@@ -425,6 +435,7 @@
 				Basic on/off (triggered at change of the input I3 state and reflecting its state) up to 16 nodes
 			]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_9" type="integer" multiple="true"
 				groupName="association">
@@ -433,6 +444,7 @@
 				Notification report (triggered at change of the input I3 state and reflecting its state) up to 16 nodes
 			]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_10" type="integer" multiple="true"
 				groupName="association">
@@ -441,6 +453,7 @@
 				Binary sensor (triggered at change of the input I3 state and reflecting its state) up to 16 nodes
 			]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_11" type="integer" multiple="true"
 				groupName="association">
@@ -449,6 +462,7 @@
 				Multilevel sensor report (triggered at change of temperature sensor) up to 16 nodes.
 			]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

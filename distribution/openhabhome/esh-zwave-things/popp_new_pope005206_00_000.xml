@@ -101,24 +101,31 @@
 			<parameter name="group_1" type="integer" groupName="association">
 				<label>Life Line</label>
 				<description><![CDATA[***Add description here***]]></description>
+				<options>
+					<option value="empty">None</option>
+				</options>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Wind Speed</label>
 				<description><![CDATA[Wind speed is higher than 6 m/s (22 Km/h)]]></description>
 				<multipleLimit>5</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_3" type="integer" multiple="true"
 				groupName="association">
 				<label>End of Dawn</label>
 				<description><![CDATA[At the end of the dawn if it becomes bright]]></description>
 				<multipleLimit>5</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_4" type="integer" multiple="true"
 				groupName="association">
 				<label>End of Dusk</label>
 				<description><![CDATA[At the end of the dusk if it becomes bright]]></description>
 				<multipleLimit>5</multipleLimit>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

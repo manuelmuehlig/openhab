@@ -101,18 +101,21 @@
 				<label>Water and Temperature Alarms</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Water Alarms</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_3" type="integer" multiple="true"
 				groupName="association">
 				<label>Temperature Alarms</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

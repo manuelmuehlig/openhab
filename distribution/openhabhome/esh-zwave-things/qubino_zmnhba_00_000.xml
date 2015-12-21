@@ -197,18 +197,21 @@
 									<label>Basic on/off Q1</label>
 									<description><![CDATA[Triggered at change of the output Q1 state and reflecting its state]]></description>
 									<multipleLimit>4</multipleLimit>
+									<default>empty</default>
 								</parameter>
 								<parameter name="group_2" type="integer" multiple="true"
 									groupName="association">
 									<label>Basic on/off Q2</label>
 									<description><![CDATA[Triggered at change of the output Q2 state and reflecting its state]]></description>
 									<multipleLimit>4</multipleLimit>
+									<default>empty</default>
 								</parameter>
 								<parameter name="group_3" type="integer" multiple="true"
 									groupName="association">
 									<label>Default Reporting Group</label>
 									<description><![CDATA[Reporting for controller]]></description>
 									<multipleLimit>4</multipleLimit>
+									<default>empty</default>
 								</parameter><!-- Remove the wakeup if this is not a battery device -->
 								<parameter name="wakeup_interval" type="integer"
 									groupName="wakeup">

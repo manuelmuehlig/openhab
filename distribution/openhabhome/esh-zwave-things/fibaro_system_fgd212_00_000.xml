@@ -537,6 +537,10 @@
 			<parameter name="group_1" type="integer" groupName="association">
 				<label>Lifeline - Controller Updates</label>
 				<description><![CDATA[***Add description here***]]></description>
+				<options>
+					<option value="empty">None</option>
+				</options>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
@@ -546,6 +550,7 @@
 					which 1 field is reserved for the Z-Wave network main controller.</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>10</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_3" type="integer" multiple="true"
 				groupName="association">
@@ -555,6 +560,7 @@
 					which 1 field is reserved for the Z-Wave network main controller.</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>10</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_4" type="integer" multiple="true"
 				groupName="association">
@@ -564,6 +570,7 @@
 					which 1 field is reserved for the Z-Wave network main controller.</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>10</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_5" type="integer" multiple="true"
 				groupName="association">
@@ -573,6 +580,7 @@
 					which 1 field is reserved for the Z-Wave network main controller.</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>10</multipleLimit>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

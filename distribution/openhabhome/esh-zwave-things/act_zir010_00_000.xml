@@ -141,18 +141,21 @@
 				<label>Motion</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Tamper</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_3" type="integer" multiple="true"
 				groupName="association">
 				<label>Battery</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>5</multipleLimit>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

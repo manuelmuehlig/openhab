@@ -69,7 +69,7 @@
 			<property name="vendor">Fibaro System</property>
 			<property name="model">FGS222</property>
 			<property name="manufacturerId">010F</property>
-			<property name="manufacturerRef">0202:1002,0202:3002</property>
+			<property name="manufacturerRef">0202:1002</property>
 			<property name="DefaultAssociations">3</property>
 		</properties>
 		<config-description>
@@ -317,16 +317,22 @@
 				<label>Switch 1</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Switch 2</label>
 				<description><![CDATA[***Add description here***]]></description>
 				<multipleLimit>16</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_3" type="integer" groupName="association">
 				<label>Controller Updates</label>
 				<description><![CDATA[***Add description here***]]></description>
+				<options>
+					<option value="empty">None</option>
+				</options>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>

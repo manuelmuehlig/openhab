@@ -341,28 +341,36 @@
 									<label>Assigned to IN1 input</label>
 									<description><![CDATA[Sends control frame to associated devices each time the device state changes (ON/OFF)]]></description>
 									<multipleLimit>5</multipleLimit>
+									<default>empty</default>
 								</parameter>
 								<parameter name="group_2" type="integer" multiple="true"
 									groupName="association">
 									<label>Assigned to IN2 input</label>
 									<description><![CDATA[Sends control frame to associated devices each time the device state changes (ON/OFF)]]></description>
 									<multipleLimit>5</multipleLimit>
+									<default>empty</default>
 								</parameter>
 								<parameter name="group_3" type="integer" multiple="true"
 									groupName="association">
 									<label>Assigned to IN3 input</label>
 									<description><![CDATA[Sends control frame to associated devices each time the device state changes (ON/OFF)]]></description>
 									<multipleLimit>5</multipleLimit>
+									<default>empty</default>
 								</parameter>
 								<parameter name="group_4" type="integer" multiple="true"
 									groupName="association">
 									<label>Assigned to IN4 input</label>
 									<description><![CDATA[Sends control frame to associated devices each time the device state changes (ON/OFF)]]></description>
 									<multipleLimit>5</multipleLimit>
+									<default>empty</default>
 								</parameter>
 								<parameter name="group_5" type="integer" groupName="association">
 									<label>Reports device status</label>
 									<description><![CDATA[Only one device may be assigned to this group, main controller by default. It is not recommended to modify this group's settings.]]></description>
+									<options>
+										<option value="empty">None</option>
+									</options>
+									<default>empty</default>
 								</parameter><!-- Remove the wakeup if this is not a battery device -->
 								<parameter name="wakeup_interval" type="integer"
 									groupName="wakeup">

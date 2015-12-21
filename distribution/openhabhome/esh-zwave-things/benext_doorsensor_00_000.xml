@@ -121,12 +121,14 @@
 				<label>Send frame to every node in this group (internal contact)</label>
 				<description><![CDATA[If the internal door contact (magnet) is triggered it sends a Z-Wave frame to every node in this group.]]></description>
 				<multipleLimit>5</multipleLimit>
+				<default>empty</default>
 			</parameter>
 			<parameter name="group_2" type="integer" multiple="true"
 				groupName="association">
 				<label>Send frame to every node in this group (external contact)</label>
 				<description><![CDATA[If the external door contact is triggered it sends a Z-Wave frame to every node in this group if it is.]]></description>
 				<multipleLimit>5</multipleLimit>
+				<default>empty</default>
 			</parameter><!-- Remove the wakeup if this is not a battery device -->
 			<parameter name="wakeup_interval" type="integer" groupName="wakeup">
 				<label>Wakeup Period</label>
