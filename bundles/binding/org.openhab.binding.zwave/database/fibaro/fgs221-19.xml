@@ -48,42 +48,34 @@
 			<Type>list</Type>
 			<Default>0</Default>
 			<Size>1</Size>
-			<Label lang="en">Enable/Disable OFF-delay</Label>			
+			<Label lang="en">Enable/Disable Manual Override</Label>			
 			<Item>
 				<Value>0</Value>
-				<Label lang="en">Auto OFF disabled for both relays</Label>
+				<Label lang="en">Manual Override Disabled</Label>
 			</Item>
 			<Item>
 				<Value>1</Value>
-				<Label lang="en">Auto OFF active only for relay 1</Label>
+				<Label lang="en">Manual Override Enabled</Label>
 			</Item>
-			<Item>
-				<Value>2</Value>
-				<Label lang="en">Auto OFF active only for relay 2</Label>
-			</Item>
-			<Item>
-				<Value>3</Value>
-				<Label lang="en">Auto OFF active for both relays</Label>
-			</Item>
-			<Help lang="en">Activate/Deactivate Automatic turning off relay after set time</Help>
+			<Help lang="en">Enable / Disable manual override for relay auto off</Help>
 		</Parameter>
 
 		<Parameter>
 			<Index>4</Index>
-			<Type>byte</Type>
-			<Default>20</Default>
-			<Size>1</Size>
-			<Label lang="en">Relay 1: OFF-delay time (10ms steps)</Label>			
-			<Help lang="en">Automatic turning off relay 1 after set time, in 10ms increments (default: 200ms)</Help>
+			<Type>short</Type>
+			<Default>0</Default>
+			<Size>2</Size>
+			<Label lang="en">Relay 1: OFF-delay time</Label>			
+			<Help lang="en">Automatic turning off relay 1 after set time in milliseconds, 0 to disable</Help>
 		</Parameter>
 
 		<Parameter>
 			<Index>5</Index>
-			<Type>byte</Type>
-			<Default>20</Default>
-			<Size>1</Size>
-			<Label lang="en">Relay 2: OFF-delay time (10ms steps)</Label>			
-			<Help lang="en">Automatic turning off relay 2 after set time, in 10ms increments (default: 200ms)</Help>
+			<Type>short</Type>
+			<Default>0</Default>
+			<Size>2</Size>
+			<Label lang="en">Relay 2: OFF-delay time</Label>			
+			<Help lang="en">Automatic turning off relay 2 after set time in milliseconds, 0 to disable</Help>
 		</Parameter>
 
 		<Parameter>
